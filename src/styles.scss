@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+@font-face {
+    font-family: 'Poppins';
+    src: url('./assets/Fuentes/Poppins-Bold.ttf') format('ttf'), /* Formato WOFF2 */
+         url('./assets/Fuentes/Poppins-Medium.ttf') format('ttf'); /* Formato WOFF */
+  }
+ * {
+    font-family: 'Poppins', sans-serif;
+  }
