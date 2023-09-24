@@ -6,8 +6,9 @@ const routes: Routes = [
   {path:'',redirectTo:'login',pathMatch:'full'},
   // {path:'**',redirectTo:'login',pathMatch:'full'},
   {path:'login',component:LoginComponent},
-  {path:'principal',loadChildren:()=> import('./Componentes/contenedor-principal/contenedor-principal.module').then(x=>x.ContenedorPrincipalModule)}
+  {path:'principal',loadChildren:()=> import('./Componentes/contenedor-principal/contenedor-principal.module').then(x=>x.ContenedorPrincipalModule)},
 
+  
 ];
 
 @NgModule({

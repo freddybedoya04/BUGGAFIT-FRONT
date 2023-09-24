@@ -1,0 +1,77 @@
+.body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    background: #fcb900;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #111111, #fcb900);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #111111, #fcb900);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.login {
+    border: 3px solid white;
+    border-radius: 20px;
+    padding: 1rem;
+    text-align: center;
+    color: white;
+}
+
+
+
+.login img {
+    width: 100px;
+    height: 100px;
+
+}
+
+.login form {
+    margin-top: 10px;
+}
+
+.login form span {
+    margin: 25px;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.login form span label {
+    text-align: start;
+    margin-bottom: 10px;
+}
+
+:host ::ng-deep .p-button {
+    background-color: black;
+    border-color: black;
+}
+
+:host ::ng-deep .p-button:hover {
+    background:  #111111;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #111111);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #111111);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+}
+
+.textFile {
+    height: 30px;
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 0.5rem;
+    border: 1px solid #000;
+}
+.p-button{
+    margin-top: 10px;
+}
+.textFile:focus{
+    border-color: inherit;   
+    -webkit-box-shadow: none;  
+    box-shadow: none; 
+}

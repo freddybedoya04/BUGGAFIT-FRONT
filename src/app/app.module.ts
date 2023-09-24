@@ -7,6 +7,7 @@ import { LoginComponent } from './Componentes/login/login.component';
 import { SharedModule } from './Shared/shared/shared.module';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -16,7 +17,9 @@ import { SharedModule } from './Shared/shared/shared.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    SharedModule
+    SharedModule,
+
+
   ],
   providers: [],
   bootstrap: [AppComponent]
