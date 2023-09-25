@@ -1,68 +1,65 @@
-<p-card header="Ventas" [style]="{margin:'20px',padding:'10px'}" styleClass="shadow-2">
-    <p-table  [tableStyle]="{'min-width': '90rem','max-height':'600px'}">
-        <ng-template pTemplate="caption">
-            <div class="EncabezadoTabla">
-                <button type="button"  pButton pRipple icon="pi pi-file-excel"  class="p-button-success mr-2"  pTooltip="XLS" tooltipPosition="bottom"></button>
-                <button pButton label="" icon="pi pi-filter" iconPos="left" class="p-button-raised p-button-rounded"></button>
-                <span class="p-input-icon-left ml-auto">
-                    <i class="pi pi-search"></i>
-                    <input pInputText type="text"  placeholder="Buscar" />
-                </span>
-            </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-            <tr>
-                <th>Factura N</th>
-                <th>Fecha</th>
-                <th>Tipo de pago</th>
-                <th >Ciudad destino</th>
-                <th>Cedula</th>
-                <th>Nombre</th>
-                <th>Telefono</th>
-                <th>Direccion</th>
-                <th>Ubicacion</th>
-                <th>Tipo Cliente</th>
-                <th>Codigo</th>
-                <th>Nombre Aticulo</th>
-                <th>Cantidad</th>
-                <th>Precio</th>
-                <th>Valor Total</th>
-                <th>Descuento</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-viaje>
-            <tr style="text-align: center;">
-                <td>{{viaje.viA_Id}}</td>
-                <td >{{viaje.viA_FechaInicio | date}}</td>
-                <td>{{viaje.viA_Empresa }}</td>
-                <td>{{viaje.viA_Manifiesto}}</td>
-                <td>{{viaje.coN_CedulaConductor}}</td>
-                <td>{{viaje.veI_CodigoVehiculo}}</td>
-                <td>{{viaje.viA_Origen}}</td>
-                <td>{{viaje.viA_Destino}}</td>
-                <td>{{viaje.viA_KmRecorridos | number: '1.0-0'}}</td>
-                <td>{{viaje.viA_PagoConductor | number: '1.0-0' }}</td>
-                <td>{{viaje.viA_PagoCombustible | number: '1.0-0'}}</td>
-                <td>{{viaje.viA_PagoPeajes | number: '1.0-0'}}</td>
-                <td>{{viaje.viA_PagoOtros | number: '1.0-0'}}</td>
-                <td>{{viaje.viA_ValorViaje | number: '1.0-0'}}</td>
-                <td>{{viaje.viA_Utilidades | number: '1.0-0'}}</td>
-                <td>{{viaje.viA_Peso | number: '1.0-0'}}</td>
-                <td>
-                    <button pButton type="submit" icon="pi pi-search" iconPos="left" [style]="{'width': '45px'}"
-                     class="p-button-raised p-button-rounded"></button>
-                </td>
-             
-                    <ng-template pTemplate>
-                        <div >
-                           
-                            <div>
-                                <button pButton type="button"  [style]="{'margin-top': '20px'}" label="Close"></button>
-                            </div>
-                        </div>
-                    </ng-template>
-                
-            </tr>
-        </ng-template>
-    </p-table>
+<p-card
+  header="Ventas"
+  [style]="{ margin: '20px', padding: '10px' }"
+  styleClass="shadow-2"
+>
+  <p-table [tableStyle]="{ 'min-width': '90rem', 'max-height': '600px' }">
+    <ng-template pTemplate="caption">
+      <div class="header-table">
+        <button
+          type="button"
+          pButton
+          pRipple
+          icon="pi pi-file-excel"
+          class="p-button-success mr-2"
+          pTooltip="XLS"
+          tooltipPosition="bottom"
+        ></button>
+        <button
+          pButton
+          label=""
+          icon="pi pi-filter"
+          iconPos="left"
+          class="p-button-raised p-button-rounded"
+        ></button>
+        <span class="p-input-icon-left ml-auto">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" placeholder="Buscar" />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Factura N</th>
+        <th>Fecha</th>
+        <th>Tipo de pago</th>
+        <th>Ciudad destino</th>
+        <th>Cedula</th>
+        <th>Nombre</th>
+        <th>Telefono</th>
+        <th>Direccion</th>
+        <th>Ubicacion</th>
+        <th>Tipo Cliente</th>
+        <th>Codigo</th>
+        <th>Nombre Aticulo</th>
+        <th>Cantidad</th>
+        <th>Precio</th>
+        <th>Valor Total</th>
+        <th>Descuento</th>
+      </tr>
+    </ng-template>
 
+    <ng-template pTemplate>
+      <div>
+        <div>
+          <button
+            pButton
+            type="button"
+            [style]="{ 'margin-top': '20px' }"
+            label="Close"
+          ></button>
+        </div>
+      </div>
+    </ng-template>
+  </p-table>
+</p-card>
