@@ -11,31 +11,31 @@
     <div class="main-content" [ngClass]="{ collapsed: isCollapsed }">
       <ul class="menu">
         <li>
-          <a href="#"
+          <a [routerLink]="['/principal/ventas']"
             ><i class="pi pi-shopping-bag"></i
             ><span class="menu-text">Ventas</span></a
           >
         </li>
         <li>
-          <a href="#"
+          <a [routerLink]="['/principal/inventario']"
             ><i class="pi pi-list"></i
             ><span class="menu-text">Inventario</span></a
           >
         </li>
         <li>
-          <a href="#"
+          <a [routerLink]="['/principal/estadisticas']"
             ><i class="pi pi-chart-pie"></i
             ><span class="menu-text">DashBoard</span></a
           >
         </li>
         <li>
-          <a href="#"
+          <a [routerLink]="['/principal/compras']"
             ><i class="pi pi-shopping-cart"></i
             ><span class="menu-text">Compras</span></a
           >
         </li>
         <li>
-          <a href="#"
+          <a [routerLink]="['/principal/compras']"
             ><i class="pi pi-file"></i><span class="menu-text">Reporte</span></a
           >
         </li>
