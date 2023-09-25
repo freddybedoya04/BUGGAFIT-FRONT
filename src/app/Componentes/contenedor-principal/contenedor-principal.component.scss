@@ -10,14 +10,16 @@ html {
   display: flex;
   flex-direction: row;
   height: 100%;
+  width: 100%;
 }
-
 .sidebar {
   background-color: #212121;
-  flex-grow: 1;
   height: auto;
   display: flex;
   flex-direction: column;
+  width: 300px;
+  position: relative;
+  height: 100%;
 }
 
 .container-image {
@@ -25,7 +27,7 @@ html {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 2;
+ 
 }
 .container-image img {
   max-width: 100%;
@@ -61,7 +63,6 @@ html {
 .main-content {
   background-color: #696969;
   flex-grow: 1;
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -93,6 +94,7 @@ html {
   border-radius: 10px;
   outline: none;
   display: inline-block;
+  
 }
 .pi {
   color: white !important;
@@ -112,17 +114,51 @@ html {
 
 .collapsed .menu-text {
   display: none;
+
+}
+.collapsed .container-image {
+  margin-top: 30px;
 }
 
 .collapsed i::before {
-  font-size: 24px;
+  font-size: 20px;
+  width: 10px;
 }
-
+.collapsed.sidebar{
+  width: 150px;
+}
 // @media (max-width: 768px) {
-//     .menu-text {
-//       display: none;
-//     }
+//   .sidebar {
+//     width: 150px;
+//   }
+//   .menu {
+//     padding-top: 5%;
+//   }
+//   .menu a {
+//     margin-top: 10px;
+//   }
+//   .collapsed .menu-text {
+//     display: block;
+//   }
+//   .collapsed .sidebar {
+//     width: 60px;
+//   }
 // }
-// @media (max-width: 1024px){
 
+// @media (min-width: 769px) and (max-width: 1024px) {
+//   .container {
+//     flex-direction: row;
+//   }
+//   .sidebar {
+//     width: 200px;
+//   }
+//   .menu a {
+//     margin-top: 30px;
+//   }
+//   .collapsed .menu-text {
+//     display: block;
+//   }
+//   .collapsed .container-image {
+//     margin-top: 60px;
+//   }
 // }
