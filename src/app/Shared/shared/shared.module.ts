@@ -10,7 +10,9 @@ import { TableModule } from 'primeng/table';
 import { Card, CardModule } from 'primeng/card';
 import { InputText, InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
-
+import { InputNumberModule } from 'primeng/inputnumber';
+import {DropdownModule} from 'primeng/dropdown';
+import { CheckboxModule } from 'primeng/checkbox';
 @NgModule({
   declarations: [LoadingComponent],
   imports: [
@@ -21,7 +23,10 @@ import { ToastModule } from 'primeng/toast';
     CardModule,
     InputTextModule,
     ToastModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    InputNumberModule,
+    DropdownModule,
+    CheckboxModule
 
   ],
   exports:[
@@ -33,7 +38,10 @@ import { ToastModule } from 'primeng/toast';
     InputTextModule,
     LoadingComponent,
     ToastModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    InputNumberModule,
+    DropdownModule,
+    CheckboxModule
   ]
 })
 export class SharedModule { }

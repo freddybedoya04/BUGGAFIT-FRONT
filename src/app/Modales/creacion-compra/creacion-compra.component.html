@@ -1,1 +1,58 @@
-<p>creacion-compra works!</p>
+<div class="contenedorPricipal">
+    <div class="cabecera" >
+        <img src="../../../assets/Imagenes/BUGGAFITLOGO.png" alt="">
+        <h1> Nueva Compra</h1>
+    </div>
+    <form [formGroup]="formularioCompra">
+        <div>
+            <label>Fecha de compra:</label>
+            <p-calendar formControlName="COM_FechaCompra" [showTime]="true" hourFormat="12"></p-calendar>
+        </div>
+        <div>
+            <label for="COM_PROVEEDOR">Proveedor:</label>
+            <input type="text" pInputText formControlName="COM_PROVEEDOR" matInput autocomplete="off">
+
+        </div>
+        <div>
+            <label for="TIC_CODIGO">Tipo pago:</label>
+            <input type="text" pInputText formControlName="TIC_CODIGO">
+        </div>
+
+        <div>
+            <label>Total:</label>
+            <p-inputNumber class="Numerico" inputId="locale-us" currency="USD" mode="currency" locale="en-US"
+                [minFractionDigits]="0" formControlName="COM_VALORCOMPRA"></p-inputNumber>
+        </div>
+        <div>
+            <p-checkbox name="groupname" value="val1" label="En bodega" formControlName="COM_ENBODEGA"></p-checkbox>
+        </div>
+        <div>
+            <p-checkbox name="groupname" value="val1" label="Deuda" formControlName="COM_CREDITO"></p-checkbox>
+        </div>
+    </form>
+    <div class="Productos">
+        <div>
+            <label>Producto</label>
+            <input type="text" pInputText  matInput autocomplete="off">
+
+        </div>
+        <div>
+            <label >Precio Und:</label>
+            <input type="number" pInputText  matInput autocomplete="off">
+
+        </div>
+        <div>
+            <label >Cantidad:</label>
+            <input type="number" pInputText matInput autocomplete="off">
+
+        </div>
+        <div>
+            <label for="COM_PROVEEDOR">Precio Total:</label>
+            <input type="number" pInputText matInput autocomplete="off">
+
+        </div>
+        <div>
+            <p-button label="Agregar" icon="pi pi-search"></p-button>
+        </div>
+    </div>
+</div>
