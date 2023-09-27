@@ -33,26 +33,63 @@
     <div class="Productos">
         <div>
             <label>Producto</label>
-            <input type="text" pInputText  matInput autocomplete="off">
+            <p-dropdown [options]="productos" [(ngModel)]="productoSeleccionado" (ngModelChange)="CambioProducto()" optionLabel="PRO_NOMBRE" [filter]="true" filterBy="PRO_NOMBRE" [showClear]="true" placeholder="Seleccione Producto">
+                <ng-template pTemplate="selectedItem">
+                        <div>{{ productoSeleccionado.PRO_NOMBRE }}</div>
+                </ng-template>
+                <ng-template let-product pTemplate="item">
+                        <div>{{ product.PRO_NOMBRE }}</div>
 
+                </ng-template>
+            </p-dropdown>
         </div>
         <div>
             <label >Precio Und:</label>
-            <input type="number" pInputText  matInput autocomplete="off">
+            <input type="number"  [(ngModel)]="ProductoComprado.PRO_PRECIO_COMPRA" (change)="CalcularTotalProducto(ProductoComprado)" pInputText  matInput autocomplete="off">
 
         </div>
         <div>
             <label >Cantidad:</label>
-            <input type="number" pInputText matInput autocomplete="off">
+            <input type="number" pInputText matInput autocomplete="off" 
+            [(ngModel)]="ProductoComprado.COM_CANTIDAD"
+            (change)="CalcularTotalProducto(ProductoComprado)">
 
         </div>
         <div>
-            <label for="COM_PROVEEDOR">Precio Total:</label>
-            <input type="number" pInputText matInput autocomplete="off">
+            <label >Precio Total:</label>
+            <input type="number" pInputText matInput autocomplete="off" 
+            [(ngModel)]="ProductoComprado.PRO_PRECIO_TOTAL"
+            readonly>
 
         </div>
         <div>
-            <p-button label="Agregar" icon="pi pi-search"></p-button>
+            <p-button label="Agregar" icon="pi pi-search" (onClick)="AgregarProducto()"></p-button>
         </div>
+        <p-card>
+            <p-table [value]="ListaProductosComprados" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Codigo</th>
+                        <th>Nombre</th>
+                        <th>Cantidad</th>
+                        <th>Precio Und</th>
+                        <th>Precio Total</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td>{{ product.PRO_CODIGO }}</td>
+                        <td>{{ product.PRO_NOMBRE }}</td>
+                        <td>{{ product.COM_CANTIDAD }}</td>
+                        <td>{{ product.PRO_PRECIO_COMPRA }}</td>
+                        <td>{{ product.PRO_PRECIO_TOTAL  }}</td>
+                        <td>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-card>
     </div>
 </div>
