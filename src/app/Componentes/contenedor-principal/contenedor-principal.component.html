@@ -1,56 +1,55 @@
 <div class="container">
-  <div class="sidebar" [ngClass]="{ collapsed: isCollapsed }">
-    <button class="toggle-button" (click)="toggleSidebar()">
-      <i class="pi pi-align-justify" style="font-size: 0.5rem"*ngIf="isCollapsed"></i>
-      <i class="pi pi-align-justify"style="font-size: 1.3rem"  *ngIf="!isCollapsed"></i>
-    </button>
+  <aside class="sidebar" [ngClass]="{ collapsed: isCollapsed }">
+    <div class="toggle-button-wrapper">
+      <button class="toggle-button" (click)="toggleSidebar()">
+        <i class="pi pi-align-justify" [ngStyle]="{ 'font-size': isCollapsed ? '0.5rem' : '1.3rem' }"></i>
+      </button>
+    </div>
     <div class="container-image">
-      <img src="../../assets/Imagenes/BUGGAFITLOGO.png" />
-     <!-- <p style="color: white " [class.hide-text]="isCollapsed">Administrar</p>  -->
+      <img src="../../assets/Imagenes/BUGGAFITLOGO.png" alt="Logo" />
     </div>
-    <div class="main-content" [ngClass]="{ collapsed: isCollapsed }">
-      <ul class="menu">
-        <li>
-          <a [routerLink]="['/principal/ventas']"
-            ><i class="pi pi-shopping-bag"></i
-            ><span class="menu-text">Ventas</span></a
-          >
-        </li>
-        <li>
-          <a [routerLink]="['/principal/inventario']"
-            ><i class="pi pi-list"></i
-            ><span class="menu-text">Inventario</span></a
-          >
-        </li>
-        <li>
-          <a [routerLink]="['/principal/estadisticas']"
-            ><i class="pi pi-chart-pie"></i
-            ><span class="menu-text">DashBoard</span></a
-          >
-        </li>
-        <li>
-          <a [routerLink]="['/principal/compras']"
-            ><i class="pi pi-shopping-cart"></i
-            ><span class="menu-text">Compras</span></a
-          >
-        </li>
-        <li>
-          <a [routerLink]="['/principal/compras']"
-            ><i class="pi pi-file"></i><span class="menu-text">Reporte</span></a
-          >
-        </li>
-      </ul>
-      <ul class="menu">
-        <li>
-          <a href="#"
-            ><i class="pi pi-sign-out"></i
-            ><span class="menu-text">Cerrar</span></a
-          >
-        </li>
-      </ul>
-    </div>
-  </div>
-  <div class="Container-table">
+    <ul class="menu">
+      <li>
+        <a [routerLink]="['/principal/ventas']" routerLinkActive="active">
+          <i class="pi pi-shopping-bag"></i>
+          <span class="menu-text">Ventas</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/principal/inventario']" routerLinkActive="active">
+          <i class="pi pi-list"></i>
+          <span class="menu-text">Inventario</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/principal/estadisticas']"routerLinkActive="active">
+          <i class="pi pi-chart-pie"></i>
+          <span class="menu-text">Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/principal/compras']"routerLinkActive="active">
+          <i class="pi pi-shopping-cart"></i>
+          <span class="menu-text">Compras</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/principal/reportes']"routerLinkActive="active">
+          <i class="pi pi-file"></i>
+          <span class="menu-text">Reporte</span>
+        </a>
+      </li>
+    </ul>
+    <ul class="menu bottom-menu">
+      <li class="bottom-item">
+        <a href="#">
+          <i class="pi pi-sign-out"></i>
+          <span class="menu-text">Cerrar</span>
+        </a>
+      </li>
+    </ul>
+  </aside>
+  <div class="container-table">
     <router-outlet></router-outlet>
   </div>
 </div>

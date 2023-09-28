@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import {MenuItem, PrimeIcons} from 'primeng/api';
 
 @Component({
   selector: 'app-contenedor-principal',
@@ -7,11 +6,13 @@ import {MenuItem, PrimeIcons} from 'primeng/api';
   styleUrls: ['./contenedor-principal.component.scss']
 })
 export class ContenedorPrincipalComponent {
-  isCollapsed = false; // Inicialmente la barra no está colapsada
-
+  isCollapsed = false;
+  selectedLink = '';
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
   }
+  selectLink(linkName: string) {
+    this.selectedLink = linkName;
+  }
 
-  
 }
