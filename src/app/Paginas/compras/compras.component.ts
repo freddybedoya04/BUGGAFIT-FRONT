@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { DialogService } from 'primeng/dynamicdialog';
 import { Icompras } from 'src/app/Interfaces/icompra';
 import { IFiltro } from 'src/app/Interfaces/ifiltro';
+import { CreacionCompraComponent } from 'src/app/Modales/creacion-compra/creacion-compra.component';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { ComprasService } from 'src/app/Servicios/compras.service';
 
@@ -15,20 +17,28 @@ export class ComprasComponent implements OnInit {
   FechaFin: Date;
   compras: Icompras[] = [];
   public searchKeyword: string = '';
-  filtro:IFiltro;
-  constructor(private alertas: AlertasService,private _comprasService:ComprasService) {
+  filtro: IFiltro;
+  constructor(private alertas: AlertasService, private _comprasService: ComprasService, public dialogService: DialogService) {
     this.FechaInicio = new Date();
     this.FechaFin = new Date();
-    this.filtro={
-      FechaFin:"",
-      FechaInicio:""
+    this.filtro = {
+      FechaFin: "",
+      FechaInicio: ""
     }
   }
   ngOnInit(): void {
-    this.alertas.SetToast("inicio",1);
+    this.alertas.SetToast("inicio", 1);
     this.llenadocompras();
   }
-
+  AbrirModalCreacion() {
+    let ref = this.dialogService.open(CreacionCompraComponent, {
+      
+      width: '60%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000,
+      maximizable: true
+    })
+  }
 
   llenadocompras() {
     this.compras = [
@@ -87,21 +97,21 @@ export class ComprasComponent implements OnInit {
     ]
   }
 
-  BuscarComprasPorFechas(){
+  BuscarComprasPorFechas() {
     this.ArmarFiltro();
     this.alertas.showLoading("Buscando compras...")
-    this._comprasService.BuscarComprarPorFechas(this.filtro).subscribe(result=>{
+    this._comprasService.BuscarComprarPorFechas(this.filtro).subscribe(result => {
       this.alertas.hideLoading();
-      this.alertas.SetToast("Se encontraron "+result.length+" compras",1)
-      this.compras=result;
-    },err=>{
+      this.alertas.SetToast("Se encontraron " + result.length + " compras", 1)
+      this.compras = result;
+    }, err => {
       this.alertas.hideLoading();
-      this.alertas.SetToast(err,3);
+      this.alertas.SetToast(err, 3);
     })
   }
-  ArmarFiltro(){
-    this.filtro.FechaFin=this.FechaFin.toISOString();
-    this.filtro.FechaInicio=this.FechaInicio.toISOString();
+  ArmarFiltro() {
+    this.filtro.FechaFin = this.FechaFin.toISOString();
+    this.filtro.FechaInicio = this.FechaInicio.toISOString();
   }
 
   exportExcel() {

@@ -20,3 +20,12 @@ body{
     min-height: 100%;
     background-color: #eff3f8;
 }
+
+.p-datatable .p-datatable-tbody tr > td {
+  text-align: center !important;
+  font-family: 'Poppins', sans-serif;
+}
+.p-datatable .p-datatable-thead > tr > th  {
+  text-align: center !important;
+  font-family: 'Poppins', sans-serif;
+}

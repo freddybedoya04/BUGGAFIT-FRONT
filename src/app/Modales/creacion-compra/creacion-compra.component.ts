@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Iproducto } from 'src/app/Interfaces/iproducto';
 import { IproductoComprado } from 'src/app/Interfaces/iproducto-comprado';
+import { AlertasService } from 'src/app/Servicios/alertas.service';
 
 @Component({
   selector: 'app-creacion-compra',
@@ -14,14 +15,14 @@ export class CreacionCompraComponent implements OnInit {
   productoSeleccionado: Iproducto; 
   ProductoComprado:IproductoComprado;
   ListaProductosComprados:IproductoComprado[]=[]
-  constructor(private fb: FormBuilder) {
+  TotalComprado:number;
+  constructor(private fb: FormBuilder,private alerta:AlertasService) {
     this.formularioCompra = fb.group({
       COM_FechaCompra: [null, Validators.required],
       COM_PROVEEDOR: [null, Validators.required],
       TIC_CODIGO: [null, Validators.required],
       COM_ENBODEGA: [false], // Puedes establecer un valor predeterminado
       COM_CREDITO: [false], // Puedes establecer un valor predeterminado
-      COM_VALORCOMPRA: [null, [Validators.required, Validators.min(0)]]
     })
 
     this.productoSeleccionado = {
@@ -46,6 +47,7 @@ export class CreacionCompraComponent implements OnInit {
       COM_CANTIDAD: 1,
       PRO_PRECIO_TOTAL: 0,
     }
+    this.TotalComprado=0;
   }
   ngOnInit(): void {
     this.productos = [
@@ -112,10 +114,30 @@ export class CreacionCompraComponent implements OnInit {
 
   }
   AgregarProducto(){
-    
+    if(this.productoSeleccionado.PRO_CODIGO==""){
+      this.alerta.SetToast("Debe Seleccionar un producto.",2)
+      return;
+    }
+    if(this.ListaProductosComprados.findIndex(x=>x.PRO_CODIGO==this.productoSeleccionado.PRO_CODIGO)!=-1){
+      this.alerta.SetToast("Ya agrego este producto.",2)
+      return;
+    }
     this.ListaProductosComprados.push(this.ProductoComprado)
+    this.alerta.SetToast("Se agrego producto a la lista de compra",1);
+    this.CalcularTotalComprado();
   }
-
+  EliminarProducto(Producto:IproductoComprado){
+    debugger;
+    let index =this.ListaProductosComprados.findIndex(x=>x.PRO_CODIGO==Producto.PRO_CODIGO);
+    this.ListaProductosComprados.splice(index,1);
+    this.alerta.SetToast("Se elimino producto de la lista de compra",1);
+    this.CalcularTotalComprado();
+  }
+  CalcularTotalComprado(){
+    this.TotalComprado=this.ListaProductosComprados.reduce((anterior,actual)=>{
+      return anterior+actual.PRO_PRECIO_TOTAL;
+    },0)
+  }
 
 
 }

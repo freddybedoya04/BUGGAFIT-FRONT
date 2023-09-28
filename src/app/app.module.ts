@@ -7,6 +7,7 @@ import { LoginComponent } from './Componentes/login/login.component';
 import { SharedModule } from './Shared/shared/shared.module';
 import { MessageService,  } from 'primeng/api';
 import { HttpClientModule } from '@angular/common/http';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
     SharedModule,
     HttpClientModule
   ],
-  providers: [MessageService],
+  providers: [MessageService,DialogService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -13,6 +13,7 @@ import { ToastModule } from 'primeng/toast';
 import { InputNumberModule } from 'primeng/inputnumber';
 import {DropdownModule} from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 @NgModule({
   declarations: [LoadingComponent],
   imports: [
@@ -26,7 +27,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     ReactiveFormsModule,
     InputNumberModule,
     DropdownModule,
-    CheckboxModule
+    CheckboxModule,
+    DynamicDialogModule
 
   ],
   exports:[
@@ -41,7 +43,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     ReactiveFormsModule,
     InputNumberModule,
     DropdownModule,
-    CheckboxModule
+    CheckboxModule,
+    DynamicDialogModule
   ]
 })
 export class SharedModule { }

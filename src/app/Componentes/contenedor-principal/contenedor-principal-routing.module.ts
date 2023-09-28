@@ -19,8 +19,7 @@ const routes: Routes = [
     {path:'reportes',component:ReportesComponent},
     {path:'inventario',component:InventarioComponent},
     {path:'estadisticas',component:EstadisticasComponent},
-    {path:'usuarios',component:UsuariosComponent},
-    {path:'Nuevacompra',component:CreacionCompraComponent},
+    {path:'usuarios',component:UsuariosComponent}
   ]}
 
 
