@@ -7,6 +7,7 @@ export interface Icompras {
     COM_VALORCOMPRA: number;
     COM_PROVEEDOR: string;
     TIC_CODIGO: number;
+    TIC_NOMBRE?:string;
     COM_FECHAACTUALIZACION: Date;
     COM_ENBODEGA: boolean;
     COM_ESTADO: boolean;

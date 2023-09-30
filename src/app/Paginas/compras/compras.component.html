@@ -29,7 +29,7 @@
         styleClass="p-datatable-sm"
         currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} compras"
         [rowsPerPageOptions]="[5, 10, 50]"
-        [globalFilterFields]="['COM_CODIGO']"
+        [globalFilterFields]="['COM_CODIGO','TIC_NOMBRE']"
         class="custom-table"
         >
             <ng-template pTemplate="caption">
@@ -50,15 +50,12 @@
               <tr>
                 <th pSortableColumn="COM_CODIGO" style="width:20%">Code <p-sortIcon field="COM_CODIGO"></p-sortIcon></th>
                 <!-- <th>Fecha Creación</th> -->
-                <th>Fecha Compra</th>
-                <th>Valor Compra</th>
-                <th>Proveedor</th>
-                <th>Tipo Cuenta</th>
-                <!-- <th>Fecha Actualización</th> -->
-                <th>En Bodega</th>
-                <th>Estado</th>
-                <th>Crédito</th>
-                <!-- <th>Cédula Usuario</th> -->
+                <th pSortableColumn="COM_FECHACOMPRA" style="width:20%">Fecha Compra <p-sortIcon field="COM_FECHACOMPRA"></p-sortIcon></th>
+                <th pSortableColumn="COM_VALORCOMPRA" style="width:20%">Valor Compra <p-sortIcon field="COM_VALORCOMPRA"></p-sortIcon></th>
+                <th pSortableColumn="COM_PROVEEDOR" style="width:20%">Proveedor <p-sortIcon field="COM_PROVEEDOR"></p-sortIcon></th>
+                <th pSortableColumn="TIC_NOMBRE" style="width:20%">Tipo Cuenta <p-sortIcon field="TIC_NOMBRE"></p-sortIcon></th>
+                <th pSortableColumn="COM_ENBODEGA"  style="min-width:200px">En Bodega <p-sortIcon field="COM_ENBODEGA"></p-sortIcon></th>
+                <th pSortableColumn="COM_CREDITO"  style="min-width:200px">Crédito <p-sortIcon field="COM_CREDITO"></p-sortIcon></th>
                 <th style="min-width:200px" alignFrozen="right" pFrozenColumn>Acciones</th>
               </tr>
             </ng-template>
@@ -67,13 +64,18 @@
                 <td >{{ compra.COM_CODIGO }}</td>
                 <!-- <td>{{ compra.COM_FECHACREACION | date: 'yyyy-MM-dd' }}</td> -->
                 <td>{{ compra.COM_FECHACOMPRA | date: 'yyyy-MM-dd' }}</td>
-                <td>{{ compra.COM_VALORCOMPRA }}</td>
+                <td>{{ compra.COM_VALORCOMPRA |number }}</td>
                 <td>{{ compra.COM_PROVEEDOR }}</td>
-                <td>{{ compra.TIC_CODIGO }}</td>
+                <td>{{ compra.TIC_NOMBRE }}</td>
                 <!-- <td>{{ compra.COM_FECHAACTUALIZACION | date: 'yyyy-MM-dd' }}</td> -->
-                <td>{{ compra.COM_ENBODEGA }}</td>
-                <td>{{ compra.COM_ESTADO }}</td>
-                <td>{{ compra.COM_CREDITO }}</td>
+                <td>
+                    <p-tag [value]="compra.COM_ENBODEGA ? 'SI':'NO'" [severity]="getSeverity(true,compra.COM_ENBODEGA)"></p-tag>
+                    
+                </td>
+                <!-- <td>{{ compra.COM_ESTADO }}</td> -->
+                <td>
+                    <p-tag [value]="compra.COM_CREDITO ? 'SI':'NO'" [severity]="getSeverity(false,compra.COM_CREDITO)"></p-tag>
+                </td>
                 <!-- <td>{{ compra.USU_CEDULA }}</td> -->
                 <td class="Acciones">
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" ></button>

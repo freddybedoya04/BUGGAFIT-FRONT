@@ -19,8 +19,8 @@ export class ComprasComponent implements OnInit {
   public searchKeyword: string = '';
   filtro: IFiltro;
   constructor(private alertas: AlertasService, private _comprasService: ComprasService, public dialogService: DialogService) {
-    this.FechaFin=new Date();
-    this.FechaInicio=new Date();
+    this.FechaFin = new Date();
+    this.FechaInicio = new Date();
     this.filtro = {
       FechaFin: "",
       FechaInicio: ""
@@ -29,24 +29,25 @@ export class ComprasComponent implements OnInit {
   ngOnInit(): void {
     this.ConfigurarFechas();
   }
-  ConfigurarFechas(){
-    this.FechaFin=new Date();
-    this.FechaInicio=new Date(this.FechaFin)
+  ConfigurarFechas() {
+    this.FechaFin = new Date();
+    this.FechaInicio = new Date(this.FechaFin)
     this.FechaInicio.setDate(this.FechaInicio.getDate() - 7);
   }
   AbrirModalCreacion() {
     let ref = this.dialogService.open(CreacionCompraComponent, {
-      header:'Nueva Compra',    
+      header: 'Nueva Compra',
       width: '60%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
       maximizable: true
     })
 
-    ref.onClose.subscribe(() => {
-      this.FechaFin=new Date(Date.now());
+    ref.onClose.subscribe((res) => {
+      debugger;
+      this.FechaFin = new Date(Date.now());
       this.BuscarComprasPorFechas();
-  });
+    });
   }
 
   BuscarComprasPorFechas() {
@@ -64,6 +65,23 @@ export class ComprasComponent implements OnInit {
   ArmarFiltro() {
     this.filtro.FechaFin = this.FechaFin.toISOString();
     this.filtro.FechaInicio = this.FechaInicio.toISOString();
+  }
+  getSeverity(bodega: boolean, estado: boolean) {
+    if (bodega) {
+      switch (estado) {
+        case true:
+          return 'success';
+        case false:
+          return 'danger';
+      }
+    }
+    switch (estado) {
+      case true:
+        return 'danger';
+      case false:
+        return 'success';
+    }
+
   }
 
   exportExcel() {
