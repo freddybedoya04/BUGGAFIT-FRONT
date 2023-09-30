@@ -1,7 +1,7 @@
 <div class="contenedorPricipal">
     <div class="cabecera" >
         <img src="../../../assets/Imagenes/BUGGAFITLOGO.png" alt="">
-        <h1> Nueva Compra</h1>
+        <!-- <h1> Nueva Compra</h1> -->
     </div>
     <form [formGroup]="formularioCompra">
         <div>
@@ -18,8 +18,8 @@
             <input type="text" pInputText formControlName="TIC_CODIGO">
         </div>
         <div style="align-items: flex-start;margin-top: 20px;">
-            <p-checkbox name="groupname" value="val1" label="En bodega" formControlName="COM_ENBODEGA"></p-checkbox>
-            <p-checkbox name="groupname" value="val1" label="Deuda" formControlName="COM_CREDITO"></p-checkbox>
+            <p-checkbox name="" [value]="Bodega" label="En bodega" formControlName="COM_ENBODEGA"></p-checkbox>
+            <p-checkbox name="" [value]="Credito" label="Deuda" formControlName="COM_CREDITO"></p-checkbox>
         </div>
     </form>
     <div class="Productos">
@@ -37,29 +37,32 @@
         </div>
         <div>
             <label >Precio Und:</label>
-            <input type="number"  [(ngModel)]="ProductoComprado.PRO_PRECIO_COMPRA" (change)="CalcularTotalProducto(ProductoComprado)" pInputText  matInput autocomplete="off">
+            <input type="number"  [(ngModel)]="ProductoComprado.DEC_PRECIOCOMPRA_PRODUCTO" (change)="CalcularTotalProducto(ProductoComprado)" pInputText  matInput autocomplete="off">
 
         </div>
         <div>
             <label >Cantidad:</label>
             <input type="number" pInputText matInput autocomplete="off" 
-            [(ngModel)]="ProductoComprado.COM_CANTIDAD"
+            [(ngModel)]="ProductoComprado.DEC_UNIDADES"
             (change)="CalcularTotalProducto(ProductoComprado)">
 
         </div>
         <div>
             <label >Precio Total:</label>
             <input type="number" pInputText matInput autocomplete="off" 
-            [(ngModel)]="ProductoComprado.PRO_PRECIO_TOTAL"
+            [(ngModel)]="ProductoComprado.DEC_PRECIOTOTAL"
             readonly>
 
         </div>
         <div>
-            <p-button label="Agregar" icon="pi pi-search" (onClick)="AgregarProducto()"></p-button>
+            <p-button label="Agregar" icon="pi pi-plus" (onClick)="AgregarProducto()"></p-button>
         </div>
 
     </div>
     <p-card   [header]="'total:'+TotalComprado" [style]="{margin:'20px',padding:'20px'}" styleClass="shadow-5">
+        <div>
+            <p-button label="Crear Compra" icon="pi pi-plus" (onClick)="ValidacionCompra()"></p-button>
+        </div>
         <p-table [value]="ListaProductosComprados" [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-sm">
             <ng-template pTemplate="header">
                 <tr>
@@ -75,9 +78,9 @@
                 <tr>
                     <td>{{ product.PRO_CODIGO }}</td>
                     <td>{{ product.PRO_NOMBRE }}</td>
-                    <td>{{ product.COM_CANTIDAD }}</td>
-                    <td>{{ product.PRO_PRECIO_COMPRA }}</td>
-                    <td>{{ product.PRO_PRECIO_TOTAL  }}</td>
+                    <td>{{ product.DEC_UNIDADES }}</td>
+                    <td>{{ product.DEC_PRECIOCOMPRA_PRODUCTO }}</td>
+                    <td>{{ product.DEC_PRECIOTOTAL  }}</td>
                     <td>
                         <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="EliminarProducto(product)"></button>
                     </td>

@@ -1,3 +1,5 @@
+import { IdetalleCompra } from "./iproducto-comprado";
+
 export interface Icompras {
     COM_CODIGO: number;
     COM_FECHACREACION: Date;
@@ -10,5 +12,6 @@ export interface Icompras {
     COM_ESTADO: boolean;
     COM_CREDITO: boolean;
     USU_CEDULA: string;
+    DetalleCompras?:IdetalleCompra[];
   }
   

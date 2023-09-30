@@ -19,82 +19,34 @@ export class ComprasComponent implements OnInit {
   public searchKeyword: string = '';
   filtro: IFiltro;
   constructor(private alertas: AlertasService, private _comprasService: ComprasService, public dialogService: DialogService) {
-    this.FechaInicio = new Date();
-    this.FechaFin = new Date();
+    this.FechaFin=new Date();
+    this.FechaInicio=new Date();
     this.filtro = {
       FechaFin: "",
       FechaInicio: ""
     }
   }
   ngOnInit(): void {
-    this.alertas.SetToast("inicio", 1);
-    this.llenadocompras();
+    this.ConfigurarFechas();
+  }
+  ConfigurarFechas(){
+    this.FechaFin=new Date();
+    this.FechaInicio=new Date(this.FechaFin)
+    this.FechaInicio.setDate(this.FechaInicio.getDate() - 7);
   }
   AbrirModalCreacion() {
     let ref = this.dialogService.open(CreacionCompraComponent, {
-      
+      header:'Nueva Compra',    
       width: '60%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
       maximizable: true
     })
-  }
 
-  llenadocompras() {
-    this.compras = [
-
-      {
-        COM_CODIGO: 1,
-        COM_FECHACREACION: new Date(),
-        COM_FECHACOMPRA: new Date(),
-        COM_VALORCOMPRA: 100.0,
-        COM_PROVEEDOR: 'Proveedor 1',
-        TIC_CODIGO: 1,
-        COM_FECHAACTUALIZACION: new Date(),
-        COM_ENBODEGA: true,
-        COM_ESTADO: true,
-        COM_CREDITO: false,
-        USU_CEDULA: '12345',
-      }, {
-        COM_CODIGO: 2,
-        COM_FECHACREACION: new Date(),
-        COM_FECHACOMPRA: new Date(),
-        COM_VALORCOMPRA: 200.0,
-        COM_PROVEEDOR: 'Proveedor 2',
-        TIC_CODIGO: 2,
-        COM_FECHAACTUALIZACION: new Date(),
-        COM_ENBODEGA: false,
-        COM_ESTADO: true,
-        COM_CREDITO: true,
-        USU_CEDULA: '67890',
-      },
-      {
-        COM_CODIGO: 3,
-        COM_FECHACREACION: new Date(),
-        COM_FECHACOMPRA: new Date(),
-        COM_VALORCOMPRA: 200.0,
-        COM_PROVEEDOR: 'Proveedor 2',
-        TIC_CODIGO: 1,
-        COM_FECHAACTUALIZACION: new Date(),
-        COM_ENBODEGA: false,
-        COM_ESTADO: true,
-        COM_CREDITO: true,
-        USU_CEDULA: '67890',
-      },
-      {
-        COM_CODIGO: 4,
-        COM_FECHACREACION: new Date(),
-        COM_FECHACOMPRA: new Date(),
-        COM_VALORCOMPRA: 200.0,
-        COM_PROVEEDOR: 'Proveedor 2',
-        TIC_CODIGO: 2,
-        COM_FECHAACTUALIZACION: new Date(),
-        COM_ENBODEGA: false,
-        COM_ESTADO: true,
-        COM_CREDITO: true,
-        USU_CEDULA: '67890',
-      },
-    ]
+    ref.onClose.subscribe(() => {
+      this.FechaFin=new Date(Date.now());
+      this.BuscarComprasPorFechas();
+  });
   }
 
   BuscarComprasPorFechas() {

@@ -1,7 +1,7 @@
-export interface IproductoComprado {
+export interface IdetalleCompra {
     PRO_CODIGO: string,
     PRO_NOMBRE: string,
-    PRO_PRECIO_COMPRA: number,
-    COM_CANTIDAD: number,
-    PRO_PRECIO_TOTAL: number,
+    DEC_PRECIOCOMPRA_PRODUCTO: number,
+    DEC_UNIDADES: number,
+    DEC_PRECIOTOTAL: number,
 }
