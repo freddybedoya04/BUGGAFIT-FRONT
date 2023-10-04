@@ -1,1 +1,24 @@
-<p>reportes works!</p>
+<div class="contenedorPricipal">
+    <h1>Reportes</h1>
+    <div class="Filtro">
+            <p>
+                <label >Filtro:</label>
+                <p-dropdown [options]="items" [(ngModel)]="activeItem" optionLabel="label"></p-dropdown>
+            </p>
+            <p>
+                <label >Fecha Inicio:</label>
+                <p-calendar [(ngModel)]="FechaInicio" name="FechaInicio" [showTime]="true" hourFormat="12"
+                    [showIcon]="true"></p-calendar>
+            </p>
+            <p>
+                <label>Fecha Fin:</label>
+                <p-calendar [(ngModel)]="FechaFin" name="FechaFin" [showTime]="true" hourFormat="12"
+                    [showIcon]="true"></p-calendar>
+            </p>
+            <p >
+                <p-button label="Buscar" icon="pi pi-search" style="margin-top: 20px;" ></p-button>
+            </p>
+
+       
+    </div>
+</div>
