@@ -15,6 +15,7 @@ import {DropdownModule} from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { Tag, TagModule } from 'primeng/tag';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @NgModule({
   declarations: [LoadingComponent],
   imports: [
@@ -30,7 +31,8 @@ import { Tag, TagModule } from 'primeng/tag';
     DropdownModule,
     CheckboxModule,
     DynamicDialogModule,
-    TagModule
+    TagModule,
+    ConfirmDialogModule
 
   ],
   exports:[
@@ -47,7 +49,8 @@ import { Tag, TagModule } from 'primeng/tag';
     DropdownModule,
     CheckboxModule,
     DynamicDialogModule,
-    TagModule
+    TagModule,
+    ConfirmDialogModule
   ]
 })
 export class SharedModule { }

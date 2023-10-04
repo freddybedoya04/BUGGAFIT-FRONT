@@ -39,10 +39,26 @@ export class ComprasComponent implements OnInit {
       header: 'Nueva Compra',
       width: '60%',
       contentStyle: { overflow: 'auto' },
-      baseZIndex: 10000,
-      maximizable: true
+      baseZIndex: 100,
+      maximizable: true,
+      data:{esEdicion:false}
     })
 
+    ref.onClose.subscribe((res) => {
+      debugger;
+      this.FechaFin = new Date(Date.now());
+      this.BuscarComprasPorFechas();
+    });
+  }
+  AbrirModalActualizar(compra:Icompras) {
+    let ref = this.dialogService.open(CreacionCompraComponent, {
+      header: 'Compra #'+compra.COM_CODIGO,
+      width: '60%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 100,
+      maximizable: true,
+      data:{nuevacompra:compra,esEdicion:true}
+    })
     ref.onClose.subscribe((res) => {
       debugger;
       this.FechaFin = new Date(Date.now());
@@ -66,6 +82,24 @@ export class ComprasComponent implements OnInit {
     this.filtro.FechaFin = this.FechaFin.toISOString();
     this.filtro.FechaInicio = this.FechaInicio.toISOString();
   }
+
+  EliminarCompra(compra:Icompras){
+    debugger
+    this.alertas.confirmacion("Esta seguro de eliminar la compra # "+compra.COM_CODIGO+"?").then(result=>{
+      if(result){
+        this.alertas.showLoading("Eliminano compra")
+        this._comprasService.EliminarCompra(compra).subscribe(x=>{
+          this.alertas.hideLoading();
+          this.alertas.SetToast("Se elimino Corretamente",1)
+          this.BuscarComprasPorFechas();
+        },err=>{
+          this.alertas.hideLoading();
+          this.alertas.SetToast(err,3)
+        })
+      }
+    })
+  }
+
   getSeverity(bodega: boolean, estado: boolean) {
     if (bodega) {
       switch (estado) {

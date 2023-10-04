@@ -21,7 +21,7 @@ export class ComprasService {
     return this.http.delete(this.url+compra.COM_CODIGO);
   }
   ActualizarCompra(compra:Icompras):Observable<any>{
-    return this.http.put(this.url+'CrearCompra',compra);
+    return this.http.put(this.url+'ActualizarCompra',compra);
   }
   BuscarComprarPorFechas(filtro:IFiltro):Observable<Icompras[]>{
     return this.http.post(this.url+'ListarComprasPorFecha',filtro);

@@ -1,3 +1,4 @@
 <p-toast></p-toast>
+<p-confirmDialog [style]="{width: '25vw'}" position="bottom" rejectButtonStyleClass="p-button-outlined" rejectLabel="NO" acceptLabel="SI"></p-confirmDialog>
 <app-loading *ngIf="alerta.loading | async "  [mensaje]="alerta.message | async"></app-loading>
 <router-outlet> </router-outlet> 

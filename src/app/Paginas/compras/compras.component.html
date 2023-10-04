@@ -78,8 +78,8 @@
                 </td>
                 <!-- <td>{{ compra.USU_CEDULA }}</td> -->
                 <td class="Acciones">
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" ></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="AbrirModalActualizar(compra)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="EliminarCompra(compra)"></button>
                 </td>
               </tr>
             </ng-template>

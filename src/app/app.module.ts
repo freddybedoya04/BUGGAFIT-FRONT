@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './Componentes/login/login.component';
 import { SharedModule } from './Shared/shared/shared.module';
-import { MessageService,  } from 'primeng/api';
+import { ConfirmationService, MessageService,  } from 'primeng/api';
 import { HttpClientModule } from '@angular/common/http';
 import { DialogService } from 'primeng/dynamicdialog';
 
@@ -23,7 +23,7 @@ import { DialogService } from 'primeng/dynamicdialog';
     SharedModule,
     HttpClientModule
   ],
-  providers: [MessageService,DialogService],
+  providers: [MessageService,DialogService,ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

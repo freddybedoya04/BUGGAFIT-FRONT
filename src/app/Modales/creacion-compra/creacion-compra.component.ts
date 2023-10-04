@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { combineLatest } from 'rxjs';
 import { Icompras } from 'src/app/Interfaces/icompra';
 import { Iproducto } from 'src/app/Interfaces/iproducto';
@@ -23,14 +23,18 @@ export class CreacionCompraComponent implements OnInit {
   Bodega: boolean;
   Credito: boolean;
   FechaActual: Date;
-  constructor(private fb: FormBuilder, private alerta: AlertasService, private comprasService: ComprasService, public ref: DynamicDialogRef) {
+  @Input() EsEdicion: boolean;
+  @Input() Compra: Icompras;
+  constructor(private fb: FormBuilder, private alerta: AlertasService,
+    private comprasService: ComprasService, public ref: DynamicDialogRef,
+    public config: DynamicDialogConfig) {
     this.FechaActual = new Date(Date.now());
     this.formularioCompra = fb.group({
       COM_FechaCompra: [this.FechaActual, Validators.required],
       COM_PROVEEDOR: [null, Validators.required],
       TIC_CODIGO: [null, Validators.required],
-      COM_ENBODEGA: [false], // Puedes establecer un valor predeterminado
-      COM_CREDITO: [false], // Puedes establecer un valor predeterminado
+      // COM_ENBODEGA: [false], // Puedes establecer un valor predeterminado
+      // COM_CREDITO: [false], // Puedes establecer un valor predeterminado
     })
 
     this.productoSeleccionado = {
@@ -49,17 +53,48 @@ export class CreacionCompraComponent implements OnInit {
       COM_CANTIDAD: 0
     };
     this.ProductoComprado = {
+      DEC_CODIGO: 0,
       PRO_CODIGO: '',
       PRO_NOMBRE: '',
       DEC_PRECIOCOMPRA_PRODUCTO: 1,
       DEC_UNIDADES: 1,
       DEC_PRECIOTOTAL: 0,
+      DEC_ESTADO: true
     }
+    this.Compra = {
+      "COM_CODIGO": 0,
+      "COM_FECHACREACION": new Date(),
+      "COM_FECHACOMPRA": new Date(),
+      "COM_VALORCOMPRA": 0,
+      "COM_PROVEEDOR": "",
+      "TIC_CODIGO": 0,
+      "TIC_NOMBRE": "",
+      "COM_FECHAACTUALIZACION": new Date(),
+      "COM_ENBODEGA": false,
+      "COM_ESTADO": false,
+      "COM_CREDITO": false,
+      "USU_CEDULA": "",
+      "DetalleCompras": []
+    }
+
+
     this.TotalComprado = 0;
     this.Bodega = false;
     this.Credito = false;
+    this.EsEdicion = false;
   }
   ngOnInit(): void {
+    this.LlenadoProductos();
+    debugger;
+    this.EsEdicion = this.config.data.esEdicion;
+    if (this.EsEdicion == true) {
+      this.Compra = this.config.data.nuevacompra;
+      this.LlenadoCompra();
+    }
+
+
+  }
+  LlenadoProductos() {
     this.productos = [
       {
         PRO_CODIGO: 'CREA_RX',
@@ -110,11 +145,13 @@ export class CreacionCompraComponent implements OnInit {
   }
   CambioProducto() {
     this.ProductoComprado = {
+      DEC_CODIGO: 0,
       PRO_CODIGO: this.productoSeleccionado.PRO_CODIGO,
       PRO_NOMBRE: this.productoSeleccionado.PRO_NOMBRE,
       DEC_PRECIOCOMPRA_PRODUCTO: this.productoSeleccionado.PRO_PRECIO_COMPRA,
       DEC_UNIDADES: 1,
       DEC_PRECIOTOTAL: this.productoSeleccionado.PRO_PRECIO_COMPRA,
+      DEC_ESTADO: true
     }
   }
   CalcularTotalProducto(Producto: IdetalleCompra) {
@@ -128,10 +165,12 @@ export class CreacionCompraComponent implements OnInit {
       this.alerta.SetToast("Debe Seleccionar un producto.", 2)
       return;
     }
-    if (this.ListaProductosComprados.findIndex(x => x.PRO_CODIGO == this.productoSeleccionado.PRO_CODIGO) != -1) {
+    if (this.ListaProductosComprados.findIndex(x => x.PRO_CODIGO == this.productoSeleccionado.PRO_CODIGO && x.DEC_ESTADO !=false) != -1 ) {
       this.alerta.SetToast("Ya agrego este producto.", 2)
       return;
     }
+    this.ProductoComprado.PRO_CODIGO = this.productoSeleccionado.PRO_CODIGO;
+    this.ProductoComprado.DEC_ESTADO = true;
     this.ListaProductosComprados.push(this.ProductoComprado)
     this.alerta.SetToast("Se agrego producto a la lista de compra", 1);
     this.CalcularTotalComprado();
@@ -139,14 +178,20 @@ export class CreacionCompraComponent implements OnInit {
   }
   EliminarProducto(Producto: IdetalleCompra) {
     debugger;
-    let index = this.ListaProductosComprados.findIndex(x => x.PRO_CODIGO == Producto.PRO_CODIGO);
-    this.ListaProductosComprados.splice(index, 1);
+    if (this.EsEdicion == false) {
+      let index = this.ListaProductosComprados.findIndex(x => x.PRO_CODIGO == Producto.PRO_CODIGO);
+      this.ListaProductosComprados.splice(index, 1);
+
+    } else {
+      Producto.DEC_ESTADO = false;
+    }
     this.alerta.SetToast("Se elimino producto de la lista de compra", 1);
     this.CalcularTotalComprado();
   }
   CalcularTotalComprado() {
     this.TotalComprado = this.ListaProductosComprados.reduce((anterior, actual) => {
-      return anterior + actual.DEC_PRECIOTOTAL;
+
+      return anterior + (actual.DEC_ESTADO == true ? actual.DEC_PRECIOTOTAL : 0);
     }, 0)
   }
   ValidacionCompra() {
@@ -155,7 +200,12 @@ export class CreacionCompraComponent implements OnInit {
         this.alerta.SetToast("Seleccione almenos un producto a comprar.", 2);
         return;
       }
-      this.CrearCompra();
+      if (this.EsEdicion == false) {
+        this.CrearCompra();
+      } else {
+        this.ActualizarCompra();
+      }
+
     } else {
       for (const control in this.formularioCompra.controls) {
         if (this.formularioCompra.controls[control].invalid) {
@@ -172,7 +222,7 @@ export class CreacionCompraComponent implements OnInit {
       const NuevaCompra: Icompras = {
         COM_CODIGO: 0,
         COM_FECHACREACION: new Date(),
-        COM_FECHACOMPRA: this.formularioCompra.get('COM_FechaCompra')?.value.toISOString(),
+        COM_FECHACOMPRA:  new Date (this.formularioCompra.get('COM_FechaCompra')?.value),
         COM_VALORCOMPRA: this.TotalComprado,
         COM_PROVEEDOR: this.formularioCompra.get('COM_PROVEEDOR')?.value,
         TIC_CODIGO: this.formularioCompra.get('TIC_CODIGO')?.value,
@@ -197,10 +247,55 @@ export class CreacionCompraComponent implements OnInit {
     } catch (error) {
       console.error(error)
     }
-
-
   }
 
+  LlenadoCompra() {
+    this.formularioCompra.controls["COM_FechaCompra"].setValue(new Date(this.Compra.COM_FECHACOMPRA));
+    this.formularioCompra.controls["COM_PROVEEDOR"].setValue(this.Compra.COM_PROVEEDOR);
+    this.formularioCompra.controls["TIC_CODIGO"].setValue(this.Compra.TIC_CODIGO);
+    this.Bodega = this.Compra.COM_ENBODEGA;
+    this.Credito = this.Compra.COM_CREDITO;
+    // this.formularioCompra.patchValue({
+    //   COM_ENBODEGA: this.Compra.COM_ENBODEGA,
+    //   COM_CREDITO: this.Compra.COM_CREDITO,
+    // });
+
+    this.TotalComprado = this.Compra.COM_VALORCOMPRA;
+    this.ListaProductosComprados = this.Compra.DetalleCompras!;
+  }
+
+  ActualizarCompra() {
+    debugger;
+    try {
+      const NuevaCompra: Icompras = {
+        COM_CODIGO: this.Compra.COM_CODIGO,
+        COM_FECHACREACION: new Date(),
+        COM_FECHACOMPRA: this.formularioCompra.get('COM_FechaCompra')?.value.toISOString(),
+        COM_VALORCOMPRA: this.TotalComprado,
+        COM_PROVEEDOR: this.formularioCompra.get('COM_PROVEEDOR')?.value,
+        TIC_CODIGO: this.formularioCompra.get('TIC_CODIGO')?.value,
+        COM_FECHAACTUALIZACION: new Date(),
+        COM_ENBODEGA: this.Bodega,
+        COM_ESTADO: true,
+        COM_CREDITO: this.Credito,
+        USU_CEDULA: '9999',
+        DetalleCompras: this.ListaProductosComprados
+      }
+      this.alerta.showLoading("Actualizando compra")
+      this.comprasService.ActualizarCompra(NuevaCompra).subscribe(result => {
+        this.alerta.hideLoading();
+        this.alerta.SetToast('Compra Acualizada', 1);
+        this.CerradoPantalla();
+      }, err => {
+        this.alerta.hideLoading();
+        this.alerta.SetToast(err, 3)
+        console.log(err)
+      });
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
   CerradoPantalla() {
     this.LimpiarPantalla();
     this.ref.close();
@@ -216,6 +311,7 @@ export class CreacionCompraComponent implements OnInit {
   }
   LimpiarProducto() {
     this.ProductoComprado = {
+      DEC_CODIGO: 0,
       PRO_CODIGO: '',
       PRO_NOMBRE: '',
       DEC_PRECIOCOMPRA_PRODUCTO: 1,
@@ -238,5 +334,12 @@ export class CreacionCompraComponent implements OnInit {
       COM_CANTIDAD: 0
     };
   }
-
+  getSeverity(estado: boolean) {
+    switch (estado) {
+      case true:
+        return 'success';
+      case false:
+        return 'danger';
+    }
+  }
 }

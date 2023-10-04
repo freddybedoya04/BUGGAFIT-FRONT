@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Message } from 'primeng/api';
 
 @Injectable({
@@ -9,7 +9,7 @@ import { Message } from 'primeng/api';
 export class AlertasService {
   private isLoading = new BehaviorSubject<boolean>(false);
   private loadingMessage = new BehaviorSubject<string>('Cargando1...'); // Mensaje por defecto
-  constructor(private _message: MessageService) { }
+  constructor(private _message: MessageService,private confirmationService:ConfirmationService) { }
   SetToast(texto: string, tipo: 1 | 2 | 3) {
 
     let asunto;
@@ -29,12 +29,27 @@ export class AlertasService {
       severity: asunto,
       summary: titulo,
       detail: texto,
-      life:6000
+      life: 6000
     };
     this._message.add(toast);
   }
-  showLoading(message?: string) 
-  {
+
+  confirmacion(Mensaje: string): Promise<boolean> {
+    debugger
+    return new Promise<boolean>((resolve, reject) => {
+      this.confirmationService.confirm({
+        message: Mensaje,
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          resolve(true); // Resuelve la promesa con 'true' cuando se acepta.
+        },
+        reject: () => {
+          resolve(false); // Resuelve la promesa con 'false' cuando se rechaza.
+        }
+      });
+    });
+  }
+  showLoading(message?: string) {
     this.isLoading.next(true);
     if (message) {
       this.loadingMessage.next(message);

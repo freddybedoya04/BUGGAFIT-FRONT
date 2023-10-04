@@ -17,11 +17,12 @@
             <label for="TIC_CODIGO">Medio de pago:</label>
             <input type="text" pInputText formControlName="TIC_CODIGO">
         </div>
-        <div style="align-items: flex-start;margin-top: 20px;">
-            <p-checkbox name="" [value]="Bodega" label="En bodega" formControlName="COM_ENBODEGA"></p-checkbox>
-            <p-checkbox name="" [value]="Credito" label="Deuda" formControlName="COM_CREDITO"></p-checkbox>
-        </div>
+
     </form>
+    <div style="align-items: flex-start;margin-top: 20px;">
+        <p-checkbox id="Bodega" [binary]="true" [(ngModel)]="Bodega" label="En bodega" ></p-checkbox>
+        <p-checkbox id="Credito" [binary]="true"[(ngModel)]="Credito" label="Deuda" ></p-checkbox>
+    </div>
     <div class="Productos">
         <div>
             <label>Producto</label>
@@ -61,7 +62,8 @@
     </div>
     <p-card   header="total: ${{TotalComprado | number}}" [style]="{margin:'20px',padding:'20px'}" styleClass="shadow-5">
         <div>
-            <p-button label="Crear Compra" icon="pi pi-plus" (onClick)="ValidacionCompra()"></p-button>
+            <p-button *ngIf="EsEdicion==false" label="Crear Compra" icon="pi pi-plus" (onClick)="ValidacionCompra()"></p-button>
+            <p-button  *ngIf="EsEdicion==true"label="Actualizar Compra" icon="pi pi-plus" (onClick)="ValidacionCompra()"></p-button>
         </div>
         <p-table [value]="ListaProductosComprados" [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-sm">
             <ng-template pTemplate="header">
@@ -71,6 +73,7 @@
                     <th>Cantidad</th>
                     <th>Precio Und</th>
                     <th>Precio Total</th>
+                    <th *ngIf="EsEdicion==true">Eliminado</th>
                     <th>Eliminar</th>
                 </tr>
             </ng-template>
@@ -81,6 +84,9 @@
                     <td>{{ product.DEC_UNIDADES }}</td>
                     <td>{{ product.DEC_PRECIOCOMPRA_PRODUCTO|number }}</td>
                     <td>{{ product.DEC_PRECIOTOTAL|number  }}</td>
+                    <th *ngIf="EsEdicion==true">
+                        <p-tag [value]="product.DEC_ESTADO ? 'NO':'SI'" [severity]="getSeverity(product.DEC_ESTADO)"></p-tag>
+                    </th>
                     <td>
                         <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="EliminarProducto(product)"></button>
                     </td>
