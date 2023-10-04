@@ -19,7 +19,7 @@
         </div>
 
     </form>
-    <div style="align-items: flex-start;margin-top: 20px;">
+    <div style="align-items: flex-start;margin-top: 20px; display: flex;gap: 10px;">
         <p-checkbox id="Bodega" [binary]="true" [(ngModel)]="Bodega" label="En bodega" ></p-checkbox>
         <p-checkbox id="Credito" [binary]="true"[(ngModel)]="Credito" label="Deuda" ></p-checkbox>
     </div>
@@ -65,7 +65,7 @@
             <p-button *ngIf="EsEdicion==false" label="Crear Compra" icon="pi pi-plus" (onClick)="ValidacionCompra()"></p-button>
             <p-button  *ngIf="EsEdicion==true"label="Actualizar Compra" icon="pi pi-plus" (onClick)="ValidacionCompra()"></p-button>
         </div>
-        <p-table [value]="ListaProductosComprados" [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-sm">
+        <p-table [value]="ListaProductosComprados" [tableStyle]="{ 'min-width': '25rem' }" styleClass="p-datatable-sm">
             <ng-template pTemplate="header">
                 <tr>
                     <th>Codigo</th>
