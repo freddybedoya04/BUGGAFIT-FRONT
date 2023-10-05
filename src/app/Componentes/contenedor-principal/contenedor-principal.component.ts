@@ -7,12 +7,7 @@ import { Component } from '@angular/core';
 })
 export class ContenedorPrincipalComponent {
   isCollapsed = false;
-  selectedLink = '';
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
   }
-  selectLink(linkName: string) {
-    this.selectedLink = linkName;
-  }
-
 }

@@ -3,14 +3,7 @@
     justify-content: center;
     align-items: center;
     height: 100%;
-
-    background: #fcb900;
-    /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #111111, #fcb900);
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #111111, #fcb900);
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+     background: #111111;
 }
 
 .login {
@@ -52,7 +45,7 @@
 :host ::ng-deep .p-button:hover {
     background:  #111111;
     /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #111111);
+    background: -webkit-linear-gradient(to right, #fcb900d7);
     /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #111111);
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */

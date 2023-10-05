@@ -61,7 +61,7 @@ body, html {
   font-size: 18px;
   transition: background-color 0.3s, color 0.3s;
   border-radius: 80px;
-  margin-top: 30px;
+  margin-top: 15px;
   width: 100%;
 }
 .menu a:hover {
@@ -145,21 +145,5 @@ body, html {
   overflow-y: auto;
 }
 
-/* Estilos para pantallas medianas (769px a 1024px) */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .container {
-    flex-direction: row;
-  }
-  .sidebar {
-    width: 50px;
-  }
-  .menu a {
-    margin-top: 30px;
-  }
-  .collapsed .menu-text {
-    display: block;
-  }
-  .collapsed .container-image {
-    margin-top: 60px;
-  }
-}
+
+
