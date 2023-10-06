@@ -17,6 +17,7 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { Tag, TagModule } from 'primeng/tag';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
   declarations: [LoadingComponent],
@@ -35,7 +36,8 @@ import { TabMenuModule } from 'primeng/tabmenu';
     DynamicDialogModule,
     TagModule,
     ConfirmDialogModule,
-    TabMenuModule
+    TabMenuModule,
+    TooltipModule
 
   ],
   exports:[
@@ -54,7 +56,8 @@ import { TabMenuModule } from 'primeng/tabmenu';
     DynamicDialogModule,
     TagModule,
     ConfirmDialogModule,
-    TabMenuModule
+    TabMenuModule,
+    TooltipModule
   ]
 })
 export class SharedModule { }

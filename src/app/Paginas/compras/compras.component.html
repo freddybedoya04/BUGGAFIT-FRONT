@@ -2,40 +2,35 @@
     <h1>Compras</h1>
     <div class="Filtro">
 
-            <p>
-                <label >Fecha Inicio:</label>
-                <p-calendar [(ngModel)]="FechaInicio" name="FechaInicio" [showTime]="true" hourFormat="12"
-                    [showIcon]="true"></p-calendar>
-            </p>
-            <p>
-                <label>Fecha Fin:</label>
-                <p-calendar [(ngModel)]="FechaFin" name="FechaFin" [showTime]="true" hourFormat="12"
-                    [showIcon]="true"></p-calendar>
-            </p>
-            <p >
-                <p-button label="Buscar" icon="pi pi-search" style="margin-top: 20px;" (onClick)="BuscarComprasPorFechas()"></p-button>
-            </p>
+        <p>
+            <label>Fecha Inicio:</label>
+            <p-calendar [(ngModel)]="FechaInicio" name="FechaInicio" [showTime]="true" hourFormat="12"
+                [showIcon]="true"></p-calendar>
+        </p>
+        <p>
+            <label>Fecha Fin:</label>
+            <p-calendar [(ngModel)]="FechaFin" name="FechaFin" [showTime]="true" hourFormat="12"
+                [showIcon]="true"></p-calendar>
+        </p>
+        <p>
+            <p-button label="Buscar" icon="pi pi-search" style="margin-top: 20px;"
+                (onClick)="BuscarComprasPorFechas()"></p-button>
+        </p>
 
-       
+
     </div>
     <br>
     <p-card header="Compras Realizadas" [style]="{margin:'20px',padding:'20px'}" styleClass="shadow-5">
-        <p-table #dt2
-        [value]="compras"
-        [paginator]="true"
-        [rows]="5"
-        [showCurrentPageReport]="true"
-        [tableStyle]="{'min-width': '90rem','max-height':'600px'}"
-        styleClass="p-datatable-sm"
-        currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} compras"
-        [rowsPerPageOptions]="[5, 10, 50]"
-        [globalFilterFields]="['COM_CODIGO','TIC_NOMBRE']"
-        class="custom-table"
-        >
+        <p-table #dt2 [value]="compras" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+            [tableStyle]="{'min-width': '90rem','max-height':'600px'}" styleClass="p-datatable-sm"
+            currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} compras"
+            [rowsPerPageOptions]="[5, 10, 50]" [scrollable]="true" [globalFilterFields]="['COM_CODIGO','TIC_NOMBRE']"
+            class="custom-table">
             <ng-template pTemplate="caption">
                 <div class="EncabezadoTabla">
-                    <p-button label="Agregar Compra" icon="pi pi-plus"  (onClick)="AbrirModalCreacion()"></p-button>
-                    <button type="button"  pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-rounded p-button-success mr-2"  pTooltip="XLS" tooltipPosition="bottom"></button>
+                    <p-button label="Agregar Compra" icon="pi pi-plus" (onClick)="AbrirModalCreacion()"></p-button>
+                    <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()"
+                        class="p-button-rounded p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom"></button>
                     <!-- <button pButton label="" class="p-button-outlined" icon="pi pi-filter-slash" (click)="dt1.reset()"></button> -->
                     <button pButton label="" icon="pi pi-filter" iconPos="left" class="p-button-raised p-button-rounded"
                         (click)="dt2.reset()"></button>
@@ -47,44 +42,57 @@
                 </div>
             </ng-template>
             <ng-template pTemplate="header">
-              <tr>
-                <th pSortableColumn="COM_CODIGO" style="width:20%">Code <p-sortIcon field="COM_CODIGO"></p-sortIcon></th>
-                <!-- <th>Fecha Creación</th> -->
-                <th pSortableColumn="COM_FECHACOMPRA" style="width:20%">Fecha Compra <p-sortIcon field="COM_FECHACOMPRA"></p-sortIcon></th>
-                <th pSortableColumn="COM_VALORCOMPRA" style="width:20%">Valor Compra <p-sortIcon field="COM_VALORCOMPRA"></p-sortIcon></th>
-                <th pSortableColumn="COM_PROVEEDOR" style="width:20%">Proveedor <p-sortIcon field="COM_PROVEEDOR"></p-sortIcon></th>
-                <th pSortableColumn="TIC_NOMBRE" style="width:20%">Tipo Cuenta <p-sortIcon field="TIC_NOMBRE"></p-sortIcon></th>
-                <th pSortableColumn="COM_ENBODEGA"  style="min-width:200px">En Bodega <p-sortIcon field="COM_ENBODEGA"></p-sortIcon></th>
-                <th pSortableColumn="COM_CREDITO"  style="min-width:200px">Crédito <p-sortIcon field="COM_CREDITO"></p-sortIcon></th>
-                <th style="min-width:200px" alignFrozen="right" pFrozenColumn>Acciones</th>
-              </tr>
+                <tr>
+                    <th pSortableColumn="COM_CODIGO" style="width:20%">Code <p-sortIcon field="COM_CODIGO"></p-sortIcon>
+                    </th>
+                    <!-- <th>Fecha Creación</th> -->
+                    <th pSortableColumn="COM_FECHACOMPRA" style="width:20%">Fecha Compra <p-sortIcon
+                            field="COM_FECHACOMPRA"></p-sortIcon></th>
+                    <th pSortableColumn="COM_VALORCOMPRA" style="width:20%">Valor Compra <p-sortIcon
+                            field="COM_VALORCOMPRA"></p-sortIcon></th>
+                    <th pSortableColumn="COM_PROVEEDOR" style="width:20%">Proveedor <p-sortIcon
+                            field="COM_PROVEEDOR"></p-sortIcon></th>
+                    <th pSortableColumn="TIC_NOMBRE" style="width:20%">Tipo Cuenta <p-sortIcon
+                            field="TIC_NOMBRE"></p-sortIcon></th>
+                    <th pSortableColumn="COM_ENBODEGA" style="min-width:200px">En Bodega <p-sortIcon
+                            field="COM_ENBODEGA"></p-sortIcon></th>
+                    <th pSortableColumn="COM_CREDITO" style="min-width:200px">Crédito <p-sortIcon
+                            field="COM_CREDITO"></p-sortIcon></th>
+                    <th style="min-width:200px" alignFrozen="right" pFrozenColumn>Acciones</th>
+                </tr>
             </ng-template>
             <ng-template pTemplate="body" let-compra>
-              <tr>
-                <td >{{ compra.COM_CODIGO }}</td>
-                <!-- <td>{{ compra.COM_FECHACREACION | date: 'yyyy-MM-dd' }}</td> -->
-                <td>{{ compra.COM_FECHACOMPRA | date: 'yyyy-MM-dd' }}</td>
-                <td>{{ compra.COM_VALORCOMPRA |number }}</td>
-                <td>{{ compra.COM_PROVEEDOR }}</td>
-                <td>{{ compra.TIC_NOMBRE }}</td>
-                <!-- <td>{{ compra.COM_FECHAACTUALIZACION | date: 'yyyy-MM-dd' }}</td> -->
-                <td>
-                    <p-tag [value]="compra.COM_ENBODEGA ? 'SI':'NO'" [severity]="getSeverity(true,compra.COM_ENBODEGA)"></p-tag>
-                    
-                </td>
-                <!-- <td>{{ compra.COM_ESTADO }}</td> -->
-                <td>
-                    <p-tag [value]="compra.COM_CREDITO ? 'SI':'NO'" [severity]="getSeverity(false,compra.COM_CREDITO)"></p-tag>
-                </td>
-                <!-- <td>{{ compra.USU_CEDULA }}</td> -->
-                <td class="Acciones">
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="AbrirModalActualizar(compra)"></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="EliminarCompra(compra)"></button>
-                </td>
-              </tr>
+                <tr>
+                    <td>{{ compra.COM_CODIGO }}</td>
+                    <!-- <td>{{ compra.COM_FECHACREACION | date: 'yyyy-MM-dd' }}</td> -->
+                    <td>{{ compra.COM_FECHACOMPRA | date: 'yyyy-MM-dd' }}</td>
+                    <td>{{ compra.COM_VALORCOMPRA |number }}</td>
+                    <td>{{ compra.COM_PROVEEDOR }}</td>
+                    <td>{{ compra.TIC_NOMBRE }}</td>
+                    <!-- <td>{{ compra.COM_FECHAACTUALIZACION | date: 'yyyy-MM-dd' }}</td> -->
+                    <td>
+                        <p-tag [value]="compra.COM_ENBODEGA ? 'SI':'NO'"
+                            [severity]="getSeverity(true,compra.COM_ENBODEGA)"></p-tag>
+
+                    </td>
+                    <!-- <td>{{ compra.COM_ESTADO }}</td> -->
+                    <td>
+                        <p-tag [value]="compra.COM_CREDITO ? 'SI':'NO'"
+                            [severity]="getSeverity(false,compra.COM_CREDITO)"></p-tag>
+                    </td>
+                    <!-- <td>{{ compra.USU_CEDULA }}</td> -->
+                    <td class="Acciones" alignFrozen="right" pFrozenColumn [frozen]="true">
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                            (click)="AbrirModalActualizar(compra)" pTooltip="Editar" tooltipPosition="top"
+                            placeholder="Top"></button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                            (click)="EliminarCompra(compra)" pTooltip="Eliminar" tooltipPosition="top"
+                            placeholder="Top"></button>
+                    </td>
+                </tr>
             </ng-template>
-          </p-table>
+        </p-table>
     </p-card>
-      
-          
+
+
 </div>

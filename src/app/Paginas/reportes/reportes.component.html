@@ -1,24 +1,119 @@
 <div class="contenedorPricipal">
     <h1>Reportes</h1>
     <div class="Filtro">
-            <p>
-                <label >Filtro:</label>
-                <p-dropdown [options]="items" [(ngModel)]="activeItem" optionLabel="label"></p-dropdown>
-            </p>
-            <p>
-                <label >Fecha Inicio:</label>
-                <p-calendar [(ngModel)]="FechaInicio" name="FechaInicio" [showTime]="true" hourFormat="12"
-                    [showIcon]="true"></p-calendar>
-            </p>
-            <p>
-                <label>Fecha Fin:</label>
-                <p-calendar [(ngModel)]="FechaFin" name="FechaFin" [showTime]="true" hourFormat="12"
-                    [showIcon]="true"></p-calendar>
-            </p>
-            <p >
-                <p-button label="Buscar" icon="pi pi-search" style="margin-top: 20px;" ></p-button>
-            </p>
+        <p>
+            <label>Filtro:</label>
+            <p-dropdown [options]="items" [(ngModel)]="activeItem" optionLabel="label"></p-dropdown>
+        </p>
+        <p>
+            <label>Fecha Inicio:</label>
+            <p-calendar [(ngModel)]="FechaInicio" name="FechaInicio" [showTime]="true" hourFormat="12"
+                [showIcon]="true"></p-calendar>
+        </p>
+        <p>
+            <label>Fecha Fin:</label>
+            <p-calendar [(ngModel)]="FechaFin" name="FechaFin" [showTime]="true" hourFormat="12"
+                [showIcon]="true"></p-calendar>
+        </p>
+        <p>
+            <p-button label="Buscar" icon="pi pi-search" style="margin-top: 20px;"></p-button>
+        </p>
 
-       
+
     </div>
+
+    <p-card [header]="activeItem.label==undefined?'':activeItem.label" [style]="{ margin: '20px', padding: '20px' }"
+        styleClass="shadow-5">
+        <p-table #dt2 [value]="ventas" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+            [tableStyle]="{ 'min-width': '90rem', 'max-height': '600px' }"
+            [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords} ' + (activeItem.label==undefined?'':activeItem.label)"
+            [scrollable]="true" [rowsPerPageOptions]="[5, 10, 50]" class="custom-table">
+            <ng-template pTemplate="caption">
+                <div class="EncabezadoTabla">
+                    <button type="button" pButton pRipple icon="pi pi-file-excel"
+                        class="p-button-rounded p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom"></button>
+                    <button pButton label="" icon="pi pi-filter" iconPos="left" class="p-button-raised p-button-rounded"
+                        (click)="dt2.reset()"
+                        pTooltip="Quitar filtro" tooltipPosition="top" placeholder="Top"></button>
+                    <span class="p-input-icon-left ml-auto">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" placeholder="Buscar" />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="VEN_CODIGO" style="width: 5%">
+                        #<p-sortIcon field="VEN_CODIGO"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="VEN_FECHAVENTA" style="width: 15%">
+                        Fecha <p-sortIcon field="VEN_FECHAVENTA"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="TIC_NOMBRE" style="width: 10%">
+                        Tipo pago <p-sortIcon field="TIC_NOMBRE"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="VEN_PRECIOTOTAL" style="width: 15%">
+                        Precio <p-sortIcon field="VEN_PRECIOTOTAL"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="VEN_ESTADO" style="width: 8%">
+                        Confirmación <p-sortIcon field="VEN_ESTADO"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="VEN_ESTADOCREDITO" style="width: 8%">
+                        Credito <p-sortIcon field="VEN_ESTADOCREDITO"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="CLI_ID" style="width: 10%">
+                        Cedula <p-sortIcon field="CLI_ID"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="CLI_NOMBRE" style="width: 20%">
+                        Nombre <p-sortIcon field="CLI_NOMBRE"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="CLI_TELEFONO" style="width: 10%">
+                        Telefono <p-sortIcon field="CLI_TELEFONO"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="CLI_DIRECCION" style="width: 15%">
+                        Direccion <p-sortIcon field="CLI_DIRECCION"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="CLI_TIPOCLIENTE" style="width: 8%">
+                        Tipo de cliente <p-sortIcon field="CLI_TIPOCLIENTE"></p-sortIcon>
+                    </th>
+                    <th style="min-width: 200px" alignFrozen="right" pFrozenColumn>
+                        Acciones
+                    </th>
+                </tr>
+
+            </ng-template>
+            <ng-template pTemplate="body" let-venta>
+                <tr>
+                    <td>{{ venta.VEN_CODIGO }}</td>
+                    <td>{{ venta.VEN_FECHAVENTA | date : "yyyy-MM-dd" }}</td>
+                    <td>{{ venta.TIC_NOMBRE }}</td>
+                    <td>{{ venta.VEN_PRECIOTOTAL }}</td>
+                    <td>
+                        <p-tag [value]="venta.VEN_ESTADO ? 'SI':'NO'"
+                        [severity]="getSeverity(venta.VEN_ESTADO)"></p-tag>
+                    </td>
+                    <td>
+                        <p-tag [value]="venta.VEN_ESTADOCREDITO ? 'SI':'NO'"
+                        [severity]="getSeverity(venta.VEN_ESTADOCREDITO)"></p-tag>
+                    </td>
+                  
+
+                    <td>{{ venta.CLI_ID }}</td>
+                    <td>{{ venta.CLI_NOMBRE }}</td>
+                    <td>{{ venta.CLI_TELEFONO }}</td>
+                    <td>{{ venta.CLI_DIRECCION }}</td>
+                    <td>{{ venta.CLI_TIPOCLIENTE }}</td>
+
+
+                    <td pFrozenColumn alignFrozen="right" [frozen]="true" style="min-width: 200px">
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                            pTooltip="Editar" tooltipPosition="top" placeholder="Top"></button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                            pTooltip="Eliminar" tooltipPosition="top" placeholder="Top"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+    </p-card>
 </div>
