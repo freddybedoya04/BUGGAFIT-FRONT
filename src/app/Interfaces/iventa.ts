@@ -1,3 +1,5 @@
+import { IDetalleVentas } from "./idetalle-ventas"
+
 export interface Iventa {
 VEN_CODIGO : number,
 VEN_FECHACREACION:Date,
@@ -19,4 +21,5 @@ VEN_ACTUALIZACION : Date,
 USU_CEDULA : string,
 VEN_ESTADOVENTA : boolean,
 VEN_ESTADO : boolean
+DetalleVenta?:IDetalleVentas[];
 }
