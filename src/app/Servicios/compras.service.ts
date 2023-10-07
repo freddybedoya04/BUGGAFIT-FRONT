@@ -26,6 +26,4 @@ export class ComprasService {
   BuscarComprarPorFechas(filtro:IFiltro):Observable<Icompras[]>{
     return this.http.post(this.url+'ListarComprasPorFecha',filtro);
   }
-
-
 }

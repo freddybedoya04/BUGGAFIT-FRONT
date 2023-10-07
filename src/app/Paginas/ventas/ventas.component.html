@@ -3,31 +3,27 @@
   <form [formGroup]="formularioVenta">
     <div class="form-group">
       <label for="VEN_FECHAVENTA">Fecha Venta:</label>
-      <p-calendar
-        formControlName="VEN_FECHAVENTA"
-        name="FechaVenta"
-        [showTime]="true"
-        hourFormat="12"
-      ></p-calendar>
+      <p-calendar formControlName="VEN_FECHAVENTA" name="FechaVenta" [showTime]="true" hourFormat="12"></p-calendar>
     </div>
 
     <div class="form-group">
       <label for="VEN_TIPOPAGO">Tipo de pago:</label>
-      <p-dropdown formControlName="VEN_TIPOPAGO"  optionLabel="label" [filter]="true" filterBy="label" [showClear]="true" placeholder="Seleccione Pago"></p-dropdown>
+      <p-dropdown formControlName="VEN_TIPOPAGO" [options]="listaTipoDePago" optionLabel="label" optionValue="value"
+        [filter]="true" filterBy="label" [showClear]="true" placeholder="Seleccione Pago"></p-dropdown>
     </div>
 
     <div class="form-group">
       <label for="VEN_CUENTADESTINO">Cuenta Destino:</label>
-      <p-dropdown
-      formControlName="VEN_CUENTADESTINO"  optionLabel="label" [filter]="true" filterBy="label" [showClear]="true" placeholder="Seleccione Cuenta"
-      ></p-dropdown>
+      <p-dropdown formControlName="VEN_CUENTADESTINO" [options]="listaTipoDeCuenta" optionLabel="label"
+        optionValue="value" [filter]="true" filterBy="label" [showClear]="true"
+        placeholder="Seleccione Cuenta"></p-dropdown>
     </div>
- 
+
 
 
     <div class="form-group">
       <label for="CLI_ID">Cedula:</label>
-      <input type="text" pInputText formControlName="VENT_CEDULA" />
+      <input (keypress)="AutocompletarCedula($event)" type="text" pInputText formControlName="VENT_CEDULA" />
     </div>
 
     <div class="form-group">
@@ -47,22 +43,17 @@
 
     <div class="form-group">
       <label for="CLI_TIPOCLIENTE">Tipo de cliente:</label>
-      <p-dropdown
-      formControlName="CLI_TIPOCLIENTE"  optionLabel="label" [filter]="true" filterBy="label" [showClear]="true" placeholder="Seleccione Cliente"
-      ></p-dropdown>
+      <p-dropdown formControlName="CLI_TIPOCLIENTE" [options]="listaTipoDeCliente" optionLabel="label"
+        optionValue="value" [filter]="true" filterBy="label" [showClear]="true"
+        placeholder="Seleccione Cliente"></p-dropdown>
     </div>
-
-  <div class="buttonContainer">
-    <p-button
-      label="Agregar"
-      styleClass="p-button-rounded p-button-success"
-      style="margin-right: 10px"
-    ></p-button>
-    <p-button label="Buscar" styleClass="p-button-rounded"></p-button>
-  </div>
+<!--<div class="buttonContainer">
+      <p-button label="Agregar" styleClass="p-button-rounded p-button-success" style="margin-right: 10px"></p-button>
+      <p-button label="Buscar" styleClass="p-button-rounded"></p-button>
+    </div> -->
     <div class="form-group">
       <label for="PRO_CODIGO">Codigo:</label>
-      <input type="text" pInputText formControlName="PRO_CODIGO" />
+      <input (keypress)="AutocompletarProducto($event)" type="text" pInputText formControlName="PRO_CODIGO" />
     </div>
 
     <div class="form-group">
@@ -76,7 +67,7 @@
 
     <div>
       <label>Precio:</label>
-      <input type="text" pInputText />
+      <input [disabled]="true" type="text" pInputText formControlName="PRO_PRECIO" />
     </div>
 
     <div>
@@ -91,41 +82,18 @@
   </form>
 
   <br />
-  <p-card
-    header="Ventas"
-    [style]="{ margin: '20px', padding: '20px' }"
-    styleClass="shadow-5"
-  >
-    <p-table
-      #dt2
-      [paginator]="true"
-      [rows]="3"
-      [showCurrentPageReport]="true"
+  <p-card header="Ventas" [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
+    <p-table #dt2 [paginator]="true" [rows]="3" [showCurrentPageReport]="true"
       [tableStyle]="{ 'min-width': '90rem', 'max-height': '600px' }"
       currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} ventas"
-      [rowsPerPageOptions]="[3, 10, 50]"
-      class="custom-table"
-    >
+      [rowsPerPageOptions]="[3, 10, 50]" class="custom-table">
       <ng-template pTemplate="caption">
         <div class="EncabezadoTabla">
-          <button
-            type="button"
-            pButton
-            pRipple
-            icon="pi pi-file-excel"
-            class="p-button-rounded p-button-success mr-2"
-            pTooltip="XLS"
-            tooltipPosition="bottom"
-          ></button>
+          <button type="button" pButton pRipple icon="pi pi-file-excel" class="p-button-rounded p-button-success mr-2"
+            pTooltip="XLS" tooltipPosition="bottom"></button>
           <!-- <button pButton label="" class="p-button-outlined" icon="pi pi-filter-slash" (click)="dt1.reset()"></button> -->
-          <button
-            pButton
-            label=""
-            icon="pi pi-filter"
-            iconPos="left"
-            class="p-button-raised p-button-rounded"
-            (click)="dt2.reset()"
-          ></button>
+          <button pButton label="" icon="pi pi-filter" iconPos="left" class="p-button-raised p-button-rounded"
+            (click)="dt2.reset()"></button>
           <span class="p-input-icon-left ml-auto">
             <i class="pi pi-search"></i>
             <input pInputText type="text" placeholder="Buscar" />
@@ -182,18 +150,8 @@
           <td>{{ venta.PRO_NOMBRE }}</td>
           <td>{{ venta.CLI_UBICACION }}</td>
           <td style="min-width: 200px">
-            <button
-              pButton
-              pRipple
-              icon="pi pi-pencil"
-              class="p-button-rounded p-button-success mr-2"
-            ></button>
-            <button
-              pButton
-              pRipple
-              icon="pi pi-trash"
-              class="p-button-rounded p-button-warning"
-            ></button>
+            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"></button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"></button>
           </td>
         </tr>
       </ng-template>
