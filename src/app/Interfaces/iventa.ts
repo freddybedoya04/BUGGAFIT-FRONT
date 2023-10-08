@@ -21,5 +21,5 @@ VEN_ACTUALIZACION : Date,
 USU_CEDULA : string,
 VEN_ESTADOVENTA : boolean,
 VEN_ESTADO : boolean
-DetalleVenta?:IDetalleVentas[];
+DetalleVentas?:IDetalleVentas[];
 }

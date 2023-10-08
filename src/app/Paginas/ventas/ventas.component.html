@@ -47,13 +47,13 @@
         optionValue="value" [filter]="true" filterBy="label" [showClear]="true"
         placeholder="Seleccione Cliente"></p-dropdown>
     </div>
-<!--<div class="buttonContainer">
+    <!--<div class="buttonContainer">
       <p-button label="Agregar" styleClass="p-button-rounded p-button-success" style="margin-right: 10px"></p-button>
       <p-button label="Buscar" styleClass="p-button-rounded"></p-button>
     </div> -->
     <div class="form-group">
       <label for="PRO_CODIGO">Codigo:</label>
-      <input (keypress)="AutocompletarProducto($event)" type="text" pInputText formControlName="PRO_CODIGO" />
+      <input #codigoProdcutoInput (keypress)="AutocompletarProducto($event)" type="text" pInputText formControlName="PRO_CODIGO" />
     </div>
 
     <div class="form-group">
@@ -62,28 +62,33 @@
     </div>
     <div>
       <label>Cantidad:</label>
-      <input type="text" pInputText />
+      <input #cantidadInput  type="text" (keyup)="CalcularValorTotal($event)" pInputText formControlName="PRO_CANTIDADVENTA" />
     </div>
 
     <div>
       <label>Precio:</label>
-      <input [disabled]="true" type="text" pInputText formControlName="PRO_PRECIO" />
+      <input type="text" pInputText formControlName="PRO_PRECIO" />
     </div>
 
     <div>
       <label>Valor Total:</label>
-      <input type="text" pInputText />
+      <input (keyup)="CalcularDescuentoPorcentaje($event)" type="text" pInputText formControlName="PRO_VALORTOTAL" />
     </div>
 
     <div>
       <label>Descuento:</label>
-      <input type="text" pInputText />
+      <input (keyup)="CalcularValorTotalConDescuento($event)" type="text" pInputText formControlName="PRO_DESCUENTO"/>
+    </div>
+    <div class="buttonContainer">
+      <p-button label="Agregar" styleClass="p-button-rounded p-button-success" style="margin-right: 10px"
+        (onClick)="AgregarProducto($event)"></p-button>
+      <!-- <p-button label="Buscar" styleClass="p-button-rounded"></p-button> -->
     </div>
   </form>
 
   <br />
   <p-card header="Ventas" [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
-    <p-table #dt2 [paginator]="true" [rows]="3" [showCurrentPageReport]="true"
+    <p-table #dt2 [value]="listaProductos" [paginator]="true" [rows]="3" [showCurrentPageReport]="true"
       [tableStyle]="{ 'min-width': '90rem', 'max-height': '600px' }"
       currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} ventas"
       [rowsPerPageOptions]="[3, 10, 50]" class="custom-table">
@@ -102,32 +107,14 @@
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th pSortableColumn="VEN_CODIGO" style="width: 20%">
-            Factura N<p-sortIcon field="COM_CODIGO"></p-sortIcon>
-          </th>
-          <th pSortableColumn="VEN_FECHAVENTA" style="width: 20%">
-            Fecha Venta
-          </th>
-          <th pSortableColumn="VEN_TIPOPAGO" style="width: 20%">Tipo pago</th>
-          <th pSortableColumn="VEN_TIPOPAGO" style="width: 20%">
-            Cuenta destino
-          </th>
-          <th pSortableColumn="CLI_ID" style="width: 20%">Cedula</th>
-          <th pSortableColumn="CLI_NOMBRE" style="width: 20%">Nombre</th>
-          <th pSortableColumn="CLI_TELEFONO" style="width: 20%">Telefono</th>
-          <th pSortableColumn="CLI_DIRECCION" style="width: 20%">Direccion</th>
-          <th pSortableColumn="CLI_UBICACION" style="width: 20%">Ubicacion</th>
-          <th pSortableColumn="CLI_TIPOCLIENTE" style="width: 20%">
-            Tipo de cliente
-          </th>
           <th pSortableColumn="PRO_CODIGO" style="width: 20%">Codigo</th>
           <th pSortableColumn="PRO_NOMBRE" style="width: 20%">
             Nombre de Articulo
           </th>
-          <th pSortableColumn="VEN_TIPOPAGO" style="width: 20%">Cantidad</th>
-          <th pSortableColumn="VEN_PRECIOTOTAL" style="width: 20%">Precio</th>
-          <th pSortableColumn="VEN_TIPOPAGO" style="width: 20%">Valor Total</th>
-          <th pSortableColumn="VEN_TIPOPAGO" style="width: 20%">Descuento</th>
+          <th pSortableColumn="VED_UNIDADES" style="width: 20%">Cantidad</th>
+          <th pSortableColumn="VED_PRECIOVENTA_UND" style="width: 20%">Precio</th>
+          <th pSortableColumn="VED_PRECIOVENTA_TOTAL" style="width: 20%">Valor Total</th>
+          <th pSortableColumn="VED_VALORDESCUENTO_UND" style="width: 20%">Descuento</th>
           <th style="min-width: 200px" alignFrozen="right" pFrozenColumn>
             Acciones
           </th>
@@ -135,20 +122,12 @@
       </ng-template>
       <ng-template pTemplate="body" let-venta>
         <tr>
-          <td>{{ venta.VEN_FACTURA }}</td>
-          <!-- <td>{{ compra.COM_FECHACREACION | date: 'yyyy-MM-dd' }}</td> -->
-          <td>{{ venta.VEN_FECHAVENTA | date : "yyyy-MM-dd" }}</td>
-          <td>{{ venta.VEN_TIPOPAGO }}</td>
-          <td>{{ venta.VEN_CUENTADESTINO }}</td>
-          <td>{{ venta.CLI_ID }}</td>
-          <!-- <td>{{ venta.COM_FECHAACTUALIZACION | date: 'yyyy-MM-dd' }}</td> -->
-          <td>{{ venta.CLI_NOMBRE }}</td>
-          <td>{{ venta.CLI_DIRECCION }}</td>
-          <td>{{ venta.CLI_UBICACION }}</td>
-          <td>{{ venta.CLI_TIPOCLIENTE }}</td>
           <td>{{ venta.PRO_CODIGO }}</td>
           <td>{{ venta.PRO_NOMBRE }}</td>
-          <td>{{ venta.CLI_UBICACION }}</td>
+          <td>{{ venta.VED_UNIDADES }}</td>
+          <td>{{ venta.VED_PRECIOVENTA_UND }}</td>
+          <td>{{ venta.VED_PRECIOVENTA_TOTAL }}</td>
+          <td>{{ venta.VED_VALORDESCUENTO_UND }}</td>
           <td style="min-width: 200px">
             <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"></button>
             <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"></button>
@@ -157,4 +136,9 @@
       </ng-template>
     </p-table>
   </p-card>
+  <div class="buttonContainer">
+    <p-button label="Realizar Factura" styleClass="p-button-rounded p-button-success" style="margin-right: 10px"
+      (onClick)="FinalizarFactura($event)"></p-button>
+    <!-- <p-button label="Buscar" styleClass="p-button-rounded"></p-button> -->
+  </div>
 </div>
