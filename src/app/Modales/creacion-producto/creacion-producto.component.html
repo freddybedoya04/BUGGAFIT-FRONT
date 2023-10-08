@@ -2,11 +2,16 @@
     <div class="cabecera" >
         <img src="../../../assets/Imagenes/BUGGAFITLOGO.png" alt="">
     </div>
-    <form >
-        <div >
-            <label>Nombre:</label>
-            <input type="text" pInputText formControlName="COM_PROVEEDOR" matInput autocomplete="off">
+    <form [formGroup]="formularioProducto">
+        <div>
+            <label for="PRO_CODIGO">Codigo:</label>
+            <input type="text" pInputText formControlName="PRO_CODIGO" matInput autocomplete="off">
         </div>
+        <div>
+            <label for="PRO_NOMBRE">Nombre:</label>
+            <input type="text" pInputText formControlName="PRO_NOMBRE" matInput autocomplete="off">
+        </div>
+        
         <div>
             <label for="PRO_UNIDADES_DISPONIBLES">Unidades Disponibles:</label>
             <input type="text" pInputText formControlName=PRO_UNIDADES_DISPONIBLES matInput autocomplete="off">
@@ -19,7 +24,7 @@
         </div>
         <div>
             <label for="PRO_PRECIO_MAYORISTA">Precio de Mayorista:</label>
-            <input type="text" pInputText formControlName="PRO_PRECIO_MAYORISTA">
+            <input type="text" pInputText formControlName="PRO_PRECIO_MAYORISTA" matInput autocomplete="off">
         </div>
         <div >
             <label for="PRO_PRECIO_ DETAL"  >Precio Detal:</label>
@@ -34,12 +39,12 @@
             <label for="PRO_CATEGORIA">Categoria:</label>
             <input type="text" pInputText formControlName="PRO_CATEGORIA">
         </div>
-     
 </form>
-
 <div>
     <div class="buttonContainer">
-<button pButton icon="fa-search" label="Search"></button>
+        <p-button (click)="CrearProducto()" label="Agregar"></p-button>
       </div>
 </div>
+
+
     

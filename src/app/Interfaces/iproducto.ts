@@ -1,5 +1,5 @@
 export interface Iproducto {
-    PRO_CODIGO: string;
+    PRO_CODIGO: string
     PRO_NOMBRE: string;
     PRO_MARCA: string;
     PRO_CATEGORIA: string;

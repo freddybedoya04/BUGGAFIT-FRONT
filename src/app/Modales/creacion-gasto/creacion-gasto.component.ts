@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+
 @Component({
   selector: 'app-creacion-gasto',
   templateUrl: './creacion-gasto.component.html',
@@ -8,3 +9,4 @@ import { Component } from '@angular/core';
 export class CreacionGastoComponent {
 
 }
+

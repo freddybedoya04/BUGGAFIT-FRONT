@@ -8,6 +8,7 @@ import { SharedModule } from './Shared/shared/shared.module';
 import { ConfirmationService, MessageService,  } from 'primeng/api';
 import { HttpClientModule } from '@angular/common/http';
 import { DialogService } from 'primeng/dynamicdialog';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { DialogService } from 'primeng/dynamicdialog';
   imports: [
     BrowserModule,
     AppRoutingModule,
-
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     SharedModule,
     HttpClientModule
