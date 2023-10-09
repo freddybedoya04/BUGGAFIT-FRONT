@@ -29,6 +29,9 @@ h1 {
     gap: 10px;
 }
 
+:host ::ng-deep .p-datatable {
+  width: 100%;
+}
 /* custom-table.css */
 :host ::ng-deep .p-datatable .p-datatable-tbody tr > td {
     text-align: center !important;
