@@ -5,6 +5,7 @@ import { Icliente } from 'src/app/Interfaces/icliente';
 import { IDetalleVentas } from 'src/app/Interfaces/idetalle-ventas';
 import { Iproducto } from 'src/app/Interfaces/iproducto';
 import { Iventa } from 'src/app/Interfaces/iventa';
+import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { ClientesService } from 'src/app/Servicios/clientes.service';
 import { InventarioService } from 'src/app/Servicios/inventario.service';
 import { VentasService } from 'src/app/Servicios/ventas.service';
@@ -68,6 +69,7 @@ export class VentasComponent implements OnInit {
     private invetarioService: InventarioService,
     private clientesService: ClientesService,
     private ventasService: VentasService,
+    private alertasService: AlertasService,
   ) {
     this.formularioVenta = formBuilder.group({
       VEN_FECHAVENTA: [{ value: new Date(), disabled: false }, Validators.required],
@@ -109,6 +111,7 @@ export class VentasComponent implements OnInit {
   ObtenerTipoCuentas() {
     this.ventasService.BuscarTipoCuentas().subscribe((result: any) => {
       if (result === null) {
+        this.alertasService.SetToast("No hay Cuentas asignadas.", 3);
         return;
       }
       this.listaTipoDeCuenta = result.map((item: any) => {
@@ -126,6 +129,7 @@ export class VentasComponent implements OnInit {
       this.clientesService.BuscarClienteID(this.formularioVenta.controls['VENT_CEDULA'].value).subscribe((result: Icliente) => {
         if (!result || result === null) { // en caso que llege vacio el cliente
           this.existeCliente = false;
+          this.alertasService.SetToast("El cliente no existe. Por favor diligencie los datos para crearlo.", 2);
           return;
         }
         this.existeCliente = true;
@@ -137,6 +141,7 @@ export class VentasComponent implements OnInit {
         });
         this.formularioVenta.controls['CLI_TIPOCLIENTE'].setValue((tipoCliente.length > 0) ? tipoCliente[0].value : null);
         this.codigoProdcutoInput.nativeElement.focus();
+        this.alertasService.SetToast("Cliente encontrado.", 1);
       });
     }
   }
@@ -147,11 +152,13 @@ export class VentasComponent implements OnInit {
       if (!this.formularioVenta.controls['CLI_TIPOCLIENTE'].value || this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === null) //en caso que no se haya seleccionado un tipo de cliente 
       {
         // Agregar mensaje de error
+        this.alertasService.SetToast("Debe seleccionar un tipo de cliente.", 2);
         return;
       }
       this.invetarioService.BuscarProductoID(codigo).subscribe((result: any) => {
         if (!result || result === null) {// en caso que llege vacio el producto
           // Agregar mensaje de error
+          this.alertasService.SetToast("producto no encontrado.", 3);
           return;
         }
         this.producto = result;
@@ -169,47 +176,70 @@ export class VentasComponent implements OnInit {
 
   CalcularValorTotal(event: any) {
     if (!this.formularioVenta.controls['PRO_PRECIO'].value || this.formularioVenta.controls['PRO_PRECIO'].value == '') {
+      this.alertasService.SetToast("El producto no tiene precio por unidad.", 3);
       return;
     }
+    if (this.formularioVenta.controls['PRO_CANTIDADVENTA'].value > (this.producto.PRO_UNIDADES_DISPONIBLES ?? 0)) {
+      this.alertasService.SetToast("Esta Excediendo la cantidad disponible de producto.", 2, 2500);
+      this.formularioVenta.controls['PRO_CANTIDADVENTA'].setValue((this.producto.PRO_UNIDADES_DISPONIBLES ?? 0));
+    }
+
     let totalVenta = 0;
     const valorNeto = (this.formularioVenta.controls['PRO_CANTIDADVENTA'].value * this.formularioVenta.controls['PRO_PRECIO'].value);
     try {
       totalVenta = valorNeto
-    } catch (error) { return; }
+    } catch (error) {
+      this.alertasService.SetToast("Error calculando el valor total.", 3);
+      return;
+    }
     this.formularioVenta.controls['PRO_VALORTOTAL'].setValue(totalVenta);
   }
   CalcularValorTotalConDescuento(event: any) {
     if (!this.formularioVenta.controls['PRO_PRECIO'].value || this.formularioVenta.controls['PRO_PRECIO'].value == '') {
+      this.alertasService.SetToast("El producto no tiene precio por unidad.", 3);
+      this.formularioVenta.controls['PRO_DESCUENTO'].setValue(0);
       return;
+    }
+    if (this.formularioVenta.controls['PRO_DESCUENTO'].value > 100 || this.formularioVenta.controls['PRO_DESCUENTO'].value < 0) {
+      this.formularioVenta.controls['PRO_DESCUENTO'].setValue(0);
     }
     let totalVenta = 0;
     const valorNeto = (this.formularioVenta.controls['PRO_CANTIDADVENTA'].value * this.formularioVenta.controls['PRO_PRECIO'].value);
 
     try {
       totalVenta = valorNeto * ((100 - this.formularioVenta.controls['PRO_DESCUENTO'].value) / 100);
-    } catch (error) { return; }
+    } catch (error) {
+      this.alertasService.SetToast("Error calculando el valor total.", 3);
+      return;
+    }
     this.formularioVenta.controls['PRO_VALORTOTAL'].setValue(totalVenta);
   }
 
   CalcularDescuentoPorcentaje(event: any) {
     if (!this.formularioVenta.controls['PRO_PRECIO'].value || this.formularioVenta.controls['PRO_PRECIO'].value == '') {
+      this.alertasService.SetToast("El producto no tiene precio por unidad.", 3);
       return;
     }
     let totalDescuento = 0;
     const valorNeto = (this.formularioVenta.controls['PRO_CANTIDADVENTA'].value * this.formularioVenta.controls['PRO_PRECIO'].value);
     try {
       totalDescuento = (1 - (this.formularioVenta.controls['PRO_VALORTOTAL'].value / valorNeto)) * 100;
-    } catch (error) { return; }
+    } catch (error) {
+      this.alertasService.SetToast("Error calculando el valor total.", 3);
+      return;
+    }
     this.formularioVenta.controls['PRO_DESCUENTO'].setValue(totalDescuento.toFixed(1));
   }
 
   AgregarProducto(event: any) {
-    if (this.formularioVenta.controls['PRO_CANTIDADVENTA'].value < (this.producto.COM_CANTIDAD ?? 0)) {
+    if (this.formularioVenta.controls['PRO_CANTIDADVENTA'].value > (this.producto.PRO_UNIDADES_DISPONIBLES ?? 0)) { // validacion de cantidad de producto
       // Agregar mensaje de error
+      this.alertasService.SetToast("No hay la cantidad necesaria del producto.", 3);
       return;
     }
-    if (!this.formularioVenta.controls['PRO_VALORTOTAL'].value || this.formularioVenta.controls['PRO_VALORTOTAL'].value === null) {
+    if (!this.formularioVenta.controls['PRO_VALORTOTAL'].value || this.formularioVenta.controls['PRO_VALORTOTAL'].value === null) { // validacion valor total
       // Agregar mensaje de error
+      this.alertasService.SetToast("El valor total no puede estas vacio.", 3);
       return;
     }
     const detalleVenta: IDetalleVentas = {
@@ -253,18 +283,36 @@ export class VentasComponent implements OnInit {
 
     this.listaProductos.push(detalleVenta); // Agregamos el producto a la lista
     console.log(this.listaProductos);
+    this.alertasService.SetToast("Producto agregado con exito.", 1);
+
   }
 
   FinalizarFactura(form: any) {
     if (!this.formularioVenta.controls['VEN_TIPOPAGO'].value || this.formularioVenta.controls['VEN_TIPOPAGO'].value === null) {
       // Agregar mensaje de error
+      // this.alertasService.SetToast("Debe ingresar el tipo de pago.", 3);
       return;
     }
     if (!this.formularioVenta.controls['VEN_CUENTADESTINO'].value || this.formularioVenta.controls['VEN_CUENTADESTINO'].value === null) {
       // Agregar mensaje de error
+      // this.alertasService.SetToast("Debe ingresar el una cuenta destino.", 3);
       return;
     }
+    if (!this.existeCliente) { //validamos que el cliente exista, en caso que no lo creamos 
+      const cliente: Icliente = {
+        ClI_ID: this.formularioVenta.controls['VENT_CEDULA'].value,
+        CLI_NOMBRE: this.formularioVenta.controls['CLI_NOMBRE'].value,
+        CLI_TIPOCLIENTE: this.formularioVenta.controls['CLI_TIPOCLIENTE'].value,
+        CLI_UBICACION: this.formularioVenta.controls['CLI_UBICACION'].value,
+        CLI_DIRECCION: this.formularioVenta.controls['CLI_DIRECCION'].value,
+        CLI_FECHACREACION: new Date(),
+        CLI_ESTADO: true
+      };
 
+      this.clientesService.CrearCliente(cliente).subscribe((result: any) => {
+        this.alertasService.SetToast("Cliente creado exitosamente.", 1);
+      })
+    }
     const nombreTipoCuenta = this.listaTipoDeCuenta.filter((tipocliente: any) => {
       return tipocliente.value == this.formularioVenta.controls['VEN_CUENTADESTINO'].value;
     });
@@ -293,14 +341,14 @@ export class VentasComponent implements OnInit {
       VEN_ESTADO: true,
       DetalleVentas: this.listaProductos,
     }
-    console.log(venta)
     this.ventasService.CrearVenta(venta).subscribe((result: any) => {
       if (result.statusCode.toString().indexOf('20') >= 0) {
         //Lipiamos el formulario y enviamos mensaje de que esta correcto.
-        alert("venta creada");
         form.resetForm();
         this.formularioVenta.controls['VEN_FECHAVENTA'].setValue(new Date())
+        this.alertasService.SetToast("Venta creada exitosamente.", 1);
+
       }
-    })
+    });
   }
 }

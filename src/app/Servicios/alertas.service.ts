@@ -10,7 +10,7 @@ export class AlertasService {
   private isLoading = new BehaviorSubject<boolean>(false);
   private loadingMessage = new BehaviorSubject<string>('Cargando1...'); // Mensaje por defecto
   constructor(private _message: MessageService,private confirmationService:ConfirmationService) { }
-  SetToast(texto: string, tipo: 1 | 2 | 3) {
+  SetToast(texto: string, tipo: 1 | 2 | 3, life: number= 6000) {
 
     let asunto;
     let titulo;
@@ -29,7 +29,7 @@ export class AlertasService {
       severity: asunto,
       summary: titulo,
       detail: texto,
-      life: 6000
+      life: life
     };
     this._message.add(toast);
   }
