@@ -1,11 +1,12 @@
-.contenedorPricipal{
+.contenedorPricipal {
     display: flex;
     flex-direction: column;
     justify-items: center;
     align-items: center;
     width: 100%;
 }
-.cabecera{
+
+.cabecera {
     display: grid;
     justify-items: center;
     align-items: center;
@@ -13,25 +14,30 @@
     width: 80%;
 }
 
-form,.Productos{
+form,
+.Productos {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin: 10px;
     align-items: center;
 }
-form div, .Productos div{
+
+form div,
+.Productos div {
     flex: 1 0 150px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 5px;
 }
+
 .buttonContainer {
     display: flex;
     justify-content: flex-end;
     margin-top: 20px;
-  }
-  
+}
 
-  
+:host ::ng-deep .p-table {
+    width: 100%;
+}

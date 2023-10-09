@@ -50,7 +50,7 @@ export class CreacionProductoComponent implements OnInit {
       const Producto: Iproducto = {
         PRO_CODIGO: '',
         PRO_NOMBRE: this.formularioProducto.get('PRO_NOMBRE')?.value,
-        PRO_MARCA: this.marcaSeleccionada, 
+        PRO_MARCA: this.marcaSeleccionada,
         PRO_CATEGORIA: this.categoriaSeleccionada,
         PRO_PRECIO_COMPRA: this.formularioProducto.get('PRO_PRECIO_COMPRA')?.value,
         PRO_PRECIOVENTA_MAYORISTA: this.formularioProducto.get('PRO_PRECIO_MAYORISTA')?.value,
@@ -92,32 +92,33 @@ export class CreacionProductoComponent implements OnInit {
 
   ObtenerCategorias() {
     this.inventarioService.ObtenerCategorias().subscribe(
-      (categorias: any) => {
-        if (categorias.data) {
-          this.listaCategorias = categorias.data.map((categoria: any) => ({
-            label: categoria.CAT_NOMBRE,
-            value: categoria.CAT_CODIGO
-          }));
+      (result: any) => {
+        console.log(result);
+        if (result) {
+          this.listaCategorias = result.map((item: any) => {
+            const selectItem: SelectItem = {
+              label: item.CAT_NOMBRE,
+              value: item.CAT_CODIGO
+            }
+            return selectItem;
+          });
         }
-      },
-      (error) => {
-        console.error('Error al obtener las categorías:', error);
       }
     );
   }
-
   ObtenerMarcas() {
     this.inventarioService.ObtenerMarcas().subscribe(
-      (marcas: any) => {
-        if (marcas.data) {
-          this.listaMarcas = marcas.data.map((marca: any) => ({
-            label: marca.MAR_NOMBRE,
-            value: marca.MAR_CODIGO
-          }));
+      (result: any) => {
+        console.log(result);
+        if (result) {
+          this.listaMarcas = result.map((item: any) => {
+            const selectItem: SelectItem = {
+              label: item.MAR_NOMBRE,
+              value: item.MAR_CODIGO
+            }
+            return selectItem;
+          });
         }
-      },
-      (error) => {
-        console.error('Error al obtener las marcas:', error);
       }
     );
   }
