@@ -1,6 +1,8 @@
 <div class="Principal">
   <h1>Ventas</h1>
   <form #myForm="ngForm" [formGroup]="formularioVenta" (ngSubmit)="FinalizarFactura(myForm)">
+    <!-- Card informacion venta -->
+    <p-card header="Informacion Venta" [style]="{ width: '100%' }" class="card">
     <div class="form-group">
       <label for="VEN_FECHAVENTA">Fecha Venta:</label>
       <p-calendar formControlName="VEN_FECHAVENTA" name="FechaVenta" [showTime]="true" hourFormat="12"></p-calendar>
@@ -18,10 +20,10 @@
         optionValue="value" [filter]="true" filterBy="label" [showClear]="true"
         placeholder="Seleccione Cuenta"></p-dropdown>
     </div>
-
-
-
-    <div class="form-group">
+  </p-card>
+<!-- Card CLiente  -->
+  <p-card header="Cliente" [style]="{ width: '100%' }" class="card">
+    <div class="form-group" >
       <label for="CLI_ID">Cedula:</label>
       <input (keypress)="AutocompletarCedula($event)" type="text" pInputText formControlName="VENT_CEDULA" />
     </div>
@@ -47,11 +49,14 @@
         optionValue="value" [filter]="true" filterBy="label" [showClear]="true"
         placeholder="Seleccione Cliente"></p-dropdown>
     </div>
+    </p-card>
     <!--<div class="buttonContainer">
       <p-button label="Agregar" styleClass="p-button-rounded p-button-success" style="margin-right: 10px"></p-button>
       <p-button label="Buscar" styleClass="p-button-rounded"></p-button>
     </div> -->
-    <div class="form-group">
+    <!-- Card producto -->
+    <p-card header="Informacion producto" [style]="{ width: '100%' }" class="card">
+    <div class="form-group" >
       <label for="PRO_CODIGO">Codigo:</label>
       <input #codigoProdcutoInput (keypress)="AutocompletarProducto($event)" type="text" pInputText formControlName="PRO_CODIGO" />
     </div>
@@ -78,17 +83,17 @@
     <div>
       <label>Descuento:</label>
       <input (keyup)="CalcularValorTotalConDescuento($event)" type="text" pInputText formControlName="PRO_DESCUENTO"/>
-    </div>
+    </div> 
     <div class="buttonContainer">
-      <p-button label="Agregar" styleClass="p-button-rounded p-button-success" style="margin-right: 10px"
+      <p-button label="Agregar"  style="margin-right: 10px" styleClass="p-button-rounded"
         (onClick)="AgregarProducto($event)"></p-button>
-      <!-- <p-button label="Buscar" styleClass="p-button-rounded"></p-button> -->
-    </div>
-    <div class="buttonContainer">
       <p-button label="Realizar Factura" styleClass="p-button-rounded p-button-success" style="margin-right: 10px"
         type="Submit"></p-button>
-      <!-- <p-button label="Buscar" styleClass="p-button-rounded"></p-button> -->
-    </div>
+  </div>
+    
+  </p-card>
+ 
+    
   </form>
 
   <br />

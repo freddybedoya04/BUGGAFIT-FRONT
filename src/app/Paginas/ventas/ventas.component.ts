@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild,ViewEncapsulation } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, NgForm } from '@angular/forms';
 import { PrimeNGConfig, SelectItem } from 'primeng/api';
 import { Icliente } from 'src/app/Interfaces/icliente';
@@ -12,7 +12,7 @@ import { VentasService } from 'src/app/Servicios/ventas.service';
 @Component({
   selector: 'app-ventas',
   templateUrl: './ventas.component.html',
-  styleUrls: ['./ventas.component.scss']
+  styleUrls: ['./ventas.component.scss'],
 })
 export class VentasComponent implements OnInit {
 

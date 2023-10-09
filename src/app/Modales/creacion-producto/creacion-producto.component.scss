@@ -9,6 +9,8 @@
     display: grid;
     justify-items: center;
     align-items: center;
+    margin-bottom: 20px;
+    width: 80%;
 }
 
 form,.Productos{
@@ -25,3 +27,11 @@ form div, .Productos div{
     align-items: center;
     gap: 5px;
 }
+.buttonContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  
+
+  

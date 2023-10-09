@@ -32,11 +32,13 @@
         </div>
         <div>
             <label for="PRO_CATEGORIA">Categoría:</label>
-            <p-dropdown [options]="listaCategorias" [(ngModel)]="categoriaSeleccionada" optionLabel="CAT_NOMBRE" formControlName="PRO_CATEGORIA"></p-dropdown>
+            <p-dropdown [options]="listaCategorias" [(ngModel)]="categoriaSeleccionada" optionLabel="label" formControlName="PRO_CATEGORIA" optionValue="value" [filter]="true" filterBy="label" [showClear]="true"
+            placeholder="Seleccione Categoria"></p-dropdown>
         </div>
         <div>
             <label for="PRO_MARCA">Marca:</label>
-            <p-dropdown [options]="listaMarcas" [(ngModel)]="marcaSeleccionada" optionLabel="MAR_NOMBRE" formControlName="PRO_MARCA"></p-dropdown>
+            <p-dropdown [options]="listaMarcas" [(ngModel)]="marcaSeleccionada" optionLabel="label" formControlName="PRO_MARCA" [filter]="true" filterBy="label" [showClear]="true"
+            placeholder="Seleccione Categoria"></p-dropdown>
         </div>
         
 </form>

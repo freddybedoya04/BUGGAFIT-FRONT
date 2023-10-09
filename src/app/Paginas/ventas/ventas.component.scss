@@ -38,21 +38,27 @@ h1 {
     text-align: center !important;
     font-family: 'Poppins', sans-serif;
   }
-  form {
+
+  :host ::ng-deep .p-card .p-card-content{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;
   }
-  
-  form div {
+  .card {
+    margin:7px;
+    padding: 7px;
     display: flex;
     flex-direction: column;
-    width: 80%;
+  }
+ 
+  .card form div {
+    display: flex;
+    flex-direction: column;
     gap: 5px;
-    margin: auto;
+    width: 80%;
   }
   
-  form div input {
+  .card form div input {
     border-radius: 10px;
     width: 100%;
   }
@@ -66,3 +72,9 @@ h1 {
   display: flex;
   align-items: center;
 }
+.buttonContainer {
+  display: flex;
+  margin-top: 10px;
+
+ }
+
