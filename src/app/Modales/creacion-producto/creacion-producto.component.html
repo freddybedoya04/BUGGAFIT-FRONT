@@ -31,14 +31,14 @@
             <input type="text" pInputText formControlName="PRO_PRECIO_DETAL" matInput autocomplete="off">
         </div>
         <div>
-            <label for="PRO_MARCA">Marca:</label>
-            <input type="text" pInputText formControlName=PRO_MARCA matInput autocomplete="off">
-
+            <label for="PRO_CATEGORIA">Categoría:</label>
+            <p-dropdown [options]="listaCategorias" [(ngModel)]="categoriaSeleccionada" optionLabel="CAT_NOMBRE" formControlName="PRO_CATEGORIA"></p-dropdown>
         </div>
         <div>
-            <label for="PRO_CATEGORIA">Categoria:</label>
-            <input type="text" pInputText formControlName="PRO_CATEGORIA">
+            <label for="PRO_MARCA">Marca:</label>
+            <p-dropdown [options]="listaMarcas" [(ngModel)]="marcaSeleccionada" optionLabel="MAR_NOMBRE" formControlName="PRO_MARCA"></p-dropdown>
         </div>
+        
 </form>
 <div>
     <div class="buttonContainer">

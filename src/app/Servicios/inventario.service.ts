@@ -40,4 +40,19 @@ export class InventarioService {
         return result.Data;
       }));
   }
+  ObtenerMarcas() {
+    return this.http.get(this.url + 'GetMarcas').pipe(
+      map((result: any) => {
+        return result.Data;
+      })
+    );
+  }
+  ObtenerCategorias() {
+    return this.http.get(this.url + 'GetCategorias').pipe(
+      map((result: any) => {
+        return result.Data;
+      })
+    );
+  }
+
 }
