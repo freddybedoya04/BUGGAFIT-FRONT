@@ -41,4 +41,10 @@ export class VentasService {
         return result.Data;
       }));
   }
+  BuscarTipoCuentas() {
+    return this.http.get('TipoCuentas/GetTipoCuentas').pipe(
+      map((result: any) => {
+        return result.Data;
+      }));
+  }
 }

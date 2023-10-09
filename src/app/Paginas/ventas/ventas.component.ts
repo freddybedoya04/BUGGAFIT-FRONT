@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { ConfirmEventType, PrimeNGConfig, SelectItem } from 'primeng/api';
+import { FormGroup, Validators, FormBuilder, NgForm } from '@angular/forms';
+import { PrimeNGConfig, SelectItem } from 'primeng/api';
 import { Icliente } from 'src/app/Interfaces/icliente';
 import { IDetalleVentas } from 'src/app/Interfaces/idetalle-ventas';
 import { Iproducto } from 'src/app/Interfaces/iproducto';
@@ -14,7 +14,7 @@ import { VentasService } from 'src/app/Servicios/ventas.service';
   templateUrl: './ventas.component.html',
   styleUrls: ['./ventas.component.scss']
 })
-export class VentasComponent {
+export class VentasComponent implements OnInit {
 
   @ViewChild("codigoProdcutoInput") codigoProdcutoInput!: ElementRef;
   @ViewChild("cantidadInput") cantidadInput!: ElementRef;
@@ -102,6 +102,24 @@ export class VentasComponent {
       COM_CANTIDAD: 0,
     };
   }
+  ngOnInit(): void {
+    this.ObtenerTipoCuentas();
+  }
+
+  ObtenerTipoCuentas() {
+    this.ventasService.BuscarTipoCuentas().subscribe((result: any) => {
+      if (result === null) {
+        return;
+      }
+      this.listaTipoDeCuenta = result.map((item: any) => {
+        const selectItem: SelectItem = {
+          label: item.TIC_NOMBRE,
+          value: item.TIC_CODIGO
+        }
+        return selectItem;
+      });
+    });
+  }
 
   AutocompletarCedula(event: any) {
     if (event.key === 'Enter') {
@@ -182,7 +200,7 @@ export class VentasComponent {
     try {
       totalDescuento = (1 - (this.formularioVenta.controls['PRO_VALORTOTAL'].value / valorNeto)) * 100;
     } catch (error) { return; }
-    this.formularioVenta.controls['PRO_DESCUENTO'].setValue(totalDescuento.toFixed(0));
+    this.formularioVenta.controls['PRO_DESCUENTO'].setValue(totalDescuento.toFixed(1));
   }
 
   AgregarProducto(event: any) {
@@ -237,7 +255,7 @@ export class VentasComponent {
     console.log(this.listaProductos);
   }
 
-  FinalizarFactura(event: any) {
+  FinalizarFactura(form: any) {
     if (!this.formularioVenta.controls['VEN_TIPOPAGO'].value || this.formularioVenta.controls['VEN_TIPOPAGO'].value === null) {
       // Agregar mensaje de error
       return;
@@ -279,6 +297,9 @@ export class VentasComponent {
     this.ventasService.CrearVenta(venta).subscribe((result: any) => {
       if (result.statusCode.toString().indexOf('20') >= 0) {
         //Lipiamos el formulario y enviamos mensaje de que esta correcto.
+        alert("venta creada");
+        form.resetForm();
+        this.formularioVenta.controls['VEN_FECHAVENTA'].setValue(new Date())
       }
     })
   }

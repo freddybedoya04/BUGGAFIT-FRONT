@@ -1,6 +1,6 @@
 <div class="Principal">
   <h1>Ventas</h1>
-  <form [formGroup]="formularioVenta">
+  <form #myForm="ngForm" [formGroup]="formularioVenta" (ngSubmit)="FinalizarFactura(myForm)">
     <div class="form-group">
       <label for="VEN_FECHAVENTA">Fecha Venta:</label>
       <p-calendar formControlName="VEN_FECHAVENTA" name="FechaVenta" [showTime]="true" hourFormat="12"></p-calendar>
@@ -84,6 +84,11 @@
         (onClick)="AgregarProducto($event)"></p-button>
       <!-- <p-button label="Buscar" styleClass="p-button-rounded"></p-button> -->
     </div>
+    <div class="buttonContainer">
+      <p-button label="Realizar Factura" styleClass="p-button-rounded p-button-success" style="margin-right: 10px"
+        type="Submit"></p-button>
+      <!-- <p-button label="Buscar" styleClass="p-button-rounded"></p-button> -->
+    </div>
   </form>
 
   <br />
@@ -136,9 +141,4 @@
       </ng-template>
     </p-table>
   </p-card>
-  <div class="buttonContainer">
-    <p-button label="Realizar Factura" styleClass="p-button-rounded p-button-success" style="margin-right: 10px"
-      (onClick)="FinalizarFactura($event)"></p-button>
-    <!-- <p-button label="Buscar" styleClass="p-button-rounded"></p-button> -->
-  </div>
 </div>

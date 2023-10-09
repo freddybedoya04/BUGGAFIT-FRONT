@@ -4,12 +4,12 @@
        
         <form [formGroup]="loginForm">
             <span>
-                <input class ="textFile" id="user" type="text" pInputText  autocomplete="false" pInputText />
+                <input class ="textFile" id="user" type="text" pInputText  autocomplete="false" pInputText formControlName="user"/>
                 <label  for="user">Usuario</label>
                 
             </span>
             <span>
-                <input class="textFile"  type="password"  pInputText  autocomplete="false" pInputText />
+                <input class="textFile"  type="password"  pInputText  autocomplete="false" pInputText formControlName="pass"/>
                 <label for="password">Contraseña</label>
             </span>
              <span>
