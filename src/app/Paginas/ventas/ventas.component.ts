@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild,ViewEncapsulation } from '@angular/core';
-import { FormGroup, Validators, FormBuilder, NgForm } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, Validators, FormBuilder, NgForm, Form } from '@angular/forms';
 import { PrimeNGConfig, SelectItem } from 'primeng/api';
 import { Icliente } from 'src/app/Interfaces/icliente';
 import { IDetalleVentas } from 'src/app/Interfaces/idetalle-ventas';
@@ -19,6 +19,8 @@ export class VentasComponent implements OnInit {
 
   @ViewChild("codigoProdcutoInput") codigoProdcutoInput!: ElementRef;
   @ViewChild("cantidadInput") cantidadInput!: ElementRef;
+  @ViewChild("myForm") myForm!: Form;
+
 
   producto: Iproducto;
   listaProductos: IDetalleVentas[] = [];
@@ -73,7 +75,7 @@ export class VentasComponent implements OnInit {
   ) {
     this.formularioVenta = formBuilder.group({
       VEN_FECHAVENTA: [{ value: new Date(), disabled: false }, Validators.required],
-      VEN_TIPOPAGO: [null, Validators.required],
+      // VEN_TIPOPAGO: [null, Validators.required],
       VEN_CUENTADESTINO: [null, Validators.required],
       CLI_ID: [null, Validators.required],
       CLI_NOMBRE: [null, Validators.required],
@@ -86,7 +88,7 @@ export class VentasComponent implements OnInit {
       PRO_PRECIO: [{ value: '', disabled: true }],
       PRO_CANTIDADVENTA: [null, Validators.required],
       PRO_VALORTOTAL: [null, Validators.required],
-      PRO_DESCUENTO: [{ value: '', disabled: false }, Validators.required],
+      PRO_DESCUENTO: [{ value: 0, disabled: false }, Validators.required],
     });
     this.producto = {
       PRO_CODIGO: '',
@@ -125,53 +127,50 @@ export class VentasComponent implements OnInit {
   }
 
   AutocompletarCedula(event: any) {
-    if (event.key === 'Enter') {
-      this.clientesService.BuscarClienteID(this.formularioVenta.controls['VENT_CEDULA'].value).subscribe((result: Icliente) => {
-        if (!result || result === null) { // en caso que llege vacio el cliente
-          this.existeCliente = false;
-          this.alertasService.SetToast("El cliente no existe. Por favor diligencie los datos para crearlo.", 2);
-          return;
-        }
-        this.existeCliente = true;
-        this.formularioVenta.controls['CLI_NOMBRE'].setValue(result.CLI_NOMBRE);
-        this.formularioVenta.controls['CLI_DIRECCION'].setValue(result.CLI_DIRECCION);
-        this.formularioVenta.controls['CLI_UBICACION'].setValue(result.CLI_UBICACION);
-        const tipoCliente = this.listaTipoDeCliente.filter((tipocliente: SelectItem) => {
-          return tipocliente.value == result.CLI_TIPOCLIENTE;
-        });
-        this.formularioVenta.controls['CLI_TIPOCLIENTE'].setValue((tipoCliente.length > 0) ? tipoCliente[0].value : null);
-        this.codigoProdcutoInput.nativeElement.focus();
-        this.alertasService.SetToast("Cliente encontrado.", 1);
+    this.clientesService.BuscarClienteID(this.formularioVenta.controls['VENT_CEDULA'].value).subscribe((result: Icliente) => {
+      if (!result || result === null) { // en caso que llege vacio el cliente
+        this.existeCliente = false;
+        this.alertasService.SetToast("El cliente no existe. Por favor diligencie los datos para crearlo.", 2);
+        return;
+      }
+      this.existeCliente = true;
+      this.formularioVenta.controls['CLI_NOMBRE'].setValue(result.CLI_NOMBRE);
+      this.formularioVenta.controls['CLI_DIRECCION'].setValue(result.CLI_DIRECCION);
+      this.formularioVenta.controls['CLI_UBICACION'].setValue(result.CLI_UBICACION);
+      const tipoCliente = this.listaTipoDeCliente.filter((tipocliente: SelectItem) => {
+        return tipocliente.value == result.CLI_TIPOCLIENTE;
       });
-    }
+      this.formularioVenta.controls['CLI_TIPOCLIENTE'].setValue((tipoCliente.length > 0) ? tipoCliente[0].value : null);
+      this.codigoProdcutoInput.nativeElement.focus();
+      this.alertasService.SetToast("Cliente encontrado.", 1);
+    });
   }
 
   AutocompletarProducto(event: any) {
     const codigo = this.formularioVenta.controls['PRO_CODIGO'].value
-    if (event.key === 'Enter') {
-      if (!this.formularioVenta.controls['CLI_TIPOCLIENTE'].value || this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === null) //en caso que no se haya seleccionado un tipo de cliente 
-      {
+    if (!this.formularioVenta.controls['CLI_TIPOCLIENTE'].value || this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === null) //en caso que no se haya seleccionado un tipo de cliente 
+    {
+      // Agregar mensaje de error
+      this.alertasService.SetToast("Debe seleccionar un tipo de cliente.", 2);
+      return;
+    }
+    this.invetarioService.BuscarProductoID(codigo).subscribe((result: any) => {
+      if (!result || result === null) {// en caso que llege vacio el producto
         // Agregar mensaje de error
-        this.alertasService.SetToast("Debe seleccionar un tipo de cliente.", 2);
+        this.alertasService.SetToast("producto no encontrado.", 3);
         return;
       }
-      this.invetarioService.BuscarProductoID(codigo).subscribe((result: any) => {
-        if (!result || result === null) {// en caso que llege vacio el producto
-          // Agregar mensaje de error
-          this.alertasService.SetToast("producto no encontrado.", 3);
-          return;
-        }
-        this.producto = result;
-        this.formularioVenta.controls['PRO_NOMBRE'].setValue(this.producto.PRO_NOMBRE);
-        if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[0].value) { //mayorista
-          this.formularioVenta.controls['PRO_PRECIO'].setValue(this.producto.PRO_PRECIOVENTA_MAYORISTA);
-        }
-        if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[1].value) { //Al detal
-          this.formularioVenta.controls['PRO_PRECIO'].setValue(this.producto.PRO_PRECIOVENTA_DETAL);
-        }
-        this.cantidadInput.nativeElement.focus();
-      });
-    }
+      this.producto = result;
+      this.formularioVenta.controls['PRO_NOMBRE'].setValue(this.producto.PRO_NOMBRE);
+      if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[0].value) { //mayorista
+        this.formularioVenta.controls['PRO_PRECIO'].setValue(this.producto.PRO_PRECIOVENTA_MAYORISTA);
+      }
+      if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[1].value) { //Al detal
+        this.formularioVenta.controls['PRO_PRECIO'].setValue(this.producto.PRO_PRECIOVENTA_DETAL);
+      }
+      this.cantidadInput.nativeElement.focus();
+    });
+
   }
 
   CalcularValorTotal(event: any) {
@@ -287,12 +286,13 @@ export class VentasComponent implements OnInit {
 
   }
 
-  FinalizarFactura(form: any) {
-    if (!this.formularioVenta.controls['VEN_TIPOPAGO'].value || this.formularioVenta.controls['VEN_TIPOPAGO'].value === null) {
-      // Agregar mensaje de error
-      // this.alertasService.SetToast("Debe ingresar el tipo de pago.", 3);
-      return;
-    }
+  FinalizarFactura(event?: any) {
+    console.log("aqui")
+    // if (this.formularioVenta.controls['VEN_TIPOPAGO'].value === null) {
+    //   // Agregar mensaje de error
+    //   // this.alertasService.SetToast("Debe ingresar el tipo de pago.", 3);
+    //   return;
+    // }
     if (!this.formularioVenta.controls['VEN_CUENTADESTINO'].value || this.formularioVenta.controls['VEN_CUENTADESTINO'].value === null) {
       // Agregar mensaje de error
       // this.alertasService.SetToast("Debe ingresar el una cuenta destino.", 3);
@@ -322,7 +322,7 @@ export class VentasComponent implements OnInit {
       VEN_CODIGO: 0,
       VEN_FECHACREACION: new Date(),
       VEN_FECHAVENTA: this.formularioVenta.controls['VEN_FECHAVENTA'].value,
-      VEN_TIPOPAGO: this.formularioVenta.controls['VEN_TIPOPAGO'].value,
+      VEN_TIPOPAGO: nombreTipoCuenta[0].label,
       TIC_CODIGO: nombreTipoCuenta[0].value,
       TIC_NOMBRE: nombreTipoCuenta[0].label,
       CLI_ID: this.formularioVenta.controls['VENT_CEDULA'].value,
@@ -342,12 +342,12 @@ export class VentasComponent implements OnInit {
       DetalleVentas: this.listaProductos,
     }
     this.ventasService.CrearVenta(venta).subscribe((result: any) => {
-      if (result.statusCode.toString().indexOf('20') >= 0) {
+      console.log(result.toString().indexOf('20') >= 0)
+      if (result.toString().indexOf('20') >= 0) {
         //Lipiamos el formulario y enviamos mensaje de que esta correcto.
-        form.resetForm();
+        this.formularioVenta.reset();
         this.formularioVenta.controls['VEN_FECHAVENTA'].setValue(new Date())
         this.alertasService.SetToast("Venta creada exitosamente.", 1);
-
       }
     });
   }
