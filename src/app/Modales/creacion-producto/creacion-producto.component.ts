@@ -4,8 +4,6 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Iproducto } from 'src/app/Interfaces/iproducto';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { InventarioService } from 'src/app/Servicios/inventario.service';
-import { icategoria } from 'src/app/Interfaces/icategoria';
-import { imarca } from 'src/app/Interfaces/imarca';
 import { SelectItem } from 'primeng/api';
 
 @Component({
@@ -34,9 +32,10 @@ export class CreacionProductoComponent implements OnInit {
       PRO_PRECIO_MAYORISTA: [null, Validators.required],
       PRO_PRECIO_DETAL: [null, Validators.required],
       PRO_CANTIDAD: [null, Validators.required],
-      UNIDADES_MINIMA_ALERTA: [null, Validators.required],
+      UNIDADES_MINIMA_ALERTA: [null, [Validators.required, Validators.min(0)]],
       PRO_CATEGORIA: [null, Validators.required],
       PRO_MARCA: [null, Validators.required],
+      COM_CANTIDAD:[null, Validators.required]
     });
   }
 
@@ -59,7 +58,7 @@ export class CreacionProductoComponent implements OnInit {
         PRO_ACTUALIZACION: new Date(),
         PRO_FECHACREACION: new Date(),
         PRO_ESTADO: true,
-        COM_CANTIDAD: this.formularioProducto.get('PRO_CANTIDAD')?.value,
+        COM_CANTIDAD: this.formularioProducto.get('COM_CANTIDAD')?.value,
         PRO_UNIDADES_MINIMAS_ALERTA: this.formularioProducto.get('UNIDADES_MINIMA_ALERTA')?.value,
       };
 
