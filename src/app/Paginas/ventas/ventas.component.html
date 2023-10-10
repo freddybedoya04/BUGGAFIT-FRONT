@@ -1,100 +1,110 @@
 <div class="Principal">
   <h1>Ventas</h1>
-  <form #myForm="ngForm" [formGroup]="formularioVenta" (ngSubmit)="FinalizarFactura(myForm)">
+ 
     <!-- Card informacion venta -->
     <p-card header="Informacion Venta" [style]="{ width: '100%' }" class="card">
-    <div class="form-group">
+      <form #myForm="ngForm" [formGroup]="formularioVenta" (ngSubmit)="FinalizarFactura(myForm)">
+    <div  >
       <label for="VEN_FECHAVENTA">Fecha Venta:</label>
       <p-calendar formControlName="VEN_FECHAVENTA" name="FechaVenta" [showTime]="true" hourFormat="12"></p-calendar>
     </div>
 <!-- 
-    <div class="form-group">
+    <div  >
       <label for="VEN_TIPOPAGO">Tipo de pago:</label>
       <p-dropdown formControlName="VEN_TIPOPAGO" [options]="listaTipoDePago" optionLabel="label" optionValue="value"
         [filter]="true" filterBy="label" [showClear]="true" placeholder="Seleccione Pago"></p-dropdown>
     </div> -->
 
-    <div class="form-group">
+    <div  >
       <label for="VEN_CUENTADESTINO">Tipo de pago:</label>
       <p-dropdown formControlName="VEN_CUENTADESTINO" [options]="listaTipoDeCuenta" optionLabel="label"
         optionValue="value" [filter]="true" filterBy="label" [showClear]="true"
         placeholder="Seleccione Cuenta"></p-dropdown>
     </div>
+  </form>
   </p-card>
+
+
 <!-- Card CLiente  -->
   <p-card header="Cliente" [style]="{ width: '100%' }" class="card">
-    <div class="form-group" >
+    <form #myForm="ngForm" [formGroup]="formularioVenta" (ngSubmit)="FinalizarFactura(myForm)">
+    <div   >
       <label for="CLI_ID">Cedula:</label>
       <input (keydown.Tab)="AutocompletarCedula($event)" type="text" pInputText formControlName="VENT_CEDULA" />
     </div>
 
-    <div class="form-group">
+    <div  >
       <label for="CLI_NOMBRE">Nombre:</label>
       <input type="text" pInputText formControlName="CLI_NOMBRE" />
     </div>
 
-    <div class="form-group">
+    <div  >
       <label for="CLI_DIRECCION">Direccion:</label>
       <input type="text" pInputText formControlName="CLI_DIRECCION" />
     </div>
 
-    <div class="form-group">
+    <div  >
       <label for="CLI_UBICACION">Ubicacion:</label>
       <input type="text" pInputText formControlName="CLI_UBICACION" />
     </div>
 
-    <div class="form-group">
+    <div  >
       <label for="CLI_TIPOCLIENTE">Tipo de cliente:</label>
       <p-dropdown formControlName="CLI_TIPOCLIENTE" [options]="listaTipoDeCliente" optionLabel="label"
         optionValue="value" [filter]="true" filterBy="label" [showClear]="true"
         placeholder="Seleccione Cliente"></p-dropdown>
     </div>
+  </form>
     </p-card>
     <!--<div class="buttonContainer">
       <p-button label="Agregar" styleClass="p-button-rounded p-button-success" style="margin-right: 10px"></p-button>
       <p-button label="Buscar" styleClass="p-button-rounded"></p-button>
     </div> -->
+  
+   
     <!-- Card producto -->
     <p-card header="Informacion producto" [style]="{ width: '100%' }" class="card">
-    <div class="form-group" >
+      <form #myForm="ngForm" [formGroup]="formularioVenta" (ngSubmit)="FinalizarFactura(myForm)">
+    <div   >
       <label for="PRO_CODIGO">Codigo:</label>
       <input #codigoProdcutoInput (keydown.Tab)="AutocompletarProducto($event)" type="text" pInputText formControlName="PRO_CODIGO" />
     </div>
 
-    <div class="form-group">
+    <div  >
       <label for="PRO_NOMBRE">Nombre Articulo:</label>
       <input type="text" pInputText formControlName="PRO_NOMBRE" />
     </div>
-    <div>
+    <div  >
       <label>Cantidad:</label>
       <input #cantidadInput  type="text" (keyup)="CalcularValorTotal($event)" pInputText formControlName="PRO_CANTIDADVENTA" />
     </div>
 
-    <div>
+    <div  >
       <label>Precio:</label>
       <input type="text" pInputText formControlName="PRO_PRECIO" />
     </div>
 
-    <div>
+    <div  >
       <label>Valor Total:</label>
       <input (keyup)="CalcularDescuentoPorcentaje($event)" type="text" pInputText formControlName="PRO_VALORTOTAL" />
     </div>
 
-    <div>
+    <div  >
       <label>Descuento:</label>
       <input (keyup)="CalcularValorTotalConDescuento($event)" type="text" pInputText formControlName="PRO_DESCUENTO"/>
     </div> 
-    <div class="buttonContainer">
-      <p-button label="Agregar"  style="margin-right: 10px" styleClass="p-button-rounded"
-        (onClick)="AgregarProducto($event)"></p-button>
-      <p-button label="Realizar Factura" styleClass="p-button-rounded p-button-success" style="margin-right: 10px"
-        type="Submit"></p-button>
-  </div>
-    
+</form>
+<div class="buttonContainer">
+  <p-button label="Agregar"  style="margin-right: 10px" styleClass="p-button-rounded"
+    (onClick)="AgregarProducto($event)"></p-button>
+  <p-button label="Realizar Factura" styleClass="p-button-rounded p-button-success" style="margin-right: 10px"
+    type="Submit"></p-button>
+</div>
+
   </p-card>
  
     
-  </form>
+ 
 
   <br />
   <p-card header="Ventas" [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
