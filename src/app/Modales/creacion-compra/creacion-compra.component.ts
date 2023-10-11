@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SelectItem } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { combineLatest } from 'rxjs';
 import { Icompras } from 'src/app/Interfaces/icompra';
@@ -7,6 +8,8 @@ import { Iproducto } from 'src/app/Interfaces/iproducto';
 import { IdetalleCompra } from 'src/app/Interfaces/iproducto-comprado';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { ComprasService } from 'src/app/Servicios/compras.service';
+import { InventarioService } from 'src/app/Servicios/inventario.service';
+import { VentasService } from 'src/app/Servicios/ventas.service';
 
 @Component({
   selector: 'app-creacion-compra',
@@ -23,11 +26,13 @@ export class CreacionCompraComponent implements OnInit {
   Bodega: boolean;
   Credito: boolean;
   FechaActual: Date;
+  listaTipoDeCuenta: SelectItem[] = [];
   @Input() EsEdicion: boolean;
   @Input() Compra: Icompras;
   constructor(private fb: FormBuilder, private alerta: AlertasService,
     private comprasService: ComprasService, public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig) {
+    public config: DynamicDialogConfig,private inventarioService:InventarioService,
+    private ventasService:VentasService) {
     this.FechaActual = new Date(Date.now());
     this.formularioCompra = fb.group({
       COM_FechaCompra: [this.FechaActual, Validators.required],
@@ -85,6 +90,7 @@ export class CreacionCompraComponent implements OnInit {
   }
   ngOnInit(): void {
     this.LlenadoProductos();
+    this.ObtenerTipoCuentas();
     debugger;
     this.EsEdicion = this.config.data.esEdicion;
     if (this.EsEdicion == true) {
@@ -95,53 +101,20 @@ export class CreacionCompraComponent implements OnInit {
 
   }
   LlenadoProductos() {
-    this.productos = [
-      {
-        PRO_CODIGO: 'CREA_RX',
-        PRO_NOMBRE: 'Creatina',
-        PRO_MARCA: '1',
-        PRO_CATEGORIA: '3',
-        PRO_PRECIO_COMPRA: 90000,
-        PRO_PRECIOVENTA_DETAL: 20.0,
-        PRO_PRECIOVENTA_MAYORISTA: 18.0,
-        PRO_UNIDADES_DISPONIBLES: 100,
-        PRO_UNIDADES_MINIMAS_ALERTA: 10,
-        PRO_ACTUALIZACION: new Date('2023-09-26'),
-        PRO_FECHACREACION: new Date('2023-01-15'),
-        PRO_ESTADO: true,
-        COM_CANTIDAD: 20
-      },
-      {
-        PRO_CODIGO: '002',
-        PRO_NOMBRE: 'Caloricos',
-        PRO_MARCA: 'Marca 2',
-        PRO_CATEGORIA: 'Categoría 2',
-        PRO_PRECIO_COMPRA: 15.0,
-        PRO_PRECIOVENTA_DETAL: 25.0,
-        PRO_PRECIOVENTA_MAYORISTA: 22.0,
-        PRO_UNIDADES_DISPONIBLES: 75,
-        PRO_UNIDADES_MINIMAS_ALERTA: 8,
-        PRO_ACTUALIZACION: new Date('2023-09-25'),
-        PRO_FECHACREACION: new Date('2023-02-20'),
-        PRO_ESTADO: true,
-        COM_CANTIDAD: 20
-      },
-      {
-        PRO_CODIGO: '003',
-        PRO_NOMBRE: 'Proteina',
-        PRO_MARCA: 'Marca 3',
-        PRO_CATEGORIA: 'Categoría 3',
-        PRO_PRECIO_COMPRA: 12.0,
-        PRO_PRECIOVENTA_DETAL: 22.0,
-        PRO_PRECIOVENTA_MAYORISTA: 20.0,
-        PRO_UNIDADES_DISPONIBLES: 120,
-        PRO_UNIDADES_MINIMAS_ALERTA: 15,
-        PRO_ACTUALIZACION: new Date('2023-09-24'),
-        PRO_FECHACREACION: new Date('2023-03-10'),
-        PRO_ESTADO: true,
-        COM_CANTIDAD: 20
-      },
-    ];
+    this.inventarioService.BuscarProductos().subscribe(x =>{
+      this.productos=x;
+    })
+  }
+  ObtenerTipoCuentas() {
+    this.ventasService.BuscarTipoCuentas().subscribe((result: any) => {
+      this.listaTipoDeCuenta = result.map((item: any) => {
+        const selectItem: SelectItem = {
+          label: item.TIC_NOMBRE,
+          value: item.TIC_CODIGO
+        }
+        return selectItem;
+      });
+    });
   }
   CambioProducto() {
     this.ProductoComprado = {
