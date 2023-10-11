@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { CreacionProductoComponent } from 'src/app/Modales/creacion-producto/creacion-producto.component';
 import { IFiltro } from 'src/app/Interfaces/ifiltro';
@@ -11,11 +11,12 @@ import { Iproducto } from 'src/app/Interfaces/iproducto';
   templateUrl: './inventario.component.html',
   styleUrls: ['./inventario.component.scss']
 })
-export class InventarioComponent {
+export class InventarioComponent implements OnInit {
   FechaInicio: Date;
   FechaFin: Date;
   filtro: IFiltro;
   listaProductos: Iproducto[] = [];
+  
 
   constructor(
     private dialogService: DialogService,
@@ -28,7 +29,10 @@ export class InventarioComponent {
       FechaFin: "",
       FechaInicio: ""
     }
+  
   }
+  ngOnInit(){
+    this.BuscarProductos();  }
   ConfigurarFechas() {
     this.FechaFin = new Date();
     this.FechaInicio = new Date(this.FechaFin)

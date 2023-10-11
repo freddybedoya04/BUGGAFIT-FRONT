@@ -14,8 +14,9 @@
         
         <div>
             <label for="PRO_UNIDADES_DISPONIBLES">Unidades Disponibles:</label>
-            <input type="text" pInputText formControlName=PRO_UNIDADES_DISPONIBLES matInput autocomplete="off">
-
+            <!-- <input type="text" pInputText formControlName=PRO_UNIDADES_DISPONIBLES matInput autocomplete="off"> -->
+            <p-inputNumber class= "Numerico"  mode="decimal" locale="en-US" formControlName=PRO_UNIDADES_DISPONIBLES ></p-inputNumber>
+x
         </div>
         <div>
             <label for="UNIDADES_MINIMA_ALERTA">Unidades Minimas:</label>
@@ -25,7 +26,7 @@
         <div>
             <label for="PRO_PRECIO_COMPRA">Precio Compra:</label>
             <input type="text" pInputText formControlName=PRO_PRECIO_COMPRA matInput autocomplete="off">
-
+        
         </div>
         <div>
             <label for="PRO_PRECIO_MAYORISTA">Precio de Mayorista:</label>
