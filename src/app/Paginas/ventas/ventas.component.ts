@@ -1,12 +1,15 @@
 import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, NgForm, Form } from '@angular/forms';
 import { PrimeNGConfig, SelectItem } from 'primeng/api';
+import { Dropdown } from 'primeng/dropdown';
 import { Icliente } from 'src/app/Interfaces/icliente';
 import { IDetalleVentas } from 'src/app/Interfaces/idetalle-ventas';
+import { IGasto } from 'src/app/Interfaces/igasto';
 import { Iproducto } from 'src/app/Interfaces/iproducto';
 import { Iventa } from 'src/app/Interfaces/iventa';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { ClientesService } from 'src/app/Servicios/clientes.service';
+import { GastosService } from 'src/app/Servicios/gastos.service';
 import { InventarioService } from 'src/app/Servicios/inventario.service';
 import { VentasService } from 'src/app/Servicios/ventas.service';
 
@@ -18,6 +21,7 @@ import { VentasService } from 'src/app/Servicios/ventas.service';
 export class VentasComponent implements OnInit {
 
   @ViewChild("codigoProdcutoInput") codigoProdcutoInput!: ElementRef;
+  @ViewChild("tipoDeEnvioDropdown") tipoDeEnvioDropdown!: Dropdown;
   @ViewChild("cantidadInput") cantidadInput!: ElementRef;
   @ViewChild("myForm") myForm!: Form;
 
@@ -29,6 +33,9 @@ export class VentasComponent implements OnInit {
   tipodecuentaSeleccionado: any;
   tipoClienteSeleccionado!: string;
   existeCliente: boolean = false;
+  gastoDeEnvio: IGasto;
+  motivosDeEnvio: any;
+  userLogged: any;
   //Listas de los dropdown
   listaTipoDeCliente: SelectItem[] = [
     {
@@ -50,18 +57,18 @@ export class VentasComponent implements OnInit {
       value: 2,
     }
   ];
-  listaTipoDePago: SelectItem[] = [
+  listaTipoDeEnvio: SelectItem[] = [
     {
-      label: "Contado",
-      value: "Contado"
+      label: "Gratis",
+      value: TiposDeEnvioEnum.EnvioGratis
     },
     {
-      label: "Consignacio",
-      value: "Consignacio"
+      label: "Envio Local",
+      value: TiposDeEnvioEnum.EnvioLocal
     },
     {
-      label: "Credito",
-      value: "Credito"
+      label: "Envio Nacional",
+      value: TiposDeEnvioEnum.EnvioNacional
     }
   ];
 
@@ -72,10 +79,12 @@ export class VentasComponent implements OnInit {
     private clientesService: ClientesService,
     private ventasService: VentasService,
     private alertasService: AlertasService,
+    private gastosService: GastosService
   ) {
+    this.userLogged = JSON.parse(localStorage.getItem('user') || "");
     this.formularioVenta = formBuilder.group({
       VEN_FECHAVENTA: [{ value: new Date(), disabled: false }, Validators.required],
-      // VEN_TIPOPAGO: [null, Validators.required],
+      VEN_TIPOENVIO: [null, Validators.required],
       VEN_CUENTADESTINO: [null, Validators.required],
       CLI_ID: [null, Validators.required],
       CLI_NOMBRE: [null, Validators.required],
@@ -105,9 +114,23 @@ export class VentasComponent implements OnInit {
       PRO_ESTADO: false,
       COM_CANTIDAD: 0,
     };
+    this.gastoDeEnvio = {
+      GAS_CODIGO : 0,
+      GAS_FECHACREACION : new Date(),
+      GAS_FECHAGASTO : new Date(),
+      MOG_CODIGO : 0,
+      GAS_VALOR : 0,
+      TIC_CODIGO : 0,
+      GAS_ESTADO : false,
+      USU_CEDULA : '',
+      GAS_PENDIENTE : false,
+      VEN_CODIGO : 0,
+    }
   }
   ngOnInit(): void {
     this.ObtenerTipoCuentas();
+    this.ObtenerTipoDeGastoEnvio();
+
   }
 
   ObtenerTipoCuentas() {
@@ -120,6 +143,22 @@ export class VentasComponent implements OnInit {
         const selectItem: SelectItem = {
           label: item.TIC_NOMBRE,
           value: item.TIC_CODIGO
+        }
+        return selectItem;
+      });
+    });
+  }
+  
+  ObtenerTipoDeGastoEnvio() {
+    this.gastosService.BuscarMotivoGasto().subscribe((result: any) => {
+      if (result === null) {
+        this.alertasService.SetToast("No hay Motivos de envio.", 3);
+        return;
+      }
+      this.listaTipoDeEnvio = result.map((item: any) => {
+        const selectItem: SelectItem = {
+          label: item.MOG_NOMBRE,
+          value: item.MOG_CODIGO
         }
         return selectItem;
       });
@@ -141,7 +180,7 @@ export class VentasComponent implements OnInit {
         return tipocliente.value == result.CLI_TIPOCLIENTE;
       });
       this.formularioVenta.controls['CLI_TIPOCLIENTE'].setValue((tipoCliente.length > 0) ? tipoCliente[0].value : null);
-      this.codigoProdcutoInput.nativeElement.focus();
+      this.tipoDeEnvioDropdown.focus();
       this.alertasService.SetToast("Cliente encontrado.", 1);
     });
   }
@@ -169,6 +208,10 @@ export class VentasComponent implements OnInit {
         this.formularioVenta.controls['PRO_PRECIO'].setValue(this.producto.PRO_PRECIOVENTA_DETAL);
       }
       this.cantidadInput.nativeElement.focus();
+      if ((this.producto.PRO_UNIDADES_DISPONIBLES ?? 0) <= 0) { // validacion de cantidad de producto
+        // Agregar mensaje de error
+        this.alertasService.SetToast("El producto no tiene unidades en inventario.", 2);
+      }
     });
 
   }
@@ -281,13 +324,49 @@ export class VentasComponent implements OnInit {
     this.codigoProdcutoInput.nativeElement.focus();
 
     this.listaProductos.push(detalleVenta); // Agregamos el producto a la lista
-    console.log(this.listaProductos);
     this.alertasService.SetToast("Producto agregado con exito.", 1);
 
   }
 
+  AgregarTipoDeEnvio(event: any){
+    const nombreTipoEnvio = this.listaTipoDeEnvio.filter((tipocliente: any) => {
+      return tipocliente.value == this.formularioVenta.controls['VEN_TIPOENVIO'].value;
+    })[0]?.label;
+    if(!nombreTipoEnvio){
+      this.alertasService.SetToast("Por Favor seleccione un tipo de envio.", 2);
+      return;
+    }
+    if(nombreTipoEnvio.toLowerCase().indexOf('local') >= 0){
+      this.gastoDeEnvio = {
+        GAS_CODIGO : 0,
+        GAS_FECHACREACION : new Date(),
+        GAS_FECHAGASTO : new Date(),
+        MOG_CODIGO : this.formularioVenta.controls['VEN_TIPOENVIO'].value,
+        GAS_VALOR : 5000,
+        TIC_CODIGO : this.formularioVenta.controls['VEN_CUENTADESTINO'].value,
+        GAS_ESTADO : true,
+        USU_CEDULA : this.userLogged.USU_CEDULA,
+        GAS_PENDIENTE : true,
+        VEN_CODIGO : 0,
+      }
+    }
+    if(nombreTipoEnvio.toLowerCase().indexOf('nacional') >= 0){
+      this.gastoDeEnvio = {
+        GAS_CODIGO : 0,
+        GAS_FECHACREACION : new Date(),
+        GAS_FECHAGASTO : new Date(),
+        MOG_CODIGO : this.formularioVenta.controls['VEN_TIPOENVIO'].value,
+        GAS_VALOR : 15000,
+        TIC_CODIGO : this.formularioVenta.controls['VEN_CUENTADESTINO'].value,
+        GAS_ESTADO : true,
+        USU_CEDULA : this.userLogged.USU_CEDULA,
+        GAS_PENDIENTE : true,
+        VEN_CODIGO : 0,
+      }
+    }
+  }
+
   FinalizarFactura(event?: any) {
-    console.log("aqui")
     // if (this.formularioVenta.controls['VEN_TIPOPAGO'].value === null) {
     //   // Agregar mensaje de error
     //   // this.alertasService.SetToast("Debe ingresar el tipo de pago.", 3);
@@ -342,13 +421,24 @@ export class VentasComponent implements OnInit {
       DetalleVentas: this.listaProductos,
     }
     this.ventasService.CrearVenta(venta).subscribe((result: any) => {
-      console.log(result.toString().indexOf('20') >= 0)
-      if (result.toString().indexOf('20') >= 0) {
+      if (result.StatusCode.toString().indexOf('20') >= 0) {
         //Lipiamos el formulario y enviamos mensaje de que esta correcto.
         this.formularioVenta.reset();
         this.formularioVenta.controls['VEN_FECHAVENTA'].setValue(new Date())
         this.alertasService.SetToast("Venta creada exitosamente.", 1);
+
+        this.gastoDeEnvio.VEN_CODIGO = result.Data
+        this.gastosService.CrearGasto(this.gastoDeEnvio).subscribe((result: any) => {
+          this.alertasService.SetToast("Gasto de envio creado exitosamente.", 1);
+        });
       }
+      
     });
   }
+}
+
+enum TiposDeEnvioEnum {
+  EnvioGratis = "EnvioGratis",
+  EnvioLocal = "EnvioLocal",
+  EnvioNacional = "EnvioNacional",
 }

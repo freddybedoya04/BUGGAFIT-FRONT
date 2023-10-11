@@ -26,7 +26,6 @@ export class LoginComponent {
   }
 
   Login() {
-    console.log(this.loginForm);
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       for (const key in this.loginForm.controls) {

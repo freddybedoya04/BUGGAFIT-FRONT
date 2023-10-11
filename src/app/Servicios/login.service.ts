@@ -14,7 +14,15 @@ export class LoginService {
   Login(login: ILogin) {
     return this.http.post(this.url, login).pipe(
       map((result: any) => {
+        this.saveLocalStorage(result.Data, result.token);
         return result;
       }));
+  }
+
+  private saveLocalStorage(user: any, token: string): void {
+    const rest = user;
+    const JWTtoken = token;
+    localStorage.setItem('user', JSON.stringify(rest));
+    localStorage.setItem('token', JWTtoken);
   }
 }

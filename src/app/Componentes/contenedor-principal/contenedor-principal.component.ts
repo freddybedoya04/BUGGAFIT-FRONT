@@ -10,4 +10,8 @@ export class ContenedorPrincipalComponent {
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
   }
+  CerrarSesion(){    
+    localStorage.clear();
+    location.reload();
+  }
 }

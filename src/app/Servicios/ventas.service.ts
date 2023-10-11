@@ -26,7 +26,7 @@ export class VentasService {
   CrearVenta(venta: Iventa) {
     return this.http.post(this.url + 'PostVenta', venta).pipe(
       map((result: any) => {
-        return result.StatusCode;
+        return result;
       }));
   }
   EliminarVenta(venta: number) {
