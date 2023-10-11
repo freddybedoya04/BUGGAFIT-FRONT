@@ -42,15 +42,19 @@ export class CreacionProductoComponent implements OnInit {
   ngOnInit() {
     this.ObtenerCategorias();
     this.ObtenerMarcas();
+    console.log(this.listaCategorias);
   }
 
   CrearProducto() {
     try {
+    console.log(this.formularioProducto.get('PRO_CATEGORIA')?.value);
+    console.log(this.formularioProducto.get('PRO_MARCA')?.value);
+
       const Producto: Iproducto = {
-        PRO_CODIGO: '',
+        PRO_CODIGO: this.formularioProducto.get('PRO_CODIGO')?.value,
         PRO_NOMBRE: this.formularioProducto.get('PRO_NOMBRE')?.value,
-        PRO_MARCA: this.marcaSeleccionada,
-        PRO_CATEGORIA: this.categoriaSeleccionada,
+        PRO_MARCA: this.formularioProducto.get('PRO_MARCA')?.value + '',
+        PRO_CATEGORIA: this.formularioProducto.get('PRO_CATEGORIA')?.value + '',
         PRO_PRECIO_COMPRA: this.formularioProducto.get('PRO_PRECIO_COMPRA')?.value,
         PRO_PRECIOVENTA_MAYORISTA: this.formularioProducto.get('PRO_PRECIO_MAYORISTA')?.value,
         PRO_PRECIOVENTA_DETAL: this.formularioProducto.get('PRO_PRECIO_DETAL')?.value,
@@ -92,7 +96,6 @@ export class CreacionProductoComponent implements OnInit {
   ObtenerCategorias() {
     this.inventarioService.ObtenerCategorias().subscribe(
       (result: any) => {
-        console.log(result);
         if (result) {
           this.listaCategorias = result.map((item: any) => {
             const selectItem: SelectItem = {
@@ -108,7 +111,6 @@ export class CreacionProductoComponent implements OnInit {
   ObtenerMarcas() {
     this.inventarioService.ObtenerMarcas().subscribe(
       (result: any) => {
-        console.log(result);
         if (result) {
           this.listaMarcas = result.map((item: any) => {
             const selectItem: SelectItem = {

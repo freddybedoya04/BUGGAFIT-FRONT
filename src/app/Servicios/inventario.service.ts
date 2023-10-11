@@ -12,9 +12,10 @@ export class InventarioService {
   constructor(private http: HttpClientService) { }
 
   BuscarProductos() {
-    return this.http.get(this.url + 'GetProductos').subscribe((result: any) =>{
-      return result.Data;
-    });
+    return this.http.get(this.url + 'GetProductos').pipe(
+      map((result: any) => {
+        return result.Data
+      }));
   }
   BuscarProductoID(producto: string) {
     return this.http.get(this.url + 'GetProducto/' + producto).pipe(
