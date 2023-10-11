@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClientService } from './http-client.service';
 import { Iventa } from '../Interfaces/iventa';
 import { Observable, map } from 'rxjs';
+import { IFiltro } from '../Interfaces/ifiltro';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,12 @@ export class VentasService {
   }
   BuscarVentaID(venta: number) {
     return this.http.get(this.url + 'GetVenta/' + venta).pipe(
+      map((result: any) => {
+        return result.Data;
+      }));
+  }
+  BuscarVentasPorFechas(filtro:IFiltro){
+    return this.http.post(this.url+'PostListadoVenta',filtro).pipe(
       map((result: any) => {
         return result.Data;
       }));

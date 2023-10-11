@@ -72,9 +72,12 @@ h1 {
   display: flex;
   align-items: center;
 }
-.buttonContainer {
+.card form .buttonContainer {
+  grid-column: 1/4;
   display: flex;
-  margin-top: 30px;
+  align-items: center;
+  justify-items: center;
+  flex-direction: row;
 
  }
 

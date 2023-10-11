@@ -367,6 +367,7 @@ export class VentasComponent implements OnInit {
   }
 
   FinalizarFactura(event?: any) {
+    debugger;
     // if (this.formularioVenta.controls['VEN_TIPOPAGO'].value === null) {
     //   // Agregar mensaje de error
     //   // this.alertasService.SetToast("Debe ingresar el tipo de pago.", 3);
@@ -415,12 +416,14 @@ export class VentasComponent implements OnInit {
       VEN_DOMICILIO: false,
       VEN_OBSERVACIONES: "",
       VEN_ACTUALIZACION: new Date(),
-      USU_CEDULA: "123456",
+      USU_CEDULA: this.userLogged.USU_CEDULA,
       VEN_ESTADOVENTA: true,
       VEN_ESTADO: true,
       DetalleVentas: this.listaProductos,
     }
+    this.alertasService.showLoading("Creando venta")
     this.ventasService.CrearVenta(venta).subscribe((result: any) => {
+      this.alertasService.hideLoading();
       if (result.StatusCode.toString().indexOf('20') >= 0) {
         //Lipiamos el formulario y enviamos mensaje de que esta correcto.
         this.formularioVenta.reset();
@@ -433,6 +436,9 @@ export class VentasComponent implements OnInit {
         });
       }
       
+    },err=>{
+      this.alertasService.hideLoading();
+      this.alertasService.SetToast(err, 1);
     });
   }
 }

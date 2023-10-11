@@ -16,7 +16,7 @@
                 [showIcon]="true"></p-calendar>
         </p>
         <p>
-            <p-button label="Buscar" icon="pi pi-search" style="margin-top: 20px;"></p-button>
+            <p-button label="Buscar" icon="pi pi-search" style="margin-top: 20px;" (onClick)="BuscarVentasPorFechas()"></p-button>
         </p>
 
 
@@ -27,7 +27,8 @@
         <p-table #dt2 [value]="ventas" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
             [tableStyle]="{ 'min-width': '90rem', 'max-height': '600px' }"
             [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords} ' + (activeItem.label==undefined?'':activeItem.label)"
-            [scrollable]="true" [rowsPerPageOptions]="[5, 10, 50]" class="custom-table">
+            [scrollable]="true" [rowsPerPageOptions]="[5, 10, 50]" class="custom-table"
+            [globalFilterFields]="['VEN_CODIGO','CLI_ID','TIC_NOMBRE']">
             <ng-template pTemplate="caption">
                 <div class="EncabezadoTabla">
                     <button type="button" pButton pRipple icon="pi pi-file-excel"
@@ -37,7 +38,8 @@
                         pTooltip="Quitar filtro" tooltipPosition="top" placeholder="Top"></button>
                     <span class="p-input-icon-left ml-auto">
                         <i class="pi pi-search"></i>
-                        <input pInputText type="text" placeholder="Buscar" />
+                        <input pInputText type="text" [(ngModel)]="searchKeyword"
+                            (input)="dt2.filterGlobal(searchKeyword, 'contains')" placeholder="Buscar" />
                     </span>
                 </div>
             </ng-template>
@@ -67,9 +69,9 @@
                     <th pSortableColumn="CLI_NOMBRE" style="width: 20%">
                         Nombre <p-sortIcon field="CLI_NOMBRE"></p-sortIcon>
                     </th>
-                    <th pSortableColumn="CLI_TELEFONO" style="width: 10%">
+                    <!-- <th pSortableColumn="CLI_TELEFONO" style="width: 10%">
                         Telefono <p-sortIcon field="CLI_TELEFONO"></p-sortIcon>
-                    </th>
+                    </th> -->
                     <th pSortableColumn="CLI_DIRECCION" style="width: 15%">
                         Direccion <p-sortIcon field="CLI_DIRECCION"></p-sortIcon>
                     </th>
@@ -100,7 +102,7 @@
 
                     <td>{{ venta.CLI_ID }}</td>
                     <td>{{ venta.CLI_NOMBRE }}</td>
-                    <td>{{ venta.CLI_TELEFONO }}</td>
+                    <!-- <td>{{ venta.CLI_TELEFONO }}</td> -->
                     <td>{{ venta.CLI_DIRECCION }}</td>
                     <td>{{ venta.CLI_TIPOCLIENTE }}</td>
 

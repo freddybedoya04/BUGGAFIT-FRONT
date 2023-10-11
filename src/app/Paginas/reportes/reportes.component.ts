@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { IFiltro } from 'src/app/Interfaces/ifiltro';
 import { Iventa } from 'src/app/Interfaces/iventa';
+import { AlertasService } from 'src/app/Servicios/alertas.service';
+import { VentasService } from 'src/app/Servicios/ventas.service';
 
 @Component({
   selector: 'app-reportes',
@@ -13,9 +16,15 @@ export class ReportesComponent implements OnInit {
   items: MenuItem[] = [];
   activeItem: MenuItem = {};
   ventas: Iventa[] = [];
-  constructor() {
+  filtro: IFiltro;
+  public searchKeyword: string = '';
+  constructor(private alertas:AlertasService,private ventasService:VentasService) {
     this.FechaFin = new Date();
     this.FechaInicio = new Date();
+    this.filtro = {
+      FechaFin: "",
+      FechaInicio: ""
+    }
   }
   ngOnInit() {
     this.items = [
@@ -24,7 +33,7 @@ export class ReportesComponent implements OnInit {
     ];
     this.activeItem = this.items[0];
     this.ConfigurarFechas();
-    this.LlenadoVentas();
+    // this.LlenadoVentas();
   }
 
   ConfigurarFechas() {
@@ -43,7 +52,22 @@ export class ReportesComponent implements OnInit {
     
 
   }
-
+  BuscarVentasPorFechas() {
+    this.ArmarFiltro();
+    this.alertas.showLoading("Buscando ventas...")
+    this.ventasService.BuscarVentasPorFechas(this.filtro).subscribe(result => {
+      this.alertas.hideLoading();
+      this.alertas.SetToast("Se encontraron " + result.length + " ventas", 1)
+      this.ventas = result;
+    }, err => {
+      this.alertas.hideLoading();
+      this.alertas.SetToast(err, 3);
+    })
+  }
+  ArmarFiltro() {
+    this.filtro.FechaFin = this.FechaFin.toISOString();
+    this.filtro.FechaInicio = this.FechaInicio.toISOString();
+  }
   LlenadoVentas() {
     // Objeto 1
     this.ventas = [ {
