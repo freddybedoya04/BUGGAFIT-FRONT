@@ -18,6 +18,11 @@
 
         </div>
         <div>
+            <label for="UNIDADES_MINIMA_ALERTA">Unidades Minimas:</label>
+            <input type="text" pInputText formControlName=UNIDADES_MINIMA_ALERTA matInput autocomplete="off">
+
+        </div>
+        <div>
             <label for="PRO_PRECIO_COMPRA">Precio Compra:</label>
             <input type="text" pInputText formControlName=PRO_PRECIO_COMPRA matInput autocomplete="off">
 
@@ -32,12 +37,12 @@
         </div>
         <div>
             <label for="PRO_CATEGORIA">Categoría:</label>
-            <p-dropdown [options]="listaCategorias" optionLabel="label" formControlName="PRO_CATEGORIA" optionValue="value" [filter]="true" filterBy="label" [showClear]="true"
+            <p-dropdown [options]="listaCategorias" optionLabel="label" formControlName="PRO_CATEGORIA" optionValue="value"
             placeholder="Seleccione Categoria"></p-dropdown>
         </div>
         <div>
             <label for="PRO_MARCA">Marca:</label>
-            <p-dropdown [options]="listaMarcas" optionLabel="label" optionValue="value" formControlName="PRO_MARCA" [filter]="true" filterBy="label" [showClear]="true"
+            <p-dropdown [options]="listaMarcas" optionLabel="label" optionValue="value" formControlName="PRO_MARCA" [virtualScroll]="true" [virtualScrollItemSize]="38"
             placeholder="Seleccione Categoria"></p-dropdown>
         </div>
         

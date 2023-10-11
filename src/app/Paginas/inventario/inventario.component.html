@@ -4,12 +4,12 @@
 
           <p>
               <label >Fecha Inicio:</label>
-              <p-calendar name="FechaInicio" [showTime]="true" hourFormat="12"
+              <p-calendar [(ngModel)]="FechaInicio" name="FechaInicio"[showTime]="true" hourFormat="12"
                   [showIcon]="true"></p-calendar>
           </p>
           <p>
               <label>Fecha Fin:</label>
-              <p-calendar  name="FechaFin" [showTime]="true" hourFormat="12"
+              <p-calendar [(ngModel)]="FechaFin" name="FechaFin"[showTime]="true" hourFormat="12"
                   [showIcon]="true"></p-calendar>
           </p>
           <p >
