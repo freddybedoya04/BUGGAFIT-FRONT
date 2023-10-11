@@ -55,7 +55,7 @@
       <div class="form-group">
         <label for="VEN_TIPOENVIO">Tipo de Envio:</label>
         <p-dropdown #tipoDeEnvioDropdown formControlName="VEN_TIPOENVIO" [options]="listaTipoDeEnvio"
-          optionLabel="label" optionValue="value" [filter]="true" filterBy="label" [showClear]="true"
+          optionLabel="label" optionValue="value" 
           placeholder="Seleccione una opcion" (onChange)="AgregarTipoDeEnvio($event)"></p-dropdown>
       </div>
     </form>

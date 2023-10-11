@@ -12,9 +12,7 @@
       <p-calendar [(ngModel)]="FechaFin" name="FechaFin" [showTime]="true" hourFormat="12"
         [showIcon]="true"></p-calendar>
     </p> -->
-    <p>
-      <p-button label="Buscar" icon="pi pi-search" style="margin-top: 20px;" (onClick)="BuscarProductos()"></p-button>
-    </p>
+
   </div>
   <br>
   <p-card header="Inventario" [style]="{margin:'20px',padding:'20px'}" styleClass="shadow-5">
@@ -57,10 +55,10 @@
         <tr>
           <td>{{ producto.PRO_CODIGO }}</td>
           <td>{{ producto.PRO_NOMBRE }}</td>
-          <td>{{ producto.PRO_UNIDADES_DISPONIBLES}}</td>
-          <td>{{ producto.PRO_PRECIO_COMPRA }}</td>
-          <td>{{ producto.PRO_PRECIOVENTA_MAYORISTA }}</td>
-          <td>{{ producto.PRO_PRECIOVENTA_DETAL }}</td>
+          <td>{{ producto.PRO_UNIDADES_DISPONIBLES|number}}</td>
+          <td>{{ producto.PRO_PRECIO_COMPRA|number }}</td>
+          <td>{{ producto.PRO_PRECIOVENTA_MAYORISTA |number}}</td>
+          <td>{{ producto.PRO_PRECIOVENTA_DETAL|number }}</td>
           <td>{{ producto.PRO_MARCA }}</td>
           <td>{{ producto.PRO_CATEGORIA }}</td>
 

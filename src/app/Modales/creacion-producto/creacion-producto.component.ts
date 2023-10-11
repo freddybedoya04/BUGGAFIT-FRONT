@@ -31,52 +31,62 @@ export class CreacionProductoComponent implements OnInit {
       PRO_PRECIO_COMPRA: [null, Validators.required],
       PRO_PRECIO_MAYORISTA: [null, Validators.required],
       PRO_PRECIO_DETAL: [null, Validators.required],
-      PRO_CANTIDAD: [null, Validators.required],
       UNIDADES_MINIMA_ALERTA: [null, [Validators.required, Validators.min(0)]],
       PRO_CATEGORIA: [null, Validators.required],
       PRO_MARCA: [null, Validators.required],
-      COM_CANTIDAD:[null, Validators.required]
     });
   }
 
   ngOnInit() {
     this.ObtenerCategorias();
     this.ObtenerMarcas();
-    console.log(this.listaCategorias);
   }
 
   CrearProducto() {
     try {
-    console.log(this.formularioProducto.get('PRO_CATEGORIA')?.value);
-    console.log(this.formularioProducto.get('PRO_MARCA')?.value);
+      for (const control in this.formularioProducto.controls) {
+        if (this.formularioProducto.controls[control].invalid) {
+          this.alerta.SetToast(`El campo ${control.split('_')[1]} está incompleto`, 2);
+          return;
+        }
+      }
 
-      const Producto: Iproducto = {
-        PRO_CODIGO: this.formularioProducto.get('PRO_CODIGO')?.value,
-        PRO_NOMBRE: this.formularioProducto.get('PRO_NOMBRE')?.value,
-        PRO_MARCA: this.formularioProducto.get('PRO_MARCA')?.value + '',
-        PRO_CATEGORIA: this.formularioProducto.get('PRO_CATEGORIA')?.value + '',
-        PRO_PRECIO_COMPRA: this.formularioProducto.get('PRO_PRECIO_COMPRA')?.value,
-        PRO_PRECIOVENTA_MAYORISTA: this.formularioProducto.get('PRO_PRECIO_MAYORISTA')?.value,
-        PRO_PRECIOVENTA_DETAL: this.formularioProducto.get('PRO_PRECIO_DETAL')?.value,
-        PRO_UNIDADES_DISPONIBLES: this.formularioProducto.get('PRO_UNIDADES_DISPONIBLES')?.value,
-        PRO_ACTUALIZACION: new Date(),
-        PRO_FECHACREACION: new Date(),
-        PRO_ESTADO: true,
-        COM_CANTIDAD: this.formularioProducto.get('COM_CANTIDAD')?.value,
-        PRO_UNIDADES_MINIMAS_ALERTA: this.formularioProducto.get('UNIDADES_MINIMA_ALERTA')?.value,
-      };
+      const codigoProducto = this.formularioProducto.get('PRO_CODIGO')?.value;
+      this.inventarioService.BuscarProductoID(codigoProducto).subscribe(
+        (productoExistente) => {
+          if (productoExistente) {
+            this.alerta.SetToast('Ya existe un producto con este codigo.', 2);
+          } else {
+            // Continuar con la creación del producto
+            const Producto: Iproducto = {
+              PRO_CODIGO: codigoProducto,
+              PRO_NOMBRE: this.formularioProducto.get('PRO_NOMBRE')?.value,
+              PRO_MARCA: this.formularioProducto.get('PRO_MARCA')?.value + '',
+              PRO_CATEGORIA: this.formularioProducto.get('PRO_CATEGORIA')?.value + '',
+              PRO_PRECIO_COMPRA: this.formularioProducto.get('PRO_PRECIO_COMPRA')?.value,
+              PRO_PRECIOVENTA_MAYORISTA: this.formularioProducto.get('PRO_PRECIO_MAYORISTA')?.value,
+              PRO_PRECIOVENTA_DETAL: this.formularioProducto.get('PRO_PRECIO_DETAL')?.value,
+              PRO_UNIDADES_DISPONIBLES: this.formularioProducto.get('PRO_UNIDADES_DISPONIBLES')?.value,
+              PRO_ACTUALIZACION: new Date(),
+              PRO_FECHACREACION: new Date(),
+              PRO_ESTADO: true,
+              PRO_UNIDADES_MINIMAS_ALERTA: this.formularioProducto.get('UNIDADES_MINIMA_ALERTA')?.value,
+            };
 
-      this.alerta.showLoading('Creando nuevo producto');
-      this.inventarioService.CrearProducto(Producto).subscribe(
-        (result) => {
-          this.alerta.hideLoading();
-          this.alerta.SetToast('Producto creado', 1);
-          this.CerradoPantalla();
-        },
-        (err) => {
-          this.alerta.hideLoading();
-          this.alerta.SetToast('Error al crear el producto: ' + err.message, 3);
-          console.error(err);
+            this.alerta.showLoading('Creando nuevo producto');
+            this.inventarioService.CrearProducto(Producto).subscribe(
+              (result) => {
+                this.alerta.hideLoading();
+                this.alerta.SetToast('Producto creado', 1);
+                this.CerradoPantalla();
+              },
+              (err) => {
+                this.alerta.hideLoading();
+                this.alerta.SetToast('Error al crear el producto: ' + err.message, 3);
+                console.error(err);
+              }
+            );
+          }
         }
       );
     } catch (error) {
@@ -100,14 +110,15 @@ export class CreacionProductoComponent implements OnInit {
           this.listaCategorias = result.map((item: any) => {
             const selectItem: SelectItem = {
               label: item.CAT_NOMBRE,
-              value: item.CAT_CODIGO
-            }
+              value: item.CAT_CODIGO,
+            };
             return selectItem;
           });
         }
       }
     );
   }
+  
   ObtenerMarcas() {
     this.inventarioService.ObtenerMarcas().subscribe(
       (result: any) => {
@@ -115,8 +126,8 @@ export class CreacionProductoComponent implements OnInit {
           this.listaMarcas = result.map((item: any) => {
             const selectItem: SelectItem = {
               label: item.MAR_NOMBRE,
-              value: item.MAR_CODIGO
-            }
+              value: item.MAR_CODIGO,
+            };
             return selectItem;
           });
         }
