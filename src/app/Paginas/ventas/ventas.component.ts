@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, NgForm, Form } from '@angular/forms';
+import { disableDebugTools } from '@angular/platform-browser';
 import { PrimeNGConfig, SelectItem } from 'primeng/api';
 import { Dropdown } from 'primeng/dropdown';
 import { Icliente } from 'src/app/Interfaces/icliente';
@@ -37,6 +38,7 @@ export class VentasComponent implements OnInit {
   gastoDeEnvio: IGasto;
   motivosDeEnvio: any;
   userLogged: any;
+  TotalComprado: number;
   //Listas de los dropdown
   listaTipoDeCliente: SelectItem[] = [
     {
@@ -127,6 +129,7 @@ export class VentasComponent implements OnInit {
       GAS_PENDIENTE : false,
       VEN_CODIGO : 0,
     }
+    this.TotalComprado=0;
   }
   ngOnInit(): void {
     this.ObtenerTipoCuentas();
@@ -275,10 +278,11 @@ export class VentasComponent implements OnInit {
   }
 
   AgregarProducto(event: any) {
+    debugger;
     const codigoProducto = this.formularioVenta.controls['PRO_CODIGO'].value;
 
     // Verificar si el producto ya ha sido agregado
-    const productoExistente = this.listaProductos.find((producto) => producto.PRO_CODIGO === codigoProducto);
+    const productoExistente = this.listaProductos.find((producto) => producto.PRO_CODIGO?.toLocaleUpperCase() == codigoProducto.toLocaleUpperCase());
     if (productoExistente) {
       this.alertasService.SetToast("Este producto ya ha sido agregado.", 2);
       return;
@@ -333,15 +337,17 @@ export class VentasComponent implements OnInit {
     this.codigoProdcutoInput.nativeElement.focus();
 
     this.listaProductos.push(detalleVenta); // Agregamos el producto a la lista
-    this.alertasService.SetToast("Producto agregado con exito.", 1);
+    this.alertasService.SetToast("Producto agregado con exito.", 1);  
+    this.CalcularTotalComprado();
 
   }
   eliminarVenta(venta: IDetalleVentas) {
     const index = this.listaProductos.indexOf(venta);
     if (index !== -1) {
       this.listaProductos.splice(index, 1); 
-      this.alertasService.SetToast("Venta eliminada con éxito.", 1);
+      this.alertasService.SetToast("Producto eliminado.", 1);
     }
+    this.CalcularTotalComprado();
   }
   AgregarTipoDeEnvio(event: any){
     const nombreTipoEnvio = this.listaTipoDeEnvio.filter((tipocliente: any) => {
@@ -455,6 +461,12 @@ export class VentasComponent implements OnInit {
       this.alertasService.hideLoading();
       this.alertasService.SetToast(err, 1);
     });
+  }  
+  CalcularTotalComprado() {
+    this.TotalComprado = this.listaProductos.reduce((anterior, actual) => {
+
+      return anterior + actual.VED_PRECIOVENTA_TOTAL;
+    }, 0)
   }
 }
 

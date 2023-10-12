@@ -49,6 +49,10 @@ export class InventarioComponent implements OnInit {
       maximizable: true,
       data: { esEdicion: false }
     });
+    ref.onClose.subscribe((res) => {
+      debugger;
+      this.BuscarProductos();
+    });
   };
   BuscarProductos() {
     this.inventarioService.BuscarProductos().subscribe((result: any)=>{
