@@ -30,7 +30,7 @@
           <span class="p-input-icon-left ml-auto">
             <i class="pi pi-search"></i>
             <input pInputText type="text" [(ngModel)]="searchKeyword"
-            (input)="dt2.filterGlobal(searchKeyword, 'PRO_CODIGO,PRO_NOMBRE')"  placeholder="Buscar" />
+            (input)="dt2.filterGlobal(searchKeyword, 'contains')"  placeholder="Buscar" />
 
           </span>
         </div>
