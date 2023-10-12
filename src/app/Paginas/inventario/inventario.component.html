@@ -19,7 +19,7 @@
     <p-table #dt2 [value]="listaProductos" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
       [tableStyle]="{'min-width': '90rem','max-height':'600px'}" styleClass="p-datatable-sm"
       currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} compras"
-      [rowsPerPageOptions]="[5, 10, 50]" [globalFilterFields]="['COM_CODIGO','TIC_NOMBRE']" class="custom-table">
+      [rowsPerPageOptions]="[5, 10, 50]" [globalFilterFields]="['PRO_CODIGO','PRO_NOMBRE','PRO_MARCA']" class="custom-table">
       <ng-template pTemplate="caption">
         <div class="EncabezadoTabla">
           <p-button label="Agregar Producto" icon="pi pi-plus" (onClick)="AbrirModalProductos()"></p-button>
@@ -31,6 +31,7 @@
             <i class="pi pi-search"></i>
             <input pInputText type="text" [(ngModel)]="searchKeyword"
             (input)="dt2.filterGlobal(searchKeyword, 'PRO_CODIGO,PRO_NOMBRE')"  placeholder="Buscar" />
+
           </span>
         </div>
       </ng-template>
