@@ -27,6 +27,7 @@ export class VentasComponent implements OnInit {
 
 
   producto: Iproducto;
+  productosAgregados: string[] = [];
   listaProductos: IDetalleVentas[] = [];
   formularioVenta: FormGroup;
   tipopagoSeleccionado: any;
@@ -274,6 +275,14 @@ export class VentasComponent implements OnInit {
   }
 
   AgregarProducto(event: any) {
+    const codigoProducto = this.formularioVenta.controls['PRO_CODIGO'].value;
+
+    // Verificar si el producto ya ha sido agregado
+    const productoExistente = this.listaProductos.find((producto) => producto.PRO_CODIGO === codigoProducto);
+    if (productoExistente) {
+      this.alertasService.SetToast("Este producto ya ha sido agregado.", 2);
+      return;
+    }
     if (this.formularioVenta.controls['PRO_CANTIDADVENTA'].value > (this.producto.PRO_UNIDADES_DISPONIBLES ?? 0)) { // validacion de cantidad de producto
       // Agregar mensaje de error
       this.alertasService.SetToast("No hay la cantidad necesaria del producto.", 3);
@@ -327,7 +336,13 @@ export class VentasComponent implements OnInit {
     this.alertasService.SetToast("Producto agregado con exito.", 1);
 
   }
-
+  eliminarVenta(venta: IDetalleVentas) {
+    const index = this.listaProductos.indexOf(venta);
+    if (index !== -1) {
+      this.listaProductos.splice(index, 1); 
+      this.alertasService.SetToast("Venta eliminada con éxito.", 1);
+    }
+  }
   AgregarTipoDeEnvio(event: any){
     const nombreTipoEnvio = this.listaTipoDeEnvio.filter((tipocliente: any) => {
       return tipocliente.value == this.formularioVenta.controls['VEN_TIPOENVIO'].value;
@@ -442,6 +457,7 @@ export class VentasComponent implements OnInit {
     });
   }
 }
+
 
 enum TiposDeEnvioEnum {
   EnvioGratis = "EnvioGratis",

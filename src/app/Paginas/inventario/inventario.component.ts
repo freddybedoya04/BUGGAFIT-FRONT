@@ -16,6 +16,7 @@ export class InventarioComponent implements OnInit {
   FechaFin: Date;
   filtro: IFiltro;
   listaProductos: Iproducto[] = [];
+  public searchKeyword: string = '';
   
 
   constructor(
@@ -61,3 +62,4 @@ export class InventarioComponent implements OnInit {
 
   }
 }
+
