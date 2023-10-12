@@ -16,7 +16,7 @@ export class InventarioComponent implements OnInit {
   FechaFin: Date;
   filtro: IFiltro;
   listaProductos: Iproducto[] = [];
-  
+  public searchKeyword: string = '';
 
   constructor(
     private dialogService: DialogService,
