@@ -86,21 +86,21 @@ export class VentasComponent implements OnInit {
   ) {
     this.userLogged = JSON.parse(localStorage.getItem('user') || "");
     this.formularioVenta = formBuilder.group({
-      VEN_FECHAVENTA: [{ value: new Date(), disabled: false }, Validators.required],
+      VEN_FECHAVENTA: [{ value: new Date(), disabled: true }, Validators.required],
       VEN_TIPOENVIO: [null, Validators.required],
       VEN_CUENTADESTINO: [null, Validators.required],
-      CLI_ID: [null, Validators.required],
+      CLI_ID: [null],
       CLI_NOMBRE: [null, Validators.required],
       CLI_DIRECCION: [null, Validators.required],
       CLI_UBICACION: [null, Validators.required],
       CLI_TIPOCLIENTE: [null, Validators.required],
-      PRO_CODIGO: [null, Validators.required],
-      PRO_NOMBRE: [{ value: '', disabled: true }, Validators.required],
+      PRO_CODIGO: [null],
+      PRO_NOMBRE: [{ value: '', disabled: true }],
       VENT_CEDULA: [null, Validators.required],
       PRO_PRECIO: [{ value: '', disabled: true }],
-      PRO_CANTIDADVENTA: [null, Validators.required],
-      PRO_VALORTOTAL: [null, Validators.required],
-      PRO_DESCUENTO: [{ value: 0, disabled: false }, Validators.required],
+      PRO_CANTIDADVENTA: [null],
+      PRO_VALORTOTAL: [null],
+      PRO_DESCUENTO: [{ value: 0, disabled: false }],
     });
     this.producto = {
       PRO_CODIGO: '',
@@ -389,11 +389,18 @@ export class VentasComponent implements OnInit {
 
   FinalizarFactura(event?: any) {
     debugger;
-    // if (this.formularioVenta.controls['VEN_TIPOPAGO'].value === null) {
-    //   // Agregar mensaje de error
-    //   // this.alertasService.SetToast("Debe ingresar el tipo de pago.", 3);
-    //   return;
-    // }
+    for (const control in this.formularioVenta.controls) {
+      if (this.formularioVenta.controls[control].invalid) {
+        this.alertasService.SetToast(`El campo ${control.split('_')[1]} está incompleto`, 2);
+        this.formularioVenta.controls[control].markAsDirty();
+        return;
+        
+      }
+    }
+    if(this.listaProductos.length==0){
+      this.alertasService.SetToast('Debe agregar almenos un producto.',2);
+      return;
+    }
     if (!this.formularioVenta.controls['VEN_CUENTADESTINO'].value || this.formularioVenta.controls['VEN_CUENTADESTINO'].value === null) {
       // Agregar mensaje de error
       // this.alertasService.SetToast("Debe ingresar el una cuenta destino.", 3);
@@ -450,6 +457,7 @@ export class VentasComponent implements OnInit {
         this.formularioVenta.reset();
         this.formularioVenta.controls['VEN_FECHAVENTA'].setValue(new Date())
         this.alertasService.SetToast("Venta creada exitosamente.", 1);
+        this.listaProductos=[];
 
         this.gastoDeEnvio.VEN_CODIGO = result.Data
         this.gastosService.CrearGasto(this.gastoDeEnvio).subscribe((result: any) => {
