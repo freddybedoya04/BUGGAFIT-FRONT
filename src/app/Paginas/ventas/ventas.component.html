@@ -29,7 +29,7 @@
     <form #myForm="ngForm" [formGroup]="formularioVenta" (ngSubmit)="FinalizarFactura(myForm)">
       <div>
         <label for="CLI_ID">Cedula:</label>
-        <input (blur)="AutocompletarCedula($event)" type="text" pInputText formControlName="VENT_CEDULA" />
+        <input (blur)="AutocompletarCedula()" type="text" pInputText formControlName="VENT_CEDULA" />
       </div>
 
       <div>
@@ -65,8 +65,17 @@
     <form #myForm="ngForm" [formGroup]="formularioVenta" (ngSubmit)="FinalizarFactura(myForm)">
       <div>
         <label for="PRO_CODIGO">Codigo:</label>
-        <input #codigoProdcutoInput (blur)="AutocompletarProducto($event)" type="text" pInputText
-          formControlName="PRO_CODIGO" />
+        <!-- <input #codigoProdcutoInput (blur)="AutocompletarProducto($event)" type="text" pInputText
+          formControlName="PRO_CODIGO" /> -->
+          <p-dropdown [options]="productos" formControlName="PRO_CODIGO" [(ngModel)]="producto" (ngModelChange)="AutocompletarProducto()" optionLabel="PRO_NOMBRE" [filter]="true" filterBy="PRO_NOMBRE" [showClear]="true" placeholder="Seleccione Producto">
+            <ng-template pTemplate="selectedItem">
+                    <div>{{ producto.PRO_CODIGO }}</div>
+            </ng-template>
+            <ng-template let-product pTemplate="item">
+                    <div>{{ product.PRO_NOMBRE }}</div>
+
+            </ng-template>
+        </p-dropdown>
       </div>
 
       <div>

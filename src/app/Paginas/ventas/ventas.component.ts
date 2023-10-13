@@ -26,7 +26,7 @@ export class VentasComponent implements OnInit {
   @ViewChild("cantidadInput") cantidadInput!: ElementRef;
   @ViewChild("myForm") myForm!: Form;
 
-
+  productos: Iproducto[] = [];
   producto: Iproducto;
   productosAgregados: string[] = [];
   listaProductos: IDetalleVentas[] = [];
@@ -96,7 +96,7 @@ export class VentasComponent implements OnInit {
       CLI_TIPOCLIENTE: [null, Validators.required],
       PRO_CODIGO: [null],
       PRO_NOMBRE: [{ value: '', disabled: true }],
-      VENT_CEDULA: [null, Validators.required],
+      VENT_CEDULA: [null],
       PRO_PRECIO: [{ value: '', disabled: true }],
       PRO_CANTIDADVENTA: [null],
       PRO_VALORTOTAL: [null],
@@ -134,6 +134,7 @@ export class VentasComponent implements OnInit {
   ngOnInit(): void {
     this.ObtenerTipoCuentas();
     this.ObtenerTipoDeGastoEnvio();
+    this.LlenadoProductos();
 
   }
 
@@ -169,7 +170,7 @@ export class VentasComponent implements OnInit {
     });
   }
 
-  AutocompletarCedula(event: any) {
+  AutocompletarCedula() {
     this.clientesService.BuscarClienteID(this.formularioVenta.controls['VENT_CEDULA'].value).subscribe((result: Icliente) => {
       if (!result || result === null) { // en caso que llege vacio el cliente
         this.existeCliente = false;
@@ -189,21 +190,22 @@ export class VentasComponent implements OnInit {
     });
   }
 
-  AutocompletarProducto(event: any) {
-    const codigo = this.formularioVenta.controls['PRO_CODIGO'].value
+  AutocompletarProducto() {
+    // const codigo = this.formularioVenta.controls['PRO_CODIGO'].value
+    const codigo = this.producto.PRO_CODIGO;
     if (!this.formularioVenta.controls['CLI_TIPOCLIENTE'].value || this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === null) //en caso que no se haya seleccionado un tipo de cliente 
     {
       // Agregar mensaje de error
       this.alertasService.SetToast("Debe seleccionar un tipo de cliente.", 2);
       return;
     }
-    this.invetarioService.BuscarProductoID(codigo).subscribe((result: any) => {
-      if (!result || result === null) {// en caso que llege vacio el producto
-        // Agregar mensaje de error
-        this.alertasService.SetToast("producto no encontrado.", 3);
-        return;
-      }
-      this.producto = result;
+    // this.invetarioService.BuscarProductoID(codigo).subscribe((result: any) => {
+      // if (!result || result === null) {// en caso que llege vacio el producto
+      //   // Agregar mensaje de error
+      //   this.alertasService.SetToast("producto no encontrado.", 3);
+      //   return;
+      // }
+      // this.producto = result;
       this.formularioVenta.controls['PRO_NOMBRE'].setValue(this.producto.PRO_NOMBRE);
       if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[0].value) { //mayorista
         this.formularioVenta.controls['PRO_PRECIO'].setValue(this.producto.PRO_PRECIOVENTA_MAYORISTA);
@@ -211,19 +213,21 @@ export class VentasComponent implements OnInit {
       if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[1].value) { //Al detal
         this.formularioVenta.controls['PRO_PRECIO'].setValue(this.producto.PRO_PRECIOVENTA_DETAL);
       }
-      this.cantidadInput.nativeElement.focus();
-      if ((this.producto.PRO_UNIDADES_DISPONIBLES ?? 0) <= 0) { // validacion de cantidad de producto
-        // Agregar mensaje de error
-        this.alertasService.SetToast("El producto no tiene unidades en inventario.", 2);
-      }
-    });
+      this.formularioVenta.controls['PRO_CANTIDADVENTA'].setValue(1);
+      this.CalcularValorTotal("");
+      // this.cantidadInput.nativeElement.focus();
+      // if ((this.producto.PRO_UNIDADES_DISPONIBLES ?? 0) <= 0) { // validacion de cantidad de producto
+      //   // Agregar mensaje de error
+      //   this.alertasService.SetToast("El producto no tiene unidades en inventario.", 2);
+      // }
+    // });
 
   }
 
   CalcularValorTotal(event: any) {
     if (!this.formularioVenta.controls['PRO_PRECIO'].value || this.formularioVenta.controls['PRO_PRECIO'].value == '') {
-      this.alertasService.SetToast("El producto no tiene precio por unidad.", 3);
-      return;
+      // this.alertasService.SetToast("El producto no tiene precio por unidad.", 3);
+      // return;
     }
     if (this.formularioVenta.controls['PRO_CANTIDADVENTA'].value > (this.producto.PRO_UNIDADES_DISPONIBLES ?? 0)) {
       this.alertasService.SetToast("Esta Excediendo la cantidad disponible de producto.", 2, 2500);
@@ -279,7 +283,11 @@ export class VentasComponent implements OnInit {
 
   AgregarProducto(event: any) {
     debugger;
-    const codigoProducto = this.formularioVenta.controls['PRO_CODIGO'].value;
+    if(this.producto==null){
+      this.alertasService.SetToast("Seleecione un producto.", 2);
+      return;
+    }
+    const codigoProducto = this.producto.PRO_CODIGO;
 
     // Verificar si el producto ya ha sido agregado
     const productoExistente = this.listaProductos.find((producto) => producto.PRO_CODIGO?.toLocaleUpperCase() == codigoProducto.toLocaleUpperCase());
@@ -296,6 +304,9 @@ export class VentasComponent implements OnInit {
       // Agregar mensaje de error
       this.alertasService.SetToast("El valor total no puede estas vacio.", 3);
       return;
+    }
+    if(this.formularioVenta.controls['PRO_DESCUENTO'].value==""){
+      this.formularioVenta.controls['PRO_DESCUENTO'].setValue('0');
     }
     const detalleVenta: IDetalleVentas = {
       VED_CODIGO: 0,
@@ -324,7 +335,7 @@ export class VentasComponent implements OnInit {
       PRO_ESTADO: false,
       COM_CANTIDAD: 0,
     };
-    this.formularioVenta.controls['PRO_CODIGO'].setValue('');
+    // this.formularioVenta.controls['PRO_CODIGO'].setValue('');
     this.formularioVenta.controls['PRO_NOMBRE'].setValue('');
     this.formularioVenta.controls['PRO_CANTIDADVENTA'].setValue('');
     this.formularioVenta.controls['PRO_PRECIO'].setValue('');
@@ -334,7 +345,7 @@ export class VentasComponent implements OnInit {
     this.formularioVenta.controls['PRO_CODIGO'].clearValidators();
     this.formularioVenta.controls['PRO_CANTIDADVENTA'].clearValidators();
     this.formularioVenta.controls['PRO_DESCUENTO'].clearValidators();
-    this.codigoProdcutoInput.nativeElement.focus();
+    // this.codigoProdcutoInput.nativeElement.focus();
 
     this.listaProductos.push(detalleVenta); // Agregamos el producto a la lista
     this.alertasService.SetToast("Producto agregado con exito.", 1);  
@@ -475,6 +486,11 @@ export class VentasComponent implements OnInit {
 
       return anterior + actual.VED_PRECIOVENTA_TOTAL;
     }, 0)
+  }
+  LlenadoProductos() {
+    this.invetarioService.BuscarProductos().subscribe(x =>{
+      this.productos=x;
+    })
   }
 }
 
