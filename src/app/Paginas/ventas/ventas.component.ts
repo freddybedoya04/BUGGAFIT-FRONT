@@ -213,7 +213,7 @@ export class VentasComponent implements OnInit {
       if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[1].value) { //Al detal
         this.formularioVenta.controls['PRO_PRECIO'].setValue(this.producto.PRO_PRECIOVENTA_DETAL);
       }
-      this.formularioVenta.controls['PRO_CANTIDADVENTA'].setValue(1);
+      // this.formularioVenta.controls['PRO_CANTIDADVENTA'].setValue(1);
       this.CalcularValorTotal("");
       // this.cantidadInput.nativeElement.focus();
       // if ((this.producto.PRO_UNIDADES_DISPONIBLES ?? 0) <= 0) { // validacion de cantidad de producto
