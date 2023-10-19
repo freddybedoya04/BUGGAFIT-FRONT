@@ -29,6 +29,16 @@ body{
   text-align: center !important;
   font-family: 'Poppins', sans-serif;
 }
+.p-dropdown-panel .p-dropdown-items {
+  font-size: 15px;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+input[type=number] { -moz-appearance:textfield; }
 /* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
 
 *::-webkit-scrollbar {
