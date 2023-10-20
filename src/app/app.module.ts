@@ -9,11 +9,15 @@ import { ConfirmationService, MessageService,  } from 'primeng/api';
 import { HttpClientModule } from '@angular/common/http';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormateadorPrecioDirective } from './Directivas/formateador-precio.directive';
+import { PrecioPipe } from './Pipes/precio-pipe.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
+    FormateadorPrecioDirective,
+    PrecioPipe,
     
   ],
   imports: [

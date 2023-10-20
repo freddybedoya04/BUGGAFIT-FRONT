@@ -55,8 +55,8 @@
       <div class="form-group">
         <label for="VEN_TIPOENVIO">Tipo de Envio:</label>
         <p-dropdown #tipoDeEnvioDropdown formControlName="VEN_TIPOENVIO" [options]="listaTipoDeEnvio"
-          optionLabel="label" optionValue="value" 
-          placeholder="Seleccione una opcion" (onChange)="AgregarTipoDeEnvio($event)"></p-dropdown>
+          optionLabel="label" optionValue="value" placeholder="Seleccione una opcion"
+          (onChange)="AgregarTipoDeEnvio($event)"></p-dropdown>
       </div>
     </form>
   </p-card>
@@ -67,16 +67,18 @@
         <label for="PRO_CODIGO">Codigo:</label>
         <!-- <input #codigoProdcutoInput (blur)="AutocompletarProducto($event)" type="text" pInputText
           formControlName="PRO_CODIGO" /> -->
-          <p-dropdown [options]="productos" formControlName="PRO_CODIGO" [(ngModel)]="producto" (onClick)="AutocompletarProducto()" optionLabel="PRO_NOMBRE" [filter]="true" filterBy="PRO_NOMBRE" [showClear]="true" placeholder="Seleccione Producto">
-            <ng-template pTemplate="selectedItem">
-              <div>{{ producto.PRO_CODIGO }}</div>
-            </ng-template>
-            <ng-template let-product pTemplate="item">
-              <div>{{ product.PRO_NOMBRE }}</div>
-            </ng-template>
-          </p-dropdown>
+        <p-dropdown [options]="productos" formControlName="PRO_CODIGO" [(ngModel)]="producto"
+          (onClick)="AutocompletarProducto()" optionLabel="PRO_NOMBRE" [filter]="true" filterBy="PRO_NOMBRE"
+          [showClear]="true" placeholder="Seleccione Producto">
+          <ng-template pTemplate="selectedItem">
+            <div>{{ producto.PRO_CODIGO }}</div>
+          </ng-template>
+          <ng-template let-product pTemplate="item">
+            <div>{{ product.PRO_NOMBRE }}</div>
+          </ng-template>
+        </p-dropdown>
 
-          
+
       </div>
 
       <div>
@@ -85,24 +87,34 @@
       </div>
       <div>
         <label>Cantidad:</label>
-        <input #cantidadInput type="text" (keyup)="CalcularValorTotal($event)" pInputText
+        <input #cantidadInput type="number" (keyup)="CalcularValorTotal($event)" pInputText
           formControlName="PRO_CANTIDADVENTA" />
       </div>
 
       <div>
-        <label>Precio:</label>
-        <input type="text" pInputText formControlName="PRO_PRECIO" />
+        <span class="p-input-icon-left">
+          <label>Precio:</label>
+          <i style="top: 2.1rem;font-size: 18px;">$</i>
+          <input type="text" pInputText formControlName="PRO_PRECIO" FormateadorPrecio />
+        </span>
       </div>
 
       <div>
-        <label>Valor Total:</label>
-        <input (keyup)="CalcularDescuentoPorcentaje($event)" type="text" pInputText formControlName="PRO_VALORTOTAL" />
+        <span class="p-input-icon-left">
+          <label>Valor Total:</label>
+          <i style="top: 2.1rem;font-size: 18px;">$</i>
+          <input (keyup)="CalcularDescuentoPorcentaje($event)" type="number" pInputText
+            formControlName="PRO_VALORTOTAL" />
+        </span>
       </div>
 
       <div>
-        <label>Descuento %:</label>
-        <input (keyup)="CalcularValorTotalConDescuento($event)" type="text" pInputText
-          formControlName="PRO_DESCUENTO" />
+        <span class="p-input-icon-left">
+          <label>Descuento:</label>
+          <i style="top: 2.1rem;font-size: 18px;">%</i>
+          <input (keyup)="CalcularValorTotalConDescuento($event)" type="number" min="0" pInputText
+            formControlName="PRO_DESCUENTO" />
+        </span>
       </div>
       <div class="buttonContainer">
         <p-button label="Agregar" style="margin-right: 10px" styleClass="p-button-rounded"
@@ -119,7 +131,8 @@
 
 
   <br />
-  <p-card header="Lista de Productos ${{TotalComprado | number}}" [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
+  <p-card header="Lista de Productos ${{TotalComprado | number}}" [style]="{ margin: '20px', padding: '20px' }"
+    styleClass="shadow-5">
     <p-table #dt2 [value]="listaProductos" [paginator]="true" [rows]="3" [showCurrentPageReport]="true"
       [tableStyle]="{ 'min-width': '90rem', 'max-height': '600px' }"
       currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} ventas"
@@ -128,8 +141,8 @@
         <div class="EncabezadoTabla">
           <button type="button" pButton pRipple icon="pi pi-file-excel" class="p-button-rounded p-button-success mr-2"
             pTooltip="XLS" tooltipPosition="bottom"></button> -->
-          <!-- <button pButton label="" class="p-button-outlined" icon="pi pi-filter-slash" (click)="dt1.reset()"></button> -->
-          <!-- <button pButton label="" icon="pi pi-filter" iconPos="left" class="p-button-raised p-button-rounded"
+      <!-- <button pButton label="" class="p-button-outlined" icon="pi pi-filter-slash" (click)="dt1.reset()"></button> -->
+      <!-- <button pButton label="" icon="pi pi-filter" iconPos="left" class="p-button-raised p-button-rounded"
             (click)="dt2.reset()"></button>
           <span class="p-input-icon-left ml-auto">
             <i class="pi pi-search"></i>
@@ -159,10 +172,11 @@
           <td>{{ venta.VED_UNIDADES }}</td>
           <td>{{ venta.VED_PRECIOVENTA_UND }}</td>
           <td>{{ venta.VED_PRECIOVENTA_TOTAL }}</td>
-          <td>{{ venta.VED_VALORDESCUENTO_UND  }}%</td>
+          <td>{{ venta.VED_VALORDESCUENTO_UND }}%</td>
           <td style="min-width: 200px">
             <!-- <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"></button> -->
-            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="eliminarVenta(venta)"></button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+              (click)="eliminarVenta(venta)"></button>
           </td>
         </tr>
       </ng-template>

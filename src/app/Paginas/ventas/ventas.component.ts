@@ -191,37 +191,25 @@ export class VentasComponent implements OnInit {
   }
 
   AutocompletarProducto() {
-    // const codigo = this.formularioVenta.controls['PRO_CODIGO'].value
-    const codigo = this.producto.PRO_CODIGO;
     if (!this.formularioVenta.controls['CLI_TIPOCLIENTE'].value || this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === null) //en caso que no se haya seleccionado un tipo de cliente 
     {
       // Agregar mensaje de error
       this.alertasService.SetToast("Debe seleccionar un tipo de cliente.", 2);
       return;
     }
-    // this.invetarioService.BuscarProductoID(codigo).subscribe((result: any) => {
-      // if (!result || result === null) {// en caso que llege vacio el producto
-      //   // Agregar mensaje de error
-      //   this.alertasService.SetToast("producto no encontrado.", 3);
-      //   return;
-      // }
-      // this.producto = result;
+      let valorTotal;
       this.formularioVenta.controls['PRO_NOMBRE'].setValue(this.producto.PRO_NOMBRE);
       if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[0].value) { //mayorista
-        this.formularioVenta.controls['PRO_PRECIO'].setValue(this.producto.PRO_PRECIOVENTA_MAYORISTA);
+        valorTotal = this.producto.PRO_PRECIOVENTA_MAYORISTA; 
+        this.formularioVenta.controls['PRO_PRECIO'].setValue(valorTotal);
       }
       if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[1].value) { //Al detal
-        this.formularioVenta.controls['PRO_PRECIO'].setValue(this.producto.PRO_PRECIOVENTA_DETAL);
+        valorTotal = this.producto.PRO_PRECIOVENTA_DETAL; 
+        this.formularioVenta.controls['PRO_PRECIO'].setValue(valorTotal);
       }
-      // this.formularioVenta.controls['PRO_CANTIDADVENTA'].setValue(1);
-      this.CalcularValorTotal("");
-      // this.cantidadInput.nativeElement.focus();
-      // if ((this.producto.PRO_UNIDADES_DISPONIBLES ?? 0) <= 0) { // validacion de cantidad de producto
-      //   // Agregar mensaje de error
-      //   this.alertasService.SetToast("El producto no tiene unidades en inventario.", 2);
-      // }
-    // });
-
+      console.log()
+      this.formularioVenta.controls['PRO_CANTIDADVENTA'].setValue(1);
+      this.formularioVenta.controls['PRO_VALORTOTAL'].setValue(valorTotal);
   }
 
   CalcularValorTotal(event: any) {
@@ -282,7 +270,6 @@ export class VentasComponent implements OnInit {
   }
 
   AgregarProducto(event: any) {
-    debugger;
     if(this.producto==null){
       this.alertasService.SetToast("Seleecione un producto.", 2);
       return;
@@ -437,6 +424,9 @@ export class VentasComponent implements OnInit {
     });
 
     const valorTotalVenta: string = this.listaProductos.reduce((acumulador, actual) => acumulador + actual.VED_PRECIOVENTA_TOTAL, 0) + '';
+    const ventaACredito: boolean = (nombreTipoCuenta[0].label && nombreTipoCuenta[0].label.toLowerCase().indexOf('credito') >= 0 ? true : false);
+    const ventaAEfectivo: boolean = (nombreTipoCuenta[0].label && nombreTipoCuenta[0].label.toLowerCase().indexOf('efectivo') >= 0 ? true : false);
+    
     const venta: Iventa = {
       VEN_CODIGO: 0,
       VEN_FECHACREACION: new Date(),
@@ -450,16 +440,18 @@ export class VentasComponent implements OnInit {
       CLI_TELEFONO: "0",
       CLI_TIPOCLIENTE: this.formularioVenta.controls['CLI_TIPOCLIENTE'].value,
       VEN_PRECIOTOTAL: valorTotalVenta,
-      VEN_ESTADOCREDITO: false,
+      VEN_ESTADOCREDITO: ventaACredito,
       VEN_ENVIO: false,
       VEN_DOMICILIO: false,
       VEN_OBSERVACIONES: "",
       VEN_ACTUALIZACION: new Date(),
       USU_CEDULA: this.userLogged.USU_CEDULA,
-      VEN_ESTADOVENTA: true,
+      VEN_ESTADOVENTA: ventaAEfectivo,
       VEN_ESTADO: true,
       DetalleVentas: this.listaProductos,
     }
+    debugger;
+    console.log(venta)
     this.alertasService.showLoading("Creando venta")
     this.ventasService.CrearVenta(venta).subscribe((result: any) => {
       this.alertasService.hideLoading();
@@ -481,12 +473,13 @@ export class VentasComponent implements OnInit {
       this.alertasService.SetToast(err, 1);
     });
   }  
+
   CalcularTotalComprado() {
     this.TotalComprado = this.listaProductos.reduce((anterior, actual) => {
-
       return anterior + actual.VED_PRECIOVENTA_TOTAL;
     }, 0)
   }
+
   LlenadoProductos() {
     this.invetarioService.BuscarProductos().subscribe(x =>{
       this.productos=x;
