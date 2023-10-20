@@ -425,6 +425,7 @@ export class VentasComponent implements OnInit {
 
     const valorTotalVenta: string = this.listaProductos.reduce((acumulador, actual) => acumulador + actual.VED_PRECIOVENTA_TOTAL, 0) + '';
     const ventaACredito: boolean = (nombreTipoCuenta[0].label && nombreTipoCuenta[0].label.toLowerCase().indexOf('credito') >= 0 ? true : false);
+    const ventaAEfectivo: boolean = (nombreTipoCuenta[0].label && nombreTipoCuenta[0].label.toLowerCase().indexOf('efectivo') >= 0 ? true : false);
     
     const venta: Iventa = {
       VEN_CODIGO: 0,
@@ -439,13 +440,13 @@ export class VentasComponent implements OnInit {
       CLI_TELEFONO: "0",
       CLI_TIPOCLIENTE: this.formularioVenta.controls['CLI_TIPOCLIENTE'].value,
       VEN_PRECIOTOTAL: valorTotalVenta,
-      VEN_ESTADOCREDITO: !ventaACredito,
+      VEN_ESTADOCREDITO: ventaACredito,
       VEN_ENVIO: false,
       VEN_DOMICILIO: false,
       VEN_OBSERVACIONES: "",
       VEN_ACTUALIZACION: new Date(),
       USU_CEDULA: this.userLogged.USU_CEDULA,
-      VEN_ESTADOVENTA: ventaACredito,
+      VEN_ESTADOVENTA: ventaAEfectivo,
       VEN_ESTADO: true,
       DetalleVentas: this.listaProductos,
     }
