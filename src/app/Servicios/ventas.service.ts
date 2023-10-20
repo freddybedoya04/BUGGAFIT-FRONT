@@ -48,8 +48,20 @@ export class VentasService {
         return result.Data;
       }));
   }
+  ActualizarEstadoVenta(venta: number) {
+    return this.http.get(this.url + 'ActualizarEstadoVenta/' + venta).pipe(
+      map((result: any) => {
+        return result;
+      }));
+  }
   BuscarTipoCuentas() {
     return this.http.get('TipoCuentas/GetTipoCuentas').pipe(
+      map((result: any) => {
+        return result.Data;
+      }));
+  }
+  ListarDetallePorCodigoVenta(venta:number) {
+    return this.http.get(this.url+'ListarDetallePorCodigoVenta/'+venta).pipe(
       map((result: any) => {
         return result.Data;
       }));

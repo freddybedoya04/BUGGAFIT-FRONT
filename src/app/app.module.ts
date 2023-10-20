@@ -18,6 +18,7 @@ import { PrecioPipe } from './Pipes/precio-pipe.pipe';
     LoginComponent,
     FormateadorPrecioDirective,
     PrecioPipe,
+
     
   ],
   imports: [

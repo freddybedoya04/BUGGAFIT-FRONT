@@ -1,0 +1,88 @@
+<div class="Principal">
+    <div class="cabecera" >
+        <img src="../../../assets/Imagenes/BUGGAFITLOGO.png" width="50px;"height="50px;" alt="">
+        <!-- <h1> Nueva Compra</h1> -->
+    </div>
+    <!-- Card informacion venta -->
+    <p-card header="Informacion Venta" [style]="{ width: '100%' }" class="card">
+        <section>
+            <div>
+                <label for="VEN_FECHAVENTA">Fecha Venta:</label>
+                <p-calendar [(ngModel)]="venta.VEN_FECHAVENTA" name="FechaVenta"  disabled="true"></p-calendar>
+
+            </div>
+            <div>
+                <label for="VEN_CUENTADESTINO">Tipo de pago:</label>
+                <input type="text" [(ngModel)]="venta.TIC_NOMBRE"pInputText disabled="true" />
+            </div>
+        </section>
+
+    </p-card>
+
+
+    <!-- Card CLiente  -->
+    <p-card header="Cliente" [style]="{ width: '100%' }" class="card">
+        <section>
+            <div>
+                <label for="CLI_ID">Cedula:</label>
+                <input type="text" [(ngModel)]="venta.CLI_ID" pInputText disabled="true" />
+            </div>
+
+            <div>
+                <label for="CLI_NOMBRE">Nombre:</label>
+                <input type="text" [(ngModel)]="venta.CLI_NOMBRE" pInputText disabled="true"/>
+            </div>
+
+            <div>
+                <label for="CLI_DIRECCION">Direccion:</label>
+                <input type="text" [(ngModel)]="venta.CLI_DIRECCION" pInputText disabled="true"/>
+            </div>
+
+            <div>
+                <label for="CLI_UBICACION">Ubicacion:</label>
+                <input type="text"  [(ngModel)]="venta.CLI_UBICACION" pInputText disabled="true"/>
+            </div>
+
+            <div>
+                <label for="CLI_TIPOCLIENTE">Tipo de cliente:</label>
+                <input type="text" [(ngModel)]="venta.CLI_TIPOCLIENTE" pInputText disabled="true"/>
+            </div>
+            <div class="form-group">
+                <label for="VEN_TIPOENVIO">Tipo de Envio:</label>
+                <input type="text" pInputText disabled="true"/>
+            </div>
+        </section>
+
+    </p-card>
+    <br />
+    <p-card header="Lista de Productos ${{venta.VEN_PRECIOTOTAL | number}}"
+        [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
+        <p-table #dt2 [value]="venta.DetalleVentas??[]" [paginator]="true" [rows]="3" [showCurrentPageReport]="true"
+            [tableStyle]="{ 'min-width': '90rem', 'max-height': '600px' }"
+            currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} ventas"
+            [rowsPerPageOptions]="[3, 10, 50]" class="custom-table">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="PRO_CODIGO" style="width: 20%">Codigo</th>
+                    <th pSortableColumn="PRO_NOMBRE" style="width: 20%">
+                        Nombre de Articulo
+                    </th>
+                    <th pSortableColumn="VED_UNIDADES" style="width: 20%">Cantidad</th>
+                    <th pSortableColumn="VED_PRECIOVENTA_UND" style="width: 20%">Precio</th>
+                    <th pSortableColumn="VED_PRECIOVENTA_TOTAL" style="width: 20%">Valor Total</th>
+                    <th pSortableColumn="VED_VALORDESCUENTO_UND" style="width: 20%">Descuento</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-venta>
+                <tr>
+                    <td>{{ venta.PRO_CODIGO }}</td>
+                    <td>{{ venta.PRO_NOMBRE }}</td>
+                    <td>{{ venta.VED_UNIDADES }}</td>
+                    <td>{{ venta.VED_PRECIOVENTA_UND }}</td>
+                    <td>{{ venta.VED_PRECIOVENTA_TOTAL }}</td>
+                    <td>{{ venta.VED_VALORDESCUENTO_UND }}%</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-card>
+</div>

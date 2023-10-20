@@ -1,0 +1,60 @@
+.cabecera{
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+.custom-dialog {
+    background-color: blue;
+  }
+.EncabezadoTabla {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+
+.card {
+    margin: 7px;
+    padding: 7px;
+    display: flex;
+    flex-direction: column;
+}
+
+.card section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
+
+.card div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 80%;
+}
+
+.card div input {
+    border-radius: 10px;
+    width: 100%;
+}
+
+:host ::ng-deep .p-calendar,
+:host ::ng-deep .p-dropdown,
+:host ::ng-deep .p-inputtext,
+:host ::ng-deep .p-inputNumber {
+    height: 1rem;
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.card .buttonContainer {
+    grid-column: 1/4;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    flex-direction: row;
+
+}

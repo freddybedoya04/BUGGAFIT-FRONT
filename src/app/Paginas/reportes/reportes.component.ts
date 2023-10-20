@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
 import { IFiltro } from 'src/app/Interfaces/ifiltro';
 import { Iventa } from 'src/app/Interfaces/iventa';
+import { DetalleVentasComponent } from 'src/app/Modales/detalle-ventas/detalle-ventas.component';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { VentasService } from 'src/app/Servicios/ventas.service';
 
@@ -18,7 +20,7 @@ export class ReportesComponent implements OnInit {
   ventas: Iventa[] = [];
   filtro: IFiltro;
   public searchKeyword: string = '';
-  constructor(private alertas:AlertasService,private ventasService:VentasService) {
+  constructor(private alertas:AlertasService,private ventasService:VentasService,private dialogService:DialogService) {
     this.FechaFin = new Date();
     this.FechaInicio = new Date();
     this.filtro = {
@@ -57,7 +59,7 @@ export class ReportesComponent implements OnInit {
     this.alertas.showLoading("Buscando ventas...")
     this.ventasService.BuscarVentasPorFechas(this.filtro).subscribe(result => {
       this.alertas.hideLoading();
-      this.alertas.SetToast("Se encontraron " + result.length + " ventas", 1)
+      // this.alertas.SetToast("Se encontraron " + result.length + " ventas", 1)
       this.ventas = result;
     }, err => {
       this.alertas.hideLoading();
@@ -75,7 +77,7 @@ export class ReportesComponent implements OnInit {
         this.alertas.showLoading("Eliminano venta")
         this.ventasService.EliminarVenta(venta.VEN_CODIGO).subscribe(x=>{
           this.alertas.hideLoading();
-          this.alertas.SetToast("Se elimino Corretamente",1)
+          this.alertas.SetToast("Se elimino corretamente",1)
           this.BuscarVentasPorFechas();
         },err=>{
           this.alertas.hideLoading();
@@ -84,5 +86,43 @@ export class ReportesComponent implements OnInit {
       }
     })
   }
-
+  ActualizarEstadoVenta(venta:Iventa){
+    debugger
+    this.alertas.confirmacion("Esta seguro de confirmar la venta # "+venta.VEN_CODIGO+"?").then(result=>{
+      if(result){
+        this.alertas.showLoading("Confirmando venta")
+        this.ventasService.ActualizarEstadoVenta(venta.VEN_CODIGO).subscribe(x=>{
+          this.alertas.hideLoading();
+          this.alertas.SetToast("Se confirmo corretamente",1)
+          this.BuscarVentasPorFechas();
+        },err=>{
+          this.alertas.hideLoading();
+          this.alertas.SetToast(err,3)
+        })
+      }
+    })
+  }
+  BuscarDetalles(venta:Iventa){
+    let nuevaVenta:Iventa=venta;
+    this.alertas.showLoading("Cargando información de venta");
+    this.ventasService.ListarDetallePorCodigoVenta(venta.VEN_CODIGO).subscribe(x=>{
+      this.alertas.hideLoading();
+      nuevaVenta.DetalleVentas=x;
+      this.AbrirModaDetalleVentas(nuevaVenta);
+    },err=>{
+      this.alertas.hideLoading();
+      this.alertas.SetToast('Error al traer detalles  de la venta',3)
+    })
+  }
+  AbrirModaDetalleVentas(venta:Iventa) {
+    let ref = this.dialogService.open(DetalleVentasComponent, {
+      header: 'Venta #'+venta.VEN_CODIGO,
+      width: '60%',
+      baseZIndex: 100,
+      maximizable: true,
+      data:{Venta:venta,}
+    })
+    ref.onClose.subscribe((res) => {
+    });
+  }
 }
