@@ -37,7 +37,7 @@ export class VentasService {
       }));
   }
   EliminarVenta(venta: number) {
-    return this.http.delete(this.url + 'DeleteVenta/' + venta).pipe(
+    return this.http.delete(this.url + 'DeleteVentas/' + venta).pipe(
       map((result: any) => {
         return result.Data;
       }));
