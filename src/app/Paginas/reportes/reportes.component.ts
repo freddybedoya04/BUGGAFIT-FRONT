@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
+import { Iabonos } from 'src/app/Interfaces/iabonos';
 import { IFiltro } from 'src/app/Interfaces/ifiltro';
 import { Iventa } from 'src/app/Interfaces/iventa';
+import { AbonosComponent } from 'src/app/Modales/abonos/abonos.component';
 import { DetalleVentasComponent } from 'src/app/Modales/detalle-ventas/detalle-ventas.component';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { VentasService } from 'src/app/Servicios/ventas.service';
@@ -120,7 +122,31 @@ export class ReportesComponent implements OnInit {
       width: '60%',
       baseZIndex: 100,
       maximizable: true,
+      contentStyle:{'background-color':'#eff3f8'},
       data:{Venta:venta,}
+    })
+    ref.onClose.subscribe((res) => {
+    });
+  }
+
+  BuscarAbonos(venta:Iventa){
+    this.alertas.showLoading("Cargando información de abonos");
+    this.ventasService.ListarAbonosPorCodigoVenta(venta.VEN_CODIGO).subscribe((abonos:Iabonos[])=>{
+      this.alertas.hideLoading();
+      this.AbrirModaAbonos(venta,abonos);
+    },err=>{
+      this.alertas.hideLoading();
+      this.alertas.SetToast('Error al traer los abonos  de la venta',3)
+    })
+  }
+  AbrirModaAbonos(venta:Iventa,abonos:Iabonos[]) {
+    let ref = this.dialogService.open(AbonosComponent, {
+      header: 'Venta #'+venta.VEN_CODIGO,
+      width: '60%',
+      baseZIndex: 100,
+      maximizable: true,
+      contentStyle:{'background-color':'#eff3f8'},
+      data:{Venta:venta,Abonos:abonos}
     })
     ref.onClose.subscribe((res) => {
     });

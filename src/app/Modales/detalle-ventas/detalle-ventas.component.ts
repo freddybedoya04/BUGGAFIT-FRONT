@@ -23,7 +23,7 @@ export class DetalleVentasComponent implements OnInit {
       CLI_DIRECCION: '',
       CLI_TELEFONO: '',
       CLI_TIPOCLIENTE: '',
-      VEN_PRECIOTOTAL: '',
+      VEN_PRECIOTOTAL: 0,
       VEN_ESTADOCREDITO: false,
       VEN_ENVIO: false,
       VEN_DOMICILIO: false,
@@ -39,7 +39,6 @@ export class DetalleVentasComponent implements OnInit {
     debugger
    this.venta=this.config.data.Venta;
    this.venta.VEN_FECHACREACION=new Date(this.venta.VEN_FECHACREACION)
-   this.config.style = 'custom-dialog';
   }
 
 }

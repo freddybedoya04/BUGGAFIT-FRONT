@@ -423,7 +423,7 @@ export class VentasComponent implements OnInit {
       return tipocliente.value == this.formularioVenta.controls['VEN_CUENTADESTINO'].value;
     });
 
-    const valorTotalVenta: string = this.listaProductos.reduce((acumulador, actual) => acumulador + actual.VED_PRECIOVENTA_TOTAL, 0) + '';
+    const valorTotalVenta: number = this.listaProductos.reduce((acumulador, actual) => acumulador + actual.VED_PRECIOVENTA_TOTAL, 0) + 0;
     const ventaACredito: boolean = (nombreTipoCuenta[0].label && nombreTipoCuenta[0].label.toLowerCase().indexOf('credito') >= 0 ? true : false);
     const ventaAEfectivo: boolean = (nombreTipoCuenta[0].label && nombreTipoCuenta[0].label.toLowerCase().indexOf('efectivo') >= 0 ? true : false);
     

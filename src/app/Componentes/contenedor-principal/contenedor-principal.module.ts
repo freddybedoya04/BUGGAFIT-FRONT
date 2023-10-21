@@ -16,6 +16,7 @@ import { VentasComponent } from 'src/app/Paginas/ventas/ventas.component';
 import { CreacionCompraComponent } from 'src/app/Modales/creacion-compra/creacion-compra.component';
 import { CreacionProductoComponent } from 'src/app/Modales/creacion-producto/creacion-producto.component';
 import { DetalleVentasComponent } from 'src/app/Modales/detalle-ventas/detalle-ventas.component';
+import { AbonosComponent } from 'src/app/Modales/abonos/abonos.component';
 @NgModule({
   declarations: [
     ContenedorPrincipalComponent,
@@ -28,7 +29,8 @@ import { DetalleVentasComponent } from 'src/app/Modales/detalle-ventas/detalle-v
     EstadisticasComponent,
     CreacionCompraComponent,
     CreacionProductoComponent,
-    DetalleVentasComponent
+    DetalleVentasComponent,
+    AbonosComponent
   ],
   imports: [
     CommonModule,

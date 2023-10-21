@@ -54,13 +54,12 @@
         </section>
 
     </p-card>
-    <br />
     <p-card header="Lista de Productos ${{venta.VEN_PRECIOTOTAL | number}}"
         [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
-        <p-table #dt2 [value]="venta.DetalleVentas??[]" [paginator]="true" [rows]="3" [showCurrentPageReport]="true"
-            [tableStyle]="{ 'min-width': '90rem', 'max-height': '600px' }"
-            currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} ventas"
-            [rowsPerPageOptions]="[3, 10, 50]" class="custom-table">
+        <p-table #dt2 [value]="venta.DetalleVentas??[]" 
+            [tableStyle]="{ 'min-width': '40rem', 'max-height': '600px' }"
+            styleClass="p-datatable-sm"
+            class="custom-table">
             <ng-template pTemplate="header">
                 <tr>
                     <th pSortableColumn="PRO_CODIGO" style="width: 20%">Codigo</th>

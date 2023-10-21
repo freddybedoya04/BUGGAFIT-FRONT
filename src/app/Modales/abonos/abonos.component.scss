@@ -1,6 +1,4 @@
-.Principal{
-    background-color: #eff3f8;
-}
+
 .cabecera{
     display: grid;
     justify-items: center;
@@ -26,7 +24,7 @@
 
 .card section {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 10px;
 }
 
@@ -46,7 +44,7 @@
 :host ::ng-deep .p-dropdown,
 :host ::ng-deep .p-inputtext,
 :host ::ng-deep .p-inputNumber {
-    height: 1rem;
+    height: 1.5rem;
     border-radius: 10px;
     width: 100%;
     display: flex;

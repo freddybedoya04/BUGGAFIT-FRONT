@@ -66,4 +66,10 @@ export class VentasService {
         return result.Data;
       }));
   }
+  ListarAbonosPorCodigoVenta(venta:number) {
+    return this.http.get(this.url+'ListarAbonosPorCodigoVenta/'+venta).pipe(
+      map((result: any) => {
+        return result.Data;
+      }));
+  }
 }
