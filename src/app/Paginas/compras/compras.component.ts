@@ -45,7 +45,7 @@ export class ComprasComponent implements OnInit {
     })
 
     ref.onClose.subscribe((res) => {
-      debugger;
+      
       this.FechaFin = new Date(Date.now());
       this.BuscarComprasPorFechas();
     });
@@ -60,7 +60,7 @@ export class ComprasComponent implements OnInit {
       data:{nuevacompra:compra,esEdicion:true}
     })
     ref.onClose.subscribe((res) => {
-      debugger;
+      
       this.FechaFin = new Date(Date.now());
       this.BuscarComprasPorFechas();
     });
@@ -84,7 +84,7 @@ export class ComprasComponent implements OnInit {
   }
 
   EliminarCompra(compra:Icompras){
-    debugger
+    
     this.alertas.confirmacion("Esta seguro de eliminar la compra # "+compra.COM_CODIGO+"?").then(result=>{
       if(result){
         this.alertas.showLoading("Eliminano compra")

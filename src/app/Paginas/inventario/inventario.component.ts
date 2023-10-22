@@ -23,17 +23,18 @@ export class InventarioComponent implements OnInit {
     private dialogService: DialogService,
     private alertasService: AlertasService,
     private inventarioService: InventarioService,
-    ) {
+  ) {
     this.FechaFin = new Date();
     this.FechaInicio = new Date();
     this.filtro = {
       FechaFin: "",
       FechaInicio: ""
     }
-  
+
   }
-  ngOnInit(){
-    this.BuscarProductos();  }
+  ngOnInit() {
+    this.BuscarProductos();
+  }
   ConfigurarFechas() {
     this.FechaFin = new Date();
     this.FechaInicio = new Date(this.FechaFin)
@@ -50,12 +51,12 @@ export class InventarioComponent implements OnInit {
       data: { esEdicion: false }
     });
     ref.onClose.subscribe((res) => {
-      debugger;
+
       this.BuscarProductos();
     });
   };
   BuscarProductos() {
-    this.inventarioService.BuscarProductos().subscribe((result: any)=>{
+    this.inventarioService.BuscarProductos().subscribe((result: any) => {
       if (!result || result === null) {// en caso que llege vacio el producto
         // Agregar mensaje de error
         this.alertasService.SetToast("No hay Productos para mostrar.", 2);
@@ -63,7 +64,46 @@ export class InventarioComponent implements OnInit {
       }
       this.listaProductos = result;
     });
+  }
 
+  EditarProducto(producto: Iproducto) {
+    let ref = this.dialogService.open(CreacionProductoComponent, {
+      header: 'Editar Producto',
+      width: '60%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 100,
+      maximizable: true,
+      data: { esEdicion: true, productoAEditar: producto }
+    });
+    ref.onClose.subscribe((res) => {
+      this.BuscarProductos();
+    });
+  };
+
+  BorrarProducto(producto: Iproducto) {
+    alert("Se eliminara el producto seleccionado")
+    if (producto.PRO_CODIGO == null || producto.PRO_CODIGO === '') {
+      this.alertasService.SetToast('El producto no puede tener el codigo vacio', 3);
+      return;
+    }
+    this.alertasService.confirmacion("Desea eliminar el prodcuto con codigo: " + producto.PRO_CODIGO).then(
+      (resolve: any)=>{
+        if(resolve){
+          this.alertasService.showLoading('Eliminando el producto');
+          this.inventarioService.EliminarProducto(producto.PRO_CODIGO).subscribe((result) => {
+            if (result == null || result?.StatusCode.toString().indexOf('20') >= 0) {
+              this.alertasService.hideLoading();
+              this.alertasService.SetToast('Producto Eliminado', 1);
+              this.BuscarProductos();
+            }
+            else {
+              this.alertasService.hideLoading();
+              this.alertasService.SetToast('Error al eliminar el producto: ' + result?.message, 3);
+              console.error(result);
+            }
+          });
+        }
+      })
   }
 }
 

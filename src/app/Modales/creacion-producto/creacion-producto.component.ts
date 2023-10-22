@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Iproducto } from 'src/app/Interfaces/iproducto';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { InventarioService } from 'src/app/Servicios/inventario.service';
@@ -17,12 +17,15 @@ export class CreacionProductoComponent implements OnInit {
   listaMarcas: SelectItem[] = [];
   categoriaSeleccionada: any;
   marcaSeleccionada: any;
+  esEdicion: boolean = false;
+  productoAEditar: Iproducto;
 
   constructor(
     private formBuilder: FormBuilder,
     private alerta: AlertasService,
     private inventarioService: InventarioService,
-    public ref: DynamicDialogRef
+    public ref: DynamicDialogRef,
+    public config: DynamicDialogConfig,
   ) {
     this.formularioProducto = this.formBuilder.group({
       PRO_CODIGO: [null, Validators.required],
@@ -35,11 +38,87 @@ export class CreacionProductoComponent implements OnInit {
       PRO_CATEGORIA: [null, Validators.required],
       PRO_MARCA: [null, Validators.required],
     });
+    this.productoAEditar = {
+      PRO_CODIGO: '',
+      PRO_NOMBRE: '',
+      PRO_MARCA: '',
+      PRO_CATEGORIA: '',
+      PRO_PRECIO_COMPRA: 0,
+      PRO_PRECIOVENTA_DETAL: 0,
+      PRO_PRECIOVENTA_MAYORISTA: 0,
+      PRO_UNIDADES_DISPONIBLES: 0,
+      PRO_UNIDADES_MINIMAS_ALERTA: 0,
+      PRO_ACTUALIZACION: new Date(),
+      PRO_FECHACREACION: new Date(),
+      PRO_ESTADO: false,
+      COM_CANTIDAD: 0,
+    };
   }
 
   ngOnInit() {
     this.ObtenerCategorias();
     this.ObtenerMarcas();
+    this.CargarDatosEnLosInputs();
+  }
+
+  SubmitFormulario() {
+    if (this.esEdicion) {
+      this.EditarProducto();
+    }
+    else {
+      this.CrearProducto();
+    }
+  }
+
+  EditarProducto() {
+    for (const control in this.formularioProducto.controls) {
+      if (this.formularioProducto.controls[control].invalid) {
+        this.alerta.SetToast(`El campo ${control.split('_')[1]} está incompleto`, 2);
+        return;
+      }
+    }
+    const codigoProducto = this.formularioProducto.get('PRO_CODIGO')?.value;
+    this.inventarioService.BuscarProductoID(codigoProducto).subscribe(
+      (productoExistente) => {
+        if (!productoExistente) {
+          this.alerta.SetToast('No se encontro el producto que desea editar.', 2);
+        } else {
+          // Continuar con la creación del producto
+          const _producto: Iproducto = {
+            PRO_CODIGO: codigoProducto,
+            PRO_NOMBRE: this.formularioProducto.get('PRO_NOMBRE')?.value,
+            PRO_MARCA: this.formularioProducto.get('PRO_MARCA')?.value + '',
+            PRO_CATEGORIA: this.formularioProducto.get('PRO_CATEGORIA')?.value + '',
+            PRO_PRECIO_COMPRA: this.formularioProducto.get('PRO_PRECIO_COMPRA')?.value,
+            PRO_PRECIOVENTA_MAYORISTA: this.formularioProducto.get('PRO_PRECIO_MAYORISTA')?.value,
+            PRO_PRECIOVENTA_DETAL: this.formularioProducto.get('PRO_PRECIO_DETAL')?.value,
+            PRO_UNIDADES_DISPONIBLES: this.formularioProducto.get('PRO_UNIDADES_DISPONIBLES')?.value,
+            PRO_ACTUALIZACION: new Date(),
+            PRO_FECHACREACION: new Date(),
+            PRO_ESTADO: true,
+            PRO_UNIDADES_MINIMAS_ALERTA: this.formularioProducto.get('UNIDADES_MINIMA_ALERTA')?.value,
+          };
+          this.productoAEditar = _producto;
+
+          this.alerta.showLoading('Creando nuevo producto');
+          this.inventarioService.ActualizarProducto(this.productoAEditar.PRO_CODIGO, this.productoAEditar).subscribe(
+            (result) => {
+              console.log(result);
+              if (result == null || result?.StatusCode.toString().indexOf('20') >= 0) {
+                this.alerta.hideLoading();
+                this.alerta.SetToast('Producto Actualizado', 1);
+                this.CerradoPantalla();
+              }
+              else{
+                this.alerta.hideLoading();
+                this.alerta.SetToast('Error al actualizar el producto: ' + result?.message, 3);
+                console.error(result);
+              }
+            }
+          );
+        }
+      }
+    );
   }
 
   CrearProducto() {
@@ -50,7 +129,6 @@ export class CreacionProductoComponent implements OnInit {
           return;
         }
       }
-
       const codigoProducto = this.formularioProducto.get('PRO_CODIGO')?.value;
       this.inventarioService.BuscarProductoID(codigoProducto).subscribe(
         (productoExistente) => {
@@ -114,11 +192,16 @@ export class CreacionProductoComponent implements OnInit {
             };
             return selectItem;
           });
+
+          const codigoCategoria = this.listaCategorias.filter((tipocliente: any) => {
+            return tipocliente.label == this.productoAEditar.PRO_CATEGORIA;
+          })[0]?.value ?? '';
+          this.formularioProducto.get('PRO_CATEGORIA')?.setValue(codigoCategoria);
         }
       }
     );
   }
-  
+
   ObtenerMarcas() {
     this.inventarioService.ObtenerMarcas().subscribe(
       (result: any) => {
@@ -130,8 +213,27 @@ export class CreacionProductoComponent implements OnInit {
             };
             return selectItem;
           });
+          const codigoMarca = this.listaMarcas.filter((tipocliente: any) => {
+            return tipocliente.label == this.productoAEditar.PRO_MARCA;
+          })[0]?.value ?? '';
+          this.formularioProducto.get('PRO_MARCA')?.setValue(codigoMarca);
         }
       }
     );
+  }
+
+  private CargarDatosEnLosInputs() {
+    this.esEdicion = this.config.data.esEdicion;
+    this.productoAEditar = this.config.data.productoAEditar;
+
+    if (this.esEdicion) {
+      this.formularioProducto.get('PRO_CODIGO')?.setValue(this.productoAEditar.PRO_CODIGO);
+      this.formularioProducto.get('PRO_NOMBRE')?.setValue(this.productoAEditar.PRO_NOMBRE);
+      this.formularioProducto.get('PRO_PRECIO_COMPRA')?.setValue(this.productoAEditar.PRO_PRECIO_COMPRA);
+      this.formularioProducto.get('PRO_PRECIO_MAYORISTA')?.setValue(this.productoAEditar.PRO_PRECIOVENTA_MAYORISTA);
+      this.formularioProducto.get('PRO_PRECIO_DETAL')?.setValue(this.productoAEditar.PRO_PRECIOVENTA_DETAL);
+      this.formularioProducto.get('PRO_UNIDADES_DISPONIBLES')?.setValue(this.productoAEditar.PRO_UNIDADES_DISPONIBLES);
+      this.formularioProducto.get('UNIDADES_MINIMA_ALERTA')?.setValue(this.productoAEditar.PRO_UNIDADES_MINIMAS_ALERTA);
+    }
   }
 }

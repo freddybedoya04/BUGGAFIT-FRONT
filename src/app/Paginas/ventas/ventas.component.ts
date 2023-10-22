@@ -386,7 +386,7 @@ export class VentasComponent implements OnInit {
   }
 
   FinalizarFactura(event?: any) {
-    debugger;
+    
     for (const control in this.formularioVenta.controls) {
       if (this.formularioVenta.controls[control].invalid) {
         this.alertasService.SetToast(`El campo ${control.split('_')[1]} está incompleto`, 2);
@@ -450,7 +450,7 @@ export class VentasComponent implements OnInit {
       VEN_ESTADO: true,
       DetalleVentas: this.listaProductos,
     }
-    debugger;
+    
     console.log(venta)
     this.alertasService.showLoading("Creando venta")
     this.ventasService.CrearVenta(venta).subscribe((result: any) => {

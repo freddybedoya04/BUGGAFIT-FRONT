@@ -35,7 +35,7 @@ export class AlertasService {
   }
 
   confirmacion(Mensaje: string): Promise<boolean> {
-    debugger
+    
     return new Promise<boolean>((resolve, reject) => {
       this.confirmationService.confirm({
         message: Mensaje,

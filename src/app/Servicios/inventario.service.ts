@@ -29,16 +29,16 @@ export class InventarioService {
         return result.Data;
       }));
   }
-  EliminarProducto(producto: string) {
-    return this.http.delete(this.url + 'DeleteProducto/' + producto).pipe(
+  EliminarProducto(codigoProducto: string) {
+    return this.http.delete(this.url + 'DeleteProducto/' + codigoProducto).pipe(
       map((result: any) => {
-        return result.Data;
+        return result;
       }));
   }
-  ActualizarProducto(producto: string) {
-    return this.http.put(this.url + 'PutProducto/' + producto, producto).pipe(
+  ActualizarProducto(codProducto: string, producto: Iproducto) {
+    return this.http.put(this.url + 'PutProducto/' + codProducto, producto).pipe(
       map((result: any) => {
-        return result.Data;
+        return result;
       }));
   }
   ObtenerMarcas() {

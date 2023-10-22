@@ -19,7 +19,8 @@
     <p-table #dt2 [value]="listaProductos" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
       [tableStyle]="{'min-width': '90rem','max-height':'600px'}" styleClass="p-datatable-sm"
       currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} compras"
-      [rowsPerPageOptions]="[5, 10, 50]" [globalFilterFields]="['PRO_CODIGO','PRO_NOMBRE','PRO_MARCA']" class="custom-table">
+      [rowsPerPageOptions]="[5, 10, 50]" [globalFilterFields]="['PRO_CODIGO','PRO_NOMBRE','PRO_MARCA']"
+      class="custom-table">
       <ng-template pTemplate="caption">
         <div class="EncabezadoTabla">
           <p-button label="Agregar Producto" icon="pi pi-plus" (onClick)="AbrirModalProductos()"></p-button>
@@ -30,7 +31,7 @@
           <span class="p-input-icon-left ml-auto">
             <i class="pi pi-search"></i>
             <input pInputText type="text" [(ngModel)]="searchKeyword"
-            (input)="dt2.filterGlobal(searchKeyword, 'contains')"  placeholder="Buscar" />
+              (input)="dt2.filterGlobal(searchKeyword, 'contains')" placeholder="Buscar" />
 
           </span>
         </div>
@@ -43,8 +44,8 @@
               field="PRO_UNIDADES_DISPONIBLES"></p-sortIcon></th>
           <th pSortableColumn="PRO_PRECIO_COMPRA" style="width:20%">Precio de Compra<p-sortIcon
               field="PRO_PRECIO_COMPRA"></p-sortIcon></th>
-          <th pSortableColumn="PRO_PRECIO_MAYORISTA" style="width:20%">Precio Mayorista <p-sortIcon
-              field="PRO_PRECIO_MAYORISTA"></p-sortIcon></th>
+          <th pSortableColumn="PRO_PRECIOVENTA_MAYORISTA" style="width:20%">Precio Mayorista <p-sortIcon
+              field="PRO_PRECIOVENTA_MAYORISTA"></p-sortIcon></th>
           <th pSortableColumn="PRO_PRECIOVENTA_DETAL" style="min-width:200px">Precio Detal <p-sortIcon
               field="PRO_PRECIOVENTA_DETAL"></p-sortIcon></th>
           <th pSortableColumn="PRO_MARCA" style="min-width:200px">Marca <p-sortIcon field="PRO_MARCA"></p-sortIcon></th>
@@ -54,7 +55,8 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-producto>
-        <tr>
+        <tr
+          [style]="producto.PRO_UNIDADES_DISPONIBLES < producto.PRO_UNIDADES_MINIMAS_ALERTA ? 'background-color: #ffbe0042;':'background-color: #fff;'">
           <td>{{ producto.PRO_CODIGO }}</td>
           <td>{{ producto.PRO_NOMBRE }}</td>
           <td>{{ producto.PRO_UNIDADES_DISPONIBLES|number}}</td>
@@ -65,8 +67,8 @@
           <td>{{ producto.PRO_CATEGORIA }}</td>
 
           <td class="Acciones">
-            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"></button>
-            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"></button>
+            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="EditarProducto(producto)"></button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="BorrarProducto(producto)"></button>
           </td>
         </tr>
       </ng-template>
