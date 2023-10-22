@@ -1,66 +1,68 @@
 <div class="contenedorPricipal">
-    <div class="cabecera" >
-        <img src="../../../assets/Imagenes/BUGGAFITLOGO.png" alt="">
-        <!-- <h1> Nueva Compra</h1> -->
-    </div>
-    <form [formGroup]="formularioCompra">
-        <div>
-            <label>Fecha de compra:</label>
-            <p-calendar formControlName="COM_FechaCompra" [showTime]="true" hourFormat="12"></p-calendar>
-        </div>
-        <div>
-            <label for="COM_PROVEEDOR">Proveedor:</label>
-            <input type="text" pInputText formControlName="COM_PROVEEDOR" matInput autocomplete="off">
+    <p-card header="Informacion Compra" [style]="{ width: '100%' }" class="card">
+        <form [formGroup]="formularioCompra">
+            <div>
+                <label>Fecha de compra:</label>
+                <p-calendar formControlName="COM_FechaCompra" [showTime]="true" hourFormat="12"></p-calendar>
+            </div>
+            <div>
+                <label for="COM_PROVEEDOR">Proveedor:</label>
+                <input type="text" pInputText formControlName="COM_PROVEEDOR" matInput autocomplete="off">
+    
+            </div>
+            <div>
+                <label for="TIC_CODIGO">Medio de pago:</label>
+                <p-dropdown formControlName="TIC_CODIGO" [options]="listaTipoDeCuenta" optionLabel="label"
+                optionValue="value" placeholder="Seleccione Cuenta"></p-dropdown>
+            </div>
+            <div style="align-items: flex-start;display: flex;gap: 10px;">
+                <p-checkbox id="Bodega" [binary]="true" [(ngModel)]="Bodega" label="En bodega" ></p-checkbox>
+                <p-checkbox id="Credito" [binary]="true"[(ngModel)]="Credito" label="Deuda" ></p-checkbox>
+            </div>
+        </form>
 
-        </div>
-        <div>
-            <label for="TIC_CODIGO">Medio de pago:</label>
-            <p-dropdown formControlName="TIC_CODIGO" [options]="listaTipoDeCuenta" optionLabel="label"
-            optionValue="value" placeholder="Seleccione Cuenta"></p-dropdown>
-        </div>
+    </p-card>
+    
+    <p-card header="Informacion Productos" [style]="{ width: '100%' }" class="card">
+        <section>
+            <div>
+                <label>Producto</label>
+                <p-dropdown [options]="productos" [(ngModel)]="productoSeleccionado" (ngModelChange)="CambioProducto()" optionLabel="PRO_NOMBRE" [filter]="true" filterBy="PRO_NOMBRE" [showClear]="true" placeholder="Seleccione Producto">
+                    <ng-template pTemplate="selectedItem">
+                            <div>{{ productoSeleccionado.PRO_NOMBRE }}</div>
+                    </ng-template>
+                    <ng-template let-product pTemplate="item">
+                            <div>{{ product.PRO_NOMBRE }}</div>
+    
+                    </ng-template>
+                </p-dropdown>
+            </div>
+            <div>
+                <label >Precio Und:</label>
+                <input type="number"  [(ngModel)]="ProductoComprado.DEC_PRECIOCOMPRA_PRODUCTO" (change)="CalcularTotalProducto(ProductoComprado)" pInputText  matInput autocomplete="off">
+    
+            </div>
+            <div>
+                <label >Cantidad:</label>
+                <input type="number" pInputText matInput autocomplete="off" 
+                [(ngModel)]="ProductoComprado.DEC_UNIDADES"
+                (change)="CalcularTotalProducto(ProductoComprado)">
+    
+            </div>
+            <div>
+                <label >Precio Total:</label>
+                <input type="number" pInputText matInput autocomplete="off" 
+                [(ngModel)]="ProductoComprado.DEC_PRECIOTOTAL"
+                [readonly]="true">
+    
+            </div>
+            <div class="buttonContainer">
+                <p-button label="Agregar" icon="pi pi-plus" (onClick)="AgregarProducto()"></p-button>
+            </div>
+    
+        </section>
+    </p-card>
 
-    </form>
-    <div style="align-items: flex-start;margin-top: 20px; display: flex;gap: 10px;">
-        <p-checkbox id="Bodega" [binary]="true" [(ngModel)]="Bodega" label="En bodega" ></p-checkbox>
-        <p-checkbox id="Credito" [binary]="true"[(ngModel)]="Credito" label="Deuda" ></p-checkbox>
-    </div>
-    <div class="Productos">
-        <div>
-            <label>Producto</label>
-            <p-dropdown [options]="productos" [(ngModel)]="productoSeleccionado" (ngModelChange)="CambioProducto()" optionLabel="PRO_NOMBRE" [filter]="true" filterBy="PRO_NOMBRE" [showClear]="true" placeholder="Seleccione Producto">
-                <ng-template pTemplate="selectedItem">
-                        <div>{{ productoSeleccionado.PRO_NOMBRE }}</div>
-                </ng-template>
-                <ng-template let-product pTemplate="item">
-                        <div>{{ product.PRO_NOMBRE }}</div>
-
-                </ng-template>
-            </p-dropdown>
-        </div>
-        <div>
-            <label >Precio Und:</label>
-            <input type="number"  [(ngModel)]="ProductoComprado.DEC_PRECIOCOMPRA_PRODUCTO" (change)="CalcularTotalProducto(ProductoComprado)" pInputText  matInput autocomplete="off">
-
-        </div>
-        <div>
-            <label >Cantidad:</label>
-            <input type="number" pInputText matInput autocomplete="off" 
-            [(ngModel)]="ProductoComprado.DEC_UNIDADES"
-            (change)="CalcularTotalProducto(ProductoComprado)">
-
-        </div>
-        <div>
-            <label >Precio Total:</label>
-            <input type="number" pInputText matInput autocomplete="off" 
-            [(ngModel)]="ProductoComprado.DEC_PRECIOTOTAL"
-            readonly>
-
-        </div>
-        <div>
-            <p-button label="Agregar" icon="pi pi-plus" (onClick)="AgregarProducto()"></p-button>
-        </div>
-
-    </div>
     <p-card   header="total: ${{TotalComprado | number}}" [style]="{margin:'20px',padding:'20px'}" styleClass="shadow-5">
         <div>
             <p-button *ngIf="EsEdicion==false" label="Crear Compra" icon="pi pi-plus" (onClick)="ValidacionCompra()"></p-button>

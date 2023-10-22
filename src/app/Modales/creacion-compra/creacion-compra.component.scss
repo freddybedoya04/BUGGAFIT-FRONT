@@ -1,27 +1,62 @@
-.contenedorPricipal{
+.EncabezadoTabla {
     display: flex;
-    flex-direction: column;
-    justify-items: center;
-    align-items: center;
-    width: 100%;
-}
-.cabecera{
-    display: grid;
-    justify-items: center;
-    align-items: center;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
 }
 
-form,.Productos{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 10px;
-    align-items: center;
-}
-form div, .Productos div{
-    flex: 1 0 150px;
+
+.card {
+    margin: 7px;
+    padding: 7px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 5px;
 }
+
+.card form,.card section {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+}
+
+.card section div, .card form section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+
+.card section div input, .card form section div {
+    border-radius: 10px;
+    width: 100%;
+}
+
+:host ::ng-deep .p-calendar,
+:host ::ng-deep .p-dropdown,
+:host ::ng-deep .p-inputtext,
+:host ::ng-deep .p-inputNumber {
+    height: 1.5rem;
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    min-width: 100px;
+}
+
+.card .buttonContainer {
+    display: flex;
+    flex-direction: row;
+
+}
+@media screen and (max-width: 1400px) {
+    .card form, .card section {
+      grid-template-columns: repeat(2,1fr); /* Cambia a una sola columna */
+      /* Otras propiedades de grid que deseas modificar en tablet */
+    }
+  }
+  
+  @media screen and (max-width: 786px) {
+    .card form, .card section {
+        grid-template-columns: 1fr;
+    }
+  }

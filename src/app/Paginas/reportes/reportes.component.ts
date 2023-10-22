@@ -149,6 +149,9 @@ export class ReportesComponent implements OnInit {
       data:{Venta:venta,Abonos:abonos}
     })
     ref.onClose.subscribe((res) => {
+      if(res==true){
+        this.BuscarVentasPorFechas();
+      }
     });
   }
 }

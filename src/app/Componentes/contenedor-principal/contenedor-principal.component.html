@@ -2,7 +2,7 @@
   <aside class="sidebar" [ngClass]="{ collapsed: isCollapsed }">
     <div class="toggle-button-wrapper">
       <button class="toggle-button" (click)="toggleSidebar()">
-        <i class="pi pi-align-justify" [ngStyle]="{ 'font-size': isCollapsed ? '0.5rem' : '1.3rem' }"></i>
+        <i class="pi pi-align-justify" [pTooltip]="isCollapsed==true?'Expandir':'Contraer'" tooltipPosition="right"[ngStyle]="{ 'font-size': isCollapsed ? '0.5rem' : '1.3rem' }"></i>
       </button>
     </div>
     <div class="container-image">
@@ -10,52 +10,52 @@
     </div>
     <ul class="menu">
       <li>
-        <a [routerLink]="['/principal/ventas']" routerLinkActive="active">
-          <i class="pi pi-shopping-bag"></i>
+        <a [routerLink]="['/principal/ventas']" routerLinkActive="active" [pTooltip]="isCollapsed==true?'Ventas':''" tooltipPosition="right">
+          <i class="pi pi-shopping-bag" ></i>
           <span class="menu-text">Ventas</span>
         </a>
       </li>
       <li>
-        <a [routerLink]="['/principal/inventario']" routerLinkActive="active">
-          <i class="pi pi-list"></i>
+        <a [routerLink]="['/principal/inventario']" routerLinkActive="active" [pTooltip]="isCollapsed==true?'Inventario':''" tooltipPosition="right">
+          <i class="pi pi-list" ></i>
           <span class="menu-text">Inventario</span>
         </a>
       </li>
       <!-- <li>
-        <a [routerLink]="['/principal/estadisticas']"routerLinkActive="active">
-          <i class="pi pi-chart-pie"></i>
+        <a [routerLink]="['/principal/estadisticas']"routerLinkActive="active" [pTooltip]="isCollapsed==true?'Dashboard':''" tooltipPosition="right">
+          <i class="pi pi-chart-pie" ></i>
           <span class="menu-text">Dashboard</span>
         </a>
       </li> -->
       <li>
-        <a [routerLink]="['/principal/compras']"routerLinkActive="active">
-          <i class="pi pi-shopping-cart"></i>
+        <a [routerLink]="['/principal/compras']"routerLinkActive="active" [pTooltip]="isCollapsed==true?'Compras':''" tooltipPosition="right">
+          <i class="pi pi-shopping-cart" ></i>
           <span class="menu-text">Compras</span>
         </a>
       </li>
       <li>
-        <a [routerLink]="['/principal/reportes']"routerLinkActive="active">
-          <i class="pi pi-file"></i>
+        <a [routerLink]="['/principal/reportes']"routerLinkActive="active" [pTooltip]="isCollapsed==true?'Reporte':''" tooltipPosition="right">
+          <i class="pi pi-file" ></i>
           <span class="menu-text">Reporte</span>
         </a>
       </li>
       <!-- <li>
-        <a [routerLink]="['/principal/usuarios']"routerLinkActive="active">
-          <i class=" pi pi-user"></i>
+        <a [routerLink]="['/principal/usuarios']"routerLinkActive="active" [pTooltip]="isCollapsed==true?'Usuarios':''" tooltipPosition="right">
+          <i class=" pi pi-user" ></i>
           <span class="menu-text">Usuarios</span>
         </a>
       </li> -->
       <!-- <li>
-        <a [routerLink]="['/principal/gastos']"routerLinkActive="active">
-          <i class="pi pi-money-bill"></i>
+        <a [routerLink]="['/principal/gastos']"routerLinkActive="active" [pTooltip]="isCollapsed==true?'Gastos':''" tooltipPosition="right">
+          <i class="pi pi-money-bill" ></i>
           <span class="menu-text">Gastos</span>
         </a>
       </li> -->
     </ul>
     <ul class="menu bottom-menu">
       <li class="bottom-item">
-        <a href="#" (click)="CerrarSesion()">
-          <i class="pi pi-sign-out"></i>
+        <a href="#" (click)="CerrarSesion()" [pTooltip]="isCollapsed==true?'Cerrar':''" tooltipPosition="right">
+          <i class="pi pi-sign-out" ></i>
           <span class="menu-text">Cerrar</span>
         </a>
       </li>

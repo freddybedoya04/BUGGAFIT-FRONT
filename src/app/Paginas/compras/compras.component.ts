@@ -38,7 +38,7 @@ export class ComprasComponent implements OnInit {
     let ref = this.dialogService.open(CreacionCompraComponent, {
       header: 'Nueva Compra',
       width: '60%',
-      contentStyle: { overflow: 'auto' },
+      contentStyle: { overflow: 'auto','background-color':'#eff3f8'  },
       baseZIndex: 100,
       maximizable: true,
       data:{esEdicion:false}
@@ -54,7 +54,7 @@ export class ComprasComponent implements OnInit {
     let ref = this.dialogService.open(CreacionCompraComponent, {
       header: 'Compra #'+compra.COM_CODIGO,
       width: '60%',
-      contentStyle: { overflow: 'auto' },
+      contentStyle: { overflow: 'auto','background-color':'#eff3f8' },
       baseZIndex: 100,
       maximizable: true,
       data:{nuevacompra:compra,esEdicion:true}

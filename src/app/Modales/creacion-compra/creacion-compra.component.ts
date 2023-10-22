@@ -36,7 +36,7 @@ export class CreacionCompraComponent implements OnInit {
     this.FechaActual = new Date(Date.now());
     this.formularioCompra = fb.group({
       COM_FechaCompra: [this.FechaActual, Validators.required],
-      COM_PROVEEDOR: [null, Validators.required],
+      COM_PROVEEDOR: [null],
       TIC_CODIGO: [null, Validators.required],
       // COM_ENBODEGA: [false], // Puedes establecer un valor predeterminado
       // COM_CREDITO: [false], // Puedes establecer un valor predeterminado
@@ -107,7 +107,7 @@ export class CreacionCompraComponent implements OnInit {
   }
   ObtenerTipoCuentas() {
     this.ventasService.BuscarTipoCuentas().subscribe((result: any) => {
-      this.listaTipoDeCuenta = result.map((item: any) => {
+      this.listaTipoDeCuenta = result.filter((x: { TIC_NOMBRE: string; })=>!x.TIC_NOMBRE.toLocaleUpperCase().includes("CREDITO")).map((item: any) => {
         const selectItem: SelectItem = {
           label: item.TIC_NOMBRE,
           value: item.TIC_CODIGO
@@ -134,7 +134,7 @@ export class CreacionCompraComponent implements OnInit {
 
   }
   AgregarProducto() {
-    if (this.productoSeleccionado.PRO_CODIGO == "") {
+    if (this.productoSeleccionado==null || this.productoSeleccionado.PRO_CODIGO == "") {
       this.alerta.SetToast("Debe Seleccionar un producto.", 2)
       return;
     }

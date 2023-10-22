@@ -72,6 +72,7 @@ h1 {
   width: 100%;
   display: flex;
   align-items: center;
+  min-width: 100px;
 }
 .card form .buttonContainer {
   grid-column: 1/4;
@@ -82,3 +83,16 @@ h1 {
 
  }
 
+
+ @media screen and (max-width: 1400px) {
+  .card section {
+    grid-template-columns: repeat(2,1fr); /* Cambia a una sola columna */
+    /* Otras propiedades de grid que deseas modificar en tablet */
+  }
+}
+
+@media screen and (max-width: 786px) {
+   .card section {
+      grid-template-columns: 1fr;
+  }
+}

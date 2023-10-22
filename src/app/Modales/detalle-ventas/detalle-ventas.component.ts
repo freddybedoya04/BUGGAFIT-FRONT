@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { Iventa } from 'src/app/Interfaces/iventa';
@@ -38,7 +39,9 @@ export class DetalleVentasComponent implements OnInit {
   ngOnInit(): void {
     debugger
    this.venta=this.config.data.Venta;
-   this.venta.VEN_FECHACREACION=new Date(this.venta.VEN_FECHACREACION)
+   let fecha = new Date(this.venta.VEN_FECHAVENTA);
+   this.venta.VEN_FECHAVENTA = new Date()
+   this.venta.VEN_FECHAVENTA.setDate(fecha.getDate());
   }
 
 }

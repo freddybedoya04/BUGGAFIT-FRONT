@@ -3,6 +3,7 @@ import { HttpClientService } from './http-client.service';
 import { Iventa } from '../Interfaces/iventa';
 import { Observable, map } from 'rxjs';
 import { IFiltro } from '../Interfaces/ifiltro';
+import { Iabonos } from '../Interfaces/iabonos';
 
 @Injectable({
   providedIn: 'root'
@@ -68,6 +69,30 @@ export class VentasService {
   }
   ListarAbonosPorCodigoVenta(venta:number) {
     return this.http.get(this.url+'ListarAbonosPorCodigoVenta/'+venta).pipe(
+      map((result: any) => {
+        return result.Data;
+      }));
+  }
+  CrearAbono(abono: Iabonos) {
+    return this.http.post(this.url + 'CrearAbono', abono).pipe(
+      map((result: any) => {
+        return result;
+      }));
+  }
+  EliminarAbono(Abono: number) {
+    return this.http.delete(this.url + 'DeleteAbono/' + Abono).pipe(
+      map((result: any) => {
+        return result.Data;
+      }));
+  }
+  ActualizarAbono(Abono:Iabonos) {
+    return this.http.put(this.url + 'PutAbonos/', Abono).pipe(
+      map((result: any) => {
+        return result.Data;
+      }));
+  }
+  FinalizarCredito(venta:number) {
+    return this.http.get(this.url + 'FinalizarCredito/'+venta).pipe(
       map((result: any) => {
         return result.Data;
       }));
