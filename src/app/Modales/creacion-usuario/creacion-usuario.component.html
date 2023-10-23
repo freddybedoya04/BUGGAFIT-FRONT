@@ -1,1 +1,29 @@
-<p>creacion-usuario works!</p>
+<div class="contenedorPricipal">
+    <div class="cabecera">
+        <img src="../../../assets/Imagenes/BUGGAFITLOGO.png" alt="">
+    </div>
+    <form [formGroup]="formularioUsuario">
+        <div>
+            <label for="USU_NOMBRE">Nombre:</label>
+            <input type="text" pInputText formControlName="USU_NOMBRE" matInput autocomplete="off">
+        </div>
+        <div>
+            <label for="USU_CEDULA">Cédula:</label>
+            <input type="text" pInputText formControlName="USU_CEDULA" matInput autocomplete="off">
+        </div>
+        <div>
+            <label for="USU_CONTRASEÑA">Contraseña:</label>
+            <input type="password" pInputText formControlName="USU_CONTRASEÑA" matInput autocomplete="off">
+        </div>
+        <div>
+            <label for="USU_ROL">Rol:</label>
+            <input type="text" pInputText formControlName="USU_ROL" matInput autocomplete="off">
+        </div>
+    </form>
+    <div>
+        <div class="buttonContainer">
+            <p-button (click)="AgregarUsuario()" label="Agregar"> </p-button>
+        </div>
+    </div>
+</div>
+

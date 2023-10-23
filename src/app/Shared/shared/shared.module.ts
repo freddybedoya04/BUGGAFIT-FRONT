@@ -18,6 +18,8 @@ import { Tag, TagModule } from 'primeng/tag';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { TooltipModule } from 'primeng/tooltip';
+import { ChartModule } from 'primeng/chart';
+import { PanelModule } from 'primeng/panel';
 
 @NgModule({
   declarations: [LoadingComponent],
@@ -37,8 +39,9 @@ import { TooltipModule } from 'primeng/tooltip';
     TagModule,
     ConfirmDialogModule,
     TabMenuModule,
-    TooltipModule
-
+    TooltipModule,
+    ChartModule,
+    PanelModule
   ],
   exports:[
     ButtonModule,
@@ -57,7 +60,9 @@ import { TooltipModule } from 'primeng/tooltip';
     TagModule,
     ConfirmDialogModule,
     TabMenuModule,
-    TooltipModule
+    TooltipModule,
+    ChartModule,
+    PanelModule
   ]
 })
 export class SharedModule { }

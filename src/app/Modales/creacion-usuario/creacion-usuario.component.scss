@@ -1,0 +1,44 @@
+.contenedorPricipal {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+   padding: 20px;
+}
+
+.cabecera {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 80%;
+}
+
+form,
+.Productos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 10px;
+    align-items: center;
+}
+
+form div,
+.Productos div {
+    flex: 1 0 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+:host ::ng-deep .p-table {
+    width: 100%;
+}

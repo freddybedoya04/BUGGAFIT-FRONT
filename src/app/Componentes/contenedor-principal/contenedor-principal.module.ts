@@ -15,6 +15,7 @@ import { EstadisticasComponent } from '../../Paginas/estadisticas/estadisticas.c
 import { VentasComponent } from 'src/app/Paginas/ventas/ventas.component';
 import { CreacionCompraComponent } from 'src/app/Modales/creacion-compra/creacion-compra.component';
 import { CreacionProductoComponent } from 'src/app/Modales/creacion-producto/creacion-producto.component';
+import { CreacionUsuarioComponent } from 'src/app/Modales/creacion-usuario/creacion-usuario.component';
 import { DetalleVentasComponent } from 'src/app/Modales/detalle-ventas/detalle-ventas.component';
 import { AbonosComponent } from 'src/app/Modales/abonos/abonos.component';
 @NgModule({
@@ -30,7 +31,8 @@ import { AbonosComponent } from 'src/app/Modales/abonos/abonos.component';
     CreacionCompraComponent,
     CreacionProductoComponent,
     DetalleVentasComponent,
-    AbonosComponent
+    AbonosComponent,
+    CreacionUsuarioComponent
   ],
   imports: [
     CommonModule,
