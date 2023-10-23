@@ -12,4 +12,5 @@ export interface Iproducto {
     PRO_FECHACREACION: Date;
     PRO_ESTADO: boolean;
     COM_CANTIDAD?:number;
+    EstaEnAlerta?: boolean;
   }

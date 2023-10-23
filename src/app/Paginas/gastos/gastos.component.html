@@ -1,1 +1,78 @@
-<p>gastos works!</p>
+<div class="Principal">
+    <div class="Filtro">
+        <!-- <p>
+        <label>Fecha Inicio:</label>
+        <p-calendar [(ngModel)]="FechaInicio" name="FechaInicio" [showTime]="true" hourFormat="12"
+          [showIcon]="true"></p-calendar>
+      </p>
+      <p>
+        <label>Fecha Fin:</label>
+        <p-calendar [(ngModel)]="FechaFin" name="FechaFin" [showTime]="true" hourFormat="12"
+          [showIcon]="true"></p-calendar>
+      </p> -->
+    </div>
+    <br>
+    <p-card header="Gastos" [style]="{margin:'20px',padding:'20px'}" styleClass="shadow-5">
+        <p-table #dt2 [value]="listaGastos" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+            [tableStyle]="{'min-width': '90rem','max-height':'600px'}" styleClass="p-datatable-sm"
+            currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} compras"
+            [rowsPerPageOptions]="[5, 10, 50]" [globalFilterFields]="['PRO_CODIGO','PRO_NOMBRE','PRO_MARCA']"
+            class="custom-table">
+            <ng-template pTemplate="caption">
+                <div class="EncabezadoTabla">
+                    <p-button label="Agregar Gasto" icon="pi pi-plus" (onClick)="AbrirModalGastos()"></p-button>
+                    <button type="button" pButton pRipple icon="pi pi-file-excel"
+                        class="p-button-rounded p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom"></button>
+                    <button pButton label="" icon="pi pi-filter" iconPos="left" class="p-button-raised p-button-rounded"
+                        (click)="dt2.reset()"></button>
+                    <span class="p-input-icon-left ml-auto">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" [(ngModel)]="searchKeyword"
+                            (input)="dt2.filterGlobal(searchKeyword, 'contains')" placeholder="Buscar" />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <!-- <th pSortableColumn="EstaEnAlerta" style="width:20%">Info <p-sortIcon
+                            field="EstaEnAlerta"></p-sortIcon></th> -->
+                    <th pSortableColumn="GAS_CODIGO" style="width:20%">Codigo <p-sortIcon
+                            field="GAS_CODIGO"></p-sortIcon></th>
+                    <th pSortableColumn="MOTIVOSGASTOS" style="width:20%">Motivo Gasto<p-sortIcon
+                            field="MOTIVOSGASTOS"></p-sortIcon></th>
+                    <th pSortableColumn="GAS_VALOR" style="width:20%">Valor<p-sortIcon field="GAS_VALOR"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="GAS_PENDIENTE" style="width:20%">Pediente de Pago<p-sortIcon
+                            field="GAS_PENDIENTE"></p-sortIcon></th>
+                    <th pSortableColumn="GAS_FECHAGASTO" style="width:20%">Fecha<p-sortIcon
+                            field="GAS_FECHAGASTO"></p-sortIcon></th>
+                    <th pSortableColumn="USU_CEDULA" style="min-width:200px">Cedula Usuario <p-sortIcon
+                            field="USU_CEDULA"></p-sortIcon></th>
+                    <th style="min-width:200px" alignFrozen="right" pFrozenColumn>Acciones</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-gasto>
+                <tr>
+                    <!-- <td><i *ngIf="gasto.EstaEnAlerta" class="pi pi-exclamation-triangle"></i></td> -->
+                    <td>{{ gasto.GAS_CODIGO }}</td>
+                    <td>{{ gasto.MOTIVOSGASTOS }}</td>
+                    <td>{{ gasto.GAS_VALOR | number}}</td>
+                    <td>{{ gasto.GAS_PENDIENTE ? 'Si' : 'No'}}</td>
+                    <td>{{ gasto.GAS_FECHAGASTO | date:'YYYY-MMM-dd HH:mm:ss'}}</td>
+                    <td>{{ gasto.USU_CEDULA}}</td>
+                    <td class="Acciones">
+                        <button [disabled]="gasto.GAS_PENDIENTE !== true" pButton pRipple icon="pi pi-check"
+                            class="p-button-rounded p-button-success" pTooltip="Cerrar Gasto" tooltipPosition="top"
+                            placeholder="Top" (click)="CerrarGasto(gasto)"></button>
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"
+                            pTooltip="Editar Gasto" tooltipPosition="top" placeholder="Top"
+                            (click)="EditarGasto(gasto)"></button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                            pTooltip="Eliminar Gasto" tooltipPosition="top" placeholder="Top"
+                            (click)="BorrarGasto(gasto)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-card>
+</div>

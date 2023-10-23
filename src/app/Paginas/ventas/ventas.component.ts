@@ -128,6 +128,7 @@ export class VentasComponent implements OnInit {
       USU_CEDULA : '',
       GAS_PENDIENTE : false,
       VEN_CODIGO : 0,
+      MOTIVOSGASTOS: ''
     }
     this.TotalComprado=0;
   }
@@ -367,6 +368,7 @@ export class VentasComponent implements OnInit {
         USU_CEDULA : this.userLogged.USU_CEDULA,
         GAS_PENDIENTE : true,
         VEN_CODIGO : 0,
+        MOTIVOSGASTOS: nombreTipoEnvio,
       }
     }
     if(nombreTipoEnvio.toLowerCase().indexOf('nacional') >= 0){
@@ -381,6 +383,7 @@ export class VentasComponent implements OnInit {
         USU_CEDULA : this.userLogged.USU_CEDULA,
         GAS_PENDIENTE : true,
         VEN_CODIGO : 0,
+        MOTIVOSGASTOS: nombreTipoEnvio,
       }
     }
   }

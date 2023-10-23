@@ -23,4 +23,28 @@ export class GastosService {
         return result.StatusCode;
       }));
   }
+  BuscarGastos() {
+    return this.http.get(this.url + 'GetGastos').pipe(
+      map((result: any) => {
+        return result.Data
+      }));
+  }
+  BuscarGastoID(gasto: string) {
+    return this.http.get(this.url + 'GetGasto/' + gasto).pipe(
+      map((result: any) => {
+        return result.Data;
+      }));
+  }
+  EliminarGasto(codigoGasto: number) {
+    return this.http.delete(this.url + 'DeleteGasto/' + codigoGasto).pipe(
+      map((result: any) => {
+        return result;
+      }));
+  }
+  ActualizarGasto(codGasto: string, gasto: IGasto) {
+    return this.http.put(this.url + 'PutGasto/' + codGasto, gasto).pipe(
+      map((result: any) => {
+        return result;
+      }));
+  }
 }

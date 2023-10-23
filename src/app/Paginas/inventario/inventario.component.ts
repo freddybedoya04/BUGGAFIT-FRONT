@@ -62,7 +62,10 @@ export class InventarioComponent implements OnInit {
         this.alertasService.SetToast("No hay Productos para mostrar.", 2);
         return;
       }
-      this.listaProductos = result;
+      this.listaProductos = result.map((item: Iproducto) => {
+        item.EstaEnAlerta = item.PRO_UNIDADES_DISPONIBLES < item.PRO_UNIDADES_MINIMAS_ALERTA;
+        return item;
+      });
     });
   }
 
