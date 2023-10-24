@@ -1,7 +1,7 @@
 export interface Iusuario {
     USU_CEDULA:string,
     USU_NOMBRE:string,
-    USU_CONTRASEÑA:string,
+    USU_CONTRASEÑA?:string,
     USU_ROL:string,
     USU_FECHACREACION:Date,
     USU_FECHAACTUALIZACION:Date,
