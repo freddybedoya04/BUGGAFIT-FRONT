@@ -10,6 +10,7 @@ import { EstadisticasComponent } from 'src/app/Paginas/estadisticas/estadisticas
 import { UsuariosComponent } from 'src/app/Paginas/usuarios/usuarios.component';
 import { CreacionCompraComponent } from 'src/app/Modales/creacion-compra/creacion-compra.component';
 import { DetalleVentasComponent } from 'src/app/Modales/detalle-ventas/detalle-ventas.component';
+import { ConfiguracionesComponent } from 'src/app/Paginas/configuraciones/configuraciones.component';
 
 const routes: Routes = [
   {path:'',component:ContenedorPrincipalComponent,children:[
@@ -21,7 +22,7 @@ const routes: Routes = [
     {path:'inventario',component:InventarioComponent},
     {path:'estadisticas',component:EstadisticasComponent},
     {path:'usuarios',component:UsuariosComponent},
-    {path:'1',component:DetalleVentasComponent}
+    {path:'configuraciones',component:ConfiguracionesComponent}
   ]}
 
 

@@ -5,6 +5,8 @@ import { Iproducto } from 'src/app/Interfaces/iproducto';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { InventarioService } from 'src/app/Servicios/inventario.service';
 import { SelectItem } from 'primeng/api';
+import { MarcasService } from 'src/app/Servicios/marcas.service';
+import { CategoriasService } from 'src/app/Servicios/categorias.service';
 
 @Component({
   selector: 'app-creacion-producto',
@@ -24,6 +26,8 @@ export class CreacionProductoComponent implements OnInit {
     private formBuilder: FormBuilder,
     private alerta: AlertasService,
     private inventarioService: InventarioService,
+    private marcasService:MarcasService,
+    private categoriasService:CategoriasService,
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
   ) {
@@ -182,7 +186,7 @@ export class CreacionProductoComponent implements OnInit {
   }
 
   ObtenerCategorias() {
-    this.inventarioService.ObtenerCategorias().subscribe(
+    this.categoriasService.ObtenerCategorias().subscribe(
       (result: any) => {
         if (result) {
           this.listaCategorias = result.map((item: any) => {
@@ -203,7 +207,7 @@ export class CreacionProductoComponent implements OnInit {
   }
 
   ObtenerMarcas() {
-    this.inventarioService.ObtenerMarcas().subscribe(
+    this.marcasService.ObtenerMarcas().subscribe(
       (result: any) => {
         if (result) {
           this.listaMarcas = result.map((item: any) => {

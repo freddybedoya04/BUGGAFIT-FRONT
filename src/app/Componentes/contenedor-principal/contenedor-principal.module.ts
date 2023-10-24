@@ -18,6 +18,7 @@ import { CreacionProductoComponent } from 'src/app/Modales/creacion-producto/cre
 import { CreacionUsuarioComponent } from 'src/app/Modales/creacion-usuario/creacion-usuario.component';
 import { DetalleVentasComponent } from 'src/app/Modales/detalle-ventas/detalle-ventas.component';
 import { AbonosComponent } from 'src/app/Modales/abonos/abonos.component';
+import { ConfiguracionesComponent } from 'src/app/Paginas/configuraciones/configuraciones.component';
 @NgModule({
   declarations: [
     ContenedorPrincipalComponent,
@@ -32,7 +33,8 @@ import { AbonosComponent } from 'src/app/Modales/abonos/abonos.component';
     CreacionProductoComponent,
     DetalleVentasComponent,
     AbonosComponent,
-    CreacionUsuarioComponent
+    CreacionUsuarioComponent,
+    ConfiguracionesComponent
   ],
   imports: [
     CommonModule,
