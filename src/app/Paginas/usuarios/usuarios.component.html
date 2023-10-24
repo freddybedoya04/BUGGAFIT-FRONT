@@ -43,7 +43,7 @@
           <td>{{ usuario.USU_CEDULA }}</td>
           <td>{{ usuario.USU_ROL }}</td>
           <td style="min-width:200px">
-            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"></button>
+            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="EditarUsuario(usuario)"></button>
             <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="EliminarUsuario(usuario)"></button>
           </td>
         </tr>

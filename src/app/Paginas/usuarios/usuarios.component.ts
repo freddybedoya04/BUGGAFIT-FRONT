@@ -57,7 +57,19 @@ AbrirModalUsuario(){
       }
     });
   }
-  
+  EditarUsuario(usuario: Iusuario){
+    let ref=this.dialogService.open(CreacionUsuarioComponent,{
+      header: 'Editar Usuario',
+      width: '60%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 100,
+      maximizable: true,
+      data: { esEdicion: true, productoAEditar: usuario }
+    });
+    ref.onClose.subscribe((res) => {
+      this.ListarUsuarios();
+    });
+  };
   ListarUsuarios() {
     this.UsuarioService.ListarUsuarios().subscribe(
       (result: any) => {
