@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { CreacionUsuarioComponent } from 'src/app/Modales/creacion-usuario/creacion-usuario.component';
 import { DialogService } from 'primeng/dynamicdialog';
-import { Icompras } from 'src/app/Interfaces/icompra';
-import { IFiltro } from 'src/app/Interfaces/ifiltro';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { Iusuario } from 'src/app/Interfaces/iusuario';
 import { UsuarioService } from 'src/app/Servicios/usuario.service';
+import * as FileSaver from 'file-saver'; 
+import * as XLSX from 'xlsx'; 
+
+
+
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
@@ -13,6 +16,7 @@ import { UsuarioService } from 'src/app/Servicios/usuario.service';
 })
 export class UsuariosComponent implements OnInit {
   ListaUsuario:Iusuario[]=[];
+  @ViewChild('dt2', { static: true }) table: any;
 
 
 constructor(public dialogService: DialogService, private UsuarioService: UsuarioService, private alertasService: AlertasService){
@@ -37,6 +41,41 @@ AbrirModalUsuario(){
     this.ListarUsuarios();
   });
   }
+  exportExcel() {
+    import('xlsx').then((xlsx) => {
+      const worksheet = xlsx.utils.json_to_sheet(this.ListaUsuario);
+  
+      const headerRow = this.table.el.nativeElement.querySelector('thead > tr');
+      const headerCells = Array.from(headerRow.children);
+      const headerMap = new Map<string, number>();
+  
+      
+      headerCells.forEach((cell: any, columnIndex) => {
+        const columnName = cell.innerText.trim();
+        headerMap.set(columnName, columnIndex);
+      });
+  
+      const headerRowIndex = 0;
+      headerMap.forEach((columnIndex, columnName) => {
+        const cellRef = xlsx.utils.encode_cell({ r: headerRowIndex, c: columnIndex });
+        worksheet[cellRef] = { t: 's', v: columnName };
+      });
+  
+      const workbook: XLSX.WorkBook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      this.saveAsExcelFile(excelBuffer, 'usuarios');
+    });
+  }
+  
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], {
+      type: EXCEL_TYPE
+    });
+    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
+  
   EliminarUsuario(usuario: Iusuario) {
     this.alertasService.confirmacion("¿Desea eliminar al usuario con cédula: " + usuario.USU_CEDULA + "?").then((resolve: any) => {
       if (resolve) {
@@ -81,5 +120,6 @@ AbrirModalUsuario(){
       });
   
   }
+
 }
 

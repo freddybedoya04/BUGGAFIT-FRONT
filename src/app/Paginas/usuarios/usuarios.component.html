@@ -15,7 +15,7 @@
       <ng-template pTemplate="caption">
         <div class="EncabezadoTabla">
           <p-button label="Agregar Usuario" icon="pi pi-plus" (onClick)="AbrirModalUsuario()"></p-button>
-          <button type="button" pButton pRipple icon="pi pi-file-excel" class="p-button-rounded p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom"></button>
+          <button type="button"  pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class=" p-button-rounded p-button-success mr-2"  pTooltip="XLS" tooltipPosition="bottom"></button>
           <button pButton label="" icon="pi pi-filter" iconPos="left" class="p-button-raised p-button-rounded" (click)="dt2.reset()"></button>
           <span class="p-input-icon-left ml-auto">
             <i class="pi pi-search"></i>
