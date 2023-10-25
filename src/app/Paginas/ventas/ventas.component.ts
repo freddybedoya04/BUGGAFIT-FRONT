@@ -12,6 +12,7 @@ import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { ClientesService } from 'src/app/Servicios/clientes.service';
 import { GastosService } from 'src/app/Servicios/gastos.service';
 import { InventarioService } from 'src/app/Servicios/inventario.service';
+import { MotivosGastosService } from 'src/app/Servicios/motivosgastos.service';
 import { VentasService } from 'src/app/Servicios/ventas.service';
 
 @Component({
@@ -82,7 +83,8 @@ export class VentasComponent implements OnInit {
     private clientesService: ClientesService,
     private ventasService: VentasService,
     private alertasService: AlertasService,
-    private gastosService: GastosService
+    private gastosService:GastosService,
+    private motivoGastosService: MotivosGastosService
   ) {
     this.userLogged = JSON.parse(localStorage.getItem('user') || "");
     this.formularioVenta = formBuilder.group({
@@ -156,7 +158,7 @@ export class VentasComponent implements OnInit {
   }
   
   ObtenerTipoDeGastoEnvio() {
-    this.gastosService.BuscarMotivoGasto().subscribe((result: any) => {
+    this.motivoGastosService.ObtenerMotivosGastos().subscribe((result: any) => {
       if (result === null) {
         this.alertasService.SetToast("No hay Motivos de envio.", 3);
         return;

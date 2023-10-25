@@ -16,8 +16,11 @@
                     </section>
                 </p-card>
                 <p-card header="Listado de marcas" [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
-                    <p-table [value]="marcas" [tableStyle]="{ 'min-width': '40rem', 'max-height': '600px' }"
-                        styleClass="p-datatable-sm" class="custom-table">
+                    <p-table [value]="marcas" [tableStyle]="{ 'min-width': '40rem', 'max-height': '400px' }"
+                        [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+                        [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords}'"
+                        [scrollable]="true" [rowsPerPageOptions]="[5, 10, 50]" styleClass="p-datatable-sm"
+                        class="custom-table">
                         <ng-template pTemplate="caption">
                             <div class="EncabezadoTabla">
                                 <p-button *ngIf="ActivarFormularioMarca==false" label="Agregar Marca" icon="pi pi-plus"
@@ -40,7 +43,8 @@
                                 <td>{{ marca.MAR_NOMBRE}}</td>
                                 <td>
                                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                                        pTooltip="Eliminar" tooltipPosition="top" (click)="EliminarMarca(marca)"></button>
+                                        pTooltip="Eliminar" tooltipPosition="top"
+                                        (click)="EliminarMarca(marca)"></button>
                                 </td>
                             </tr>
                         </ng-template>
@@ -48,13 +52,32 @@
                 </p-card>
             </p-accordionTab>
             <p-accordionTab header="Categorias">
-                <p-card header="Listado de categoria" [style]="{ margin: '20px', padding: '20px' }"
+                <p-card *ngIf="ActivarFormularioCategoria==true" header="Nueva categoria"
+                    [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
+                    <section>
+                        <div>
+                            <label>Nombre:</label>
+                            <input type="text" pInputText [(ngModel)]="Categoria.CAT_NOMBRE" />
+                        </div>
+                        <div class="BotonAgregar">
+                            <p-button label="Agregar Categoria" icon="pi pi-plus"
+                                (onClick)="AgregarCategoria()"></p-button>
+                        </div>
+                    </section>
+                </p-card>
+                <p-card header="Listado de categorias" [style]="{ margin: '20px', padding: '20px' }"
                     styleClass="shadow-5">
-                    <p-table [value]="categorias" [tableStyle]="{ 'min-width': '40rem', 'max-height': '600px' }"
-                        styleClass="p-datatable-sm" class="custom-table">
+                    <p-table [value]="categorias" [tableStyle]="{ 'min-width': '40rem', 'max-height': '400px' }"
+                        [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+                        [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords}'"
+                        [scrollable]="true" [rowsPerPageOptions]="[5, 10, 50]" styleClass="p-datatable-sm"
+                        class="custom-table">
                         <ng-template pTemplate="caption">
                             <div class="EncabezadoTabla">
-                                <p-button label="Agregar Categoria" icon="pi pi-plus"></p-button>
+                                <p-button *ngIf="ActivarFormularioCategoria==false" label="Agregar Categoria"
+                                    icon="pi pi-plus" (onClick)="ActivarFormularioCategoria=true"></p-button>
+                                <p-button *ngIf="ActivarFormularioCategoria==true" label="Cancelar"
+                                    (onClick)="ActivarFormularioCategoria=false"></p-button>
                             </div>
                         </ng-template>
                         <ng-template pTemplate="header">
@@ -70,7 +93,8 @@
                                 <td>{{ categoria.CAT_NOMBRE}}</td>
                                 <td>
                                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                                        pTooltip="Eliminar" tooltipPosition="top"></button>
+                                        pTooltip="Eliminar" tooltipPosition="top"
+                                        (click)="EliminarCategoria(categoria)"></button>
                                 </td>
                             </tr>
                         </ng-template>
@@ -78,12 +102,35 @@
                 </p-card>
             </p-accordionTab>
             <p-accordionTab header="Cuentas">
-                <p-card header="Listado de Cuentas" [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
-                    <p-table [value]="cuentas" [tableStyle]="{ 'min-width': '40rem', 'max-height': '600px' }"
-                        styleClass="p-datatable-sm" class="custom-table">
+                <p-card *ngIf="ActivarFormularioCuenta==true" header="Nueva Cuenta"
+                    [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
+                    <section>
+                        <div>
+                            <label>Nombre:</label>
+                            <input type="text" pInputText [(ngModel)]="Cuenta.TIC_NOMBRE" />
+                        </div>
+                        <div>
+                            <label># Referencia:</label>
+                            <input type="text" pInputText [(ngModel)]="Cuenta.TIC_NUMEROREFERENCIA" />
+                        </div>
+                        <div class="BotonAgregar">
+                            <p-button label="Agregar Cuenta" icon="pi pi-plus"
+                                (onClick)="AgregarCuenta()"></p-button>
+                        </div>
+                    </section>
+                </p-card>
+                <p-card header="Listado de cuentas" [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
+                    <p-table [value]="cuentas" [tableStyle]="{ 'min-width': '40rem', 'max-height': '400px' }"
+                        [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+                        [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords}'"
+                        [scrollable]="true" [rowsPerPageOptions]="[5, 10, 50]" styleClass="p-datatable-sm"
+                        class="custom-table">
                         <ng-template pTemplate="caption">
                             <div class="EncabezadoTabla">
-                                <p-button label="Agregar Cuenta" icon="pi pi-plus"></p-button>
+                                <p-button *ngIf="ActivarFormularioCuenta==false" label="Agregar Cuenta"
+                                    icon="pi pi-plus" (onClick)="ActivarFormularioCuenta=true"></p-button>
+                                <p-button *ngIf="ActivarFormularioCuenta==true" label="Cancelar"
+                                    (onClick)="ActivarFormularioCuenta=false"></p-button>
                             </div>
                         </ng-template>
                         <ng-template pTemplate="header">
@@ -101,7 +148,7 @@
                                 <td>{{ cuenta.TIC_NUMEROREFERENCIA}}</td>
                                 <td>
                                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                                        pTooltip="Eliminar" tooltipPosition="top"></button>
+                                        pTooltip="Eliminar" tooltipPosition="top" (click)="EliminarCuenta(cuenta)"></button>
                                 </td>
                             </tr>
                         </ng-template>
@@ -111,8 +158,11 @@
             <p-accordionTab header="Envios">
                 <p-card header="Listado tipos de envio" [style]="{ margin: '20px', padding: '20px' }"
                     styleClass="shadow-5">
-                    <p-table [value]="envios" [tableStyle]="{ 'min-width': '40rem', 'max-height': '600px' }"
-                        styleClass="p-datatable-sm" class="custom-table">
+                    <p-table [value]="envios" [tableStyle]="{ 'min-width': '40rem', 'max-height': '400px' }"
+                        [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+                        [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords}'"
+                        [scrollable]="true" [rowsPerPageOptions]="[5, 10, 50]" styleClass="p-datatable-sm"
+                        class="custom-table">
                         <ng-template pTemplate="caption">
                             <div class="EncabezadoTabla">
                                 <!-- <p-button label="Agregar Cuenta" icon="pi pi-plus" ></p-button> -->
@@ -142,13 +192,32 @@
                 </p-card>
             </p-accordionTab>
             <p-accordionTab header="Motivos de gastos">
-                <p-card header="Listado tipos de envio" [style]="{ margin: '20px', padding: '20px' }"
+                <p-card *ngIf="ActivarFormularioMotivoGasto==true" header="Nuevo motivo gasto"
+                [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
+                <section>
+                    <div>
+                        <label>Nombre:</label>
+                        <input type="text" pInputText [(ngModel)]="MotivoGasto.MOG_NOMBRE" />
+                    </div>
+                    <div class="BotonAgregar">
+                        <p-button label="Agregar Motivo" icon="pi pi-plus"
+                            (onClick)="AgregarMotivoGasto()"></p-button>
+                    </div>
+                </section>
+            </p-card>
+                <p-card header="Listado motivos de gastos" [style]="{ margin: '20px', padding: '20px' }"
                     styleClass="shadow-5">
-                    <p-table [value]="envios" [tableStyle]="{ 'min-width': '40rem', 'max-height': '600px' }"
-                        styleClass="p-datatable-sm" class="custom-table">
+                    <p-table [value]="motivos" [tableStyle]="{ 'min-width': '40rem', 'max-height': '400px' }"
+                        [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+                        [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords}'"
+                        [scrollable]="true" [rowsPerPageOptions]="[5, 10, 50]" styleClass="p-datatable-sm"
+                        class="custom-table">
                         <ng-template pTemplate="caption">
                             <div class="EncabezadoTabla">
-                                <p-button label="Agregar motivo" icon="pi pi-plus"></p-button>
+                                <p-button *ngIf="ActivarFormularioMotivoGasto==false" label="Agregar Cuenta"
+                                icon="pi pi-plus" (onClick)="ActivarFormularioMotivoGasto=true"></p-button>
+                            <p-button *ngIf="ActivarFormularioMotivoGasto==true" label="Cancelar"
+                                (onClick)="ActivarFormularioMotivoGasto=false"></p-button>
                             </div>
                         </ng-template>
                         <ng-template pTemplate="header">
@@ -164,7 +233,7 @@
                                 <td>{{ motivo.MOG_NOMBRE}}</td>
                                 <td>
                                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                                        pTooltip="Eliminar" tooltipPosition="top"></button>
+                                        pTooltip="Eliminar" tooltipPosition="top" (click)="EliminarMotivoGasto(motivo)"></button>
                                 </td>
                             </tr>
                         </ng-template>

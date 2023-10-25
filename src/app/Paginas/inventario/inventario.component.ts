@@ -56,7 +56,9 @@ export class InventarioComponent implements OnInit {
     });
   };
   BuscarProductos() {
+    this.alertasService.showLoading("Cargando productos")
     this.inventarioService.BuscarProductos().subscribe((result: any) => {
+      this.alertasService.hideLoading();
       if (!result || result === null) {// en caso que llege vacio el producto
         // Agregar mensaje de error
         this.alertasService.SetToast("No hay Productos para mostrar.", 2);
@@ -66,6 +68,10 @@ export class InventarioComponent implements OnInit {
         item.EstaEnAlerta = item.PRO_UNIDADES_DISPONIBLES < item.PRO_UNIDADES_MINIMAS_ALERTA;
         return item;
       });
+    },err=>{
+      this.alertasService.hideLoading();
+      this.alertasService.SetToast('Error al buscar los productos',3)
+      console.log(err)
     });
   }
 

@@ -3,29 +3,30 @@ import { HttpClientService } from './http-client.service';
 import { Observable, map } from 'rxjs';
 import { Iproducto } from '../Interfaces/iproducto';
 import { icategoria } from '../Interfaces/icategoria';
+import { IMotivoGasto } from '../Interfaces/imotivo-gasto';
 @Injectable({
   providedIn: 'root'
 })
-export class CategoriasService {
+export class MotivosGastosService {
 
-  url: string = "Categorias/";
+  url: string = "MotivosGastos/";
   constructor(private http: HttpClientService) { }
 
-  ObtenerCategorias() {
-    return this.http.get(this.url + 'GetCategorias').pipe(
+  ObtenerMotivosGastos() {
+    return this.http.get(this.url + 'GetMotivoGasto').pipe(
       map((result: any) => {
         return result.Data;
       })
     );
   }
-  CrearCategoria(categoria: icategoria) {
-    return this.http.post(this.url + 'PostCategoria', categoria).pipe(
+  CrearMotivoGasto(MotivosGastos: IMotivoGasto) {
+    return this.http.post(this.url + 'PostMotivoGasto', MotivosGastos).pipe(
       map((result: any) => {
         return result;
       }));
   }
-  EliminaCategoria(categoria: number) {
-    return this.http.delete(this.url + 'DeleteCategoria/' + categoria).pipe(
+  EliminarMotivoGasto(MotivosGastos: number) {
+    return this.http.delete(this.url + 'DeleteMotivoGasto/' + MotivosGastos).pipe(
       map((result: any) => {
         return result.Data;
       }));
