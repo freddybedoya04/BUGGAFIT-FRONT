@@ -1,25 +1,28 @@
 <div class="contenedorPricipal">
     <p-card header="Informacion Compra" [style]="{ width: '100%' }" class="card">
-        <form [formGroup]="formularioCompra">
-            <div>
-                <label>Fecha de compra:</label>
-                <p-calendar formControlName="COM_FechaCompra" [showTime]="true" hourFormat="12"></p-calendar>
-            </div>
-            <div>
-                <label for="COM_PROVEEDOR">Proveedor:</label>
-                <input type="text" pInputText formControlName="COM_PROVEEDOR" matInput autocomplete="off">
+        <section>
+            <form [formGroup]="formularioCompra">
+                <div>
+                    <label>Fecha de compra:</label>
+                    <p-calendar formControlName="COM_FechaCompra" [showTime]="true" hourFormat="12"></p-calendar>
+                </div>
+                <div>
+                    <label for="COM_PROVEEDOR">Proveedor:</label>
+                    <input type="text" pInputText formControlName="COM_PROVEEDOR" matInput autocomplete="off">
+        
+                </div>
+                <div>
+                    <label for="TIC_CODIGO">Medio de pago:</label>
+                    <p-dropdown formControlName="TIC_CODIGO" [options]="listaTipoDeCuenta" optionLabel="label"
+                    optionValue="value" placeholder="Seleccione Cuenta"></p-dropdown>
+                </div>
     
-            </div>
-            <div>
-                <label for="TIC_CODIGO">Medio de pago:</label>
-                <p-dropdown formControlName="TIC_CODIGO" [options]="listaTipoDeCuenta" optionLabel="label"
-                optionValue="value" placeholder="Seleccione Cuenta"></p-dropdown>
-            </div>
+            </form>
             <div style="align-items: flex-start;display: flex;gap: 10px;">
                 <p-checkbox id="Bodega" [binary]="true" [(ngModel)]="Bodega" label="En bodega" ></p-checkbox>
                 <p-checkbox id="Credito" [binary]="true"[(ngModel)]="Credito" label="Deuda" ></p-checkbox>
             </div>
-        </form>
+        </section>
 
     </p-card>
     

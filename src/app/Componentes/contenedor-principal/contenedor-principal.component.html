@@ -2,7 +2,7 @@
   <aside class="sidebar" [ngClass]="{ collapsed: isCollapsed }">
     <div class="toggle-button-wrapper">
       <button class="toggle-button" (click)="toggleSidebar()">
-        <i class="pi pi-align-justify" [pTooltip]="isCollapsed==true?'Expandir':'Contraer'" tooltipPosition="right"[ngStyle]="{ 'font-size': isCollapsed ? '0.5rem' : '1.3rem' }"></i>
+        <i  [class]="isCollapsed==true?'pi pi-arrow-circle-right':'pi pi-arrow-circle-left'" [pTooltip]="isCollapsed==true?'Expandir':'Contraer'" tooltipPosition="right"[ngStyle]="{ 'font-size': isCollapsed ? '0.5rem' : '1.3rem' }"></i>
       </button>
     </div>
     <div class="container-image">
@@ -49,6 +49,12 @@
         <a [routerLink]="['/principal/gastos']"routerLinkActive="active" [pTooltip]="isCollapsed==true?'Gastos':''" tooltipPosition="right">
           <i class="pi pi-money-bill" ></i>
           <span class="menu-text">Gastos</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/principal/configuraciones']"routerLinkActive="active" [pTooltip]="isCollapsed==true?'Configuraciones':''" tooltipPosition="right">
+          <i class="pi pi-sliders-h" ></i>
+          <span class="menu-text">Configuraciones</span>
         </a>
       </li>
     </ul>

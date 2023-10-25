@@ -1,0 +1,177 @@
+<div class="Principal">
+    <h1>Configuraciones</h1>
+    <div class="Elementos">
+        <p-accordion [activeIndex]="0">
+            <p-accordionTab header="Marcas">
+                <p-card *ngIf="ActivarFormularioMarca==true" header="Nueva marca"
+                    [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
+                    <section>
+                        <div>
+                            <label>Nombre:</label>
+                            <input type="text" pInputText [(ngModel)]="Marca.MAR_NOMBRE" />
+                        </div>
+                        <div class="BotonAgregar">
+                            <p-button label="Agregar Marca" icon="pi pi-plus" (onClick)="AgregarMarca()"></p-button>
+                        </div>
+                    </section>
+                </p-card>
+                <p-card header="Listado de marcas" [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
+                    <p-table [value]="marcas" [tableStyle]="{ 'min-width': '40rem', 'max-height': '600px' }"
+                        styleClass="p-datatable-sm" class="custom-table">
+                        <ng-template pTemplate="caption">
+                            <div class="EncabezadoTabla">
+                                <p-button *ngIf="ActivarFormularioMarca==false" label="Agregar Marca" icon="pi pi-plus"
+                                    (onClick)="ActivarFormularioMarca=true"></p-button>
+                                <p-button *ngIf="ActivarFormularioMarca==true" label="Cancelar"
+                                    (onClick)="ActivarFormularioMarca=false"></p-button>
+
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 20%">#</th>
+                                <th style="width: 20%">Marca</th>
+                                <th style="width: 20%">Acciones</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-marca>
+                            <tr>
+                                <td>{{ marca.MAR_CODIGO}}</td>
+                                <td>{{ marca.MAR_NOMBRE}}</td>
+                                <td>
+                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                        pTooltip="Eliminar" tooltipPosition="top" (click)="EliminarMarca(marca)"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-card>
+            </p-accordionTab>
+            <p-accordionTab header="Categorias">
+                <p-card header="Listado de categoria" [style]="{ margin: '20px', padding: '20px' }"
+                    styleClass="shadow-5">
+                    <p-table [value]="categorias" [tableStyle]="{ 'min-width': '40rem', 'max-height': '600px' }"
+                        styleClass="p-datatable-sm" class="custom-table">
+                        <ng-template pTemplate="caption">
+                            <div class="EncabezadoTabla">
+                                <p-button label="Agregar Categoria" icon="pi pi-plus"></p-button>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 20%">#</th>
+                                <th style="width: 20%">Categoria</th>
+                                <th style="width: 20%">Acciones</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-categoria>
+                            <tr>
+                                <td>{{ categoria.CAT_CODIGO}}</td>
+                                <td>{{ categoria.CAT_NOMBRE}}</td>
+                                <td>
+                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                        pTooltip="Eliminar" tooltipPosition="top"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-card>
+            </p-accordionTab>
+            <p-accordionTab header="Cuentas">
+                <p-card header="Listado de Cuentas" [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
+                    <p-table [value]="cuentas" [tableStyle]="{ 'min-width': '40rem', 'max-height': '600px' }"
+                        styleClass="p-datatable-sm" class="custom-table">
+                        <ng-template pTemplate="caption">
+                            <div class="EncabezadoTabla">
+                                <p-button label="Agregar Cuenta" icon="pi pi-plus"></p-button>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 20%">#</th>
+                                <th style="width: 20%">Cuenta</th>
+                                <th style="width: 20%">Referencia</th>
+                                <th style="width: 20%">Acciones</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-cuenta>
+                            <tr>
+                                <td>{{ cuenta.TIC_CODIGO}}</td>
+                                <td>{{ cuenta.TIC_NOMBRE}}</td>
+                                <td>{{ cuenta.TIC_NUMEROREFERENCIA}}</td>
+                                <td>
+                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                        pTooltip="Eliminar" tooltipPosition="top"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-card>
+            </p-accordionTab>
+            <p-accordionTab header="Envios">
+                <p-card header="Listado tipos de envio" [style]="{ margin: '20px', padding: '20px' }"
+                    styleClass="shadow-5">
+                    <p-table [value]="envios" [tableStyle]="{ 'min-width': '40rem', 'max-height': '600px' }"
+                        styleClass="p-datatable-sm" class="custom-table">
+                        <ng-template pTemplate="caption">
+                            <div class="EncabezadoTabla">
+                                <!-- <p-button label="Agregar Cuenta" icon="pi pi-plus" ></p-button> -->
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 20%">#</th>
+                                <th style="width: 20%">Tipo envio</th>
+                                <th style="width: 20%">Valor</th>
+                                <th style="width: 20%">Acciones</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-envio>
+                            <tr>
+                                <td>{{ envio.MAR_CODIGO}}</td>
+                                <td>{{ envio.MAR_NOMBRE}}</td>
+                                <td>{{ envio.MAR_VALOR}}</td>
+                                <td>{{ envio.MAR_ESTADO }}</td>
+                                <td>
+                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                        pTooltip="Eliminar" tooltipPosition="top"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-card>
+            </p-accordionTab>
+            <p-accordionTab header="Motivos de gastos">
+                <p-card header="Listado tipos de envio" [style]="{ margin: '20px', padding: '20px' }"
+                    styleClass="shadow-5">
+                    <p-table [value]="envios" [tableStyle]="{ 'min-width': '40rem', 'max-height': '600px' }"
+                        styleClass="p-datatable-sm" class="custom-table">
+                        <ng-template pTemplate="caption">
+                            <div class="EncabezadoTabla">
+                                <p-button label="Agregar motivo" icon="pi pi-plus"></p-button>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 20%">#</th>
+                                <th style="width: 20%">Motivo</th>
+                                <th style="width: 20%">Acciones</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-motivo>
+                            <tr>
+                                <td>{{ motivo.MOG_CODIGO}}</td>
+                                <td>{{ motivo.MOG_NOMBRE}}</td>
+                                <td>
+                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                        pTooltip="Eliminar" tooltipPosition="top"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-card>
+            </p-accordionTab>
+        </p-accordion>
+    </div>
+
+</div>

@@ -13,20 +13,26 @@
     flex-direction: column;
 }
 
-.card form,.card section {
+.card section {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 10px;
 }
+.card form {
+    grid-column: 1/-1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
 
-.card section div, .card form section {
+.card section div {
     display: flex;
     flex-direction: column;
     gap: 5px;
     width: 100%;
 }
 
-.card section div input, .card form section div {
+.card section div input {
     border-radius: 10px;
     width: 100%;
 }
@@ -49,14 +55,21 @@
 
 }
 @media screen and (max-width: 1400px) {
-    .card form, .card section {
+     .card section {
       grid-template-columns: repeat(2,1fr); /* Cambia a una sola columna */
       /* Otras propiedades de grid que deseas modificar en tablet */
     }
+    .card form {
+        grid-template-columns: repeat(2,1fr); /* Cambia a una sola columna */
+        /* Otras propiedades de grid que deseas modificar en tablet */
+      }
   }
   
   @media screen and (max-width: 786px) {
-    .card form, .card section {
+     .card section {
+        grid-template-columns: 1fr;
+    }
+    .card form {
         grid-template-columns: 1fr;
     }
   }

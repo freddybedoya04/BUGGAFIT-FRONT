@@ -20,6 +20,7 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { TooltipModule } from 'primeng/tooltip';
 import { ChartModule } from 'primeng/chart';
 import { PanelModule } from 'primeng/panel';
+import { AccordionModule } from 'primeng/accordion';
 
 @NgModule({
   declarations: [LoadingComponent],
@@ -41,7 +42,8 @@ import { PanelModule } from 'primeng/panel';
     TabMenuModule,
     TooltipModule,
     ChartModule,
-    PanelModule
+    PanelModule,
+    AccordionModule
   ],
   exports:[
     ButtonModule,
@@ -62,7 +64,8 @@ import { PanelModule } from 'primeng/panel';
     TabMenuModule,
     TooltipModule,
     ChartModule,
-    PanelModule
+    PanelModule,
+    AccordionModule
   ]
 })
 export class SharedModule { }
