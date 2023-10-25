@@ -1,7 +1,5 @@
 <div class="contenedorPricipal">
-    <div class="cabecera">
-        <img src="../../../assets/Imagenes/BUGGAFITLOGO.png" alt="">
-    </div>
+    <p-card header="Crear usuario" [style]="{ width: '100%' }" class="card">
     <form [formGroup]="formularioUsuario">
         <div>
             <label for="USU_NOMBRE">Nombre:</label>
@@ -19,11 +17,14 @@
             <label for="USU_ROL">Rol:</label>
             <input type="text" pInputText formControlName="USU_ROL" matInput autocomplete="off">
         </div>
+     
     </form>
     <div>
         <div class="buttonContainer">
-            <p-button (click)="SubmitFormulario()" label="Agregar"> </p-button>
+            <p-button (click)=" SubmitFormulario()" label="Agregar"> </p-button>
         </div>
     </div>
+
+</p-card>
 </div>
 
