@@ -3,11 +3,13 @@ import { FormGroup, Validators, FormBuilder, NgForm, Form } from '@angular/forms
 import { disableDebugTools } from '@angular/platform-browser';
 import { PrimeNGConfig, SelectItem } from 'primeng/api';
 import { Dropdown } from 'primeng/dropdown';
+import { DialogService } from 'primeng/dynamicdialog';
 import { Icliente } from 'src/app/Interfaces/icliente';
 import { IDetalleVentas } from 'src/app/Interfaces/idetalle-ventas';
 import { IGasto } from 'src/app/Interfaces/igasto';
 import { Iproducto } from 'src/app/Interfaces/iproducto';
 import { Iventa } from 'src/app/Interfaces/iventa';
+import { ValidarUsuarioAdminComponent } from 'src/app/Modales/validar-usuario-admin/validar-usuario-admin.component';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { ClientesService } from 'src/app/Servicios/clientes.service';
 import { GastosService } from 'src/app/Servicios/gastos.service';
@@ -83,8 +85,9 @@ export class VentasComponent implements OnInit {
     private clientesService: ClientesService,
     private ventasService: VentasService,
     private alertasService: AlertasService,
-    private gastosService:GastosService,
-    private motivoGastosService: MotivosGastosService
+    private gastosService: GastosService,
+    private motivoGastosService: MotivosGastosService,
+    private dialogService: DialogService,
   ) {
     this.userLogged = JSON.parse(localStorage.getItem('user') || "");
     this.formularioVenta = formBuilder.group({
@@ -120,19 +123,19 @@ export class VentasComponent implements OnInit {
       COM_CANTIDAD: 0,
     };
     this.gastoDeEnvio = {
-      GAS_CODIGO : 0,
-      GAS_FECHACREACION : new Date(),
-      GAS_FECHAGASTO : new Date(),
-      MOG_CODIGO : 0,
-      GAS_VALOR : 0,
-      TIC_CODIGO : 0,
-      GAS_ESTADO : false,
-      USU_CEDULA : '',
-      GAS_PENDIENTE : false,
-      VEN_CODIGO : 0,
+      GAS_CODIGO: 0,
+      GAS_FECHACREACION: new Date(),
+      GAS_FECHAGASTO: new Date(),
+      MOG_CODIGO: 0,
+      GAS_VALOR: 0,
+      TIC_CODIGO: 0,
+      GAS_ESTADO: false,
+      USU_CEDULA: '',
+      GAS_PENDIENTE: false,
+      VEN_CODIGO: 0,
       MOTIVOSGASTOS: ''
     }
-    this.TotalComprado=0;
+    this.TotalComprado = 0;
   }
   ngOnInit(): void {
     this.ObtenerTipoCuentas();
@@ -156,7 +159,7 @@ export class VentasComponent implements OnInit {
       });
     });
   }
-  
+
   ObtenerTipoDeGastoEnvio() {
     this.motivoGastosService.ObtenerMotivosGastos().subscribe((result: any) => {
       if (result === null) {
@@ -200,19 +203,19 @@ export class VentasComponent implements OnInit {
       this.alertasService.SetToast("Debe seleccionar un tipo de cliente.", 2);
       return;
     }
-      let valorTotal;
-      this.formularioVenta.controls['PRO_NOMBRE'].setValue(this.producto.PRO_NOMBRE);
-      if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[0].value) { //mayorista
-        valorTotal = this.producto.PRO_PRECIOVENTA_MAYORISTA; 
-        this.formularioVenta.controls['PRO_PRECIO'].setValue(valorTotal);
-      }
-      if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[1].value) { //Al detal
-        valorTotal = this.producto.PRO_PRECIOVENTA_DETAL; 
-        this.formularioVenta.controls['PRO_PRECIO'].setValue(valorTotal);
-      }
-      console.log()
-      this.formularioVenta.controls['PRO_CANTIDADVENTA'].setValue(1);
-      this.formularioVenta.controls['PRO_VALORTOTAL'].setValue(valorTotal);
+    let valorTotal;
+    this.formularioVenta.controls['PRO_NOMBRE'].setValue(this.producto.PRO_NOMBRE);
+    if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[0].value) { //mayorista
+      valorTotal = this.producto.PRO_PRECIOVENTA_MAYORISTA;
+      this.formularioVenta.controls['PRO_PRECIO'].setValue(valorTotal);
+    }
+    if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[1].value) { //Al detal
+      valorTotal = this.producto.PRO_PRECIOVENTA_DETAL;
+      this.formularioVenta.controls['PRO_PRECIO'].setValue(valorTotal);
+    }
+    console.log()
+    this.formularioVenta.controls['PRO_CANTIDADVENTA'].setValue(1);
+    this.formularioVenta.controls['PRO_VALORTOTAL'].setValue(valorTotal);
   }
 
   CalcularValorTotal(event: any) {
@@ -273,7 +276,7 @@ export class VentasComponent implements OnInit {
   }
 
   AgregarProducto(event: any) {
-    if(this.producto==null){
+    if (this.producto == null) {
       this.alertasService.SetToast("Seleecione un producto.", 2);
       return;
     }
@@ -295,7 +298,7 @@ export class VentasComponent implements OnInit {
       this.alertasService.SetToast("El valor total no puede estas vacio.", 3);
       return;
     }
-    if(this.formularioVenta.controls['PRO_DESCUENTO'].value==""){
+    if (this.formularioVenta.controls['PRO_DESCUENTO'].value == "") {
       this.formularioVenta.controls['PRO_DESCUENTO'].setValue('0');
     }
     const detalleVenta: IDetalleVentas = {
@@ -338,70 +341,70 @@ export class VentasComponent implements OnInit {
     // this.codigoProdcutoInput.nativeElement.focus();
 
     this.listaProductos.push(detalleVenta); // Agregamos el producto a la lista
-    this.alertasService.SetToast("Producto agregado con exito.", 1);  
+    this.alertasService.SetToast("Producto agregado con exito.", 1);
     this.CalcularTotalComprado();
-
+    this.formularioVenta.controls['PRO_PRECIO'].disable() ;
   }
   eliminarVenta(venta: IDetalleVentas) {
     const index = this.listaProductos.indexOf(venta);
     if (index !== -1) {
-      this.listaProductos.splice(index, 1); 
+      this.listaProductos.splice(index, 1);
       this.alertasService.SetToast("Producto eliminado.", 1);
     }
     this.CalcularTotalComprado();
   }
-  AgregarTipoDeEnvio(event: any){
+  AgregarTipoDeEnvio(event: any) {
     const nombreTipoEnvio = this.listaTipoDeEnvio.filter((tipocliente: any) => {
       return tipocliente.value == this.formularioVenta.controls['VEN_TIPOENVIO'].value;
     })[0]?.label;
-    if(!nombreTipoEnvio){
+    if (!nombreTipoEnvio) {
       this.alertasService.SetToast("Por Favor seleccione un tipo de envio.", 2);
       return;
     }
-    if(nombreTipoEnvio.toLowerCase().indexOf('local') >= 0){
+    if (nombreTipoEnvio.toLowerCase().indexOf('local') >= 0) {
       this.gastoDeEnvio = {
-        GAS_CODIGO : 0,
-        GAS_FECHACREACION : new Date(),
-        GAS_FECHAGASTO : new Date(),
-        MOG_CODIGO : this.formularioVenta.controls['VEN_TIPOENVIO'].value,
-        GAS_VALOR : 5000,
-        TIC_CODIGO : this.formularioVenta.controls['VEN_CUENTADESTINO'].value,
-        GAS_ESTADO : true,
-        USU_CEDULA : this.userLogged.USU_CEDULA,
-        GAS_PENDIENTE : true,
-        VEN_CODIGO : 0,
+        GAS_CODIGO: 0,
+        GAS_FECHACREACION: new Date(),
+        GAS_FECHAGASTO: new Date(),
+        MOG_CODIGO: this.formularioVenta.controls['VEN_TIPOENVIO'].value,
+        GAS_VALOR: 5000,
+        TIC_CODIGO: this.formularioVenta.controls['VEN_CUENTADESTINO'].value,
+        GAS_ESTADO: true,
+        USU_CEDULA: this.userLogged.USU_CEDULA,
+        GAS_PENDIENTE: true,
+        VEN_CODIGO: 0,
         MOTIVOSGASTOS: nombreTipoEnvio,
       }
     }
-    if(nombreTipoEnvio.toLowerCase().indexOf('nacional') >= 0){
+    if (nombreTipoEnvio.toLowerCase().indexOf('nacional') >= 0) {
       this.gastoDeEnvio = {
-        GAS_CODIGO : 0,
-        GAS_FECHACREACION : new Date(),
-        GAS_FECHAGASTO : new Date(),
-        MOG_CODIGO : this.formularioVenta.controls['VEN_TIPOENVIO'].value,
-        GAS_VALOR : 15000,
-        TIC_CODIGO : this.formularioVenta.controls['VEN_CUENTADESTINO'].value,
-        GAS_ESTADO : true,
-        USU_CEDULA : this.userLogged.USU_CEDULA,
-        GAS_PENDIENTE : true,
-        VEN_CODIGO : 0,
+        GAS_CODIGO: 0,
+        GAS_FECHACREACION: new Date(),
+        GAS_FECHAGASTO: new Date(),
+        MOG_CODIGO: this.formularioVenta.controls['VEN_TIPOENVIO'].value,
+        GAS_VALOR: 15000,
+        TIC_CODIGO: this.formularioVenta.controls['VEN_CUENTADESTINO'].value,
+        GAS_ESTADO: true,
+        USU_CEDULA: this.userLogged.USU_CEDULA,
+        GAS_PENDIENTE: true,
+        VEN_CODIGO: 0,
         MOTIVOSGASTOS: nombreTipoEnvio,
       }
     }
   }
 
   FinalizarFactura(event?: any) {
-    
+
     for (const control in this.formularioVenta.controls) {
       if (this.formularioVenta.controls[control].invalid) {
         this.alertasService.SetToast(`El campo ${control.split('_')[1]} está incompleto`, 2);
         this.formularioVenta.controls[control].markAsDirty();
         return;
-        
+
       }
     }
-    if(this.listaProductos.length==0){
-      this.alertasService.SetToast('Debe agregar almenos un producto.',2);
+    if (this.listaProductos.length == 0) {
+      this.alertasService.SetToast('Debe agregar almenos un producto.', 2);
       return;
     }
     if (!this.formularioVenta.controls['VEN_CUENTADESTINO'].value || this.formularioVenta.controls['VEN_CUENTADESTINO'].value === null) {
@@ -431,7 +434,7 @@ export class VentasComponent implements OnInit {
     const valorTotalVenta: number = this.listaProductos.reduce((acumulador, actual) => acumulador + actual.VED_PRECIOVENTA_TOTAL, 0) + 0;
     const ventaACredito: boolean = (nombreTipoCuenta[0].label && nombreTipoCuenta[0].label.toLowerCase().indexOf('credito') >= 0 ? true : false);
     const ventaAEfectivo: boolean = (nombreTipoCuenta[0].label && nombreTipoCuenta[0].label.toLowerCase().indexOf('efectivo') >= 0 ? true : false);
-    
+
     const venta: Iventa = {
       VEN_CODIGO: 0,
       VEN_FECHACREACION: new Date(),
@@ -455,7 +458,7 @@ export class VentasComponent implements OnInit {
       VEN_ESTADO: true,
       DetalleVentas: this.listaProductos,
     }
-    
+
     console.log(venta)
     this.alertasService.showLoading("Creando venta")
     this.ventasService.CrearVenta(venta).subscribe((result: any) => {
@@ -465,19 +468,19 @@ export class VentasComponent implements OnInit {
         this.formularioVenta.reset();
         this.formularioVenta.controls['VEN_FECHAVENTA'].setValue(new Date())
         this.alertasService.SetToast("Venta creada exitosamente.", 1);
-        this.listaProductos=[];
+        this.listaProductos = [];
 
         this.gastoDeEnvio.VEN_CODIGO = result.Data
         this.gastosService.CrearGasto(this.gastoDeEnvio).subscribe((result: any) => {
           this.alertasService.SetToast("Gasto de envio creado exitosamente.", 1);
         });
       }
-      
-    },err=>{
+
+    }, err => {
       this.alertasService.hideLoading();
       this.alertasService.SetToast(err, 1);
     });
-  }  
+  }
 
   CalcularTotalComprado() {
     this.TotalComprado = this.listaProductos.reduce((anterior, actual) => {
@@ -486,9 +489,32 @@ export class VentasComponent implements OnInit {
   }
 
   LlenadoProductos() {
-    this.invetarioService.BuscarProductos().subscribe(x =>{
-      this.productos=x;
+    this.invetarioService.BuscarProductos().subscribe(x => {
+      this.productos = x;
     })
+  }
+
+  CambiarPrecioDelProducto(event: Event) {
+    if (!this.producto && this.formularioVenta.controls['PRO_PRECIO'].value === '') {
+      this.alertasService.SetToast("Debe buscar un producto", 3)
+    }
+    let ref = this.dialogService.open(ValidarUsuarioAdminComponent, {
+      header: 'Editar Gasto',
+      width: '60%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 100,
+      maximizable: true,
+      data: {}
+    });
+    ref.onClose.subscribe((res) => {
+      if (res) {
+        this.formularioVenta.controls['PRO_PRECIO'].enable() ;
+      }
+      else{
+        this.formularioVenta.controls['PRO_PRECIO'].disable() ;
+      }
+    });
+
   }
 }
 

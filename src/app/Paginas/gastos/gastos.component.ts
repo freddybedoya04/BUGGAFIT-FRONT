@@ -90,8 +90,8 @@ export class GastosComponent {
       return;
     }
     this.alertasService.confirmacion("Desea eliminar el Gasto con codigo: " + gasto.GAS_CODIGO).then(
-      (resolve: any)=>{
-        if(resolve){
+      (resolve: any) => {
+        if (resolve) {
           this.alertasService.showLoading('Eliminando el producto');
           this.gastosService.EliminarGasto(gasto.GAS_CODIGO).subscribe((result) => {
             if (result == null || result?.StatusCode.toString().indexOf('20') >= 0) {
@@ -109,7 +109,24 @@ export class GastosComponent {
       })
   }
 
-  CerrarGasto(gasto: IGasto){
-    alert('Cierre del gasto');
+  CerrarGasto(gasto: IGasto) {
+    this.alertasService.confirmacion("Desea Cerrar el gasto con codigo: " + gasto.GAS_CODIGO).then(
+      (resolve: any) => {
+        if (resolve) {
+          this.alertasService.showLoading('Cerrando Gasto');
+          this.gastosService.CerrarGasto(gasto.GAS_CODIGO).subscribe((result: any) => {
+            if (result == null || result?.StatusCode.toString().indexOf('20') >= 0) {
+              this.alertasService.hideLoading();
+              this.alertasService.SetToast('Gasto Cerrado', 1);
+              this.BuscarGasto();
+            }
+            else {
+              this.alertasService.hideLoading();
+              this.alertasService.SetToast('Error al cerrar el Gasto: ' + result?.message, 3);
+              console.error(result);
+            }
+          })
+        }
+      });
   }
 }

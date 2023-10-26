@@ -38,7 +38,7 @@ export class LoginComponent {
     }
     const credencialesDeAcceso: ILogin = {
       Cedula: this.loginForm.controls["user"].value,
-      Contraseña: this.loginForm.controls["pass"].value,
+      Password: this.loginForm.controls["pass"].value,
     }
     this.alertas.showLoading("Iniciando sesión");
     this.loginService.Login(credencialesDeAcceso).subscribe((result: any) => {

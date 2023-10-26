@@ -11,6 +11,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormateadorPrecioDirective } from './Directivas/formateador-precio.directive';
 import { PrecioPipe } from './Pipes/precio-pipe.pipe';
+import { ValidarUsuarioAdminComponent } from './Modales/validar-usuario-admin/validar-usuario-admin.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { PrecioPipe } from './Pipes/precio-pipe.pipe';
     LoginComponent,
     FormateadorPrecioDirective,
     PrecioPipe,
+    ValidarUsuarioAdminComponent,
 
     
   ],

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClientService } from './http-client.service';
 import { Observable,map } from 'rxjs';
 import { Iusuario } from '../Interfaces/iusuario';
+import { ILogin } from '../Interfaces/ilogin';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,12 @@ export class UsuarioService {
     return this.http.get(this.url + 'GetUsuarios').pipe(
       map((result: any) => {
         return result
+      }));
+  }
+  ValidarUsuarioAdmin(login: ILogin){
+    return this.http.post(this.url + "ValidarUsuarioAdmin", login).pipe(
+      map((result: any) => {
+        return result;
       }));
   }
 }

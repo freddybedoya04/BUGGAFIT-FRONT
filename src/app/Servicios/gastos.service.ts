@@ -23,6 +23,12 @@ export class GastosService {
         return result.StatusCode;
       }));
   }
+  CerrarGasto(gasto: number) {
+    return this.http.get(this.url + 'GetCerrarGasto/' + gasto).pipe(
+      map((result: any) => {
+        return result.StatusCode;
+      }));
+  }
   BuscarGastos() {
     return this.http.get(this.url + 'GetGastos').pipe(
       map((result: any) => {
