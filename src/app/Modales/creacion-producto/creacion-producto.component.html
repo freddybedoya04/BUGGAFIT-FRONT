@@ -1,55 +1,59 @@
 <div class="contenedorPricipal">
-    <p-card header="Crear usuario" [style]="{ width: '100%' }" class="card">
     <form [formGroup]="formularioProducto">
-        <div>
-            <label for="PRO_CODIGO">Codigo:</label>
-            <input type="text" pInputText formControlName="PRO_CODIGO" matInput autocomplete="off">
-        </div>
-        <div>
-            <label for="PRO_NOMBRE">Nombre:</label>
-            <input type="text" pInputText formControlName="PRO_NOMBRE" matInput autocomplete="off">
-        </div>
-        
-        <div>
-            <label for="PRO_UNIDADES_DISPONIBLES">Unidades Disponibles:</label>
-            <!-- <input type="text" pInputText formControlName=PRO_UNIDADES_DISPONIBLES matInput autocomplete="off"> -->
-            <p-inputNumber class= "Numerico"  mode="decimal" locale="en-US" formControlName=PRO_UNIDADES_DISPONIBLES ></p-inputNumber>
-        </div>
-        <div>
-            <label for="UNIDADES_MINIMA_ALERTA">Unidades Minimas:</label>
-            <input type="text" pInputText formControlName=UNIDADES_MINIMA_ALERTA matInput autocomplete="off">
+        <p-card header="Información Cualitativa" [style]="{ width: '100%' }" class="card">
+            <section>
+                <div>
+                    <label for="PRO_CODIGO">Codigo:</label>
+                    <input type="text" pInputText formControlName="PRO_CODIGO" matInput autocomplete="off">
+                </div>
+                <div>
+                    <label for="PRO_NOMBRE">Nombre:</label>
+                    <input type="text" pInputText formControlName="PRO_NOMBRE" matInput autocomplete="off">
+                </div>
+                <div>
+                    <label for="PRO_CATEGORIA">Categoría:</label>
+                    <p-dropdown [options]="listaCategorias" optionLabel="label" formControlName="PRO_CATEGORIA"
+                        optionValue="value" placeholder="Seleccione Categoria"></p-dropdown>
+                </div>
+                <div>
+                    <label for="PRO_MARCA">Marca:</label>
+                    <p-dropdown [options]="listaMarcas" optionLabel="label" optionValue="value" formControlName="PRO_MARCA"
+                        [virtualScroll]="true" [virtualScrollItemSize]="38" placeholder="Seleccione Categoria"></p-dropdown>
+                </div>
+            </section>
+        </p-card>
 
-        </div>
-        <div>
-            <label for="PRO_PRECIO_COMPRA">Precio Compra:</label>
-            <input type="text" pInputText formControlName=PRO_PRECIO_COMPRA matInput autocomplete="off">
-        
-        </div>
-        <div>
-            <label for="PRO_PRECIO_MAYORISTA">Precio de Mayorista:</label>
-            <input type="text" pInputText formControlName="PRO_PRECIO_MAYORISTA" matInput autocomplete="off">
-        </div>
-        <div >
-            <label for="PRO_PRECIO_ DETAL"  >Precio Detal:</label>
-            <input type="text" pInputText formControlName="PRO_PRECIO_DETAL" matInput autocomplete="off">
-        </div>
-        <div>
-            <label for="PRO_CATEGORIA">Categoría:</label>
-            <p-dropdown [options]="listaCategorias" optionLabel="label" formControlName="PRO_CATEGORIA" optionValue="value"
-            placeholder="Seleccione Categoria"></p-dropdown>
-        </div>
-        <div>
-            <label for="PRO_MARCA">Marca:</label>
-            <p-dropdown [options]="listaMarcas" optionLabel="label" optionValue="value" formControlName="PRO_MARCA" [virtualScroll]="true" [virtualScrollItemSize]="38"
-            placeholder="Seleccione Categoria"></p-dropdown>
-        </div>
-        
-</form>
-<div>
-    <div class="buttonContainer">
-        <p-button (click)="SubmitFormulario()" label="Agregar"></p-button>
-      </div>
-</div>
-    </p-card>
-
+        <p-card header="Información Cuantitativa" [style]="{ width: '100%' }" class="card">
+            <section>
+                <div>
+                    <label for="PRO_UNIDADES_DISPONIBLES">Unidades Disponibles:</label>
+                    <!-- <input type="text" pInputText formControlName=PRO_UNIDADES_DISPONIBLES matInput autocomplete="off"> -->
+                    <p-inputNumber class="Numerico" mode="decimal" locale="en-US"
+                        formControlName=PRO_UNIDADES_DISPONIBLES></p-inputNumber>
+                </div>
+                <div>
+                    <label for="UNIDADES_MINIMA_ALERTA">Unidades Minimas:</label>
+                    <input type="text" pInputText formControlName=UNIDADES_MINIMA_ALERTA matInput autocomplete="off">
     
+                </div>
+                <div>
+                    <label for="PRO_PRECIO_COMPRA">Precio Compra:</label>
+                    <input type="text" pInputText formControlName=PRO_PRECIO_COMPRA matInput autocomplete="off">
+    
+                </div>
+                <div>
+                    <label for="PRO_PRECIO_MAYORISTA">Precio de Mayorista:</label>
+                    <input type="text" pInputText formControlName="PRO_PRECIO_MAYORISTA" matInput autocomplete="off">
+                </div>
+                <div>
+                    <label for="PRO_PRECIO_ DETAL">Precio Detal:</label>
+                    <input type="text" pInputText formControlName="PRO_PRECIO_DETAL" matInput autocomplete="off">
+                </div>
+            </section>
+        </p-card>
+    </form>
+    <div>
+        <div class="buttonContainer">
+            <p-button (click)="SubmitFormulario()" [label]="this.esEdicion==false?'Agregar':'Actualizar'"></p-button>
+        </div>
+    </div>

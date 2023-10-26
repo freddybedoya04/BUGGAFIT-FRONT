@@ -1,44 +1,73 @@
-.contenedorPricipal {
-    display: flex;
-    flex-direction: column;
-    justify-items: center;
-    align-items: center;
-    width: 100%;
-   padding: 20px;
+.Principal{
+    background-color: #eff3f8;
 }
-
-.cabecera {
+.cabecera{
     display: grid;
     justify-items: center;
     align-items: center;
-    margin-bottom: 20px;
+}
+.custom-dialog {
+    background-color: blue;
+  }
+.EncabezadoTabla {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+
+.card {
+    margin: 7px;
+    padding: 7px;
+    display: flex;
+    flex-direction: column;
+}
+
+.card section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
+
+.card div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
     width: 80%;
 }
 
-form,
-.Productos {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 10px;
-    align-items: center;
+.card div input {
+    border-radius: 10px;
+    width: 100%;
 }
 
-form div,
-.Productos div {
-    flex: 1 0 150px;
+:host ::ng-deep .p-calendar,
+:host ::ng-deep .p-dropdown,
+:host ::ng-deep .p-inputtext,
+:host ::ng-deep .p-inputNumber {
+    height: 2rem;
+    border-radius: 10px;
+    width: 100%;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 5px;
+    min-width: 100px;
 }
 
 .buttonContainer {
     display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
+    justify-content: center;
 }
 
-:host ::ng-deep .p-table {
-    width: 100%;
-}
+@media screen and (max-width: 1400px) {
+    .card section {
+      grid-template-columns: repeat(2,1fr); /* Cambia a una sola columna */
+      /* Otras propiedades de grid que deseas modificar en tablet */
+    }
+  }
+  
+  @media screen and (max-width: 786px) {
+     .card section {
+        grid-template-columns: 1fr;
+    }
+  }

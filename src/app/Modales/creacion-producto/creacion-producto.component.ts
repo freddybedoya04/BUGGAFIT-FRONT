@@ -127,6 +127,7 @@ export class CreacionProductoComponent implements OnInit {
 
   CrearProducto() {
     try {
+      debugger
       for (const control in this.formularioProducto.controls) {
         if (this.formularioProducto.controls[control].invalid) {
           this.alerta.SetToast(`El campo ${control.split('_')[1]} está incompleto`, 2);
@@ -136,7 +137,7 @@ export class CreacionProductoComponent implements OnInit {
       const codigoProducto = this.formularioProducto.get('PRO_CODIGO')?.value;
       this.inventarioService.BuscarProductoID(codigoProducto).subscribe(
         (productoExistente) => {
-          if (productoExistente) {
+          if (productoExistente.length>0) {
             this.alerta.SetToast('Ya existe un producto con este codigo.', 2);
           } else {
             // Continuar con la creación del producto
