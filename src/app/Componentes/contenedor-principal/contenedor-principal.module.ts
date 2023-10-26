@@ -19,6 +19,7 @@ import { CreacionUsuarioComponent } from 'src/app/Modales/creacion-usuario/creac
 import { DetalleVentasComponent } from 'src/app/Modales/detalle-ventas/detalle-ventas.component';
 import { AbonosComponent } from 'src/app/Modales/abonos/abonos.component';
 import { ConfiguracionesComponent } from 'src/app/Paginas/configuraciones/configuraciones.component';
+import { CreacionGastoComponent } from 'src/app/Modales/creacion-gasto/creacion-gasto.component';
 @NgModule({
   declarations: [
     ContenedorPrincipalComponent,
@@ -34,7 +35,9 @@ import { ConfiguracionesComponent } from 'src/app/Paginas/configuraciones/config
     DetalleVentasComponent,
     AbonosComponent,
     CreacionUsuarioComponent,
-    ConfiguracionesComponent
+    ConfiguracionesComponent,
+    CreacionGastoComponent
+
   ],
   imports: [
     CommonModule,

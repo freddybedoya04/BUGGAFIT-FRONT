@@ -1,6 +1,7 @@
 <div class="Principal">
+    <h1>Gastos</h1>
     <div class="Filtro">
-        <!-- <p>
+        <p>
         <label>Fecha Inicio:</label>
         <p-calendar [(ngModel)]="FechaInicio" name="FechaInicio" [showTime]="true" hourFormat="12"
           [showIcon]="true"></p-calendar>
@@ -9,7 +10,11 @@
         <label>Fecha Fin:</label>
         <p-calendar [(ngModel)]="FechaFin" name="FechaFin" [showTime]="true" hourFormat="12"
           [showIcon]="true"></p-calendar>
-      </p> -->
+      </p>
+      <p>
+        <p-button label="Buscar" icon="pi pi-search" style="margin-top: 20px;"
+           ></p-button>
+    </p>
     </div>
     <br>
     <p-card header="Gastos" [style]="{margin:'20px',padding:'20px'}" styleClass="shadow-5">

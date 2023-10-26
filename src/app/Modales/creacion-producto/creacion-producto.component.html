@@ -1,7 +1,5 @@
 <div class="contenedorPricipal">
-    <div class="cabecera" >
-        <img src="../../../assets/Imagenes/BUGGAFITLOGO.png" alt="">
-    </div>
+    <p-card header="Crear usuario" [style]="{ width: '100%' }" class="card">
     <form [formGroup]="formularioProducto">
         <div>
             <label for="PRO_CODIGO">Codigo:</label>
@@ -52,6 +50,6 @@
         <p-button (click)="SubmitFormulario()" label="Agregar"></p-button>
       </div>
 </div>
-
+    </p-card>
 
     

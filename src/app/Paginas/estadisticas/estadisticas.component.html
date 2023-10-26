@@ -1,37 +1,37 @@
 <div class="Indicadores">
     <div class="p-card">
-        <h3 class="Titulo3"> Ingresos</h3>
-        <span class="value">$10,000</span>
+        <h3 class="Titulo3"> Deudas</h3>
+        <span class="value">{{ Indicadores.Deudas | currency: 'USD' }}</span>
         <i class="trend-icon fas fa-arrow-up"></i>
         <span class="percentage">+15%</span>
     </div>
     <div class="p-card">
-        <h3 class="Titulo3"> Egresos</h3>
-        <span class="value">$5,000</span>
+        <h3 class="Titulo3"> Ventas </h3>
+        <span class="value">{{ Indicadores.Ventas | currency: 'USD' }}</span>
         <i class="trend-icon fas fa-arrow-down"></i>
         <span class="percentage">-8%</span>
     </div>
     <div class="p-card">
-        <h3 class="Titulo3"> Utilidades</h3>
-        <span class="value">$5,000</span>
+        <h3 class="Titulo3"> Gastos</h3>
+        <span class="value">{{ Indicadores.Gastos | currency: 'USD' }}</span>
         <i class="trend-icon fas fa-arrow-up"></i>
         <span class="percentage">+12%</span>
     </div>
     <div class="p-card">
         <h3 class="Titulo3"> Compras</h3>
-        <span class="value">$3,000</span>
+        <span class="value">{{ Indicadores.Compras | currency: 'USD' }}</span>
         <i class="trend-icon fas fa-arrow-up"></i>
         <span class="percentage">+20%</span>
     </div>
     <div class="p-card">
-        <h3 class="Titulo3"> Deudas</h3>
-        <span class="value">$2,000</span>
+        <h3 class="Titulo3"> Utilidades</h3>
+        <span class="value">{{ Indicadores.Utilidades | currency: 'USD' }}</span>
         <i class="trend-icon fas fa-arrow-down"></i>
         <span class="percentage">-5%</span>
     </div>
     <div class="p-card">
-        <h3 class="Titulo3"> Pagos</h3>
-        <span class="value">$4,000</span>
+        <h3 class="Titulo3"> Credito</h3>
+        <span class="value">{{ Indicadores.Creditos | currency: 'USD' }}</span>
         <i class="trend-icon fas fa-arrow-up"></i>
         <span class="percentage">+10%</span>
     </div>
@@ -39,7 +39,7 @@
 
 <div class="container">
     <div class="chart-container">
-        <p-chart type="line" [data]="exampleData"></p-chart>
+        <p-chart type="bar"  [data]="exampleData"></p-chart>
     </div>
     <div class="table-container">
         <p-table [value]="tableData">

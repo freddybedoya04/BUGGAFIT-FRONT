@@ -1,1 +1,39 @@
+<div class="contenedorPricipal">
+    <p-card header="Crear Gasto" [style]="{ width: '100%' }" class="card">
+    <form [formGroup]="formularioGasto">
+        <div>
+            <label for="GAS_CODIGO">Codigo:</label>
+            <input type="text" pInputText formControlName="GAS_CODIGO" matInput autocomplete="off">
+        </div>
+        <div>
+            <label for="MOTIVOSGASTOS">Motivo Gasto:</label>
+            <input type="text" pInputText formControlName="USU_CEDULA" matInput autocomplete="off">
+        </div>
+        <div>
+            <label for="GAS_VALOR">Valor:</label>
+            <p-inputNumber class= "Numerico"  mode="decimal" locale="en-US" formControlName=GAS_VALOR ></p-inputNumber>
+        </div>
+        <div>
+            <label for="GAS_PENDIENTE">Pendiente Pago:</label>
+            <input type="text" pInputText formControlName="USU_ROL" matInput autocomplete="off">
+        </div>
+        <div>
+            <label>Fecha:</label>
+            <p-calendar formControlName="GAS_FECHAGASTO" [showTime]="true" hourFormat="12"></p-calendar>
+        </div>
+        <div>
+            <label for="USU_CEDULA">Cedula:</label>
+            <p-dropdown [options]="listaCedula" optionLabel="label" formControlName="USU_CEDULA" optionValue="value"
+            placeholder="Seleccione Categoria"></p-dropdown>
+        </div>
+    </form>
+    <div>
+        <div class="buttonContainer">
+            <p-button (click)=" SubmitFormulario()" label="Agregar"> </p-button>
+        </div>
+    </div>
+
+</p-card>
+</div>
+
 

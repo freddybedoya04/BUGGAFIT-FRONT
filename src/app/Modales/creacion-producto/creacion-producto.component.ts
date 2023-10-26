@@ -231,8 +231,10 @@ export class CreacionProductoComponent implements OnInit {
     this.productoAEditar = this.config.data.productoAEditar;
 
     if (this.esEdicion) {
-      this.formularioProducto.get('PRO_CODIGO')?.setValue(this.productoAEditar.PRO_CODIGO);
-      this.formularioProducto.get('PRO_NOMBRE')?.setValue(this.productoAEditar.PRO_NOMBRE);
+      this.formularioProducto.get('PRO_CODIGO')?.disable();
+      this.formularioProducto.get('PRO_CODIGO')?.setValue(this.productoAEditar?.PRO_CODIGO)
+      this.formularioProducto.get('PRO_NOMBRE')?.disable();
+      this.formularioProducto.get('PRO_NOMBRE')?.setValue(this.productoAEditar?.PRO_NOMBRE)
       this.formularioProducto.get('PRO_PRECIO_COMPRA')?.setValue(this.productoAEditar.PRO_PRECIO_COMPRA);
       this.formularioProducto.get('PRO_PRECIO_MAYORISTA')?.setValue(this.productoAEditar.PRO_PRECIOVENTA_MAYORISTA);
       this.formularioProducto.get('PRO_PRECIO_DETAL')?.setValue(this.productoAEditar.PRO_PRECIOVENTA_DETAL);

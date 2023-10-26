@@ -64,7 +64,6 @@ export class CreacionUsuarioComponent implements OnInit {
     this.usuarioService.BuscarUsuarioPorCedula(cedulaUsuario).subscribe(
       (usuarioExistente) => {
         if (usuarioExistente) {
-          // Crear un objeto usuarioEditado sin incluir la contraseña
           let usuarioEditado: Iusuario = {
             USU_CEDULA: cedulaUsuario,
             USU_NOMBRE: this.formularioUsuario.get('USU_NOMBRE')?.value,
