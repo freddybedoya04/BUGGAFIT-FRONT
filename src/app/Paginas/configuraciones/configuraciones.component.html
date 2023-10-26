@@ -114,8 +114,7 @@
                             <input type="text" pInputText [(ngModel)]="Cuenta.TIC_NUMEROREFERENCIA" />
                         </div>
                         <div class="BotonAgregar">
-                            <p-button label="Agregar Cuenta" icon="pi pi-plus"
-                                (onClick)="AgregarCuenta()"></p-button>
+                            <p-button label="Agregar Cuenta" icon="pi pi-plus" (onClick)="AgregarCuenta()"></p-button>
                         </div>
                     </section>
                 </p-card>
@@ -148,7 +147,8 @@
                                 <td>{{ cuenta.TIC_NUMEROREFERENCIA}}</td>
                                 <td>
                                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                                        pTooltip="Eliminar" tooltipPosition="top" (click)="EliminarCuenta(cuenta)"></button>
+                                        pTooltip="Eliminar" tooltipPosition="top"
+                                        (click)="EliminarCuenta(cuenta)"></button>
                                 </td>
                             </tr>
                         </ng-template>
@@ -156,6 +156,23 @@
                 </p-card>
             </p-accordionTab>
             <p-accordionTab header="Envios">
+                <p-card *ngIf="ActivarFormularioTipoEnvio==true" header="Editar Cuenta"
+                    [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
+                    <section>
+                        <div>
+                            <label>Nombre:</label>
+                            <input type="text" pInputText [(ngModel)]="Envio.TIP_NOMBRE" [disabled]="true" />
+                        </div>
+                        <div>
+                            <label>Valor:</label>
+                            <input type="text" pInputText [(ngModel)]="Envio.TIP_VALOR" />
+                        </div>
+                        <div class="BotonAgregar">
+                            <p-button label="Actualizar Valor" icon="pi pi-plus" (onClick)="ActualizarTipoEnvio()"></p-button>
+                            <p-button label="Cancelar" (onClick)="ActivarFormularioTipoEnvio=false"></p-button>
+                        </div>
+                    </section>
+                </p-card>
                 <p-card header="Listado tipos de envio" [style]="{ margin: '20px', padding: '20px' }"
                     styleClass="shadow-5">
                     <p-table [value]="envios" [tableStyle]="{ 'min-width': '40rem', 'max-height': '400px' }"
@@ -165,7 +182,6 @@
                         class="custom-table">
                         <ng-template pTemplate="caption">
                             <div class="EncabezadoTabla">
-                                <!-- <p-button label="Agregar Cuenta" icon="pi pi-plus" ></p-button> -->
                             </div>
                         </ng-template>
                         <ng-template pTemplate="header">
@@ -178,13 +194,13 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-envio>
                             <tr>
-                                <td>{{ envio.MAR_CODIGO}}</td>
-                                <td>{{ envio.MAR_NOMBRE}}</td>
-                                <td>{{ envio.MAR_VALOR}}</td>
-                                <td>{{ envio.MAR_ESTADO }}</td>
+                                <td>{{ envio.TIP_CODIGO}}</td>
+                                <td>{{ envio.TIP_NOMBRE}}</td>
+                                <td>{{ envio.TIP_VALOR | number}}</td>
                                 <td>
-                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                                        pTooltip="Eliminar" tooltipPosition="top"></button>
+                                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info"
+                                        pTooltip="Editar valor" tooltipPosition="top"
+                                        (click)="PonerEnFormulario(envio)"></button>
                                 </td>
                             </tr>
                         </ng-template>
@@ -193,18 +209,18 @@
             </p-accordionTab>
             <p-accordionTab header="Motivos de gastos">
                 <p-card *ngIf="ActivarFormularioMotivoGasto==true" header="Nuevo motivo gasto"
-                [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
-                <section>
-                    <div>
-                        <label>Nombre:</label>
-                        <input type="text" pInputText [(ngModel)]="MotivoGasto.MOG_NOMBRE" />
-                    </div>
-                    <div class="BotonAgregar">
-                        <p-button label="Agregar Motivo" icon="pi pi-plus"
-                            (onClick)="AgregarMotivoGasto()"></p-button>
-                    </div>
-                </section>
-            </p-card>
+                    [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
+                    <section>
+                        <div>
+                            <label>Nombre:</label>
+                            <input type="text" pInputText [(ngModel)]="MotivoGasto.MOG_NOMBRE" />
+                        </div>
+                        <div class="BotonAgregar">
+                            <p-button label="Agregar Motivo" icon="pi pi-plus"
+                                (onClick)="AgregarMotivoGasto()"></p-button>
+                        </div>
+                    </section>
+                </p-card>
                 <p-card header="Listado motivos de gastos" [style]="{ margin: '20px', padding: '20px' }"
                     styleClass="shadow-5">
                     <p-table [value]="motivos" [tableStyle]="{ 'min-width': '40rem', 'max-height': '400px' }"
@@ -215,9 +231,9 @@
                         <ng-template pTemplate="caption">
                             <div class="EncabezadoTabla">
                                 <p-button *ngIf="ActivarFormularioMotivoGasto==false" label="Agregar Cuenta"
-                                icon="pi pi-plus" (onClick)="ActivarFormularioMotivoGasto=true"></p-button>
-                            <p-button *ngIf="ActivarFormularioMotivoGasto==true" label="Cancelar"
-                                (onClick)="ActivarFormularioMotivoGasto=false"></p-button>
+                                    icon="pi pi-plus" (onClick)="ActivarFormularioMotivoGasto=true"></p-button>
+                                <p-button *ngIf="ActivarFormularioMotivoGasto==true" label="Cancelar"
+                                    (onClick)="ActivarFormularioMotivoGasto=false"></p-button>
                             </div>
                         </ng-template>
                         <ng-template pTemplate="header">
@@ -233,7 +249,8 @@
                                 <td>{{ motivo.MOG_NOMBRE}}</td>
                                 <td>
                                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                                        pTooltip="Eliminar" tooltipPosition="top" (click)="EliminarMotivoGasto(motivo)"></button>
+                                        pTooltip="Eliminar" tooltipPosition="top"
+                                        (click)="EliminarMotivoGasto(motivo)"></button>
                                 </td>
                             </tr>
                         </ng-template>
