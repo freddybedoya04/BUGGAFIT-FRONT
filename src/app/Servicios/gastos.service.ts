@@ -17,6 +17,12 @@ export class GastosService {
         return result.Data;
       }));
   }
+  CrearGastoVenta(gasto: IGasto) {
+    return this.http.post(this.url + 'PostGastoVenta', gasto).pipe(
+      map((result: any) => {
+        return result.StatusCode;
+      }));
+  }
   CrearGasto(gasto: IGasto) {
     return this.http.post(this.url + 'PostGasto', gasto).pipe(
       map((result: any) => {

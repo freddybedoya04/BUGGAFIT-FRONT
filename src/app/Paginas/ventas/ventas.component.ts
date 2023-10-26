@@ -15,6 +15,7 @@ import { ClientesService } from 'src/app/Servicios/clientes.service';
 import { GastosService } from 'src/app/Servicios/gastos.service';
 import { InventarioService } from 'src/app/Servicios/inventario.service';
 import { MotivosGastosService } from 'src/app/Servicios/motivosgastos.service';
+import { TiposEnviosService } from 'src/app/Servicios/tipos-envios.service';
 import { VentasService } from 'src/app/Servicios/ventas.service';
 
 @Component({
@@ -87,6 +88,7 @@ export class VentasComponent implements OnInit {
     private alertasService: AlertasService,
     private gastosService: GastosService,
     private motivoGastosService: MotivosGastosService,
+    private tipoEnviosService:TiposEnviosService,
     private dialogService: DialogService,
   ) {
     this.userLogged = JSON.parse(localStorage.getItem('user') || "");
@@ -130,7 +132,7 @@ export class VentasComponent implements OnInit {
       GAS_VALOR: 0,
       TIC_CODIGO: 0,
       GAS_ESTADO: false,
-      USU_CEDULA: '',
+      USU_CEDULA: this.userLogged.USU_CEDULA,
       GAS_PENDIENTE: false,
       VEN_CODIGO: 0,
       MOTIVOSGASTOS: ''
@@ -161,15 +163,15 @@ export class VentasComponent implements OnInit {
   }
 
   ObtenerTipoDeGastoEnvio() {
-    this.motivoGastosService.ObtenerMotivosGastos().subscribe((result: any) => {
+    this.tipoEnviosService.ObtenerTipoEnvios().subscribe((result: any) => {
       if (result === null) {
         this.alertasService.SetToast("No hay Motivos de envio.", 3);
         return;
       }
       this.listaTipoDeEnvio = result.map((item: any) => {
         const selectItem: SelectItem = {
-          label: item.MOG_NOMBRE,
-          value: item.MOG_CODIGO
+          label: item.TIP_NOMBRE,
+          value: item.TIP_CODIGO
         }
         return selectItem;
       });
@@ -308,7 +310,7 @@ export class VentasComponent implements OnInit {
       PRO_NOMBRE: this.producto.PRO_NOMBRE,
       VED_UNIDADES: this.formularioVenta.controls['PRO_CANTIDADVENTA'].value,
       VED_PRECIOVENTA_UND: this.formularioVenta.controls['PRO_PRECIO'].value,
-      VED_VALORDESCUENTO_UND: this.formularioVenta.controls['PRO_DESCUENTO'].value,
+      VED_VALORDESCUENTO_UND: this.formularioVenta.controls['PRO_DESCUENTO'].value??0,
       VED_PRECIOVENTA_TOTAL: this.formularioVenta.controls['PRO_VALORTOTAL'].value,
       VED_ACTUALIZACION: new Date(),
       VED_ESTADO: true,
@@ -456,24 +458,36 @@ export class VentasComponent implements OnInit {
       USU_CEDULA: this.userLogged.USU_CEDULA,
       VEN_ESTADOVENTA: ventaAEfectivo,
       VEN_ESTADO: true,
+      TIP_CODIGO:this.formularioVenta.controls['VEN_TIPOENVIO'].value,
       DetalleVentas: this.listaProductos,
+
     }
 
     console.log(venta)
     this.alertasService.showLoading("Creando venta")
     this.ventasService.CrearVenta(venta).subscribe((result: any) => {
       this.alertasService.hideLoading();
+      debugger;
       if (result.StatusCode.toString().indexOf('20') >= 0) {
         //Lipiamos el formulario y enviamos mensaje de que esta correcto.
-        this.formularioVenta.reset();
-        this.formularioVenta.controls['VEN_FECHAVENTA'].setValue(new Date())
+        
         this.alertasService.SetToast("Venta creada exitosamente.", 1);
         this.listaProductos = [];
+        // Validamos si el envio no fue gratis y realizamos la crecion del gasto
+        if(this.listaTipoDeEnvio.find(x=>x.value==this.formularioVenta.controls['VEN_TIPOENVIO'].value)?.label?.toUpperCase()!="GRATIS"){
+          this.gastoDeEnvio.VEN_CODIGO = result.Data;
+          this.alertasService.showLoading("Creando Gasto")
+          this.gastosService.CrearGastoVenta(this.gastoDeEnvio).subscribe((result: any) => {
+            this.alertasService.hideLoading();
+            this.alertasService.SetToast("Gasto de envio creado exitosamente.", 1);
+          },err=>{
+            this.alertasService.hideLoading();
+            this.alertasService.SetToast(err, 1);
+          });
+        }
 
-        this.gastoDeEnvio.VEN_CODIGO = result.Data
-        this.gastosService.CrearGasto(this.gastoDeEnvio).subscribe((result: any) => {
-          this.alertasService.SetToast("Gasto de envio creado exitosamente.", 1);
-        });
+        this.formularioVenta.reset();
+        this.formularioVenta.controls['VEN_FECHAVENTA'].setValue(new Date())
       }
 
     }, err => {
