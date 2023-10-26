@@ -5,6 +5,7 @@ import { IGasto } from 'src/app/Interfaces/igasto';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { SelectItem } from 'primeng/api';
 import { GastosService } from 'src/app/Servicios/gastos.service';
+import { UsuarioService } from 'src/app/Servicios/usuario.service';
 
 @Component({
   selector: 'app-creacion-gasto',
@@ -14,6 +15,7 @@ import { GastosService } from 'src/app/Servicios/gastos.service';
 export class CreacionGastoComponent implements OnInit {
   formularioGasto: FormGroup;
   listaCedula: SelectItem[] = [];
+  cedulaSeleccionada:any;
   gastoAEditar: IGasto;
   esEdicion: boolean = false;
 
@@ -22,7 +24,8 @@ export class CreacionGastoComponent implements OnInit {
     private alerta: AlertasService,
     private gastoService: GastosService,
     public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig
+    public config: DynamicDialogConfig,
+    private usuarioService : UsuarioService
   ) {
     this.formularioGasto = this.formBuilder.group({
       MOTIVOSGASTOS: [null, Validators.required],
@@ -158,10 +161,26 @@ export class CreacionGastoComponent implements OnInit {
   LimpiarPantalla() {
     this.formularioGasto.reset();
   }
-
   CargarCedula() {
-    // Aquí debes cargar las cédulas para tu lista desplegable, similar a la lógica que utilizas en la función ObtenerCategorias y ObtenerMarcas de CreacionProductoComponent.
+    this.usuarioService.ListarUsuarios().subscribe(
+      (result: any) => {
+        if (result) {
+          this.listaCedula = result.map((item: any) => {
+            const selectItem: SelectItem = {
+              label: item.USU_NOMBRE, 
+              value: item.USU_CEDULA,
+            };
+            return selectItem;
+          });
+          const cedulaSeleccionada = this.listaCedula.find(item => item.value === this.gastoAEditar.USU_CEDULA);
+          if (cedulaSeleccionada) {
+            this.formularioGasto.get('USU_CEDULA')?.setValue(cedulaSeleccionada.value);
+          }
+        }
+      }
+    );
   }
+  
 
   private CargarDatosEnLosInputs() {
     this.esEdicion = this.config.data.esEdicion;
