@@ -12,12 +12,14 @@
                 </div>
                 <div>
                     <label for="PRO_CATEGORIA">Categoría:</label>
-                    <p-dropdown [options]="listaCategorias" optionLabel="label" formControlName="PRO_CATEGORIA"
+                    <p-dropdown [options]="listaCategorias" formControlName="PRO_CATEGORIA"
+                        optionLabel="label" [filter]="true" filterBy="label" [showClear]="true"
                         optionValue="value" placeholder="Seleccione Categoria"></p-dropdown>
                 </div>
                 <div>
                     <label for="PRO_MARCA">Marca:</label>
-                    <p-dropdown [options]="listaMarcas" optionLabel="label" optionValue="value" formControlName="PRO_MARCA"
+                    <p-dropdown [options]="listaMarcas"  optionValue="value" formControlName="PRO_MARCA"
+                        optionLabel="label" [filter]="true" filterBy="label" [showClear]="true"
                         [virtualScroll]="true" [virtualScrollItemSize]="38" placeholder="Seleccione Categoria"></p-dropdown>
                 </div>
             </section>
