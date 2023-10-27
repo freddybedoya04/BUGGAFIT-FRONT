@@ -20,6 +20,7 @@ import { DetalleVentasComponent } from 'src/app/Modales/detalle-ventas/detalle-v
 import { AbonosComponent } from 'src/app/Modales/abonos/abonos.component';
 import { ConfiguracionesComponent } from 'src/app/Paginas/configuraciones/configuraciones.component';
 import { CreacionGastoComponent } from 'src/app/Modales/creacion-gasto/creacion-gasto.component';
+import { PagoEnvioComponent } from 'src/app/Modales/pago-envio/pago-envio.component';
 @NgModule({
   declarations: [
     ContenedorPrincipalComponent,
@@ -36,7 +37,8 @@ import { CreacionGastoComponent } from 'src/app/Modales/creacion-gasto/creacion-
     AbonosComponent,
     CreacionUsuarioComponent,
     ConfiguracionesComponent,
-    CreacionGastoComponent
+    CreacionGastoComponent,
+    PagoEnvioComponent
 
   ],
   imports: [

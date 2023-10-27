@@ -9,6 +9,7 @@ import { IDetalleVentas } from 'src/app/Interfaces/idetalle-ventas';
 import { IGasto } from 'src/app/Interfaces/igasto';
 import { Iproducto } from 'src/app/Interfaces/iproducto';
 import { Iventa } from 'src/app/Interfaces/iventa';
+import { PagoEnvioComponent } from 'src/app/Modales/pago-envio/pago-envio.component';
 import { ValidarUsuarioAdminComponent } from 'src/app/Modales/validar-usuario-admin/validar-usuario-admin.component';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { ClientesService } from 'src/app/Servicios/clientes.service';
@@ -88,7 +89,7 @@ export class VentasComponent implements OnInit {
     private alertasService: AlertasService,
     private gastosService: GastosService,
     private motivoGastosService: MotivosGastosService,
-    private tipoEnviosService:TiposEnviosService,
+    private tipoEnviosService: TiposEnviosService,
     private dialogService: DialogService,
   ) {
     this.userLogged = JSON.parse(localStorage.getItem('user') || "");
@@ -310,7 +311,7 @@ export class VentasComponent implements OnInit {
       PRO_NOMBRE: this.producto.PRO_NOMBRE,
       VED_UNIDADES: this.formularioVenta.controls['PRO_CANTIDADVENTA'].value,
       VED_PRECIOVENTA_UND: this.formularioVenta.controls['PRO_PRECIO'].value,
-      VED_VALORDESCUENTO_UND: this.formularioVenta.controls['PRO_DESCUENTO'].value??0,
+      VED_VALORDESCUENTO_UND: this.formularioVenta.controls['PRO_DESCUENTO'].value ?? 0,
       VED_PRECIOVENTA_TOTAL: this.formularioVenta.controls['PRO_VALORTOTAL'].value,
       VED_ACTUALIZACION: new Date(),
       VED_ESTADO: true,
@@ -345,7 +346,7 @@ export class VentasComponent implements OnInit {
     this.listaProductos.push(detalleVenta); // Agregamos el producto a la lista
     this.alertasService.SetToast("Producto agregado con exito.", 1);
     this.CalcularTotalComprado();
-    this.formularioVenta.controls['PRO_PRECIO'].disable() ;
+    this.formularioVenta.controls['PRO_PRECIO'].disable();
   }
   eliminarVenta(venta: IDetalleVentas) {
     const index = this.listaProductos.indexOf(venta);
@@ -458,7 +459,7 @@ export class VentasComponent implements OnInit {
       USU_CEDULA: this.userLogged.USU_CEDULA,
       VEN_ESTADOVENTA: ventaAEfectivo,
       VEN_ESTADO: true,
-      TIP_CODIGO:this.formularioVenta.controls['VEN_TIPOENVIO'].value,
+      TIP_CODIGO: this.formularioVenta.controls['VEN_TIPOENVIO'].value,
       DetalleVentas: this.listaProductos,
 
     }
@@ -470,24 +471,18 @@ export class VentasComponent implements OnInit {
       debugger;
       if (result.StatusCode.toString().indexOf('20') >= 0) {
         //Lipiamos el formulario y enviamos mensaje de que esta correcto.
-        
+
         this.alertasService.SetToast("Venta creada exitosamente.", 1);
         this.listaProductos = [];
         // Validamos si el envio no fue gratis y realizamos la crecion del gasto
-        if(this.listaTipoDeEnvio.find(x=>x.value==this.formularioVenta.controls['VEN_TIPOENVIO'].value)?.label?.toUpperCase()!="GRATIS"){
+        if (this.listaTipoDeEnvio.find(x => x.value == this.formularioVenta.controls['VEN_TIPOENVIO'].value)?.label?.toUpperCase() != "GRATIS") {
           this.gastoDeEnvio.VEN_CODIGO = result.Data;
-          this.alertasService.showLoading("Creando Gasto")
-          this.gastosService.CrearGastoVenta(this.gastoDeEnvio).subscribe((result: any) => {
-            this.alertasService.hideLoading();
-            this.alertasService.SetToast("Gasto de envio creado exitosamente.", 1);
-          },err=>{
-            this.alertasService.hideLoading();
-            this.alertasService.SetToast(err, 1);
-          });
+          this.AbrirModalTipoCuentasGastos();
         }
 
         this.formularioVenta.reset();
         this.formularioVenta.controls['VEN_FECHAVENTA'].setValue(new Date())
+        this.TotalComprado=0;
       }
 
     }, err => {
@@ -495,7 +490,34 @@ export class VentasComponent implements OnInit {
       this.alertasService.SetToast(err, 1);
     });
   }
-
+  AbrirModalTipoCuentasGastos() {
+    let ref = this.dialogService.open(PagoEnvioComponent, {
+      header: 'Seleccione el tipo de de pago para el gasto de envio',
+      width: '50%',
+      height:'400px',
+      baseZIndex: 100,
+      maximizable: false,
+      dismissableMask: false,
+      closeOnEscape: false,
+      contentStyle: { 'background-color': '#eff3f8' },
+      data: { Listado: this.listaTipoDeCuenta, }
+    })
+    ref.onClose.subscribe((res) => {
+      debugger
+      this.gastoDeEnvio.TIC_CODIGO = res;
+      this.CrearGatosVenta();
+    });
+  }
+  CrearGatosVenta() {
+    this.alertasService.showLoading("Creando Gasto")
+    this.gastosService.CrearGastoVenta(this.gastoDeEnvio).subscribe((result: any) => {
+      this.alertasService.hideLoading();
+      this.alertasService.SetToast("Gasto de envio creado exitosamente.", 1);
+    }, err => {
+      this.alertasService.hideLoading();
+      this.alertasService.SetToast(err, 1);
+    });
+  }
   CalcularTotalComprado() {
     this.TotalComprado = this.listaProductos.reduce((anterior, actual) => {
       return anterior + actual.VED_PRECIOVENTA_TOTAL;
@@ -522,10 +544,10 @@ export class VentasComponent implements OnInit {
     });
     ref.onClose.subscribe((res) => {
       if (res) {
-        this.formularioVenta.controls['PRO_PRECIO'].enable() ;
+        this.formularioVenta.controls['PRO_PRECIO'].enable();
       }
-      else{
-        this.formularioVenta.controls['PRO_PRECIO'].disable() ;
+      else {
+        this.formularioVenta.controls['PRO_PRECIO'].disable();
       }
     });
 

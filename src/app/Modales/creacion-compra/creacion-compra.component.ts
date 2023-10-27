@@ -197,7 +197,7 @@ export class CreacionCompraComponent implements OnInit {
         COM_FECHACREACION: new Date(),
         COM_FECHACOMPRA:  new Date (this.formularioCompra.get('COM_FechaCompra')?.value),
         COM_VALORCOMPRA: this.TotalComprado,
-        COM_PROVEEDOR: this.formularioCompra.get('COM_PROVEEDOR')?.value,
+        COM_PROVEEDOR: this.formularioCompra.get('COM_PROVEEDOR')?.value??'',
         TIC_CODIGO: this.formularioCompra.get('TIC_CODIGO')?.value,
         COM_FECHAACTUALIZACION: new Date(),
         COM_ENBODEGA: this.Bodega,

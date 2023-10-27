@@ -16,6 +16,7 @@ import * as XLSX from 'xlsx';
 })
 export class UsuariosComponent implements OnInit {
   ListaUsuario:Iusuario[]=[];
+  public searchKeyword: string = '';
   @ViewChild('dt2', { static: true }) table: any;
 
 
@@ -100,7 +101,7 @@ AbrirModalUsuario(){
     let ref=this.dialogService.open(CreacionUsuarioComponent,{
       header: 'Editar Usuario',
       width: '60%',
-      contentStyle: { overflow: 'auto' },
+      contentStyle: { overflow: 'auto','background-color': '#eff3f8' },
       baseZIndex: 100,
       maximizable: true,
       data: { esEdicion: true, productoAEditar: usuario }

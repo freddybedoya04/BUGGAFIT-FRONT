@@ -1,0 +1,19 @@
+.Principal{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    justify-items: center;
+    align-items: center;
+    justify-content: space-around;
+    height: 60%;
+    div{
+        display: flex;
+        flex-direction: column;
+        gap:5px;
+        align-items: center;
+        justify-items: center;
+    }
+}
+.Boton{
+    margin-top: 10px;
+}

@@ -33,6 +33,8 @@ export class DetalleVentasComponent implements OnInit {
       USU_CEDULA: '',
       VEN_ESTADOVENTA: false,
       VEN_ESTADO: false,
+      TIP_CODIGO:0,	
+      TIP_NOMBRE:"",
       DetalleVentas: []
     };
   }
