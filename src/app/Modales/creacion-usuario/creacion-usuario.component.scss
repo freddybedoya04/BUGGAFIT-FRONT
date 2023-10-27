@@ -49,3 +49,18 @@ form div,
 :host ::ng-deep .p-table {
     width: 100%;
 }
+:host ::ng-deep .p-calendar,
+:host ::ng-deep .p-inputtext,
+:host ::ng-deep .p-inputNumber {
+    height: 3rem;
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    min-width: 100px;
+}
+:host ::ng-deep .p-dropdown{
+    height: 3rem;
+    border-radius: 10px;
+    width: 100%;
+}

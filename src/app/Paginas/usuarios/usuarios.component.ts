@@ -104,7 +104,7 @@ AbrirModalUsuario(){
       contentStyle: { overflow: 'auto','background-color': '#eff3f8' },
       baseZIndex: 100,
       maximizable: true,
-      data: { esEdicion: true, productoAEditar: usuario }
+      data: { esEdicion: true, usuarioAEditar: usuario }
     });
     ref.onClose.subscribe((res) => {
       this.ListarUsuarios();

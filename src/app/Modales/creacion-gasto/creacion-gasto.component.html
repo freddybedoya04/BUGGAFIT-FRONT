@@ -1,39 +1,55 @@
 <div class="contenedorPricipal">
-    <p-card header="Crear Gasto" [style]="{ width: '100%' }" class="card">
+  <p-card header="Crear Gasto" [style]="{ width: '100%' }" class="card">
     <form [formGroup]="formularioGasto">
-        <div>
-            <label for="GAS_CODIGO">Codigo:</label>
-            <input type="text" pInputText formControlName="GAS_CODIGO" matInput autocomplete="off">
-        </div>
-        <div>
-            <label for="MOTIVOSGASTOS">Motivo Gasto:</label>
-            <input type="text" pInputText formControlName="USU_CEDULA" matInput autocomplete="off">
-        </div>
-        <div>
-            <label for="GAS_VALOR">Valor:</label>
-            <p-inputNumber class= "Numerico"  mode="decimal" locale="en-US" formControlName=GAS_VALOR ></p-inputNumber>
-        </div>
-        <div>
-            <label for="GAS_PENDIENTE">Pendiente Pago:</label>
-            <input type="text" pInputText formControlName="USU_ROL" matInput autocomplete="off">
-        </div>
-        <div>
-            <label>Fecha:</label>
-            <p-calendar formControlName="GAS_FECHAGASTO" [showTime]="true" hourFormat="12"></p-calendar>
-        </div>
-        <div>
-            <label for="USU_CEDULA">Cedula:</label>
-            <p-dropdown [options]="listaCedula" optionLabel="label" formControlName="USU_CEDULA" optionValue="value"
-            placeholder="Seleccione Categoria"></p-dropdown>
-        </div>
-    </form>
     <div>
-        <div class="buttonContainer">
-            <p-button (click)=" SubmitFormulario()" label="Agregar"> </p-button>
-        </div>
+      <label>Fecha:</label>
+      <p-calendar
+        formControlName="GAS_FECHAGASTO"
+        [showTime]="true"
+        hourFormat="12"
+      ></p-calendar>
     </div>
+      <div>
+        <label for="MOG_CODIGO">Motivo Gasto:</label>
+        <p-dropdown
+          [options]="listaMotivo"
+          optionLabel="label"
+          formControlName="MOG_CODIGO"
+          optionValue="value"
+          placeholder="Seleccionar Motivo"
+        ></p-dropdown>
+      </div>
+      <div>
+        <label for="GAS_PENDIENTE">Pendiente Pago:</label>
+        <p-checkbox formControlName="USU_ROL"></p-checkbox>
+      </div>
 
-</p-card>
+        <div>
+          <label for="VEN_CUENTADESTINO">Tipo de pago:</label>
+          <p-dropdown
+            formControlName="VEN_CUENTADESTINO"
+            [options]="listaTipoDeCuenta"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Seleccione Cuenta"
+          ></p-dropdown>
+        </div>
+        <div>
+          <label for="GAS_VALOR">Valor:</label>
+          <p-inputNumber
+            class="Numerico"
+            mode="decimal"
+            locale="en-US"
+            formControlName="GAS_VALOR"
+          ></p-inputNumber>
+        </div>
+      
+  
+    </form>
+  </p-card>
+  <div>
+    <div class="buttonContainer">
+      <p-button (click)="SubmitFormulario()" label="Agregar"> </p-button>
+    </div>
+  </div>
 </div>
-
-

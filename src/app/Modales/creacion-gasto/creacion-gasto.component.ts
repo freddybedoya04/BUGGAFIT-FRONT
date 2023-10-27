@@ -6,6 +6,7 @@ import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { SelectItem } from 'primeng/api';
 import { GastosService } from 'src/app/Servicios/gastos.service';
 import { UsuarioService } from 'src/app/Servicios/usuario.service';
+import { MotivosGastosService } from 'src/app/Servicios/motivosgastos.service';
 
 @Component({
   selector: 'app-creacion-gasto',
@@ -18,17 +19,28 @@ export class CreacionGastoComponent implements OnInit {
   cedulaSeleccionada:any;
   gastoAEditar: IGasto;
   esEdicion: boolean = false;
-
+  listaMotivo: SelectItem[]=[];
+  motivoSeleccionado: any;
+  listaTipoDeCuenta: SelectItem[] = [
+    {
+      label: "Ahorros Bancolombia",
+      value: 1,
+    },
+    {
+      label: "Nequi",
+      value: 2,
+    }
+  ];
   constructor(
     private formBuilder: FormBuilder,
     private alerta: AlertasService,
     private gastoService: GastosService,
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
-    private usuarioService : UsuarioService
+    private usuarioService : UsuarioService,
+    private motivoGastoService: MotivosGastosService,
   ) {
     this.formularioGasto = this.formBuilder.group({
-      MOTIVOSGASTOS: [null, Validators.required],
       GAS_VALOR: [null, Validators.required],
       GAS_PENDIENTE: [null, Validators.required],
       GAS_FECHAGASTO: [null, Validators.required],
@@ -47,11 +59,13 @@ export class CreacionGastoComponent implements OnInit {
       GAS_ESTADO: false,
       MOG_CODIGO: 0,
     };
+    
   }
 
   ngOnInit() {
     this.CargarCedula();
     this.CargarDatosEnLosInputs();
+    this.CargarMotivo();
   }
 
   SubmitFormulario() {
@@ -180,7 +194,26 @@ export class CreacionGastoComponent implements OnInit {
       }
     );
   }
-  
+  CargarMotivo(){
+    this.motivoGastoService.ObtenerMotivosGastos().subscribe((result: any)=> {
+      if (result){
+        this.listaMotivo= result.map((item:any)=>{
+        const selectItem:SelectItem={
+          label: item.MOG_NOMBRE,
+          value: item.MOG_CODIGO,
+        };
+        return selectItem;
+            });
+        const motivoSeleccionado= this.listaMotivo.find(item=> item.value === this.gastoAEditar.GAS_CODIGO);
+        if(motivoSeleccionado){
+          this.formularioGasto.get('GAS_CODIGO')?.setValue(motivoSeleccionado.value);
+        }
+
+    }
+  }
+    );
+}
+
 
   private CargarDatosEnLosInputs() {
     this.esEdicion = this.config.data.esEdicion;

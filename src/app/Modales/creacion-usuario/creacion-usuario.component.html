@@ -1,5 +1,5 @@
 <div class="contenedorPricipal">
-    <p-card header="Crear usuario" [style]="{ width: '100%' }" class="card">
+    <p-card [style]="{ width: '100%' }" class="card">
     <form [formGroup]="formularioUsuario">
         <div>
             <label for="USU_NOMBRE">Nombre:</label>
@@ -15,13 +15,19 @@
         </div>
         <div>
             <label for="USU_ROL">Rol:</label>
-            <input type="text" pInputText formControlName="USU_ROL" matInput autocomplete="off">
+            <p-dropdown
+            formControlName="USU_ROL"
+            [options]="listaTipoDeRol"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Seleccione Rol"
+          ></p-dropdown>
         </div>
      
     </form>
     <div>
         <div class="buttonContainer">
-            <p-button (click)=" SubmitFormulario()" label="Agregar"> </p-button>
+            <p-button (click)=" SubmitFormulario()" [label]="this.esEdicion==false?'Agregar':'Actualizar'"> </p-button>
         </div>
     </div>
 

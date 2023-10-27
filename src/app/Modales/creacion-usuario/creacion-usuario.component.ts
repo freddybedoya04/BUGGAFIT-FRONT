@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SelectItem } from 'primeng/api';
 import { DynamicDialogRef,DynamicDialogConfig} from 'primeng/dynamicdialog';
 import { Iusuario } from 'src/app/Interfaces/iusuario';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
@@ -14,7 +15,16 @@ export class CreacionUsuarioComponent implements OnInit {
   formularioUsuario: FormGroup;
   esEdicion: boolean = false;
   usuarioAEditar: Iusuario |null = null;
-
+  listaTipoDeRol:SelectItem[]=[
+    {
+      label:"Administrador",
+      value:"administrador"
+    },
+    {
+      label: "Ventas",
+      value: "ventas"
+    }
+  ]
   constructor(
     private formBuilder: FormBuilder,
     private alerta: AlertasService,
@@ -25,10 +35,10 @@ export class CreacionUsuarioComponent implements OnInit {
     this.formularioUsuario = this.formBuilder.group({
       USU_NOMBRE: [null, Validators.required],
       USU_CEDULA: [null, Validators.required],
-      USU_ROL: [null, Validators.required],
       USU_CONTRASEÑA: [null],
+      USU_ROL:[null, Validators.required],
     });
-    this.usuarioAEditar={
+    this.usuarioAEditar={ 
       USU_NOMBRE:'',
       USU_CEDULA:'',
       USU_ROL:'',
