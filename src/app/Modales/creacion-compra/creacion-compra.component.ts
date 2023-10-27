@@ -29,10 +29,12 @@ export class CreacionCompraComponent implements OnInit {
   listaTipoDeCuenta: SelectItem[] = [];
   @Input() EsEdicion: boolean;
   @Input() Compra: Icompras;
+  userLogged: any;
   constructor(private fb: FormBuilder, private alerta: AlertasService,
     private comprasService: ComprasService, public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,private inventarioService:InventarioService,
     private ventasService:VentasService) {
+    this.userLogged = JSON.parse(localStorage.getItem('user') || "");
     this.FechaActual = new Date(Date.now());
     this.formularioCompra = fb.group({
       COM_FechaCompra: [this.FechaActual, Validators.required],
@@ -203,7 +205,7 @@ export class CreacionCompraComponent implements OnInit {
         COM_ENBODEGA: this.Bodega,
         COM_ESTADO: true,
         COM_CREDITO: this.Credito,
-        USU_CEDULA: '9999',
+        USU_CEDULA: this.userLogged.USU_CEDULA, 
         DetalleCompras: this.ListaProductosComprados
       }
       this.alerta.showLoading("Creando nueva compra")

@@ -103,8 +103,8 @@
         <span class="p-input-icon-left">
           <label>Valor Total:</label>
           <i style="top: 2.1rem;font-size: 18px;">$</i>
-          <input (keyup)="CalcularDescuentoPorcentaje($event)" type="number" pInputText
-            formControlName="PRO_VALORTOTAL" />
+          <input (keyup)="CalcularDescuentoPorcentaje($event)" type="number" [max]="_totalVentaMaxValue" min="0"
+            pInputText formControlName="PRO_VALORTOTAL" />
         </span>
       </div>
 
@@ -112,7 +112,7 @@
         <span class="p-input-icon-left">
           <label>Descuento:</label>
           <i style="top: 2.1rem;font-size: 18px;">%</i>
-          <input (keyup)="CalcularValorTotalConDescuento($event)" type="number" min="0" pInputText
+          <input (keyup)="CalcularValorTotalConDescuento($event)" type="number" min="0" max="100" pInputText
             formControlName="PRO_DESCUENTO" />
         </span>
       </div>
@@ -121,8 +121,8 @@
           (onClick)="AgregarProducto($event)"></p-button>
         <p-button label="Realizar Factura" styleClass="p-button-rounded p-button-success" style="margin-right: 10px"
           type="Submit"></p-button>
-        <p-button label="Cambiar Precio" style="margin-right: 10px" styleClass="p-button-rounded p-button-secondary" severity="secondary"
-          (onClick)="CambiarPrecioDelProducto($event)"></p-button>
+        <p-button label="Cambiar Precio" style="margin-right: 10px" styleClass="p-button-rounded p-button-secondary"
+          severity="secondary" (onClick)="CambiarPrecioDelProducto($event)"></p-button>
       </div>
     </form>
 

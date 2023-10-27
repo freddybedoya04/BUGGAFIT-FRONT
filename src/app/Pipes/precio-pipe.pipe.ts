@@ -10,7 +10,6 @@ export class PrecioPipe implements PipeTransform {
   private SEPARADORMILES: string;
 
   constructor() {
-    // TODO comes from configuration settings
     this.SEPARADORDECIMAL = ",";
     this.SEPARADORMILES = ".";
   }

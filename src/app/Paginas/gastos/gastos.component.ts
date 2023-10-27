@@ -83,7 +83,7 @@ export class GastosComponent {
   };
 
   BorrarGasto(gasto: IGasto) {
-    alert("Se eliminara el gasto seleccionado");
+    //alert("Se eliminara el gasto seleccionado");
     debugger;
     if (gasto.GAS_CODIGO == null || gasto.GAS_CODIGO + '' === '') {
       this.alertasService.SetToast('El Gasto no puede tener el codigo vacio', 3);

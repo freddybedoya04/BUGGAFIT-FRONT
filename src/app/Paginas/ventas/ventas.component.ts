@@ -44,6 +44,7 @@ export class VentasComponent implements OnInit {
   motivosDeEnvio: any;
   userLogged: any;
   TotalComprado: number;
+  _totalVentaMaxValue: number = 0;
   //Listas de los dropdown
   listaTipoDeCliente: SelectItem[] = [
     {
@@ -93,6 +94,7 @@ export class VentasComponent implements OnInit {
     private dialogService: DialogService,
   ) {
     this.userLogged = JSON.parse(localStorage.getItem('user') || "");
+    const isUserAdmin = (this.userLogged.USU_ROL === 'admin' || this.userLogged.USU_ROL === 'administrador' || this.userLogged.USU_ROL === 'administrator');
     this.formularioVenta = formBuilder.group({
       VEN_FECHAVENTA: [{ value: new Date(), disabled: true }, Validators.required],
       VEN_TIPOENVIO: [null, Validators.required],
@@ -105,10 +107,10 @@ export class VentasComponent implements OnInit {
       PRO_CODIGO: [null],
       PRO_NOMBRE: [{ value: '', disabled: true }],
       VENT_CEDULA: [null],
-      PRO_PRECIO: [{ value: '', disabled: true }],
+      PRO_PRECIO: [{ value: 0, disabled: true }],
       PRO_CANTIDADVENTA: [null],
-      PRO_VALORTOTAL: [null],
-      PRO_DESCUENTO: [{ value: 0, disabled: false }],
+      PRO_VALORTOTAL: [{ value: 0, disabled: !isUserAdmin }],
+      PRO_DESCUENTO: [{ value: 0, disabled: !isUserAdmin }],
     });
     this.producto = {
       PRO_CODIGO: '',
@@ -219,6 +221,7 @@ export class VentasComponent implements OnInit {
     console.log()
     this.formularioVenta.controls['PRO_CANTIDADVENTA'].setValue(1);
     this.formularioVenta.controls['PRO_VALORTOTAL'].setValue(valorTotal);
+    this._totalVentaMaxValue = valorTotal ?? Number.MAX_VALUE;
   }
 
   CalcularValorTotal(event: any) {
@@ -275,6 +278,8 @@ export class VentasComponent implements OnInit {
       this.alertasService.SetToast("Error calculando el valor total.", 3);
       return;
     }
+    if (totalDescuento < 0)
+      return;
     this.formularioVenta.controls['PRO_DESCUENTO'].setValue(totalDescuento.toFixed(1));
   }
 
@@ -346,7 +351,6 @@ export class VentasComponent implements OnInit {
     this.listaProductos.push(detalleVenta); // Agregamos el producto a la lista
     this.alertasService.SetToast("Producto agregado con exito.", 1);
     this.CalcularTotalComprado();
-    this.formularioVenta.controls['PRO_PRECIO'].disable();
   }
   eliminarVenta(venta: IDetalleVentas) {
     const index = this.listaProductos.indexOf(venta);
@@ -397,7 +401,6 @@ export class VentasComponent implements OnInit {
   }
 
   FinalizarFactura(event?: any) {
-
     for (const control in this.formularioVenta.controls) {
       if (this.formularioVenta.controls[control].invalid) {
         this.alertasService.SetToast(`El campo ${control.split('_')[1]} está incompleto`, 2);
@@ -437,7 +440,6 @@ export class VentasComponent implements OnInit {
     const valorTotalVenta: number = this.listaProductos.reduce((acumulador, actual) => acumulador + actual.VED_PRECIOVENTA_TOTAL, 0) + 0;
     const ventaACredito: boolean = (nombreTipoCuenta[0].label && nombreTipoCuenta[0].label.toLowerCase().indexOf('credito') >= 0 ? true : false);
     const ventaAEfectivo: boolean = (nombreTipoCuenta[0].label && nombreTipoCuenta[0].label.toLowerCase().indexOf('efectivo') >= 0 ? true : false);
-
     const venta: Iventa = {
       VEN_CODIGO: 0,
       VEN_FECHACREACION: new Date(),
@@ -461,17 +463,13 @@ export class VentasComponent implements OnInit {
       VEN_ESTADO: true,
       TIP_CODIGO: this.formularioVenta.controls['VEN_TIPOENVIO'].value,
       DetalleVentas: this.listaProductos,
-
     }
 
-    console.log(venta)
     this.alertasService.showLoading("Creando venta")
     this.ventasService.CrearVenta(venta).subscribe((result: any) => {
       this.alertasService.hideLoading();
-      debugger;
       if (result.StatusCode.toString().indexOf('20') >= 0) {
         //Lipiamos el formulario y enviamos mensaje de que esta correcto.
-
         this.alertasService.SetToast("Venta creada exitosamente.", 1);
         this.listaProductos = [];
         // Validamos si el envio no fue gratis y realizamos la crecion del gasto
@@ -479,22 +477,24 @@ export class VentasComponent implements OnInit {
           this.gastoDeEnvio.VEN_CODIGO = result.Data;
           this.AbrirModalTipoCuentasGastos();
         }
-
         this.formularioVenta.reset();
         this.formularioVenta.controls['VEN_FECHAVENTA'].setValue(new Date())
-        this.TotalComprado=0;
+        this.TotalComprado = 0;
       }
-
     }, err => {
       this.alertasService.hideLoading();
       this.alertasService.SetToast(err, 1);
     });
+    this.formularioVenta.controls['PRO_PRECIO'].disable();
+    this.formularioVenta.controls['PRO_VALORTOTAL'].disable();
+    this.formularioVenta.controls['PRO_DESCUENTO'].disable();
   }
+
   AbrirModalTipoCuentasGastos() {
     let ref = this.dialogService.open(PagoEnvioComponent, {
       header: 'Seleccione el tipo de de pago para el gasto de envio',
       width: '50%',
-      height:'400px',
+      height: '400px',
       baseZIndex: 100,
       maximizable: false,
       dismissableMask: false,
@@ -508,6 +508,7 @@ export class VentasComponent implements OnInit {
       this.CrearGatosVenta();
     });
   }
+
   CrearGatosVenta() {
     this.alertasService.showLoading("Creando Gasto")
     this.gastosService.CrearGastoVenta(this.gastoDeEnvio).subscribe((result: any) => {
@@ -535,7 +536,7 @@ export class VentasComponent implements OnInit {
       this.alertasService.SetToast("Debe buscar un producto", 3)
     }
     let ref = this.dialogService.open(ValidarUsuarioAdminComponent, {
-      header: 'Editar Gasto',
+      header: 'Validar Usuario',
       width: '60%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 100,
@@ -545,9 +546,13 @@ export class VentasComponent implements OnInit {
     ref.onClose.subscribe((res) => {
       if (res) {
         this.formularioVenta.controls['PRO_PRECIO'].enable();
+        this.formularioVenta.controls['PRO_VALORTOTAL'].enable();
+        this.formularioVenta.controls['PRO_DESCUENTO'].enable();
       }
       else {
         this.formularioVenta.controls['PRO_PRECIO'].disable();
+        this.formularioVenta.controls['PRO_VALORTOTAL'].disable();
+        this.formularioVenta.controls['PRO_DESCUENTO'].disable();
       }
     });
 
