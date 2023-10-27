@@ -23,17 +23,17 @@
       
       <div>
         <label for="GAS_PENDIENTE">Pendiente Pago:</label>
-        <p-checkbox formControlName="USU_ROL"[binary]="true"></p-checkbox>
+        <p-checkbox formControlName="GAS_PENDIENTE"[binary]="true"></p-checkbox>
       </div>
     </section>
   </p-card >
     <p-card [style]="{ width: '100%' }" class="card">
       <section>
         <div>
-          <label for="VEN_CUENTADESTINO">Tipo de pago:</label>
+          <label for="TIC_CODIGO">Tipo de pago:</label>
           <p-dropdown
-            formControlName="VEN_CUENTADESTINO"
-            [options]="listaTipoDeCuenta"
+            formControlName="TIC_CODIGO"
+            [options]="listaCuenta"
             optionLabel="label"
             optionValue="value"
             placeholder="Seleccione Cuenta"
@@ -41,8 +41,7 @@
         </div>
         <div>
           <label for="MOTIVOSGASTOS">Detalle Gasto:</label>
-          <p-inputText type="text" pInputText formControlName="MOTIVOSGASTOS" matInput autocomplete="off">
-          </p-inputText>
+          <input type="text" pInputText formControlName="MOTIVOSGASTOS" matInput autocomplete="off">
       </div>
         <div>
           <label for="GAS_VALOR">Valor:</label>

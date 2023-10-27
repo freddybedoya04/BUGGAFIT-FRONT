@@ -48,7 +48,7 @@ export class GastosComponent {
       contentStyle: { overflow: 'auto','background-color':'#eff3f8' },
       baseZIndex: 100,
       maximizable: true,
-      data: { esEdicion: false }
+      data: { esEdicion: false}
     });
     ref.onClose.subscribe((res) => {
 

@@ -5,9 +5,8 @@ import { IGasto } from 'src/app/Interfaces/igasto';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { SelectItem } from 'primeng/api';
 import { GastosService } from 'src/app/Servicios/gastos.service';
-import { UsuarioService } from 'src/app/Servicios/usuario.service';
 import { MotivosGastosService } from 'src/app/Servicios/motivosgastos.service';
-import { VentasService } from 'src/app/Servicios/ventas.service';
+import { TipoCuentaService } from 'src/app/Servicios/tipocuenta.service';
 
 @Component({
   selector: 'app-creacion-gasto',
@@ -16,30 +15,32 @@ import { VentasService } from 'src/app/Servicios/ventas.service';
 })
 export class CreacionGastoComponent implements OnInit {
   formularioGasto: FormGroup;
-  listaCedula: SelectItem[] = [];
-  cedulaSeleccionada:any;
+  listaCuenta: SelectItem[] = [];
   gastoAEditar: IGasto;
   esEdicion: boolean = false;
-  listaMotivo: SelectItem[]=[];
+  listaMotivo: SelectItem[] = [];
   motivoSeleccionado: any;
-  listaTipoDeCuenta: any;
+  tipoDeCuentaSeleccionada: any;
+  FechaActual: Date;
+
   constructor(
     private formBuilder: FormBuilder,
     private alerta: AlertasService,
     private gastoService: GastosService,
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
-    private usuarioService : UsuarioService,
     private motivoGastoService: MotivosGastosService,
-    private ventasService:VentasService,
-    private alertasService:AlertasService
+    private tipoCuentaService: TipoCuentaService,
+    private alertasService: AlertasService
   ) {
+    this.FechaActual = new Date(Date.now());
     this.formularioGasto = this.formBuilder.group({
       GAS_VALOR: [null, Validators.required],
       GAS_PENDIENTE: [null, Validators.required],
-      GAS_FECHAGASTO: [null, Validators.required],
-      USU_CEDULA: [null, Validators.required],
-      MOTIVOSGASTOS:[null, Validators.required]
+      GAS_FECHAGASTO: [this.FechaActual, Validators.required],
+      MOTIVOSGASTOS: [null, Validators.required],
+      TIC_CODIGO: [null, Validators.required],
+      MOG_CODIGO: [null, Validators.required],
     });
     this.gastoAEditar = {
       GAS_CODIGO: 0,
@@ -54,11 +55,10 @@ export class CreacionGastoComponent implements OnInit {
       GAS_ESTADO: false,
       MOG_CODIGO: 0,
     };
-    
   }
 
   ngOnInit() {
-    this.CargarCedula();
+    this.CargarTipoPago();
     this.CargarDatosEnLosInputs();
     this.CargarMotivo();
   }
@@ -70,80 +70,18 @@ export class CreacionGastoComponent implements OnInit {
       this.CrearGasto();
     }
   }
-ObtenerTipoCuentas(){
-  this.ventasService.BuscarTipoCuentas().subscribe((result: any) => {
-    if (result === null) {
-      this.alertasService.SetToast("No hay Cuentas asignadas.", 3);
-      return;
-    }
-    this.listaTipoDeCuenta = result.map((item: any) => {
-      const selectItem: SelectItem = {
-        label: item.TIC_NOMBRE,
-        value: item.TIC_CODIGO
-      }
-      return selectItem;
-    });
-  });
-}
+
   EditarGasto() {
     for (const control in this.formularioGasto.controls) {
       if (this.formularioGasto.controls[control].invalid) {
         this.alerta.SetToast(`El campo ${control} está incompleto`, 2);
         return;
       }
-    }
-
+  
     const codigoGasto = this.formularioGasto.get('GAS_CODIGO')?.value;
-
-    this.gastoService.BuscarGastoID(codigoGasto).subscribe(
-      (gastoExistente: IGasto) => {
-        if (!gastoExistente) {
-          this.alerta.SetToast('No se encontró el gasto que desea editar.', 2);
-        } else {
-          const gastoAEditar: IGasto = {
-           GAS_CODIGO:codigoGasto,
-            MOTIVOSGASTOS: this.formularioGasto.get('MOTIVOSGASTOS')?.value,
-            GAS_VALOR: this.formularioGasto.get('GAS_VALOR')?.value,
-            GAS_PENDIENTE: this.formularioGasto.get('GAS_PENDIENTE')?.value,
-            GAS_FECHAGASTO: this.formularioGasto.get('GAS_FECHAGASTO')?.value,
-            USU_CEDULA: this.formularioGasto.get('USU_CEDULA')?.value,
-            GAS_FECHACREACION: this.formularioGasto.get('GAS_FECHACREACION')?.value,
-            TIC_CODIGO: this.formularioGasto.get('TIC_CODIGO')?.value,
-            VEN_CODIGO: this.formularioGasto.get('VEN_CODIGO')?.value,
-            GAS_ESTADO: this.formularioGasto.get('GAS_ESTADO')?.value,
-            MOG_CODIGO: this.formularioGasto.get('MOG_CODIGO')?.value,
-          };
-
-          this.alerta.showLoading('Actualizando gasto');
-          this.gastoService.ActualizarGasto(codigoGasto, gastoAEditar).subscribe(
-            (result) => {
-              if (result) {
-                this.alerta.SetToast('Gasto actualizado', 1);
-                this.CerradoPantalla();
-              } else {
-                this.alerta.SetToast('Error al actualizar el gasto', 3);
-              }
-              this.alerta.hideLoading();
-            },
-            (error) => {
-              this.alerta.SetToast('Error al actualizar el gasto: ' + error.message, 3);
-              this.alerta.hideLoading();
-            }
-          );
-        }
-      }
-    );
-  }
-
-  CrearGasto() {
-    for (const control in this.formularioGasto.controls) {
-      if (this.formularioGasto.controls[control].invalid) {
-        this.alerta.SetToast(`El campo ${control} está incompleto`, 2);
-        return;
-      }
-    }
-
-    const nuevoGasto: IGasto = {
+  
+    const gastoAEditar: IGasto = {
+      GAS_CODIGO: codigoGasto,
       MOTIVOSGASTOS: this.formularioGasto.get('MOTIVOSGASTOS')?.value,
       GAS_VALOR: this.formularioGasto.get('GAS_VALOR')?.value,
       GAS_PENDIENTE: this.formularioGasto.get('GAS_PENDIENTE')?.value,
@@ -154,8 +92,46 @@ ObtenerTipoCuentas(){
       VEN_CODIGO: this.formularioGasto.get('VEN_CODIGO')?.value,
       GAS_ESTADO: this.formularioGasto.get('GAS_ESTADO')?.value,
       MOG_CODIGO: this.formularioGasto.get('MOG_CODIGO')?.value,
-      GAS_CODIGO:this.formularioGasto.get('GAS_CODIGO')?.value,
-      
+    };
+  
+    this.alerta.showLoading('Actualizando gasto');
+    this.gastoService.ActualizarGasto(codigoGasto, gastoAEditar).subscribe(
+      (result) => {
+        if (result) {
+          this.alerta.SetToast('Gasto actualizado', 1);
+          this.CerradoPantalla();
+        } else {
+          this.alerta.SetToast('Error al actualizar el gasto', 3);
+        }
+        this.alerta.hideLoading();
+      },
+      (error) => {
+        this.alerta.SetToast('Error al actualizar el gasto: ' + error.message, 3);
+        this.alerta.hideLoading();
+      }
+    );
+  }
+}
+  CrearGasto() {
+    for (const control in this.formularioGasto.controls) {
+      if (this.formularioGasto.controls[control].invalid) {
+        this.alerta.SetToast(`El campo ${control} está incompleto`, 2);
+        return;
+      }
+    }
+
+    const nuevoGasto: IGasto = {
+      GAS_CODIGO: this.formularioGasto.get('GAS_CODIGO')?.value,
+      MOTIVOSGASTOS: this.formularioGasto.get('MOTIVOSGASTOS')?.value,
+      GAS_VALOR: this.formularioGasto.get('GAS_VALOR')?.value,
+      GAS_PENDIENTE: this.formularioGasto.get('GAS_PENDIENTE')?.value,
+      GAS_FECHAGASTO: this.formularioGasto.get('GAS_FECHAGASTO')?.value,
+      USU_CEDULA: this.formularioGasto.get('USU_CEDULA')?.value,
+      GAS_FECHACREACION: this.formularioGasto.get('GAS_FECHACREACION')?.value,
+      TIC_CODIGO: this.formularioGasto.get('TIC_CODIGO')?.value,
+      VEN_CODIGO: this.formularioGasto.get('VEN_CODIGO')?.value,
+      GAS_ESTADO: this.formularioGasto.get('GAS_ESTADO')?.value,
+      MOG_CODIGO: this.formularioGasto.get('MOG_CODIGO')?.value,
     };
 
     this.alerta.showLoading('Creando nuevo gasto');
@@ -184,51 +160,51 @@ ObtenerTipoCuentas(){
   LimpiarPantalla() {
     this.formularioGasto.reset();
   }
-  CargarCedula() {
-    this.usuarioService.ListarUsuarios().subscribe(
-      (result: any) => {
-        if (result) {
-          this.listaCedula = result.map((item: any) => {
-            const selectItem: SelectItem = {
-              label: item.USU_NOMBRE, 
-              value: item.USU_CEDULA,
-            };
-            return selectItem;
-          });
-          const cedulaSeleccionada = this.listaCedula.find(item => item.value === this.gastoAEditar.USU_CEDULA);
-          if (cedulaSeleccionada) {
-            this.formularioGasto.get('USU_CEDULA')?.setValue(cedulaSeleccionada.value);
-          }
+
+  CargarTipoPago() {
+    this.tipoCuentaService.ObtenerCuentas().subscribe((result: any) => {
+      if (result) {
+        this.listaCuenta = result.map((item: any) => {
+          const selectItem: SelectItem = {
+            label: item.TIC_NOMBRE,
+            value: item.TIC_CODIGO,
+          };
+          return selectItem;
+        });
+  
+        const tipoDeCuentaSeleccionada = this.listaCuenta.find((item) => item.value === this.gastoAEditar.TIC_CODIGO);
+        if (tipoDeCuentaSeleccionada) {
+          this.formularioGasto.get('TIC_CODIGO')?.setValue(tipoDeCuentaSeleccionada.value);
         }
       }
-    );
+    });
   }
-  CargarMotivo(){
-    this.motivoGastoService.ObtenerMotivosGastos().subscribe((result: any)=> {
-      if (result){
-        this.listaMotivo= result.map((item:any)=>{
-        const selectItem:SelectItem={
-          label: item.MOG_NOMBRE,
-          value: item.MOG_CODIGO,
-        };
-        return selectItem;
-            });
-        const motivoSeleccionado= this.listaMotivo.find(item=> item.value === this.gastoAEditar.GAS_CODIGO);
-        if(motivoSeleccionado){
-          this.formularioGasto.get('GAS_CODIGO')?.setValue(motivoSeleccionado.value);
+  
+
+  CargarMotivo() {
+    this.motivoGastoService.ObtenerMotivosGastos().subscribe((result: any) => {
+      if (result) {
+        this.listaMotivo = result.map((item: any) => {
+          const selectItem: SelectItem = {
+            label: item.MOG_NOMBRE,
+            value: item.MOG_CODIGO,
+          };
+          return selectItem;
+        });
+        const motivoSeleccionado = this.listaMotivo.filter((item) => item.value === this.gastoAEditar.MOG_CODIGO);
+        if (motivoSeleccionado) {
+          this.formularioGasto.get('MOG_CODIGO')?.setValue(motivoSeleccionado.values);
         }
-
-    }
+      }
+    });
   }
-    );
-}
-
 
   private CargarDatosEnLosInputs() {
     this.esEdicion = this.config.data.esEdicion;
     this.gastoAEditar = this.config.data.gastoAEditar;
 
     if (this.esEdicion) {
+      // Llena los campos del formulario con los valores del gasto a editar
       this.formularioGasto.get('GAS_CODIGO')?.setValue(this.gastoAEditar.GAS_CODIGO);
       this.formularioGasto.get('MOTIVOSGASTOS')?.setValue(this.gastoAEditar.MOTIVOSGASTOS);
       this.formularioGasto.get('GAS_VALOR')?.setValue(this.gastoAEditar.GAS_VALOR);

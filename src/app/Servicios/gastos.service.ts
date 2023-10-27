@@ -38,7 +38,7 @@ export class GastosService {
   BuscarGastos() {
     return this.http.get(this.url + 'GetGastos').pipe(
       map((result: any) => {
-        return result.Data
+        return result
       }));
   }
   BuscarGastoID(gasto: string) {
