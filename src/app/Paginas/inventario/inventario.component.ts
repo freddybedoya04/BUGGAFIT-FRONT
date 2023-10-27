@@ -79,7 +79,7 @@ export class InventarioComponent implements OnInit {
     let ref = this.dialogService.open(CreacionProductoComponent, {
       header: 'Editar Producto',
       width: '60%',
-      contentStyle: { overflow: 'auto' },
+      contentStyle: { overflow: 'auto','background-color':'#eff3f8' },
       baseZIndex: 100,
       maximizable: true,
       data: { esEdicion: true, productoAEditar: producto }

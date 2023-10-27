@@ -42,21 +42,41 @@
             </div>
             <div>
                 <label >Precio Und:</label>
-                <input type="number"  [(ngModel)]="ProductoComprado.DEC_PRECIOCOMPRA_PRODUCTO" (change)="CalcularTotalProducto(ProductoComprado)" pInputText  matInput autocomplete="off">
-    
+                <!-- <input type="number"  [(ngModel)]="ProductoComprado.DEC_PRECIOCOMPRA_PRODUCTO" (change)="CalcularTotalProducto(ProductoComprado)" pInputText  matInput autocomplete="off"> -->
+                <p-inputNumber
+                class="Numerico"
+                mode="decimal"
+                locale="en-US"
+                [(ngModel)]="ProductoComprado.DEC_PRECIOCOMPRA_PRODUCTO"
+                (ngModelChange)="CalcularTotalProducto(ProductoComprado)"
+              ></p-inputNumber>
             </div>
             <div>
                 <label >Cantidad:</label>
-                <input type="number" pInputText matInput autocomplete="off" 
+                <!-- <input type="number" pInputText matInput autocomplete="off" 
                 [(ngModel)]="ProductoComprado.DEC_UNIDADES"
-                (change)="CalcularTotalProducto(ProductoComprado)">
+                (change)="CalcularTotalProducto(ProductoComprado)"> -->
+                <p-inputNumber
+                class="Numerico"
+                mode="decimal"
+                locale="en-US"
+                [(ngModel)]="ProductoComprado.DEC_UNIDADES"
+                (ngModelChange)="CalcularTotalProducto(ProductoComprado)"
+              ></p-inputNumber>
     
             </div>
             <div>
                 <label >Precio Total:</label>
-                <input type="number" pInputText matInput autocomplete="off" 
+                <!-- <input type="number" pInputText matInput autocomplete="off" 
                 [(ngModel)]="ProductoComprado.DEC_PRECIOTOTAL"
-                [readonly]="true">
+                [readonly]="true"> -->
+                <p-inputNumber
+                class="Numerico"
+                mode="decimal"
+                locale="en-US"
+                [(ngModel)]="ProductoComprado.DEC_PRECIOTOTAL"
+                [readonly]="true"
+              ></p-inputNumber>
     
             </div>
             <div class="buttonContainer">
@@ -94,7 +114,7 @@
                         <p-tag [value]="product.DEC_ESTADO ? 'NO':'SI'" [severity]="getSeverity(product.DEC_ESTADO)"></p-tag>
                     </th>
                     <td>
-                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="EliminarProducto(product)"></button>
+                        <button pButton pRipple icon="pi pi-trash" pTooltip="Eliminar" tooltipPosition="top"class="p-button-rounded p-button-warning" (click)="EliminarProducto(product)"></button>
                     </td>
                 </tr>
             </ng-template>

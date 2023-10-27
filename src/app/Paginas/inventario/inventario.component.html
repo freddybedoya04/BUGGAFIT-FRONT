@@ -23,8 +23,9 @@
         <div class="EncabezadoTabla">
           <p-button label="Agregar Producto" icon="pi pi-plus" (onClick)="AbrirModalProductos()"></p-button>
           <button type="button" pButton pRipple icon="pi pi-file-excel" class="p-button-rounded p-button-success mr-2"
-            pTooltip="XLS" tooltipPosition="bottom"></button>
+            pTooltip="Descargar Reporte" tooltipPosition="top"></button>
           <button pButton label="" icon="pi pi-filter" iconPos="left" class="p-button-raised p-button-rounded"
+          pTooltip="Quitar filtro" tooltipPosition="top"
             (click)="dt2.reset()"></button>
           <span class="p-input-icon-left ml-auto">
             <i class="pi pi-search"></i>
@@ -65,8 +66,8 @@
           <td>{{ producto.PRO_MARCA }}</td>
           <td>{{ producto.PRO_CATEGORIA }}</td>
           <td class="Acciones">
-            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="EditarProducto(producto)"></button>
-            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="BorrarProducto(producto)"></button>
+            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" pTooltip="Editar" tooltipPosition="top"(click)="EditarProducto(producto)"></button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" pTooltip="Eliminar" tooltipPosition="top"(click)="BorrarProducto(producto)"></button>
           </td>
         </tr>
       </ng-template>

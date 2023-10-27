@@ -17,7 +17,13 @@
 
             <div>
                 <label for="CLI_DIRECCION">Precio total venta:</label>
-                <input type="text" [(ngModel)]="venta.VEN_PRECIOTOTAL" pInputText disabled="true"/>
+                <!-- <input type="text" [(ngModel)]="venta.VEN_PRECIOTOTAL" pInputText disabled="true"/> -->
+                <p-inputNumber
+                class="Numerico"
+                mode="decimal"
+                locale="en-US"
+                [(ngModel)]="venta.VEN_PRECIOTOTAL"
+              ></p-inputNumber>
             </div>
             <div>
                 <span></span>
@@ -42,7 +48,13 @@
                 </div>
                 <div>
                     <label for="VEN_CUENTADESTINO">Valor $:</label>
-                    <input type="text" [(ngModel)]="nuevoAbono.CAR_VALORABONADO" pInputText  />
+                    <!-- <input type="text" [(ngModel)]="nuevoAbono.CAR_VALORABONADO" pInputText  /> -->
+                    <p-inputNumber
+                    class="Numerico"
+                    mode="decimal"
+                    locale="en-US"
+                    [(ngModel)]="nuevoAbono.CAR_VALORABONADO"
+                  ></p-inputNumber>
                 </div>
                 <div *ngIf="venta.VEN_ESTADOCREDITO==true" >
                     <p-button *ngIf="esEditar==false" label="Agregar" styleClass="p-button-rounded p-button-sm" icon="pi pi-plus" (onClick)="AgregarAbono()"></p-button>

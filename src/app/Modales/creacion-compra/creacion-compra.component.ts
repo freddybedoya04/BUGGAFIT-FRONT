@@ -172,7 +172,7 @@ export class CreacionCompraComponent implements OnInit {
   ValidacionCompra() {
     if (this.formularioCompra.valid) {
       if (this.ListaProductosComprados.length == 0) {
-        this.alerta.SetToast("Seleccione almenos un producto a comprar.", 2);
+        this.alerta.SetToast("Seleccione al menos un producto a comprar.", 2);
         return;
       }
       if (this.EsEdicion == false) {
@@ -184,6 +184,10 @@ export class CreacionCompraComponent implements OnInit {
     } else {
       for (const control in this.formularioCompra.controls) {
         if (this.formularioCompra.controls[control].invalid) {
+          if(control=="TIC_CODIGO"){
+            this.alerta.SetToast(`El campo medio de pago está incompleto`, 2);
+            break;
+          }
           this.alerta.SetToast(`El campo ${control.split('_')[1]} está incompleto`, 2);
           break;
         }

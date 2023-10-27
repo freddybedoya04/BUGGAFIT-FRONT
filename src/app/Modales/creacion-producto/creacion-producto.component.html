@@ -36,20 +36,39 @@
                 <div>
                     <label for="UNIDADES_MINIMA_ALERTA">Unidades Minimas:</label>
                     <input type="text" pInputText formControlName=UNIDADES_MINIMA_ALERTA matInput autocomplete="off">
+                    
     
                 </div>
                 <div>
                     <label for="PRO_PRECIO_COMPRA">Precio Compra:</label>
-                    <input type="text" pInputText formControlName=PRO_PRECIO_COMPRA matInput autocomplete="off">
+                    <!-- <input type="text" pInputText formControlName=PRO_PRECIO_COMPRA matInput autocomplete="off"> -->
+                    <p-inputNumber
+                    class="Numerico"
+                    mode="decimal"
+                    locale="en-US"
+                    formControlName=PRO_PRECIO_COMPRA
+                  ></p-inputNumber>
     
                 </div>
                 <div>
                     <label for="PRO_PRECIO_MAYORISTA">Precio de Mayorista:</label>
-                    <input type="text" pInputText formControlName="PRO_PRECIO_MAYORISTA" matInput autocomplete="off">
+                    <!-- <input type="text" pInputText formControlName="PRO_PRECIO_MAYORISTA" matInput autocomplete="off"> -->
+                    <p-inputNumber
+                    class="Numerico"
+                    mode="decimal"
+                    locale="en-US"
+                    formControlName=PRO_PRECIO_MAYORISTA
+                  ></p-inputNumber>
                 </div>
                 <div>
                     <label for="PRO_PRECIO_ DETAL">Precio Detal:</label>
-                    <input type="text" pInputText formControlName="PRO_PRECIO_DETAL" matInput autocomplete="off">
+                    <!-- <input type="text" pInputText formControlName="PRO_PRECIO_DETAL" matInput autocomplete="off"> -->
+                    <p-inputNumber
+                    class="Numerico"
+                    mode="decimal"
+                    locale="en-US"
+                    formControlName=PRO_PRECIO_DETAL
+                  ></p-inputNumber>
                 </div>
             </section>
         </p-card>

@@ -16,7 +16,7 @@
         <div class="EncabezadoTabla">
           <p-button label="Agregar Usuario" icon="pi pi-plus" (onClick)="AbrirModalUsuario()"></p-button>
           <button type="button"  pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class=" p-button-rounded p-button-success mr-2"  pTooltip="XLS" tooltipPosition="bottom"></button>
-          <button pButton label="" icon="pi pi-filter" iconPos="left" class="p-button-raised p-button-rounded" (click)="dt2.reset()"></button>
+          <button pButton label="" icon="pi pi-filter" pTooltip="Quitar Filtro" tooltipPosition="top"iconPos="left" class="p-button-raised p-button-rounded" (click)="dt2.reset()"></button>
           <span class="p-input-icon-left ml-auto">
             <i class="pi pi-search"></i>
             <input pInputText type="text" [(ngModel)]="searchKeyword"
@@ -44,8 +44,8 @@
           <td>{{ usuario.USU_CEDULA }}</td>
           <td>{{ usuario.USU_ROL }}</td>
           <td style="min-width:200px">
-            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="EditarUsuario(usuario)"></button>
-            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="EliminarUsuario(usuario)"></button>
+            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" pTooltip="Editar"tooltipPosition="top" (click)="EditarUsuario(usuario)"></button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" pTooltip="Eliminar" tooltipPosition="top"(click)="EliminarUsuario(usuario)"></button>
           </td>
         </tr>
       </ng-template>
