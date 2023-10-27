@@ -1,10 +1,19 @@
-.contenedorPricipal {
-    display: flex;
-    flex-direction: column;
+.Principal{
+    background-color: #eff3f8;
+}
+.cabecera{
+    display: grid;
     justify-items: center;
     align-items: center;
-    width: 100%;
-   padding: 20px;
+}
+.custom-dialog {
+    background-color: blue;
+  }
+.EncabezadoTabla {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
 }
 .card {
     margin: 7px;
@@ -12,47 +21,29 @@
     display: flex;
     flex-direction: column;
 }
-.buttonContainer {
-    display: flex;
-    justify-content: center; 
-    align-items: center;
-    margin-top: 40px;
-    height: 100%;
-}
 
-
-.cabecera {
+.card section {
     display: grid;
-    justify-items: center;
-    align-items: center;
-    margin-bottom: 20px;
-    width: 80%;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
 }
 
-form,
-.Productos {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 10px;
-    align-items: center;
-}
-
-form div,
-.Productos div {
-    flex: 1 0 150px;
+.card div {
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 5px;
+    width: 100%;
 }
-:host ::ng-deep .p-table {
+
+.card div input {
+    border-radius: 10px;
     width: 100%;
 }
 :host ::ng-deep .p-calendar,
 :host ::ng-deep .p-dropdown,
 :host ::ng-deep .p-inputtext,
-:host ::ng-deep .p-inputNumber {
+:host ::ng-deep .p-inputNumber,
+:host ::ng-deep .p-checkbox{
     height: 2rem;
     border-radius: 10px;
     width: 100%;
@@ -60,3 +51,23 @@ form div,
     align-items: center;
     min-width: 100px;
 }
+.Numerico{
+    width: 100%;
+}
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+}
+
+@media screen and (max-width: 1400px) {
+    .card section {
+      grid-template-columns: repeat(2,1fr); /* Cambia a una sola columna */
+      /* Otras propiedades de grid que deseas modificar en tablet */
+    }
+  }
+  
+  @media screen and (max-width: 786px) {
+     .card section {
+        grid-template-columns: 1fr;
+    }
+  }

@@ -7,6 +7,7 @@ import { SelectItem } from 'primeng/api';
 import { GastosService } from 'src/app/Servicios/gastos.service';
 import { UsuarioService } from 'src/app/Servicios/usuario.service';
 import { MotivosGastosService } from 'src/app/Servicios/motivosgastos.service';
+import { VentasService } from 'src/app/Servicios/ventas.service';
 
 @Component({
   selector: 'app-creacion-gasto',
@@ -21,16 +22,7 @@ export class CreacionGastoComponent implements OnInit {
   esEdicion: boolean = false;
   listaMotivo: SelectItem[]=[];
   motivoSeleccionado: any;
-  listaTipoDeCuenta: SelectItem[] = [
-    {
-      label: "Ahorros Bancolombia",
-      value: 1,
-    },
-    {
-      label: "Nequi",
-      value: 2,
-    }
-  ];
+  listaTipoDeCuenta: any;
   constructor(
     private formBuilder: FormBuilder,
     private alerta: AlertasService,
@@ -39,12 +31,15 @@ export class CreacionGastoComponent implements OnInit {
     public config: DynamicDialogConfig,
     private usuarioService : UsuarioService,
     private motivoGastoService: MotivosGastosService,
+    private ventasService:VentasService,
+    private alertasService:AlertasService
   ) {
     this.formularioGasto = this.formBuilder.group({
       GAS_VALOR: [null, Validators.required],
       GAS_PENDIENTE: [null, Validators.required],
       GAS_FECHAGASTO: [null, Validators.required],
       USU_CEDULA: [null, Validators.required],
+      MOTIVOSGASTOS:[null, Validators.required]
     });
     this.gastoAEditar = {
       GAS_CODIGO: 0,
@@ -75,7 +70,21 @@ export class CreacionGastoComponent implements OnInit {
       this.CrearGasto();
     }
   }
-
+ObtenerTipoCuentas(){
+  this.ventasService.BuscarTipoCuentas().subscribe((result: any) => {
+    if (result === null) {
+      this.alertasService.SetToast("No hay Cuentas asignadas.", 3);
+      return;
+    }
+    this.listaTipoDeCuenta = result.map((item: any) => {
+      const selectItem: SelectItem = {
+        label: item.TIC_NOMBRE,
+        value: item.TIC_CODIGO
+      }
+      return selectItem;
+    });
+  });
+}
   EditarGasto() {
     for (const control in this.formularioGasto.controls) {
       if (this.formularioGasto.controls[control].invalid) {

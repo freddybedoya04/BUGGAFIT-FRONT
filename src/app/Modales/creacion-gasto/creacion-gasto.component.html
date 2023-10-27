@@ -1,6 +1,7 @@
 <div class="contenedorPricipal">
-  <p-card header="Crear Gasto" [style]="{ width: '100%' }" class="card">
-    <form [formGroup]="formularioGasto">
+  <form [formGroup]="formularioGasto">
+  <p-card header="Información Gasto"  [style]="{ width: '100%' }" class="card">
+ <section>
     <div>
       <label>Fecha:</label>
       <p-calendar
@@ -19,11 +20,15 @@
           placeholder="Seleccionar Motivo"
         ></p-dropdown>
       </div>
+      
       <div>
         <label for="GAS_PENDIENTE">Pendiente Pago:</label>
-        <p-checkbox formControlName="USU_ROL"></p-checkbox>
+        <p-checkbox formControlName="USU_ROL"[binary]="true"></p-checkbox>
       </div>
-
+    </section>
+  </p-card >
+    <p-card [style]="{ width: '100%' }" class="card">
+      <section>
         <div>
           <label for="VEN_CUENTADESTINO">Tipo de pago:</label>
           <p-dropdown
@@ -35,6 +40,11 @@
           ></p-dropdown>
         </div>
         <div>
+          <label for="MOTIVOSGASTOS">Detalle Gasto:</label>
+          <p-inputText type="text" pInputText formControlName="MOTIVOSGASTOS" matInput autocomplete="off">
+          </p-inputText>
+      </div>
+        <div>
           <label for="GAS_VALOR">Valor:</label>
           <p-inputNumber
             class="Numerico"
@@ -43,10 +53,10 @@
             formControlName="GAS_VALOR"
           ></p-inputNumber>
         </div>
-      
-  
-    </form>
-  </p-card>
+     
+      </section>
+      </p-card>
+</form>
   <div>
     <div class="buttonContainer">
       <p-button (click)="SubmitFormulario()" label="Agregar"> </p-button>
