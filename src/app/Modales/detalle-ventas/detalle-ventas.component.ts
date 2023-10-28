@@ -11,6 +11,7 @@ import { VentasService } from 'src/app/Servicios/ventas.service';
 })
 export class DetalleVentasComponent implements OnInit {
   venta:Iventa;
+  Impresion:boolean=false;
   constructor(public config: DynamicDialogConfig,private ventasService:VentasService){
     this.venta= {
       VEN_CODIGO: 0,
@@ -41,6 +42,7 @@ export class DetalleVentasComponent implements OnInit {
   ngOnInit(): void {
     debugger
    this.venta=this.config.data.Venta;
+   this.Impresion=this.config.data.Impresion??false;
    let fecha = new Date(this.venta.VEN_FECHAVENTA);
    this.venta.VEN_FECHAVENTA = new Date()
    this.venta.VEN_FECHAVENTA.setDate(fecha.getDate());

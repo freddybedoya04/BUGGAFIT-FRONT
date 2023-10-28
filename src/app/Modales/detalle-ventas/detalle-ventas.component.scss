@@ -1,10 +1,18 @@
 .Principal{
-    background-color: #eff3f8;
+    margin: 2%;
 }
 .cabecera{
-    display: grid;
-    justify-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    gap: 10px;
+}
+.logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
 }
 .custom-dialog {
     background-color: blue;

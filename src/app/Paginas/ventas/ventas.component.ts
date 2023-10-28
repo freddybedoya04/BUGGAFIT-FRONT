@@ -9,6 +9,7 @@ import { IDetalleVentas } from 'src/app/Interfaces/idetalle-ventas';
 import { IGasto } from 'src/app/Interfaces/igasto';
 import { Iproducto } from 'src/app/Interfaces/iproducto';
 import { Iventa } from 'src/app/Interfaces/iventa';
+import { DetalleVentasComponent } from 'src/app/Modales/detalle-ventas/detalle-ventas.component';
 import { PagoEnvioComponent } from 'src/app/Modales/pago-envio/pago-envio.component';
 import { ValidarUsuarioAdminComponent } from 'src/app/Modales/validar-usuario-admin/validar-usuario-admin.component';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
@@ -45,6 +46,7 @@ export class VentasComponent implements OnInit {
   userLogged: any;
   TotalComprado: number;
   _totalVentaMaxValue: number = 0;
+  codigoVentaCreada:number=0;
   //Listas de los dropdown
   listaTipoDeCliente: SelectItem[] = [
     {
@@ -472,14 +474,18 @@ export class VentasComponent implements OnInit {
         //Lipiamos el formulario y enviamos mensaje de que esta correcto.
         this.alertasService.SetToast("Venta creada exitosamente.", 1);
         this.listaProductos = [];
+        this.codigoVentaCreada=result.Data;
         // Validamos si el envio no fue gratis y realizamos la crecion del gasto
         if (this.listaTipoDeEnvio.find(x => x.value == this.formularioVenta.controls['VEN_TIPOENVIO'].value)?.label?.toUpperCase() != "GRATIS") {
           this.gastoDeEnvio.VEN_CODIGO = result.Data;
           this.AbrirModalTipoCuentasGastos();
+        }else{
+          this.ImprirFaturaCompra();
         }
         this.formularioVenta.reset();
         this.formularioVenta.controls['VEN_FECHAVENTA'].setValue(new Date())
         this.TotalComprado = 0;
+        
       }
     }, err => {
       this.alertasService.hideLoading();
@@ -489,7 +495,14 @@ export class VentasComponent implements OnInit {
     this.formularioVenta.controls['PRO_VALORTOTAL'].disable();
     this.formularioVenta.controls['PRO_DESCUENTO'].disable();
   }
-
+  ImprirFaturaCompra(){
+    this.alertasService.confirmacion("Desea visualizar la factura de venta # " + this.codigoVentaCreada).then(
+      (resolve: any)=>{
+        if(resolve){
+          this.BuscarVentaPorCodigo();
+        }
+      })
+  }
   AbrirModalTipoCuentasGastos() {
     let ref = this.dialogService.open(PagoEnvioComponent, {
       header: 'Seleccione el tipo de de pago para el gasto de envio',
@@ -514,9 +527,33 @@ export class VentasComponent implements OnInit {
     this.gastosService.CrearGastoVenta(this.gastoDeEnvio).subscribe((result: any) => {
       this.alertasService.hideLoading();
       this.alertasService.SetToast("Gasto de envio creado exitosamente.", 1);
+      this.ImprirFaturaCompra();
     }, err => {
       this.alertasService.hideLoading();
       this.alertasService.SetToast(err, 1);
+    });
+  }
+  BuscarVentaPorCodigo(){
+    this.alertasService.showLoading("Buscando venta")
+    this.ventasService.BuscarVentaID(this.codigoVentaCreada).subscribe((result: Iventa) => {
+      this.alertasService.hideLoading();
+      debugger;
+      this.AbrirModaDetalleVentas(result);
+    }, err => {
+      this.alertasService.hideLoading();
+      this.alertasService.SetToast(err, 1);
+    });
+  }
+  AbrirModaDetalleVentas(venta:Iventa) {
+    let ref = this.dialogService.open(DetalleVentasComponent, {
+      header: 'Venta #'+venta.VEN_CODIGO,
+      width: '60%',
+      baseZIndex: 100,
+      maximizable: true,
+      contentStyle:{'background-color':'#eff3f8'},
+      data:{Venta:venta,Impresion:true}
+    })
+    ref.onClose.subscribe((res) => {
     });
   }
   CalcularTotalComprado() {

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 //loading
 import { LoadingComponent } from 'src/app/Modales/loading/loading.component';
+import {NgxPrintModule} from 'ngx-print';
 //libreria primeNG
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
@@ -21,6 +22,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ChartModule } from 'primeng/chart';
 import { PanelModule } from 'primeng/panel';
 import { AccordionModule } from 'primeng/accordion';
+
 
 @NgModule({
   declarations: [LoadingComponent],
@@ -43,7 +45,8 @@ import { AccordionModule } from 'primeng/accordion';
     TooltipModule,
     ChartModule,
     PanelModule,
-    AccordionModule
+    AccordionModule,
+    NgxPrintModule,
   ],
   exports:[
     ButtonModule,
@@ -65,7 +68,8 @@ import { AccordionModule } from 'primeng/accordion';
     TooltipModule,
     ChartModule,
     PanelModule,
-    AccordionModule
+    AccordionModule,
+    NgxPrintModule
   ]
 })
 export class SharedModule { }
