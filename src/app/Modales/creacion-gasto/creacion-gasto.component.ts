@@ -22,6 +22,7 @@ export class CreacionGastoComponent implements OnInit {
   motivoSeleccionado: any;
   tipoDeCuentaSeleccionada: any;
   FechaActual: Date;
+  userLogged: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,12 +34,12 @@ export class CreacionGastoComponent implements OnInit {
     private tipoCuentaService: TipoCuentaService,
     private alertasService: AlertasService
   ) {
+    this.userLogged=JSON.parse(localStorage.getItem('user')||"");
     this.FechaActual = new Date(Date.now());
     this.formularioGasto = this.formBuilder.group({
       GAS_VALOR: [null, Validators.required],
       GAS_PENDIENTE: [null, Validators.required],
       GAS_FECHAGASTO: [this.FechaActual, Validators.required],
-      MOTIVOSGASTOS: [null, Validators.required],
       TIC_CODIGO: [null, Validators.required],
       MOG_CODIGO: [null, Validators.required],
     });
@@ -64,6 +65,7 @@ export class CreacionGastoComponent implements OnInit {
   }
 
   SubmitFormulario() {
+    console.log(this.gastoAEditar)
     if (this.esEdicion) {
       this.EditarGasto();
     } else {
@@ -91,7 +93,7 @@ export class CreacionGastoComponent implements OnInit {
       TIC_CODIGO: this.formularioGasto.get('TIC_CODIGO')?.value,
       VEN_CODIGO: this.formularioGasto.get('VEN_CODIGO')?.value,
       GAS_ESTADO: this.formularioGasto.get('GAS_ESTADO')?.value,
-      MOG_CODIGO: this.formularioGasto.get('MOG_CODIGO')?.value,
+      MOG_CODIGO: this.formularioGasto.get('MOG_CODIGO')?.value ,
     };
   
     this.alerta.showLoading('Actualizando gasto');
@@ -119,14 +121,14 @@ export class CreacionGastoComponent implements OnInit {
         return;
       }
     }
-
+console.log(this.formularioGasto)
     const nuevoGasto: IGasto = {
       GAS_CODIGO: this.formularioGasto.get('GAS_CODIGO')?.value,
       MOTIVOSGASTOS: this.formularioGasto.get('MOTIVOSGASTOS')?.value,
       GAS_VALOR: this.formularioGasto.get('GAS_VALOR')?.value,
       GAS_PENDIENTE: this.formularioGasto.get('GAS_PENDIENTE')?.value,
       GAS_FECHAGASTO: this.formularioGasto.get('GAS_FECHAGASTO')?.value,
-      USU_CEDULA: this.formularioGasto.get('USU_CEDULA')?.value,
+      USU_CEDULA: this.userLogged.USU_CEDULA, 
       GAS_FECHACREACION: this.formularioGasto.get('GAS_FECHACREACION')?.value,
       TIC_CODIGO: this.formularioGasto.get('TIC_CODIGO')?.value,
       VEN_CODIGO: this.formularioGasto.get('VEN_CODIGO')?.value,
@@ -191,6 +193,7 @@ export class CreacionGastoComponent implements OnInit {
           };
           return selectItem;
         });
+        console.log(this.listaMotivo)
         const motivoSeleccionado = this.listaMotivo.filter((item) => item.value === this.gastoAEditar.MOG_CODIGO);
         if (motivoSeleccionado) {
           this.formularioGasto.get('MOG_CODIGO')?.setValue(motivoSeleccionado.values);
