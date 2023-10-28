@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClientService } from './http-client.service';
 import { map } from 'rxjs';
 import { IGasto } from '../Interfaces/igasto';
+import { IFiltro } from '../Interfaces/ifiltro';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,13 @@ export class GastosService {
         return result.StatusCode;
       }));
   }
+  BuscarGastoPorFechas(filtro: IFiltro) {
+    return this.http.post(this.url + 'ListarGastosPorFecha', filtro).pipe(
+      map((result: any) => {
+        return result;
+      }));
+  }
+  
   CerrarGasto(gasto: number) {
     return this.http.get(this.url + 'GetCerrarGasto/' + gasto).pipe(
       map((result: any) => {

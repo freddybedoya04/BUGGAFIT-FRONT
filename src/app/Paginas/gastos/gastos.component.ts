@@ -33,7 +33,7 @@ export class GastosComponent {
 
   }
   ngOnInit() {
-    this.BuscarGasto();
+    //this.BuscarGasto();
   }
   ConfigurarFechas() {
     this.FechaFin = new Date();
@@ -55,6 +55,7 @@ export class GastosComponent {
       this.BuscarGasto();
     });
   };
+
   BuscarGasto() {
     this.gastosService.BuscarGastos().subscribe((result: any) => {
       if (!result || result === null) {// en caso que llege vacio el gasto
@@ -66,6 +67,24 @@ export class GastosComponent {
         return item;
       });
     });
+  }
+
+  BuscarComprasPorFechas() {
+    this.ArmarFiltro();
+    this.alertasService.showLoading("Buscando gastos...")
+    this.gastosService.BuscarGastoPorFechas(this.filtro).subscribe(result => {
+      console.log(result);
+      if(result === null)
+      this.alertasService.SetToast("No hay Gastos", 2);
+      this.alertasService.hideLoading();
+      this.alertasService.SetToast("Se encontraron " + result.Data.length + " gastos", 1)
+      this.listaGastos = result.Data;
+    })
+  }
+
+  ArmarFiltro() {
+    this.filtro.FechaFin = this.FechaFin.toISOString();
+    this.filtro.FechaInicio = this.FechaInicio.toISOString();
   }
 
   EditarGasto(gasto: IGasto) {

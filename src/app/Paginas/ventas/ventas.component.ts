@@ -46,7 +46,7 @@ export class VentasComponent implements OnInit {
   userLogged: any;
   TotalComprado: number;
   _totalVentaMaxValue: number = 0;
-  codigoVentaCreada:number=0;
+  codigoVentaCreada: number = 0;
   //Listas de los dropdown
   listaTipoDeCliente: SelectItem[] = [
     {
@@ -96,7 +96,10 @@ export class VentasComponent implements OnInit {
     private dialogService: DialogService,
   ) {
     this.userLogged = JSON.parse(localStorage.getItem('user') || "");
-    const isUserAdmin = (this.userLogged.USU_ROL === 'admin' || this.userLogged.USU_ROL === 'administrador' || this.userLogged.USU_ROL === 'administrator');
+    const isUserAdmin = (this.userLogged.USU_ROL.toLowerCase() === 'admin' ||
+      this.userLogged.USU_ROL.toLowerCase() === 'administrador' ||
+      this.userLogged.USU_ROL.toLowerCase() === 'administrator');
+
     this.formularioVenta = formBuilder.group({
       VEN_FECHAVENTA: [{ value: new Date(), disabled: true }, Validators.required],
       VEN_TIPOENVIO: [null, Validators.required],
@@ -474,18 +477,18 @@ export class VentasComponent implements OnInit {
         //Lipiamos el formulario y enviamos mensaje de que esta correcto.
         this.alertasService.SetToast("Venta creada exitosamente.", 1);
         this.listaProductos = [];
-        this.codigoVentaCreada=result.Data;
+        this.codigoVentaCreada = result.Data;
         // Validamos si el envio no fue gratis y realizamos la crecion del gasto
         if (this.listaTipoDeEnvio.find(x => x.value == this.formularioVenta.controls['VEN_TIPOENVIO'].value)?.label?.toUpperCase() != "GRATIS") {
           this.gastoDeEnvio.VEN_CODIGO = result.Data;
           this.AbrirModalTipoCuentasGastos();
-        }else{
+        } else {
           this.ImprirFaturaCompra();
         }
         this.formularioVenta.reset();
         this.formularioVenta.controls['VEN_FECHAVENTA'].setValue(new Date())
         this.TotalComprado = 0;
-        
+
       }
     }, err => {
       this.alertasService.hideLoading();
@@ -495,10 +498,10 @@ export class VentasComponent implements OnInit {
     this.formularioVenta.controls['PRO_VALORTOTAL'].disable();
     this.formularioVenta.controls['PRO_DESCUENTO'].disable();
   }
-  ImprirFaturaCompra(){
+  ImprirFaturaCompra() {
     this.alertasService.confirmacion("Desea visualizar la factura de venta # " + this.codigoVentaCreada).then(
-      (resolve: any)=>{
-        if(resolve){
+      (resolve: any) => {
+        if (resolve) {
           this.BuscarVentaPorCodigo();
         }
       })
@@ -533,7 +536,7 @@ export class VentasComponent implements OnInit {
       this.alertasService.SetToast(err, 1);
     });
   }
-  BuscarVentaPorCodigo(){
+  BuscarVentaPorCodigo() {
     this.alertasService.showLoading("Buscando venta")
     this.ventasService.BuscarVentaID(this.codigoVentaCreada).subscribe((result: Iventa) => {
       this.alertasService.hideLoading();
@@ -544,14 +547,14 @@ export class VentasComponent implements OnInit {
       this.alertasService.SetToast(err, 1);
     });
   }
-  AbrirModaDetalleVentas(venta:Iventa) {
+  AbrirModaDetalleVentas(venta: Iventa) {
     let ref = this.dialogService.open(DetalleVentasComponent, {
-      header: 'Venta #'+venta.VEN_CODIGO,
+      header: 'Venta #' + venta.VEN_CODIGO,
       width: '60%',
       baseZIndex: 100,
       maximizable: true,
-      contentStyle:{'background-color':'#eff3f8'},
-      data:{Venta:venta,Impresion:true}
+      contentStyle: { 'background-color': '#eff3f8' },
+      data: { Venta: venta, Impresion: true }
     })
     ref.onClose.subscribe((res) => {
     });
