@@ -157,9 +157,9 @@
           <td>{{ venta.PRO_CODIGO }}</td>
           <td>{{ venta.PRO_NOMBRE }}</td>
           <td>{{ venta.VED_UNIDADES }}</td>
-          <td>{{ venta.VED_PRECIOVENTA_UND }}</td>
-          <td>{{ venta.VED_PRECIOVENTA_TOTAL }}</td>
-          <td>{{ venta.VED_VALORDESCUENTO_UND }}%</td>
+          <td>{{ venta.VED_PRECIOVENTA_UND |number }}</td>
+          <td>{{ venta.VED_PRECIOVENTA_TOTAL |number }}</td>
+          <td>{{ venta.VED_VALORDESCUENTO_UND |number }}%</td>
           <td style="min-width: 200px">
             <!-- <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"></button> -->
             <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"

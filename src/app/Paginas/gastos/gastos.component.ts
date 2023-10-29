@@ -34,7 +34,7 @@ export class GastosComponent implements OnInit {
   }
   ngOnInit() {
     this.ConfigurarFechas();
-    this.BuscarGasto();
+    // this.BuscarGasto();
   }
   ConfigurarFechas() {
     this.FechaFin = new Date();
@@ -53,7 +53,7 @@ export class GastosComponent implements OnInit {
     });
     ref.onClose.subscribe((res) => {
       this.FechaFin = new Date(Date.now());
-      this.BuscarGasto();
+      this.BuscarComprasPorFechas();
     });
   };
 
@@ -86,7 +86,6 @@ export class GastosComponent implements OnInit {
       if(result === null)
       this.alertasService.SetToast("No hay Gastos", 2);
       this.alertasService.hideLoading();
-      this.alertasService.SetToast("Se encontraron " + result.Data.length + " gastos", 1)
       this.listaGastos = result.Data;
     })
   }
@@ -107,7 +106,7 @@ export class GastosComponent implements OnInit {
     });
     ref.onClose.subscribe((res) => {
       this.FechaFin = new Date(Date.now());
-      this.BuscarGasto();
+      this.BuscarComprasPorFechas();
     });
   };
 
@@ -123,16 +122,13 @@ export class GastosComponent implements OnInit {
         if (resolve) {
           this.alertasService.showLoading('Eliminando el producto');
           this.gastosService.EliminarGasto(gasto.GAS_CODIGO).subscribe((result) => {
-            if (result == null || result?.StatusCode.toString().indexOf('20') >= 0) {
               this.alertasService.hideLoading();
               this.alertasService.SetToast('Gasto Eliminado', 1);
-              this.BuscarGasto();
-            }
-            else {
-              this.alertasService.hideLoading();
-              this.alertasService.SetToast('Error al eliminar el Gasto: ' + result?.message, 3);
-              console.error(result);
-            }
+              this.BuscarComprasPorFechas();
+          },err=>{
+            this.alertasService.hideLoading();
+            this.alertasService.SetToast('Error al eliminar el Gasto: ' + err?.message, 3);
+            console.error(err);
           });
         }
       })
@@ -144,16 +140,14 @@ export class GastosComponent implements OnInit {
         if (resolve) {
           this.alertasService.showLoading('Cerrando Gasto');
           this.gastosService.CerrarGasto(gasto.GAS_CODIGO).subscribe((result: any) => {
-            if (result == null || result?.StatusCode.toString().indexOf('20') >= 0) {
+
               this.alertasService.hideLoading();
               this.alertasService.SetToast('Gasto Cerrado', 1);
-              this.BuscarGasto();
-            }
-            else {
-              this.alertasService.hideLoading();
-              this.alertasService.SetToast('Error al cerrar el Gasto: ' + result?.message, 3);
-              console.error(result);
-            }
+              this.BuscarComprasPorFechas();
+          },err=>{
+            this.alertasService.hideLoading();
+            this.alertasService.SetToast('Error al cerrar el Gasto: ' + err?.message, 3);
+            console.error(err);
           })
         }
       });

@@ -71,7 +71,6 @@ export class ComprasComponent implements OnInit {
     this.alertas.showLoading("Buscando compras...")
     this._comprasService.BuscarComprarPorFechas(this.filtro).subscribe(result => {
       this.alertas.hideLoading();
-      this.alertas.SetToast("Se encontraron " + result.length + " compras", 1)
       this.compras = result;
     }, err => {
       this.alertas.hideLoading();
