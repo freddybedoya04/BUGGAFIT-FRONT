@@ -9,5 +9,5 @@ export interface IGasto {
     MOTIVOSGASTOS: string;
     TIC_CODIGO: number;
     USU_CEDULA: string;
-    VEN_CODIGO: number;
+    VEN_CODIGO?: number;
 }

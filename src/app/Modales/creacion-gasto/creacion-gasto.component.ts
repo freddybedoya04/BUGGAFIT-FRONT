@@ -42,6 +42,7 @@ export class CreacionGastoComponent implements OnInit {
       GAS_FECHAGASTO: [this.FechaActual, Validators.required],
       TIC_CODIGO: [null, Validators.required],
       MOG_CODIGO: [null, Validators.required],
+      VEN_CODIGO :0
     });
     this.gastoAEditar = {
       GAS_CODIGO: 0,
@@ -121,7 +122,7 @@ export class CreacionGastoComponent implements OnInit {
         return;
       }
     }
-console.log(this.formularioGasto)
+
     const nuevoGasto: IGasto = {
       GAS_CODIGO: this.formularioGasto.get('GAS_CODIGO')?.value,
       MOTIVOSGASTOS: this.formularioGasto.get('MOTIVOSGASTOS')?.value,
@@ -131,11 +132,11 @@ console.log(this.formularioGasto)
       USU_CEDULA: this.userLogged.USU_CEDULA, 
       GAS_FECHACREACION: this.formularioGasto.get('GAS_FECHACREACION')?.value,
       TIC_CODIGO: this.formularioGasto.get('TIC_CODIGO')?.value,
-      VEN_CODIGO: this.formularioGasto.get('VEN_CODIGO')?.value,
+      VEN_CODIGO: 0,
       GAS_ESTADO: this.formularioGasto.get('GAS_ESTADO')?.value,
       MOG_CODIGO: this.formularioGasto.get('MOG_CODIGO')?.value,
     };
-
+    console.log(this.formularioGasto)
     this.alerta.showLoading('Creando nuevo gasto');
     this.gastoService.CrearGasto(nuevoGasto).subscribe(
       (result) => {
@@ -167,41 +168,35 @@ console.log(this.formularioGasto)
     this.tipoCuentaService.ObtenerCuentas().subscribe((result: any) => {
       if (result) {
         this.listaCuenta = result.map((item: any) => {
-          const selectItem: SelectItem = {
+          return {
             label: item.TIC_NOMBRE,
             value: item.TIC_CODIGO,
           };
-          return selectItem;
         });
   
-        const tipoDeCuentaSeleccionada = this.listaCuenta.find((item) => item.value === this.gastoAEditar.TIC_CODIGO);
-        if (tipoDeCuentaSeleccionada) {
-          this.formularioGasto.get('TIC_CODIGO')?.setValue(tipoDeCuentaSeleccionada.value);
+        if (this.esEdicion) {
+          this.formularioGasto.get('TIC_CODIGO')?.setValue(this.gastoAEditar.TIC_CODIGO);
         }
       }
     });
   }
   
-
   CargarMotivo() {
     this.motivoGastoService.ObtenerMotivosGastos().subscribe((result: any) => {
       if (result) {
         this.listaMotivo = result.map((item: any) => {
-          const selectItem: SelectItem = {
+          return {
             label: item.MOG_NOMBRE,
             value: item.MOG_CODIGO,
           };
-          return selectItem;
         });
-        console.log(this.listaMotivo)
-        const motivoSeleccionado = this.listaMotivo.filter((item) => item.value === this.gastoAEditar.MOG_CODIGO);
-        if (motivoSeleccionado) {
-          this.formularioGasto.get('MOG_CODIGO')?.setValue(motivoSeleccionado.values);
+  
+        if (this.esEdicion) {
+          this.formularioGasto.get('MOG_CODIGO')?.setValue(this.gastoAEditar.MOG_CODIGO);
         }
       }
     });
   }
-
   private CargarDatosEnLosInputs() {
     this.esEdicion = this.config.data.esEdicion;
     this.gastoAEditar = this.config.data.gastoAEditar;
