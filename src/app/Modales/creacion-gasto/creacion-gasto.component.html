@@ -58,7 +58,7 @@
 </form>
   <div>
     <div class="buttonContainer">
-      <p-button (click)="SubmitFormulario()" label="Agregar"> </p-button>
+      <p-button (click)="SubmitFormulario()" [label]="this.esEdicion==false?'Agregar':'Actualizar'"> </p-button>
     </div>
   </div>
 </div>

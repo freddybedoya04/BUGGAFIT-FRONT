@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { IFiltro } from 'src/app/Interfaces/ifiltro';
 import { IGasto } from 'src/app/Interfaces/igasto';
@@ -11,7 +11,7 @@ import { GastosService } from 'src/app/Servicios/gastos.service';
   templateUrl: './gastos.component.html',
   styleUrls: ['./gastos.component.scss']
 })
-export class GastosComponent {
+export class GastosComponent implements OnInit {
   FechaInicio: Date;
   FechaFin: Date;
   filtro: IFiltro;
@@ -33,7 +33,8 @@ export class GastosComponent {
 
   }
   ngOnInit() {
-    //this.BuscarGasto();
+    this.ConfigurarFechas();
+    this.BuscarGasto();
   }
   ConfigurarFechas() {
     this.FechaFin = new Date();
@@ -51,24 +52,32 @@ export class GastosComponent {
       data: { esEdicion: false}
     });
     ref.onClose.subscribe((res) => {
-
+      this.FechaFin = new Date(Date.now());
       this.BuscarGasto();
     });
   };
 
   BuscarGasto() {
-    this.gastosService.BuscarGastos().subscribe((result: any) => {
-      if (!result || result === null) {// en caso que llege vacio el gasto
-        // Agregar mensaje de error
-        this.alertasService.SetToast("No hay gastos para mostrar.", 2);
-        return;
+    this.alertasService.showLoading("Cargando gastos");
+    
+    // Llamar al servicio para obtener todos los gastos
+    this.gastosService.BuscarGastos().subscribe(
+      (result: any) => {
+        if (result && result.Data) {
+          this.listaGastos = result.Data;
+        } else {
+          this.alertasService.SetToast("No hay gastos para mostrar.", 2);
+        }
+      },
+      (error) => {
+        console.error(error);
+        this.alertasService.SetToast("Error al cargar los gastos.", 3);
+      },
+      () => {
+        this.alertasService.hideLoading();
       }
-      this.listaGastos = result.map((item: IGasto) => {
-        return item;
-      });
-    });
+    );
   }
-
   BuscarComprasPorFechas() {
     this.ArmarFiltro();
     this.alertasService.showLoading("Buscando gastos...")
@@ -97,6 +106,7 @@ export class GastosComponent {
       data: { esEdicion: true, gastoAEditar: gasto }
     });
     ref.onClose.subscribe((res) => {
+      this.FechaFin = new Date(Date.now());
       this.BuscarGasto();
     });
   };

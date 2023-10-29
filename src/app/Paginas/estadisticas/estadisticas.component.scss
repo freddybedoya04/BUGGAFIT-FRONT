@@ -3,6 +3,7 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 20px; 
     padding-top: 20px; 
+   
 }
 
 .p-card {
@@ -12,10 +13,38 @@
     padding: 20px; 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-align: center; 
+    margin: 0 10px 0 10px ;
+
 }
+.Filtro {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin: 20px;
+    align-items: center;
+}
+
+.Filtro p {
+    flex: 1 0 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    label{
+        font-family: 'Poppins', sans-serif;
+    }
+}
+
 
 .p-card h3 {
     font-size: 1.5rem; 
+    display: grid;
+    place-content: center;
+    margin-right: 12%;
+}
+.p-card span{
+    display: grid;
+    place-content: center;
 }
 
 .value {
@@ -48,3 +77,10 @@
 .table-container {
     flex: 1;
 }
+.p-card i {
+    color: white; 
+    border-radius: 20%; 
+    padding: 10px; 
+    float: left;
+}
+
