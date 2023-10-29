@@ -79,6 +79,9 @@
                     <th pSortableColumn="CLI_TIPOCLIENTE" style="width: 8%">
                         Tipo de cliente <p-sortIcon field="CLI_TIPOCLIENTE"></p-sortIcon>
                     </th>
+                    <th pSortableColumn="USU_NOMBRE" style="width: 8%">
+                        Vendedor <p-sortIcon field="USU_NOMBRE"></p-sortIcon>
+                    </th>
                     <th style="min-width: 250px" alignFrozen="right" pFrozenColumn>
                         Acciones
                     </th>
@@ -106,7 +109,7 @@
                     <!-- <td>{{ venta.CLI_TELEFONO }}</td> -->
                     <!-- <td>{{ venta.CLI_DIRECCION }}</td> -->
                     <td>{{ venta.CLI_TIPOCLIENTE }}</td>
-
+                    <td>{{ venta.USU_NOMBRE }}</td>
 
                     <td pFrozenColumn alignFrozen="right" [frozen]="true" style="min-width: 250px">
                         <button [disabled]="venta.VEN_ESTADOVENTA==true" pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success"

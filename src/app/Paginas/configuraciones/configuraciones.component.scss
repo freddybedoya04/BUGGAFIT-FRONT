@@ -27,6 +27,9 @@ section {
 }
 .BotonAgregar{
     margin-top: 20px;
+    display: flex;
+    flex-direction: row !important;
+    gap: 10px;
 }
 
 :host ::ng-deep .p-accordion-content{

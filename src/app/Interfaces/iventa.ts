@@ -20,6 +20,7 @@ VEN_DOMICILIO :boolean,
 VEN_OBSERVACIONES : string,
 VEN_ACTUALIZACION : Date,
 USU_CEDULA : string,
+USU_NOMBRE?:string,
 VEN_ESTADOVENTA : boolean,
 VEN_ESTADO : boolean
 TIP_CODIGO?:number,

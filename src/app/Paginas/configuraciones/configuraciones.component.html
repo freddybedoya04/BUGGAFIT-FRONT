@@ -12,6 +12,7 @@
                         </div>
                         <div class="BotonAgregar">
                             <p-button label="Agregar Marca" icon="pi pi-plus" (onClick)="AgregarMarca()"></p-button>
+                            <p-button label="Cancelar" styleClass="p-button-danger" (onClick)="ActivarFormularioMarca=false"></p-button>
                         </div>
                     </section>
                 </p-card>
@@ -25,8 +26,6 @@
                             <div class="EncabezadoTabla">
                                 <p-button *ngIf="ActivarFormularioMarca==false" label="Agregar Marca" icon="pi pi-plus"
                                     (onClick)="ActivarFormularioMarca=true"></p-button>
-                                <p-button *ngIf="ActivarFormularioMarca==true" label="Cancelar"
-                                    (onClick)="ActivarFormularioMarca=false"></p-button>
 
                             </div>
                         </ng-template>
@@ -60,8 +59,9 @@
                             <input type="text" pInputText [(ngModel)]="Categoria.CAT_NOMBRE" />
                         </div>
                         <div class="BotonAgregar">
-                            <p-button label="Agregar Categoria" icon="pi pi-plus"
+                            <p-button label="Agregar Categoria" icon="pi pi-plus" 
                                 (onClick)="AgregarCategoria()"></p-button>
+                                <p-button label="Cancelar" styleClass="p-button-danger" (onClick)="ActivarFormularioCategoria=false"></p-button>
                         </div>
                     </section>
                 </p-card>
@@ -76,8 +76,6 @@
                             <div class="EncabezadoTabla">
                                 <p-button *ngIf="ActivarFormularioCategoria==false" label="Agregar Categoria"
                                     icon="pi pi-plus" (onClick)="ActivarFormularioCategoria=true"></p-button>
-                                <p-button *ngIf="ActivarFormularioCategoria==true" label="Cancelar"
-                                    (onClick)="ActivarFormularioCategoria=false"></p-button>
                             </div>
                         </ng-template>
                         <ng-template pTemplate="header">
@@ -115,6 +113,7 @@
                         </div>
                         <div class="BotonAgregar">
                             <p-button label="Agregar Cuenta" icon="pi pi-plus" (onClick)="AgregarCuenta()"></p-button>
+                            <p-button label="Cancelar" styleClass="p-button-danger" (onClick)="ActivarFormularioCuenta=false"></p-button>
                         </div>
                     </section>
                 </p-card>
@@ -128,8 +127,6 @@
                             <div class="EncabezadoTabla">
                                 <p-button *ngIf="ActivarFormularioCuenta==false" label="Agregar Cuenta"
                                     icon="pi pi-plus" (onClick)="ActivarFormularioCuenta=true"></p-button>
-                                <p-button *ngIf="ActivarFormularioCuenta==true" label="Cancelar"
-                                    (onClick)="ActivarFormularioCuenta=false"></p-button>
                             </div>
                         </ng-template>
                         <ng-template pTemplate="header">
@@ -169,7 +166,7 @@
                         </div>
                         <div class="BotonAgregar">
                             <p-button label="Actualizar Valor" icon="pi pi-plus" (onClick)="ActualizarTipoEnvio()"></p-button>
-                            <p-button label="Cancelar" (onClick)="ActivarFormularioTipoEnvio=false"></p-button>
+                            <p-button label="Cancelar" styleClass="p-button-danger" (onClick)="ActivarFormularioTipoEnvio=false"></p-button>
                         </div>
                     </section>
                 </p-card>
@@ -218,6 +215,7 @@
                         <div class="BotonAgregar">
                             <p-button label="Agregar Motivo" icon="pi pi-plus"
                                 (onClick)="AgregarMotivoGasto()"></p-button>
+                                <p-button label="Cancelar" styleClass="p-button-danger" (onClick)="ActivarFormularioMotivoGasto=false"></p-button>
                         </div>
                     </section>
                 </p-card>
@@ -232,8 +230,6 @@
                             <div class="EncabezadoTabla">
                                 <p-button *ngIf="ActivarFormularioMotivoGasto==false" label="Agregar Cuenta"
                                     icon="pi pi-plus" (onClick)="ActivarFormularioMotivoGasto=true"></p-button>
-                                <p-button *ngIf="ActivarFormularioMotivoGasto==true" label="Cancelar"
-                                    (onClick)="ActivarFormularioMotivoGasto=false"></p-button>
                             </div>
                         </ng-template>
                         <ng-template pTemplate="header">

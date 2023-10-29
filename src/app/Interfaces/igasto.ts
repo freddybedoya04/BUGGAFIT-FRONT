@@ -10,4 +10,5 @@ export interface IGasto {
     TIC_CODIGO: number;
     USU_CEDULA: string;
     VEN_CODIGO?: number;
+    MOG_NOMBRE?:string;
 }
