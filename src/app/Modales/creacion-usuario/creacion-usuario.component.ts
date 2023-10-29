@@ -15,16 +15,7 @@ export class CreacionUsuarioComponent implements OnInit {
   formularioUsuario: FormGroup;
   esEdicion: boolean = false;
   usuarioAEditar: Iusuario |null = null;
-  listaTipoDeRol:SelectItem[]=[
-    {
-      label:"Administrador",
-      value:"administrador"
-    },
-    {
-      label: "Ventas",
-      value: "ventas"
-    }
-  ]
+  listaTipoDeRol:SelectItem[]=[]
   constructor(
     private formBuilder: FormBuilder,
     private alerta: AlertasService,
@@ -51,7 +42,9 @@ export class CreacionUsuarioComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.ListarPerfiles();
     this.CargarDatos();
+
   }
   SubmitFormulario() {
     if (this.esEdicion) {
@@ -122,6 +115,7 @@ export class CreacionUsuarioComponent implements OnInit {
       this.alerta.SetToast('La contraseña es requerida para agregar un nuevo usuario.', 2);
       return;
     }
+    debugger;
     const usuario: Iusuario = {
       USU_CEDULA: this.formularioUsuario.get('USU_CEDULA')?.value,
       USU_NOMBRE: this.formularioUsuario.get('USU_NOMBRE')?.value,
@@ -149,7 +143,7 @@ export class CreacionUsuarioComponent implements OnInit {
   }
   CargarDatos(){
     this.esEdicion=this.config.data.esEdicion;
-    this.usuarioAEditar=this.config.data.productoAEditar
+    this.usuarioAEditar=this.config.data.usuarioAEditar
     if(this.esEdicion){
       this.formularioUsuario.get('USU_CEDULA')?.disable();
       this.formularioUsuario.get('USU_CEDULA')?.setValue(this.usuarioAEditar?.USU_CEDULA);
@@ -158,8 +152,17 @@ export class CreacionUsuarioComponent implements OnInit {
     }
 
   }
-  
-
+  ListarPerfiles() {
+    this.usuarioService.ListarPerfiles().subscribe((result: any) => {
+      this.listaTipoDeRol = result.map((item: any) => {
+        const selectItem: SelectItem = {
+          label: item.PER_NOMBRE,
+          value: item.PER_CODIGO
+        }
+        return selectItem;
+      });
+    });
+  }
   CerradoPantalla() {
     this.LimpiarPantalla();
     this.ref.close();

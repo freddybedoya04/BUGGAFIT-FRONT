@@ -31,10 +31,22 @@ export class UsuarioService {
         return result
       }));
   }
+  ListarPerfiles(){
+    return this.http.get(this.url + 'GetPerfiles').pipe(
+      map((result: any) => {
+        return result
+      }));
+  }
   ValidarUsuarioAdmin(login: ILogin){
     return this.http.post(this.url + "ValidarUsuarioAdmin", login).pipe(
       map((result: any) => {
         return result;
+      }));
+  }
+  ListarPantallasPermisos(perfil:string){
+    return this.http.get(this.url + 'ListarPantallasPermisos/'+perfil).pipe(
+      map((result: any) => {
+        return result
       }));
   }
 }

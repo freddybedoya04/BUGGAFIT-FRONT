@@ -96,9 +96,9 @@ export class VentasComponent implements OnInit {
     private dialogService: DialogService,
   ) {
     this.userLogged = JSON.parse(localStorage.getItem('user') || "");
-    const isUserAdmin = (this.userLogged.USU_ROL.toLowerCase() === 'admin' ||
-      this.userLogged.USU_ROL.toLowerCase() === 'administrador' ||
-      this.userLogged.USU_ROL.toLowerCase() === 'administrator');
+    const isUserAdmin = (this.userLogged.USU_NOMBREROL.toLowerCase() === 'admin' ||
+      this.userLogged.USU_NOMBREROL.toLowerCase() === 'administrador' ||
+      this.userLogged.USU_NOMBREROL.toLowerCase() === 'administrator');
 
     this.formularioVenta = formBuilder.group({
       VEN_FECHAVENTA: [{ value: new Date(), disabled: true }, Validators.required],
