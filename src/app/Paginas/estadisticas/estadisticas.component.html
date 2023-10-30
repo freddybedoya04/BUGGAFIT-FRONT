@@ -1,17 +1,17 @@
 <div class="Filtro">
     <p>
         <label>Fecha Inicio:</label>
-        <p-calendar  name="FechaInicio" [showTime]="true" hourFormat="12"
+        <p-calendar [(ngModel)]="FechaInicio" name="FechaInicio" [showTime]="true" hourFormat="12"
             [showIcon]="true"></p-calendar>
     </p>
     <p>
         <label>Fecha Fin:</label>
-        <p-calendar name="FechaFin" [showTime]="true" hourFormat="12"
+        <p-calendar [(ngModel)]="FechaFin" name="FechaFin" [showTime]="true" hourFormat="12"
             [showIcon]="true"></p-calendar>
     </p>
     <p>
-        <p-button label="Buscar" icon="pi pi-search" style="margin-top: 20px;"
-           ></p-button>
+        <p-button label="Buscar" icon="pi pi-search" style="margin-top: 20px;" (click)="calcularIndicadores()"></p-button>
+
     </p>
 </div>
 
@@ -48,29 +48,27 @@
     <div class="p-card" style="border-left: 5px solid #ff0055;">
         <i class="pi pi-credit-card" style="background-color: #ff0055;"></i>
         <h3 class="Titulo3"> Credito</h3>
-        <span class="value">{{ Indicadores.Creditos | currency: 'USD' }}</span>
+        <span class="value">{{Indicadores.Creditos | currency :'USD'}}</span>
     </div>
 </div>
 
-
+<!-- 
 <div class="container">
     <div class="chart-container">
-        <p-chart type="bar"  [data]="exampleData"></p-chart>
+        <p-chart type="bar"  ></p-chart>
     </div>
     <div class="table-container">
-        <p-table [value]="tableData">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>Fecha</th>
-                    <th>Venta</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-rowData>
-                <tr>
-                    <td>{{ rowData.fecha }}</td>
-                    <td>{{ rowData.venta | currency: 'USD' }}</td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
-</div>
+        <p-table [value]="Indicadores.UltimasVentas"> 
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Fecha</th>
+              <th>Venta</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData>
+            <tr>
+              <td>{{ rowData.fecha }}</td>
+              <td>{{ rowData.venta | currency: 'USD' }}</td>
+            </tr>
+          </ng-template>
+        </p-table> -->
