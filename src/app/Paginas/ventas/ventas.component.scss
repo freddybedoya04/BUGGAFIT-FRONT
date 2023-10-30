@@ -85,14 +85,14 @@ h1 {
 
 
  @media screen and (max-width: 1400px) {
-  .card section {
+  .card form {
     grid-template-columns: repeat(2,1fr); /* Cambia a una sola columna */
     /* Otras propiedades de grid que deseas modificar en tablet */
   }
 }
 
 @media screen and (max-width: 786px) {
-   .card section {
+   .card  form {
       grid-template-columns: 1fr;
   }
 }
