@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Iabonos } from 'src/app/Interfaces/iabonos';
@@ -8,7 +8,8 @@ import { AbonosComponent } from 'src/app/Modales/abonos/abonos.component';
 import { DetalleVentasComponent } from 'src/app/Modales/detalle-ventas/detalle-ventas.component';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { VentasService } from 'src/app/Servicios/ventas.service';
-
+import * as FileSaver from 'file-saver'; 
+import * as XLSX from 'xlsx'; 
 @Component({
   selector: 'app-reportes',
   templateUrl: './reportes.component.html',
@@ -21,6 +22,8 @@ export class ReportesComponent implements OnInit {
   activeItem: MenuItem = {};
   ventas: Iventa[] = [];
   filtro: IFiltro;
+  @ViewChild('dt2', { static: true }) table: any;
+  customColumnHeaders: string[] = [];
   public searchKeyword: string = '';
   constructor(private alertas:AlertasService,private ventasService:VentasService,private dialogService:DialogService) {
     this.FechaFin = new Date();
@@ -103,6 +106,30 @@ export class ReportesComponent implements OnInit {
         })
       }
     })
+  }
+  exportExcel() {
+
+    if (this.ventas.length === 0) {
+      this.alertas.SetToast('No hay datos para exportar.', 2);
+      return;
+    }
+  
+    import("xlsx").then((xlsx) => {
+      const worksheet: XLSX.WorkSheet = xlsx.utils.json_to_sheet(this.ventas, { header: this.customColumnHeaders });
+      
+      const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      this.saveAsExcelFile(excelBuffer, 'Reportes');
+    });
+  }
+  
+  
+  
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
+    FileSaver.saveAs(data, fileName);
   }
   BuscarDetalles(venta:Iventa){
     let nuevaVenta:Iventa=venta;

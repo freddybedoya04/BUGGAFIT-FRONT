@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Icompras } from 'src/app/Interfaces/icompra';
 import { IFiltro } from 'src/app/Interfaces/ifiltro';
 import { CreacionCompraComponent } from 'src/app/Modales/creacion-compra/creacion-compra.component';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { ComprasService } from 'src/app/Servicios/compras.service';
-
+import * as FileSaver from 'file-saver'; 
+import * as XLSX from 'xlsx'; 
 @Component({
   selector: 'app-compras',
   templateUrl: './compras.component.html',
@@ -18,6 +19,8 @@ export class ComprasComponent implements OnInit {
   compras: Icompras[] = [];
   public searchKeyword: string = '';
   filtro: IFiltro;
+  @ViewChild('dt2', { static: true }) table: any;
+  customColumnHeaders: string[] = [];
   constructor(private alertas: AlertasService, private _comprasService: ComprasService, public dialogService: DialogService) {
     this.FechaFin = new Date();
     this.FechaInicio = new Date();
@@ -65,6 +68,7 @@ export class ComprasComponent implements OnInit {
       this.BuscarComprasPorFechas();
     });
   }
+  
 
   BuscarComprasPorFechas() {
     this.ArmarFiltro();
@@ -118,31 +122,25 @@ export class ComprasComponent implements OnInit {
   }
 
   exportExcel() {
-    // import("xlsx").then((xlsx) => {
-    //   const worksheet: xlsx.WorkSheet = xlsx.utils.json_to_sheet(this.Viajes);
-
-
-    //   const headerRow = this.table.el.nativeElement.querySelector('thead > tr');
-    //   const headerCells = Array.from(headerRow.children);
-    //   const header = headerCells.map((cell: any) => cell.innerText.trim());
-
-
-    //   const headerRowIndex = 0;
-    //   header.forEach((title, columnIndex) => {
-    //     const cellRef = xlsx.utils.encode_cell({ r: headerRowIndex, c: columnIndex });
-    //     worksheet[cellRef] = { t: 's', v: title };
-    //   });
-
-    //   const workbook: xlsx.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
-    //   const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-    //   this.saveAsExcelFile(excelBuffer, 'viajes');
-    // });
+    if (this.compras.length === 0) {
+      this.alertas.SetToast('No hay datos para exportar.', 2);
+      return;
+    }
+    import("xlsx").then((xlsx) => {
+      const worksheet: XLSX.WorkSheet = xlsx.utils.json_to_sheet(this.compras, { header: this.customColumnHeaders });
+      
+      const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      this.saveAsExcelFile(excelBuffer, 'Compras');
+    });
   }
-
+  
+  
+  
   saveAsExcelFile(buffer: any, fileName: string): void {
-    // const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-    // const EXCEL_EXTENSION = '.xlsx';
-    // const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
-    // FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+    const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
+    FileSaver.saveAs(data, fileName );
   }
 }

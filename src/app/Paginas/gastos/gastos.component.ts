@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild} from '@angular/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { IFiltro } from 'src/app/Interfaces/ifiltro';
 import { IGasto } from 'src/app/Interfaces/igasto';
 import { CreacionGastoComponent } from 'src/app/Modales/creacion-gasto/creacion-gasto.component';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { GastosService } from 'src/app/Servicios/gastos.service';
+import * as FileSaver from 'file-saver'; 
+import * as XLSX from 'xlsx'; 
+
 
 @Component({
   selector: 'app-gastos',
@@ -17,6 +20,9 @@ export class GastosComponent implements OnInit {
   filtro: IFiltro;
   listaGastos: IGasto[] = [];
   public searchKeyword: string = '';
+  @ViewChild('dt2', { static: true }) table: any;
+  customColumnHeaders: string[] = [];
+
 
 
   constructor(
@@ -133,6 +139,29 @@ export class GastosComponent implements OnInit {
         }
       })
   }
+  exportExcel() {
+    if (this.listaGastos.length === 0) {
+      this.alertasService.SetToast('No hay datos para exportar.', 2);
+      return;
+    }
+    import("xlsx").then((xlsx) => {
+      const worksheet: XLSX.WorkSheet = xlsx.utils.json_to_sheet(this.listaGastos, { header: this.customColumnHeaders });
+      
+      const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      this.saveAsExcelFile(excelBuffer, 'gastos');
+    });
+  }
+  
+  
+  
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
+    FileSaver.saveAs(data, fileName );
+  }
+  
 
   CerrarGasto(gasto: IGasto) {
     this.alertasService.confirmacion("Desea Cerrar el gasto con codigo: " + gasto.GAS_CODIGO).then(

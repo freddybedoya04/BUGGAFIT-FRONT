@@ -27,7 +27,7 @@
                 <div class="EncabezadoTabla">
                     <p-button label="Agregar Gasto" icon="pi pi-plus" (onClick)="AbrirModalGastos()"></p-button>
                     <button type="button" pButton pRipple icon="pi pi-file-excel"
-                        class="p-button-rounded p-button-success mr-2" pTooltip="Descargar reporte"
+                        class="p-button-rounded p-button-success mr-2" (click)="exportExcel()"pTooltip="Descargar reporte"
                         tooltipPosition="top"></button>
                     <button pButton label="" icon="pi pi-filter" pTooltip="Quitar filtro" tooltipPosition="top"
                         iconPos="left" class="p-button-raised p-button-rounded" (click)="dt2.reset()"></button>
