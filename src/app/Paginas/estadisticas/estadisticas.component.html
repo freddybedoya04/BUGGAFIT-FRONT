@@ -10,46 +10,74 @@
             [showIcon]="true"></p-calendar>
     </p>
     <p>
-        <p-button label="Buscar" icon="pi pi-search" style="margin-top: 20px;" (click)="calcularIndicadores()"></p-button>
+        <p-button label="Buscar" icon="pi pi-search" style="margin-top: 20px;"
+            (click)="calcularIndicadores()"></p-button>
 
     </p>
 </div>
 
 <div class="Indicadores">
-   
+
     <div class="p-card" style="border-left: 5px solid #38722cfd;">
-        <i class="pi pi-money-bill"style="background-color: #38722cfd;"></i>
+        <i class="pi pi-money-bill" style="background-color: #38722cfd;"></i>
         <h3 class="Titulo3"> Deudas</h3>
         <span class="value">{{ Indicadores.Deudas | currency: 'USD' }}</span>
-      
+
 
     </div>
     <div class="p-card" style="border-left: 5px solid #6f00ff;">
-        <i class="pi pi-shopping-bag"style="background-color: #6f00ff;"></i>
+        <i class="pi pi-shopping-bag" style="background-color: #6f00ff;"></i>
         <h3 class="Titulo3"> Ventas </h3>
-        <span class="value">{{ Indicadores.Ventas | currency: 'USD' }}</span>  
+        <span class="value">{{ Indicadores.Ventas | currency: 'USD' }}</span>
     </div>
     <div class="p-card" style="border-left: 5px solid #00aeff;">
         <i class="pi pi-wallet" style="background-color: #00aeff;"></i>
         <h3 class="Titulo3"> Gastos</h3>
-        <span class="value">{{ Indicadores.Gastos | currency: 'USD' }}</span>    
+        <span class="value">{{ Indicadores.Gastos | currency: 'USD' }}</span>
     </div>
     <div class="p-card" style="border-left: 5px solid #ff5d00;">
         <i class="pi 
         pi-shopping-cart" style="background-color: #ff5d00;"></i>
         <h3 class="Titulo3"> Compras</h3>
-        <span class="value">{{ Indicadores.Compras | currency: 'USD' }}</span>  
+        <span class="value">{{ Indicadores.Compras | currency: 'USD' }}</span>
     </div>
     <div class="p-card" style="border-left: 5px solid #ffc400;">
         <i class="pi pi-dollar" style="background-color: #ffc400;"></i>
         <h3 class="Titulo3"> Utilidades</h3>
-        <span class="value">{{ Indicadores.Utilidades | currency: 'USD' }}</span>     
+        <span class="value">{{ Indicadores.Utilidades | currency: 'USD' }}</span>
     </div>
     <div class="p-card" style="border-left: 5px solid #ff0055;">
         <i class="pi pi-credit-card" style="background-color: #ff0055;"></i>
         <h3 class="Titulo3"> Credito</h3>
         <span class="value">{{Indicadores.Creditos | currency :'USD'}}</span>
     </div>
+</div>
+<div class="Graficas">
+    <p-card header="Datos cuentas" [style]="{padding: '20px' }" styleClass="shadow-5">
+        <canvas id="barChart" width="600px" height="265"></canvas>
+    </p-card>
+    <p-card header="Productos más vendidos" [style]="{padding: '20px' }" styleClass="shadow-5">
+        <p-table [value]="this.Indicadores.ProductosMasVendidos"
+            [tableStyle]="{ 'min-width': '20rem', 'max-height': '400px' }" [paginator]="true" [rows]="5"
+            [showCurrentPageReport]="true" [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords}'"
+            [scrollable]="true" [rowsPerPageOptions]="[5, 10]" styleClass="p-datatable-sm" class="custom-table">
+            <ng-template pTemplate="caption">
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 20%">Nombre</th>
+                    <th style="width: 20%">Cantidad</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-producto>
+                <tr>
+                    <td>{{ producto.Nombre}}</td>
+                    <td>{{ producto.CantidadProducto}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-card>
+
 </div>
 
 <!-- 

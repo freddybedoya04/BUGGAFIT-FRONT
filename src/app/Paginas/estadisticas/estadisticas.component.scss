@@ -5,6 +5,13 @@
     padding-top: 20px; 
    
 }
+.Graficas{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px; 
+    padding-top: 20px; 
+    margin: 10px;
+}
 
 .p-card {
     background-color: #f5f5f5; 
@@ -84,3 +91,21 @@
     float: left;
 }
 
+@media screen and (max-width: 1400px) {
+    .Indicadores  {
+      grid-template-columns: repeat(2,1fr); /* Cambia a una sola columna */
+      /* Otras propiedades de grid que deseas modificar en tablet */
+    }
+    .Graficas  {
+        grid-template-columns: 1fr;
+    }
+  }
+  
+  @media screen and (max-width: 786px) {
+    .Indicadores  {
+        grid-template-columns: 1fr;
+    }
+    #barChart{
+        width: 400px !important;
+    }
+  }
