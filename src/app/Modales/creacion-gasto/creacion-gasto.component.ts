@@ -81,41 +81,59 @@ export class CreacionGastoComponent implements OnInit {
         return;
       }
   
-    const codigoGasto = this.formularioGasto.get('GAS_CODIGO')?.value;
+      const codigoGasto = this.formularioGasto.get('GAS_CODIGO')?.value;
   
-    const gastoAEditar: IGasto = {
-      GAS_CODIGO: codigoGasto,
-      MOTIVOSGASTOS: this.formularioGasto.get('MOTIVOSGASTOS')?.value,
-      GAS_VALOR: this.formularioGasto.get('GAS_VALOR')?.value,
-      GAS_PENDIENTE: this.formularioGasto.get('GAS_PENDIENTE')?.value,
-      GAS_FECHAGASTO: this.formularioGasto.get('GAS_FECHAGASTO')?.value,
-      USU_CEDULA: this.formularioGasto.get('USU_CEDULA')?.value,
-      GAS_FECHACREACION: this.formularioGasto.get('GAS_FECHACREACION')?.value,
-      TIC_CODIGO: this.formularioGasto.get('TIC_CODIGO')?.value,
-      VEN_CODIGO: this.formularioGasto.get('VEN_CODIGO')?.value,
-      GAS_ESTADO: this.formularioGasto.get('GAS_ESTADO')?.value,
-      MOG_CODIGO: this.formularioGasto.get('MOG_CODIGO')?.value ,
-    };
+      this.alerta.showLoading('Buscando el gasto a editar');
+      this.gastoService.BuscarGastoID(codigoGasto).subscribe(
+        (gastoAEditar) => {
+          this.alerta.hideLoading();
   
-    this.alerta.showLoading('Actualizando gasto');
-    this.gastoService.ActualizarGasto(codigoGasto, gastoAEditar).subscribe(
-      (result) => {
-        if (result) {
-          this.alerta.SetToast('Gasto actualizado', 1);
-          this.CerradoPantalla();
-        } else {
-          this.alerta.SetToast('Error al actualizar el gasto', 3);
+          if (!gastoAEditar) {
+            this.alerta.SetToast('No se encontró el gasto que desea editar.', 2);
+          } else {
+            const nuevoGasto: IGasto = {
+              GAS_CODIGO: gastoAEditar.GAS_CODIGO, 
+              MOTIVOSGASTOS: this.formularioGasto.get('MOTIVOSGASTOS')?.value,
+              GAS_VALOR: this.formularioGasto.get('GAS_VALOR')?.value,
+              GAS_PENDIENTE: this.formularioGasto.get('GAS_PENDIENTE')?.value,
+              GAS_FECHAGASTO: this.formularioGasto.get('GAS_FECHAGASTO')?.value,
+              USU_CEDULA: this.userLogged.USU_CEDULA,
+              GAS_FECHACREACION: gastoAEditar.GAS_FECHACREACION,
+              TIC_CODIGO: this.formularioGasto.get('TIC_CODIGO')?.value,
+              VEN_CODIGO: this.formularioGasto.get('VEN_CODIGO')?.value,
+              GAS_ESTADO: this.formularioGasto.get('GAS_ESTADO')?.value,
+              MOG_CODIGO: this.formularioGasto.get('MOG_CODIGO')?.value,
+            };
+  
+            this.alerta.showLoading('Actualizando gasto');
+            this.gastoService.ActualizarGasto(codigoGasto, nuevoGasto).subscribe(
+              (result) => {
+                if (result) {
+                  this.alerta.SetToast('Gasto actualizado', 1);
+                  this.CerradoPantalla();
+                } else {
+                  this.alerta.SetToast('Error al actualizar el gasto', 3);
+                }
+                this.alerta.hideLoading();
+              },
+              (error) => {
+                this.alerta.SetToast('Error al actualizar el gasto: ' + error.message, 3);
+                this.alerta.hideLoading();
+              }
+            );
+          }
+        },
+        (error) => {
+          this.alerta.hideLoading();
+          this.alerta.SetToast('Error al buscar el gasto: ' + error.message, 3);
         }
-        this.alerta.hideLoading();
-      },
-      (error) => {
-        this.alerta.SetToast('Error al actualizar el gasto: ' + error.message, 3);
-        this.alerta.hideLoading();
-      }
-    );
+      );
+    }
   }
-}
-  CrearGasto() {
+  
+  
+  
+CrearGasto() {
     for (const control in this.formularioGasto.controls) {
       if (this.formularioGasto.controls[control].invalid) {
         this.alerta.SetToast(`El campo ${control} está incompleto`, 2);
@@ -200,15 +218,19 @@ export class CreacionGastoComponent implements OnInit {
   private CargarDatosEnLosInputs() {
     this.esEdicion = this.config.data.esEdicion;
     this.gastoAEditar = this.config.data.gastoAEditar;
-
+  
     if (this.esEdicion) {
       // Llena los campos del formulario con los valores del gasto a editar
       this.formularioGasto.get('GAS_CODIGO')?.setValue(this.gastoAEditar.GAS_CODIGO);
       this.formularioGasto.get('MOTIVOSGASTOS')?.setValue(this.gastoAEditar.MOTIVOSGASTOS);
       this.formularioGasto.get('GAS_VALOR')?.setValue(this.gastoAEditar.GAS_VALOR);
       this.formularioGasto.get('GAS_PENDIENTE')?.setValue(this.gastoAEditar.GAS_PENDIENTE);
-      this.formularioGasto.get('GAS_FECHAGASTO')?.setValue(this.gastoAEditar.GAS_FECHAGASTO);
+      this.formularioGasto.get('GAS_FECHAGASTO')?.setValue(new Date(this.gastoAEditar.GAS_FECHAGASTO));
       this.formularioGasto.get('USU_CEDULA')?.setValue(this.gastoAEditar.USU_CEDULA);
+    } else {
+      this.formularioGasto.get('GAS_FECHAGASTO')?.setValue(this.FechaActual);
     }
   }
+  
+  
 }
