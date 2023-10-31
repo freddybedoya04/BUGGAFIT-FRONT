@@ -26,6 +26,8 @@ export class EstadisticasComponent implements OnInit {
     Creditos: number;
     UltimasVentas: any[]; 
     ingresosCuentas:any[];
+    GastosCuentas:any[];
+    ComprasCuentas:any[];
     ProductosMasVendidos:any[];
   } = {
     Ventas: 0,
@@ -36,6 +38,8 @@ export class EstadisticasComponent implements OnInit {
     Creditos: 0,
     UltimasVentas: [], 
     ingresosCuentas:[],
+    GastosCuentas:[],
+    ComprasCuentas:[],
     ProductosMasVendidos:[]
   };
 
@@ -74,6 +78,8 @@ export class EstadisticasComponent implements OnInit {
       this.Indicadores.Creditos = data.Data.DatosCards.SumaCreditos;
       this.Indicadores.UltimasVentas = data.Data.DatosGraficas.VentasRealizadas; 
       this.Indicadores.ingresosCuentas=data.Data.DatosGraficas.IngresosCuentas;
+      this.Indicadores.GastosCuentas=data.Data.DatosGraficas.GastosCuentas;
+      this.Indicadores.ComprasCuentas=data.Data.DatosGraficas.ComprasCuentas;
       this.Indicadores.ProductosMasVendidos=data.Data.DatosGraficas.ProductosMasVendidos;
       this.generateBarChart();
     },err=>{
@@ -95,11 +101,26 @@ export class EstadisticasComponent implements OnInit {
         labels: this.Indicadores.ingresosCuentas.map(cuenta => cuenta.Nombre),
         datasets: [{
           label: 'Ingresos Totales',
-          data: this.Indicadores.ingresosCuentas.map(cuenta => cuenta.IngresosTotales),
-          backgroundColor: this.backgroundColors,
+          data: this.Indicadores.ingresosCuentas.map(cuenta => cuenta.MovimientoTotal),
+          backgroundColor: ['rgba(75, 192, 192, 0.2)'],
           borderColor: this.borderColors,
           borderWidth: 1
-        }]
+        },
+        {
+          label: 'Compras Totales',
+          data: this.Indicadores.ComprasCuentas.map(cuenta => cuenta.MovimientoTotal),
+          backgroundColor: ['rgba(54, 162, 235, 0.2)'],
+          borderColor: this.borderColors,
+          borderWidth: 1
+        },
+        {
+          label: 'Gastos Totales',
+          data: this.Indicadores.GastosCuentas.map(cuenta => cuenta.MovimientoTotal),
+          backgroundColor: ['rgba(255, 159, 64, 0.2)'],
+          borderColor: this.borderColors,
+          borderWidth: 1
+        },
+]
       },
       options: {
         responsive: true,
