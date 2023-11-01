@@ -26,7 +26,7 @@
 
     </p-card>
     
-    <p-card header="Informacion Productos" [style]="{ width: '100%' }" class="card">
+    <p-card *ngIf="EsEdicion==false" header="Informacion Productos" [style]="{ width: '100%' }" class="card">
         <section>
             <div>
                 <label>Producto</label>
@@ -42,7 +42,6 @@
             </div>
             <div>
                 <label >Precio Und:</label>
-                <!-- <input type="number"  [(ngModel)]="ProductoComprado.DEC_PRECIOCOMPRA_PRODUCTO" (change)="CalcularTotalProducto(ProductoComprado)" pInputText  matInput autocomplete="off"> -->
                 <p-inputNumber
                 class="Numerico"
                 mode="decimal"
@@ -53,9 +52,7 @@
             </div>
             <div>
                 <label >Cantidad:</label>
-                <!-- <input type="number" pInputText matInput autocomplete="off" 
-                [(ngModel)]="ProductoComprado.DEC_UNIDADES"
-                (change)="CalcularTotalProducto(ProductoComprado)"> -->
+
                 <p-inputNumber
                 class="Numerico"
                 mode="decimal"
@@ -67,9 +64,7 @@
             </div>
             <div>
                 <label >Precio Total:</label>
-                <!-- <input type="number" pInputText matInput autocomplete="off" 
-                [(ngModel)]="ProductoComprado.DEC_PRECIOTOTAL"
-                [readonly]="true"> -->
+
                 <p-inputNumber
                 class="Numerico"
                 mode="decimal"
@@ -99,8 +94,8 @@
                     <th>Cantidad</th>
                     <th>Precio Und</th>
                     <th>Precio Total</th>
-                    <th *ngIf="EsEdicion==true">Eliminado</th>
-                    <th>Eliminar</th>
+                    <!-- <th *ngIf="EsEdicion==true">Eliminado</th> -->
+                    <th *ngIf="EsEdicion==false">Eliminar</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-product>
@@ -110,10 +105,10 @@
                     <td>{{ product.DEC_UNIDADES }}</td>
                     <td>{{ product.DEC_PRECIOCOMPRA_PRODUCTO|number }}</td>
                     <td>{{ product.DEC_PRECIOTOTAL|number  }}</td>
-                    <th *ngIf="EsEdicion==true">
+                    <!-- <th *ngIf="EsEdicion==true">
                         <p-tag [value]="product.DEC_ESTADO ? 'NO':'SI'" [severity]="getSeverity(product.DEC_ESTADO)"></p-tag>
-                    </th>
-                    <td>
+                    </th> -->
+                    <td *ngIf="EsEdicion==false">
                         <button pButton pRipple icon="pi pi-trash" pTooltip="Eliminar" tooltipPosition="top"class="p-button-rounded p-button-warning" (click)="EliminarProducto(product)"></button>
                     </td>
                 </tr>

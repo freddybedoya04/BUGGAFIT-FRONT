@@ -17,6 +17,7 @@ export class EstadisticasComponent implements OnInit {
   filtro: IFiltro;
   backgroundColors: string[] = [];
   borderColors: string[] = [];
+  tabla:Chart;
   Indicadores: {
     Ventas: number;
     Gastos: number;
@@ -51,11 +52,31 @@ export class EstadisticasComponent implements OnInit {
       FechaFin: '',
       FechaInicio: '',
     };
+    this.tabla= new Chart('bar',{
+      type: 'bar',
+    data: {
+      labels: [],
+      datasets: []
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true
+        },
+        x: {
+          beginAtZero: true
+        }
+      }
+    }
+    });
   }
 
   ngOnInit() {
     this.ConfigurarFechas();
     this.calcularIndicadores();
+    this.generateBarChart();
   }
 
   ConfigurarFechas() {
@@ -81,7 +102,7 @@ export class EstadisticasComponent implements OnInit {
       this.Indicadores.GastosCuentas=data.Data.DatosGraficas.GastosCuentas;
       this.Indicadores.ComprasCuentas=data.Data.DatosGraficas.ComprasCuentas;
       this.Indicadores.ProductosMasVendidos=data.Data.DatosGraficas.ProductosMasVendidos;
-      this.generateBarChart();
+      this.updateBarChartData();
     },err=>{
       this.aletasService.hideLoading();
       this.aletasService.SetToast('Error al traer informacion de estadisticas',3)
@@ -95,7 +116,7 @@ export class EstadisticasComponent implements OnInit {
     this.borderColors = this.backgroundColors.map(color => this.shadeColor(color, -20));
     Chart.register(...registerables);
 
-    new Chart(ctx??canvas, {
+    this.tabla= new Chart(ctx??canvas, {
       type: 'bar',
       data: {
         labels: this.Indicadores.ingresosCuentas.map(cuenta => cuenta.Nombre),
@@ -154,5 +175,13 @@ export class EstadisticasComponent implements OnInit {
     const G = f >> 8 & 0x00FF;
     const B = f & 0x0000FF;
     return `rgba(${(Math.round((t - R) * p) + R)}, ${(Math.round((t - G) * p) + G)}, ${(Math.round((t - B) * p) + B)}, 1)`;
+  }
+  updateBarChartData() {
+    // Actualiza los datos del gráfico existente en lugar de crear uno nuevo
+    this.tabla.data.labels = this.Indicadores.ingresosCuentas.map(cuenta => cuenta.Nombre);
+    this.tabla.data.datasets[0].data = this.Indicadores.ingresosCuentas.map(cuenta => cuenta.MovimientoTotal);
+    this.tabla.data.datasets[1].data = this.Indicadores.ComprasCuentas.map(cuenta => cuenta.MovimientoTotal);
+    this.tabla.data.datasets[2].data = this.Indicadores.GastosCuentas.map(cuenta => cuenta.MovimientoTotal);
+    this.tabla.update(); // Actualiza el gráfico con los nuevos datos
   }
 }

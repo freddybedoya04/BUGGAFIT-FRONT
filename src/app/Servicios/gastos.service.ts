@@ -27,7 +27,7 @@ export class GastosService {
   CrearGasto(gasto: IGasto) {
     return this.http.post(this.url + 'PostGasto', gasto).pipe(
       map((result: any) => {
-        return result.StatusCode;
+        return result;
       }));
   }
   BuscarGastoPorFechas(filtro: IFiltro) {

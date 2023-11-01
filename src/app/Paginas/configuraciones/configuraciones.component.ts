@@ -30,7 +30,7 @@ export class ConfiguracionesComponent implements OnInit {
   motivos: IMotivoGasto[] = [];
   MotivoGasto: IMotivoGasto;
   ActivarFormularioMotivoGasto: boolean = false;
-  envios: ITipocuenta[] = [];
+  envios: ITiposEnvios[] = [];
   Envio: ITiposEnvios;
   ActivarFormularioTipoEnvio: boolean = false;
   constructor(private marcasSevice: MarcasService,
@@ -234,6 +234,32 @@ export class ConfiguracionesComponent implements OnInit {
       this.MotivoGasto.MOG_NOMBRE = "";
       this.CargarMotivosGastos();
       this.alertasService.SetToast("Se creó motivo de gasto correctamente", 1)
+    }, err => {
+      this.alertasService.hideLoading();
+      console.log(err);
+      this.alertasService.SetToast(err, 3)
+    })
+  }
+
+  AgregarTipoEnvio() {
+    this.Envio.TIP_NOMBRE = this.Envio.TIP_NOMBRE.toLocaleUpperCase().trim();
+    if (this.Envio.TIP_NOMBRE == "") {
+      this.alertasService.SetToast("Debe llenar el campo nombre envio", 2);
+      return;
+    }
+    if (this.envios.find(x => x.TIP_NOMBRE.toLocaleUpperCase() == this.Envio.TIP_NOMBRE)) {
+      this.alertasService.SetToast("Ya existe una envio con este nombre", 2);
+      return;
+    }
+    this.alertasService.showLoading("Creando tipo envio.");
+    this.tiposEnviosService.CrearTipoEnvio(this.Envio).subscribe(x => {
+      this.alertasService.hideLoading();
+      this.ActivarFormularioTipoEnvio = false;
+      this.Envio.TIP_NOMBRE = "";
+      this.Envio.TIP_CODIGO=0;
+      this.Envio.TIP_VALOR=0;
+      this.CargarTipsEnvios();
+      this.alertasService.SetToast("Se creó el tipo de envio correctamente", 1)
     }, err => {
       this.alertasService.hideLoading();
       console.log(err);
