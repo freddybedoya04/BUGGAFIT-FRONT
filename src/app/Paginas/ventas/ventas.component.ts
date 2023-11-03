@@ -9,6 +9,7 @@ import { IDetalleVentas } from 'src/app/Interfaces/idetalle-ventas';
 import { IGasto } from 'src/app/Interfaces/igasto';
 import { Iproducto } from 'src/app/Interfaces/iproducto';
 import { Iventa } from 'src/app/Interfaces/iventa';
+import { CotizacionComponent } from 'src/app/Modales/cotizacion/cotizacion.component';
 import { DetalleVentasComponent } from 'src/app/Modales/detalle-ventas/detalle-ventas.component';
 import { PagoEnvioComponent } from 'src/app/Modales/pago-envio/pago-envio.component';
 import { ValidarUsuarioAdminComponent } from 'src/app/Modales/validar-usuario-admin/validar-usuario-admin.component';
@@ -482,9 +483,10 @@ export class VentasComponent implements OnInit {
         if (this.listaTipoDeEnvio.find(x => x.value == this.formularioVenta.controls['VEN_TIPOENVIO'].value)?.label?.toUpperCase() != "GRATIS") {
           this.gastoDeEnvio.VEN_CODIGO = result.Data;
           this.AbrirModalTipoCuentasGastos();
-        } else {
-          this.ImprirFaturaCompra();
-        }
+        } 
+        // else {
+        //   this.ImprirFaturaCompra();
+        // }
         this.formularioVenta.reset();
         this.formularioVenta.controls['VEN_FECHAVENTA'].setValue(new Date())
         this.TotalComprado = 0;
@@ -530,7 +532,7 @@ export class VentasComponent implements OnInit {
     this.gastosService.CrearGastoVenta(this.gastoDeEnvio).subscribe((result: any) => {
       this.alertasService.hideLoading();
       this.alertasService.SetToast("Gasto de envio creado exitosamente.", 1);
-      this.ImprirFaturaCompra();
+      // this.ImprirFaturaCompra();
     }, err => {
       this.alertasService.hideLoading();
       this.alertasService.SetToast(err, 1);
@@ -596,6 +598,38 @@ export class VentasComponent implements OnInit {
       }
     });
 
+  }
+  Cotizar(){
+    debugger;
+    if(this.formularioVenta.controls['VEN_TIPOENVIO'].value==null || this.formularioVenta.controls['VEN_TIPOENVIO'].value==""){
+      this.alertasService.SetToast("Primero debe seleccionar el tipo de envio",2)
+      return;
+    }
+    if (this.listaProductos.length == 0) {
+      this.alertasService.SetToast('Debe agregar almenos un producto.', 2);
+      return;
+    }
+    const cliente: Icliente = {
+      ClI_ID: this.formularioVenta.controls['VENT_CEDULA'].value,
+      CLI_NOMBRE: this.formularioVenta.controls['CLI_NOMBRE'].value,
+      CLI_TIPOCLIENTE: this.formularioVenta.controls['CLI_TIPOCLIENTE'].value,
+      CLI_UBICACION: this.formularioVenta.controls['CLI_UBICACION'].value,
+      CLI_DIRECCION: this.formularioVenta.controls['CLI_DIRECCION'].value,
+      CLI_FECHACREACION: new Date(),
+      CLI_ESTADO: true
+    };
+    var productos:IDetalleVentas[]=[];
+    for(let i=0;i<this.listaProductos.length;i++){
+      productos.push(this.listaProductos[i])
+    }
+    let ref = this.dialogService.open(CotizacionComponent, {
+      header: 'Cotización',
+      width: '40%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 100,
+      maximizable: true,
+      data: {Productos:productos,TipoEnvio:this.formularioVenta.controls['VEN_TIPOENVIO'].value,Cliente:cliente}
+    });
   }
 }
 

@@ -1,0 +1,61 @@
+<div id="PrincipalCotizacion">
+    <div class="PrincipalCotizacion">
+        <div>
+            <h1>Cotización</h1>
+        </div>
+       
+    
+        <div class="Cliente">
+            <div>
+                <label for="">Fecha</label>
+                <input type="text" [(ngModel)]="Fecha" readonly>
+            </div>
+            <div>
+                <label for="">Cedula</label>
+                <input type="text" [(ngModel)]="cliente.ClI_ID" readonly>
+            </div>
+            <div>
+                <label for="">Nombre</label>
+                <input type="text" [(ngModel)]="cliente.CLI_NOMBRE" readonly>
+            </div>
+    
+        </div>
+
+        <div class="Productos">
+            <p-table #dt2 [value]="listaProductos" [tableStyle]="{ 'min-width': '40rem', 'max-height': '600px' }"
+            styleClass="p-datatable-sm" class="custom-table">
+            <ng-template pTemplate="header">
+              <tr>
+                
+                <th pSortableColumn="PRO_NOMBRE" style="width: 20%">
+                  Nombre de Articulo
+                </th>
+                <th pSortableColumn="VED_UNIDADES" style="width: 20%">Cantidad</th>
+                <th pSortableColumn="VED_PRECIOVENTA_UND" style="width: 20%">Precio</th>
+                <th pSortableColumn="VED_PRECIOVENTA_TOTAL" style="width: 20%">Valor Total</th>
+                <th pSortableColumn="VED_VALORDESCUENTO_UND" style="width: 20%">Descuento</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-venta>
+              <tr>
+                <td>{{ venta.PRO_NOMBRE }}</td>
+                <td>{{ venta.VED_UNIDADES }}</td>
+                <td>{{ venta.VED_PRECIOVENTA_UND |number }}</td>
+                <td>{{ venta.VED_PRECIOVENTA_TOTAL |number }}</td>
+                <td>{{ venta.VED_VALORDESCUENTO_UND |number }}%</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <div>
+            <h2 style="text-align: right;">Total a pagar ${{TotalComprado | number}}</h2>
+        </div>
+        <div class="BotonImpresion">
+            <button pButton printSectionId="PrincipalCotizacion" [useExistingCss]="true" ngxPrint label="Imprimir"> </button>
+        </div>
+        <div class="Logo">
+            <img src="../../../assets/Imagenes/BUGGAFITLOGO.png" width="25" height="25" alt="">
+            <h2>BUGGAFIT</h2>
+        </div>
+    </div>
+</div>

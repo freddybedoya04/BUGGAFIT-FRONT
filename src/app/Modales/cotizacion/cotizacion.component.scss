@@ -1,0 +1,26 @@
+.PrincipalCotizacion{
+    display: grid;
+    gap: 20px;
+}
+.Logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.Cliente{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    margin: 15px;
+    justify-items: center;
+    div{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        input{
+            border: none;
+        }
+    }
+}
+div h1{
+    text-align: center;
+}

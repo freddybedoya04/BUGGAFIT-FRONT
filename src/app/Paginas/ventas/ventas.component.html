@@ -123,6 +123,8 @@
           type="Submit"></p-button>
         <p-button label="Cambiar Precio" style="margin-right: 10px" styleClass="p-button-rounded p-button-secondary"
           severity="secondary" (onClick)="CambiarPrecioDelProducto($event)"></p-button>
+          <p-button label="Cotizar" style="margin-right: 10px" styleClass="p-button-rounded p-button-help"
+          severity="secondary" (onClick)="Cotizar()"></p-button>
       </div>
     </form>
 
@@ -135,7 +137,7 @@
   <br />
   <p-card header="Lista de Productos ${{TotalComprado | number}}" [style]="{ margin: '20px', padding: '20px' }"
     styleClass="shadow-5">
-    <p-table #dt2 [value]="listaProductos" [tableStyle]="{ 'min-width': '40rem', 'max-height': '600px' }"
+    <p-table #dt2 [value]="listaProductos" [tableStyle]="{ 'min-width': '10rem', 'max-height': '600px' }"
       styleClass="p-datatable-sm" class="custom-table">
       <ng-template pTemplate="header">
         <tr>
