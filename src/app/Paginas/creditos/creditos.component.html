@@ -1,0 +1,53 @@
+<div class="Principal">
+    <div class="Titulo">
+        <h1>Créditos</h1>
+    </div>
+    <div class="Tabla">
+        <p-card header="Listado creditos" [style]="{ margin: '20px', padding: '20px' }"
+        styleClass="shadow-5">
+        <p-table #dt2 [value]="creditos" [tableStyle]="{ 'min-width': '20rem', 'max-height': '400px' }"
+            [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+            [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords}'"
+            [scrollable]="true" [rowsPerPageOptions]="[5, 10, 50]" styleClass="p-datatable-sm"
+            [scrollable]="true" [globalFilterFields]="['CLI_ID','CLI_NOMBRE']"
+            class="custom-table">
+            <ng-template pTemplate="caption">
+                <div class="EncabezadoTabla">
+                    <button pButton label="" icon="pi pi-filter" iconPos="left"pTooltip="Quiat filtro" tooltipPosition="top" class="p-button-raised p-button-rounded"
+                        (click)="searchKeyword='';dt2.reset()"></button>
+                    <span class="p-input-icon-left ml-auto">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" [(ngModel)]="searchKeyword"
+                            (input)="dt2.filterGlobal(searchKeyword, 'contains');" placeholder="Buscar" />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="CLI_ID" style="width:20%">Cedula <p-sortIcon field="CLI_ID"></p-sortIcon></th>
+                    <th pSortableColumn="CLI_NOMBRE" style="width:20%">Nombre <p-sortIcon field="CLI_NOMBRE"></p-sortIcon></th>
+                    <th pSortableColumn="TotalVendido" style="width:20%">Total credito <p-sortIcon field="TotalVendido"></p-sortIcon></th>
+                    <th pSortableColumn="TotalAbonado" style="width:20%">Total abonado <p-sortIcon field="TotalAbonado"></p-sortIcon></th>
+                    <th pSortableColumn="DiferenciaTotal" style="width:20%">Saldo <p-sortIcon field="DiferenciaTotal"></p-sortIcon></th>
+                    <th>Detalles</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-credito>
+                <tr>
+                    <td>{{ credito.CLI_ID}}</td>
+                    <td>{{ credito.CLI_NOMBRE}}</td>
+                    <td>{{ credito.TotalVendido | number}}</td>
+                    <td>{{ credito.TotalAbonado | number}}</td>
+                    <td [ngClass]="{ 'texto-verde': credito.DiferenciaTotal < 0, 'texto-rojo': credito.DiferenciaTotal > 0 }">
+                        {{ credito.DiferenciaTotal | number }}
+                      </td>
+                      <td>
+                        <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-help"
+                        pTooltip="Abonos" tooltipPosition="top" placeholder="Top" (click)="AbrirModal(credito)"></button>
+                      </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-card>
+    </div>
+</div>

@@ -6,10 +6,12 @@
     gap: 10px;
 }
 
-
+span{
+    font-weight: bolder;
+    font-size: large;
+}
 .card {
     margin: 7px;
-    padding: 7px;
     display: flex;
     flex-direction: column;
 }
@@ -52,11 +54,28 @@
     flex-direction: row;
 
 }
+.Tablas{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+
+}
+.texto-verde {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .texto-rojo {
+    color: red;
+    font-weight: bold;
+  }
 
 @media screen and (max-width: 1400px) {
     .card section {
       grid-template-columns: repeat(2,1fr); /* Cambia a una sola columna */
       /* Otras propiedades de grid que deseas modificar en tablet */
+    }
+    .Tablas{
+        grid-template-columns: 1fr;
     }
   }
   

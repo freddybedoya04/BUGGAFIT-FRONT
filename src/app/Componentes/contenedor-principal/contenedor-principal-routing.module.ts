@@ -11,6 +11,7 @@ import { UsuariosComponent } from 'src/app/Paginas/usuarios/usuarios.component';
 import { CreacionCompraComponent } from 'src/app/Modales/creacion-compra/creacion-compra.component';
 import { DetalleVentasComponent } from 'src/app/Modales/detalle-ventas/detalle-ventas.component';
 import { ConfiguracionesComponent } from 'src/app/Paginas/configuraciones/configuraciones.component';
+import { CreditosComponent } from 'src/app/Paginas/creditos/creditos.component';
 
 const routes: Routes = [
   {path:'',component:ContenedorPrincipalComponent,children:[
@@ -22,7 +23,8 @@ const routes: Routes = [
     {path:'inventario',component:InventarioComponent},
     {path:'estadisticas',component:EstadisticasComponent},
     {path:'usuarios',component:UsuariosComponent},
-    {path:'configuraciones',component:ConfiguracionesComponent}
+    {path:'configuraciones',component:ConfiguracionesComponent},
+    {path:'creditos',component:CreditosComponent}
   ]}
 
 

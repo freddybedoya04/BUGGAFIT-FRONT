@@ -1,0 +1,22 @@
+.Principal{
+    margin: 20px;
+}
+.Titulo{
+    text-align: center;
+    margin: 40px;
+}
+.EncabezadoTabla{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
+}
+.texto-verde {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .texto-rojo {
+    color: red;
+    font-weight: bold;
+  }

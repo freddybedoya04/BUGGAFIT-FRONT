@@ -3,8 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Iabonos } from 'src/app/Interfaces/iabonos';
+import { Icredito } from 'src/app/Interfaces/icredito';
 import { Iventa } from 'src/app/Interfaces/iventa';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
+import { CreditosService } from 'src/app/Servicios/credito.service';
 import { VentasService } from 'src/app/Servicios/ventas.service';
 
 @Component({
@@ -22,8 +24,10 @@ export class AbonosComponent implements OnInit {
   listaTipoDeCuenta: SelectItem[] = [];
   CuentaSeleccionada: SelectItem;
   esEditar:boolean=false;
+  credito:Icredito;
   constructor(private ventasService: VentasService, private alertasService: AlertasService,
-    private config: DynamicDialogConfig,public ref: DynamicDialogRef) {
+    private config: DynamicDialogConfig,public ref: DynamicDialogRef,
+    private creditoService:CreditosService) {
     this.venta = {
       VEN_CODIGO: 0,
       VEN_FECHACREACION: new Date(),
@@ -60,17 +64,20 @@ export class AbonosComponent implements OnInit {
       label: '',
       value: ''
     }
+    this.credito={
+      CLI_ID: '',
+      CLI_NOMBRE: '',
+      Ventas: [],
+      Carteras: [],
+      TotalVendido: 0,
+      TotalAbonado: 0,
+      DiferenciaTotal: 0
+    }
   }
   ngOnInit(): void {
-    this.venta = this.config.data.Venta;
-    this.abonos = this.config.data.Abonos;
+    this.credito=this.config.data.Credito;
     this.ObtenerTipoCuentas();
-    this.CalcularSaldo();
     this.FormateoDeDatos();
-    if(this.venta.VEN_ESTADOCREDITO==false){
-      this.alertasService.SetToast('Esta venta ya no es un credito',2)
-    }
-
   }
   FormateoDeDatos() {
     let fecha = new Date(this.venta.VEN_FECHAVENTA);
@@ -105,7 +112,7 @@ export class AbonosComponent implements OnInit {
     if( this.ValidarIngresoAbono()) return;
     let cuenta=this.listaTipoDeCuenta.find(x=>x.value==this.CuentaSeleccionada)?.value;
     this.nuevoAbono.TIC_CODIGO =cuenta;
-    this.nuevoAbono.VEN_CODIGO = this.venta.VEN_CODIGO;
+    this.nuevoAbono.VEN_CODIGO = this.credito.Ventas[0].VEN_CODIGO;
     this.alertasService.showLoading("Creando Abono");
     this.ventasService.CrearAbono(this.nuevoAbono).subscribe(x => {
       this.alertasService.hideLoading();
@@ -129,15 +136,14 @@ export class AbonosComponent implements OnInit {
     return false;
   }
   ListarAbonos() {
-    this.alertasService.showLoading("Cargando información de abonos");
-    this.ventasService.ListarAbonosPorCodigoVenta(this.venta.VEN_CODIGO).subscribe((Abonos: Iabonos[]) => {
+    this.alertasService.showLoading("Cargando información de crédito");
+    this.creditoService.ObtenerCreditoCliente(this.credito.CLI_ID).subscribe((creditoAux: Icredito) => {
       this.alertasService.hideLoading();
-      this.abonos = Abonos;
-      this.CalcularSaldo();
+      this.credito=creditoAux;
       this.LimpiarFormulario();
     }, err => {
       this.alertasService.hideLoading();
-      this.alertasService.SetToast('Error al traer los abonos  de la venta', 3)
+      this.alertasService.SetToast('Error al traer los datos del crédito', 3)
     })
   }
   EliminarAbono(abono:Iabonos){

@@ -22,6 +22,7 @@ import { ConfiguracionesComponent } from 'src/app/Paginas/configuraciones/config
 import { CreacionGastoComponent } from 'src/app/Modales/creacion-gasto/creacion-gasto.component';
 import { PagoEnvioComponent } from 'src/app/Modales/pago-envio/pago-envio.component';
 import { CotizacionComponent } from 'src/app/Modales/cotizacion/cotizacion.component';
+import { CreditosComponent } from 'src/app/Paginas/creditos/creditos.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { CotizacionComponent } from 'src/app/Modales/cotizacion/cotizacion.compo
     ConfiguracionesComponent,
     CreacionGastoComponent,
     PagoEnvioComponent,
-    CotizacionComponent
+    CotizacionComponent,
+    CreditosComponent
 
   ],
   imports: [

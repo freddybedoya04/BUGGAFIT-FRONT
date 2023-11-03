@@ -3,98 +3,105 @@
         <img src="../../../assets/Imagenes/BUGGAFITLOGO.png" width="50px;"height="50px;" alt="">
     </div> -->
     <!-- Card CLiente  -->
-    <p-card header="Informacion venta" [style]="{ width: '100%' }" class="card">
+    <p-card header="Informacion Crédito" [style]="{ width: '100%' }" class="card">
         <section>
             <div>
-                <label for="CLI_ID"># Venta:</label>
-                <input type="text" [(ngModel)]="venta.VEN_CODIGO" pInputText disabled="true" />
+                <label for="CLI_ID">Total Vendido: <span>${{credito.TotalVendido | number}}</span> </label>
             </div>
 
             <div>
-                <label for="CLI_NOMBRE">Fecha Venta:</label>
-                <p-calendar [(ngModel)]="venta.VEN_FECHAVENTA" name="FechaVenta"  disabled="true"></p-calendar>
+                <label for="CLI_ID">Total Abonado <span>${{credito.TotalAbonado | number}}</span> </label>
             </div>
 
             <div>
-                <label for="CLI_DIRECCION">Precio total venta:</label>
-                <!-- <input type="text" [(ngModel)]="venta.VEN_PRECIOTOTAL" pInputText disabled="true"/> -->
-                <p-inputNumber
-                class="Numerico"
-                mode="decimal"
-                locale="en-US"
-                [(ngModel)]="venta.VEN_PRECIOTOTAL"
-                [disabled]="true"
-              ></p-inputNumber>
+                <label for="CLI_DIRECCION">Saldo: <span [ngClass]="{ 'texto-verde': credito.DiferenciaTotal < 0, 'texto-rojo': credito.DiferenciaTotal > 0 }">${{credito.DiferenciaTotal | number}}</span></label>
+            </div>
+        </section>
+
+    </p-card>
+    <!-- Card informacion venta -->
+    <p-card header="Informacion abono" [style]="{ width: '100%' }" class="card">
+        <section>
+            <div>
+                <label for="VEN_FECHAVENTA">Fecha abono:</label>
+                <p-calendar [(ngModel)]="nuevoAbono.CAR_FECHACREDITO"></p-calendar>
+
             </div>
             <div>
-                <span></span>
-                <p-button  *ngIf="venta.VEN_ESTADOCREDITO==true" label="Finalizar Credito" styleClass="p-button-rounded p-button-sm"icon="pi pi-arrow-up" (onClick)="FinalizarCredito()"></p-button>
+                <label for="VEN_CUENTADESTINO">Tipo de pago:</label>
+                <p-dropdown [options]="listaTipoDeCuenta" ngmo optionLabel="label" optionValue="value"
+                    placeholder="Seleccione Cuenta" [(ngModel)]="CuentaSeleccionada"></p-dropdown>
+            </div>
+            <div>
+                <label for="VEN_CUENTADESTINO">Valor $:</label>
+                <p-inputNumber class="Numerico" mode="decimal" locale="en-US"
+                    [(ngModel)]="nuevoAbono.CAR_VALORABONADO"></p-inputNumber>
+            </div>
+            <div>
+                <p-button *ngIf="esEditar==false" label="Agregar" styleClass="p-button-rounded p-button-sm"
+                    icon="pi pi-plus" (onClick)="AgregarAbono()"></p-button>
+                <p-button *ngIf="esEditar==true" label="Actualizar" styleClass="p-button-rounded p-button-sm"
+                    icon="pi pi-arrow-up" (onClick)="ActualizarAbono()"></p-button>
+                <p-button *ngIf="esEditar==true" label="cancelar"
+                    styleClass="p-button-rounded p-button-danger p-button-sm"
+                    (onClick)="LimpiarFormulario()"></p-button>
             </div>
 
         </section>
 
     </p-card>
-        <!-- Card informacion venta -->
-        <p-card header="Informacion abono" [style]="{ width: '100%' }" class="card">
-            <section>
-                <div>
-                    <label for="VEN_FECHAVENTA">Fecha abono:</label>
-                    <p-calendar [(ngModel)]="nuevoAbono.CAR_FECHACREDITO"   ></p-calendar>
-    
-                </div>
-                <div>
-                    <label for="VEN_CUENTADESTINO">Tipo de pago:</label>
-                    <p-dropdown [options]="listaTipoDeCuenta" ngmo optionLabel="label"
-                      optionValue="value" placeholder="Seleccione Cuenta"  [(ngModel)]="CuentaSeleccionada"></p-dropdown>
-                </div>
-                <div>
-                    <label for="VEN_CUENTADESTINO">Valor $:</label>
-                    <!-- <input type="text" [(ngModel)]="nuevoAbono.CAR_VALORABONADO" pInputText  /> -->
-                    <p-inputNumber
-                    class="Numerico"
-                    mode="decimal"
-                    locale="en-US"
-                    [(ngModel)]="nuevoAbono.CAR_VALORABONADO"
-                  ></p-inputNumber>
-                </div>
-                <div *ngIf="venta.VEN_ESTADOCREDITO==true" >
-                    <p-button *ngIf="esEditar==false" label="Agregar" styleClass="p-button-rounded p-button-sm" icon="pi pi-plus" (onClick)="AgregarAbono()"></p-button>
-                    <p-button *ngIf="esEditar==true"label="Actualizar" styleClass="p-button-rounded p-button-sm"icon="pi pi-arrow-up" (onClick)="ActualizarAbono()"></p-button>
-                    <p-button *ngIf="esEditar==true"label="cancelar" styleClass="p-button-rounded p-button-danger p-button-sm" (onClick)="LimpiarFormulario()"></p-button>
-                </div>
-
-            </section>
-    
+    <div class="Tablas">
+        <p-card header="Lista de abonos"
+            [style]="{ margin: '10px', padding: '10px' }" styleClass="shadow-5">
+            <p-table #dt2 [value]="credito.Carteras" [tableStyle]="{ 'min-width': '20rem', 'max-height': '400px' }"
+                [paginator]="true" [rows]="5"
+                styleClass="p-datatable-sm" class="custom-table">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 20%">#</th>
+                        <th style="width: 20%">Fecha Abono</th>
+                        <th style="width: 20%"> Valor </th>
+                        <th style="width: 20%">Cuenta</th>
+                        <th style="width: 200px;">Acciones</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-abono>
+                    <tr>
+                        <td>{{ abono.CAR_CODIGO}}</td>
+                        <td>{{ abono.CAR_FECHACREDITO | date:'MM/dd/yyyy' }}</td>
+                        <td>{{ abono.CAR_VALORABONADO | number}}</td>
+                        <td>{{ abono.TIC_NOMBRE }}</td>
+                        <td>
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success"
+                                (click)="SeleccionarAbono(abono)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                (click)="EliminarAbono(abono)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
         </p-card>
-    <p-card header="Lista de abonos ${{ totalAbonado| number}} total abonado"
-        [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
-        <p-table #dt2 [value]="abonos" 
-            [tableStyle]="{ 'min-width': '40rem', 'max-height': '600px' }"
-            styleClass="p-datatable-sm"
-            class="custom-table">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th style="width: 20%">#</th>
-                    <th style="width: 20%">Fecha Abono</th>
-                    <th style="width: 20%"> Valor </th>
-                    <th style="width: 20%">Cuenta</th>
-                    <th style="width: 20%" *ngIf="venta.VEN_ESTADOCREDITO==true" >Acciones</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-abono>
-                <tr>
-                    <td>{{ abono.CAR_CODIGO}}</td>
-                    <td>{{ abono.CAR_FECHACREDITO | date:'MM/dd/yyyy' }}</td>
-                    <td>{{ abono.CAR_VALORABONADO | number}}</td>
-                    <td>{{ abono.TIC_NOMBRE }}</td>
-                    <td *ngIf="venta.VEN_ESTADOCREDITO==true" >
-                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success"
-                        (click)="SeleccionarAbono(abono)"></button>
-                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                        (click)="EliminarAbono(abono)"></button>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </p-card>
+        <p-card header="Lista de ventas"
+            [style]="{ margin: '10px', padding: '10px' }" styleClass="shadow-5">
+            <p-table #dt2 [value]="credito.Ventas" [tableStyle]="{ 'min-width': '10rem', 'max-height': '400px' }"
+                [paginator]="true" [rows]="5"
+                styleClass="p-datatable-sm" class="custom-table">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 20%">#</th>
+                        <th style="width: 20%">Fecha venta</th>
+                        <th style="width: 20%"> Valor </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-venta>
+                    <tr>
+                        <td>{{ venta.VEN_CODIGO}}</td>
+                        <td>{{ venta.VEN_FECHAVENTA | date:'MM/dd/yyyy' }}</td>
+                        <td>{{ venta.VEN_PRECIOTOTAL | number}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-card>
+    </div>
+
 </div>

@@ -20,7 +20,6 @@ import { ValidarUsuarioAdminComponent } from './Modales/validar-usuario-admin/va
     FormateadorPrecioDirective,
     PrecioPipe,
     ValidarUsuarioAdminComponent,
-
     
   ],
   imports: [
