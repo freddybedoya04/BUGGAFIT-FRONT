@@ -105,6 +105,7 @@ export class VentasComponent implements OnInit {
       VEN_FECHAVENTA: [{ value: new Date(), disabled: true }, Validators.required],
       VEN_TIPOENVIO: [null, Validators.required],
       VEN_CUENTADESTINO: [null, Validators.required],
+      VEN_OBSERVACIONES:[null],
       CLI_ID: [null],
       CLI_NOMBRE: [null, Validators.required],
       CLI_DIRECCION: [null, Validators.required],

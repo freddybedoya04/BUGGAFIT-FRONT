@@ -106,7 +106,7 @@ export class GastosComponent implements OnInit {
     let ref = this.dialogService.open(CreacionGastoComponent, {
       header: 'Editar Gasto',
       width: '60%',
-      contentStyle: { overflow: 'auto' },
+      contentStyle: { overflow: 'auto','background-color':'#eff3f8' },
       baseZIndex: 100,
       maximizable: true,
       data: { esEdicion: true, gastoAEditar: gasto }

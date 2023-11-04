@@ -21,7 +21,7 @@
         <p-table #dt2 [value]="listaGastos" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
             [tableStyle]="{'min-width': '90rem','max-height':'600px'}" styleClass="p-datatable-sm"
             currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} compras"
-            [rowsPerPageOptions]="[5, 10, 50]" [globalFilterFields]="['PRO_CODIGO','PRO_NOMBRE','PRO_MARCA']"
+            [rowsPerPageOptions]="[5, 10, 50]" [globalFilterFields]="['GAS_CODIGO','TIC_NOMBRE']"
             class="custom-table">
             <ng-template pTemplate="caption">
                 <div class="EncabezadoTabla">
@@ -58,9 +58,9 @@
                     <th 
                     pSortableColumn="USU_NOMBRE" style="min-width:200px">Nombre Usuario <p-sortIcon
                             field="USU_NOMBRE"></p-sortIcon></th>
-                    <th 
+                    <!-- <th 
                     pSortableColumn="GAS_OBSERVACIONES" style="min-width:200px">Detalles Gasto <p-sortIcon
-                                field="GAS_OBSERVACIONES"></p-sortIcon></th>        
+                                field="GAS_OBSERVACIONES"></p-sortIcon></th>         -->
                     <th style="min-width:200px" alignFrozen="right" pFrozenColumn>Acciones</th>
                 </tr>
             </ng-template>
@@ -72,9 +72,9 @@
                     <td>{{ gasto.GAS_VALOR | number}}</td>
                     <td>{{ gasto.GAS_PENDIENTE ? 'Si' : 'No'}}</td>
                     <td>{{ gasto.TIC_NOMBRE }}</td>
-                    <td>{{ gasto.GAS_FECHAGASTO | date:'YYYY-MMM-dd HH:mm:ss'}}</td>
+                    <td>{{ gasto.GAS_FECHAGASTO | date:'YYYY-MMM-dd '}}</td>
                     <td>{{ gasto.USU_NOMBRE}}</td>
-                    <td>{{ gasto.GAS_OBSERVACIONES}}</td>
+                    <!-- <td>{{ gasto.GAS_OBSERVACIONES}}</td> -->
                     <td class="Acciones">
                         <button [disabled]="gasto.GAS_PENDIENTE !== true" pButton pRipple icon="pi pi-check"
                             class="p-button-rounded p-button-success" pTooltip="Cerrar Gasto" tooltipPosition="top"
