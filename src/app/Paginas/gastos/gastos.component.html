@@ -21,7 +21,7 @@
         <p-table #dt2 [value]="listaGastos" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
             [tableStyle]="{'min-width': '90rem','max-height':'600px'}" styleClass="p-datatable-sm"
             currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} compras"
-            [rowsPerPageOptions]="[5, 10, 50]" [globalFilterFields]="['GAS_CODIGO','TIC_NOMBRE']"
+            [rowsPerPageOptions]="[5, 10, 50]" [globalFilterFields]="['GAS_CODIGO','TIC_NOMBRE','MOG_NOMBRE']"
             class="custom-table">
             <ng-template pTemplate="caption">
                 <div class="EncabezadoTabla">
@@ -48,7 +48,7 @@
                             field="MOTIVOSGASTOS"></p-sortIcon></th>
                     <th pSortableColumn="GAS_VALOR" style="width:20%">Valor<p-sortIcon field="GAS_VALOR"></p-sortIcon>
                     </th>
-                    <th pSortableColumn="GAS_PENDIENTE" style="width:20%">Pediente de Pago<p-sortIcon
+                    <th pSortableColumn="GAS_PENDIENTE" style="width:20%">Pediente Pago<p-sortIcon
                             field="GAS_PENDIENTE"></p-sortIcon></th>
                             
                     <th pSortableColumn="TIC_NOMBRE" style="width:20%">Tipo Cuenta<p-sortIcon
