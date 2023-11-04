@@ -29,7 +29,7 @@
             [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords} ' + (activeItem.label==undefined?'':activeItem.label)"
             [scrollable]="true" [rowsPerPageOptions]="[5, 10, 50]" class="custom-table"
             styleClass="p-datatable-sm"
-            [globalFilterFields]="['VEN_CODIGO','CLI_ID','TIC_NOMBRE']">
+            [globalFilterFields]="['VEN_CODIGO','CLI_ID','CLI_NOMBRE','TIC_NOMBRE','USU_NOMBRE']">
             <ng-template pTemplate="caption">
                 <div class="EncabezadoTabla">
                     <button type="button" pButton pRipple icon="pi pi-file-excel"
