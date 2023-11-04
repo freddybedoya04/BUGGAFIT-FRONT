@@ -107,40 +107,51 @@ export class CreacionUsuarioComponent implements OnInit {
       }
     );
   }
-  
-  
-  
   AgregarUsuario() {
     if (this.formularioUsuario.get('USU_CONTRASEÑA')?.value === null) {
       this.alerta.SetToast('La contraseña es requerida para agregar un nuevo usuario.', 2);
       return;
     }
-    debugger;
-    const usuario: Iusuario = {
-      USU_CEDULA: this.formularioUsuario.get('USU_CEDULA')?.value,
-      USU_NOMBRE: this.formularioUsuario.get('USU_NOMBRE')?.value,
-      USU_ROL: this.formularioUsuario.get('USU_ROL')?.value,
-      USU_CONTRASEÑA: this.formularioUsuario.get('USU_CONTRASEÑA')?.value,
-      USU_FECHACREACION: new Date(),
-      USU_FECHAACTUALIZACION: new Date(),
-      USU_ESTADO: true,
-    };
+    
+    const cedula = this.formularioUsuario.get('USU_CEDULA')?.value;
+    
 
-    this.alerta.showLoading('Creando nuevo usuario');
-    this.usuarioService.AgregarUsuario(usuario).subscribe(
-      (result) => {
-        this.alerta.hideLoading();
-        this.alerta.SetToast('Usuario creado', 1);
-        this.CerradoPantalla();
+    this.usuarioService.BuscarUsuarioPorCedula(cedula).subscribe(
+      (usuarioExistente) => {
+        if (usuarioExistente) {
+          this.alerta.SetToast('Ya existe un usuario con la misma cédula.', 2);
+        } else {
+          const usuario: Iusuario = {
+            USU_CEDULA: cedula,
+            USU_NOMBRE: this.formularioUsuario.get('USU_NOMBRE')?.value,
+            USU_ROL: this.formularioUsuario.get('USU_ROL')?.value,
+            USU_CONTRASEÑA: this.formularioUsuario.get('USU_CONTRASEÑA')?.value,
+            USU_FECHACREACION: new Date(),
+            USU_FECHAACTUALIZACION: new Date(),
+            USU_ESTADO: true,
+          };
+  
+          this.alerta.showLoading('Creando nuevo usuario');
+          this.usuarioService.AgregarUsuario(usuario).subscribe(
+            (result) => {
+              this.alerta.hideLoading();
+              this.alerta.SetToast('Usuario creado', 1);
+              this.CerradoPantalla();
+            },
+            err => {
+              this.alerta.hideLoading();
+              this.alerta.SetToast(err, 3);
+              console.log(err);
+            });
+        }
       },
-      (err) => {
-        this.alerta.hideLoading();
-        const errorMessage = err && err.message ? err.message : 'Error al crear el usuario.';
-        this.alerta.SetToast(errorMessage, 3);
-        console.error(err);
+      (error) => {
+        this.alerta.SetToast('Error al buscar la cédula del usuario.', 3);
+        console.error(error);
       }
     );
   }
+  
   CargarDatos(){
     this.esEdicion=this.config.data.esEdicion;
     this.usuarioAEditar=this.config.data.usuarioAEditar

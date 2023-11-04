@@ -13,7 +13,7 @@
         </p>
         <p>
             <p-button label="Buscar" icon="pi pi-search" style="margin-top: 20px;"
-                (onClick)="BuscarComprasPorFechas()"></p-button>
+                (onClick)="BuscarGastoPorFechas()"></p-button>
         </p>
     </div>
     <br>
@@ -50,12 +50,17 @@
                     </th>
                     <th pSortableColumn="GAS_PENDIENTE" style="width:20%">Pediente de Pago<p-sortIcon
                             field="GAS_PENDIENTE"></p-sortIcon></th>
+                            
                     <th pSortableColumn="TIC_NOMBRE" style="width:20%">Tipo Cuenta<p-sortIcon
                             field="TIC_NOMBRE"></p-sortIcon></th>
                     <th pSortableColumn="GAS_FECHAGASTO" style="width:20%">Fecha<p-sortIcon
                             field="GAS_FECHAGASTO"></p-sortIcon></th>
-                    <th pSortableColumn="USU_NOMBRE" style="min-width:200px">Nombre Usuario <p-sortIcon
+                    <th 
+                    pSortableColumn="USU_NOMBRE" style="min-width:200px">Nombre Usuario <p-sortIcon
                             field="USU_NOMBRE"></p-sortIcon></th>
+                    <th 
+                    pSortableColumn="GAS_OBSERVACIONES" style="min-width:200px">Detalles Gasto <p-sortIcon
+                                field="GAS_OBSERVACIONES"></p-sortIcon></th>        
                     <th style="min-width:200px" alignFrozen="right" pFrozenColumn>Acciones</th>
                 </tr>
             </ng-template>
@@ -69,6 +74,7 @@
                     <td>{{ gasto.TIC_NOMBRE }}</td>
                     <td>{{ gasto.GAS_FECHAGASTO | date:'YYYY-MMM-dd HH:mm:ss'}}</td>
                     <td>{{ gasto.USU_NOMBRE}}</td>
+                    <td>{{ gasto.GAS_OBSERVACIONES}}</td>
                     <td class="Acciones">
                         <button [disabled]="gasto.GAS_PENDIENTE !== true" pButton pRipple icon="pi pi-check"
                             class="p-button-rounded p-button-success" pTooltip="Cerrar Gasto" tooltipPosition="top"

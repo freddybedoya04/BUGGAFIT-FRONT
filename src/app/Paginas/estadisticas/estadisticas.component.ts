@@ -108,7 +108,6 @@ export class EstadisticasComponent implements OnInit {
       this.aletasService.SetToast('Error al traer informacion de estadisticas',3)
     });
   }
-
   generateBarChart(): void {
     const canvas = document.getElementById('barChart') as HTMLCanvasElement;
     const ctx = canvas.getContext('2d');
