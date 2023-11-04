@@ -191,6 +191,9 @@ export class VentasComponent implements OnInit {
     this.clientesService.BuscarClienteID(this.formularioVenta.controls['VENT_CEDULA'].value).subscribe((result: Icliente) => {
       if (!result || result === null) { // en caso que llege vacio el cliente
         this.existeCliente = false;
+        this.formularioVenta.controls['CLI_NOMBRE'].setValue('');
+        this.formularioVenta.controls['CLI_DIRECCION'].setValue('');
+        this.formularioVenta.controls['CLI_UBICACION'].setValue('');
         this.alertasService.SetToast("El cliente no existe. Por favor diligencie los datos para crearlo.", 2);
         return;
       }
@@ -366,21 +369,30 @@ export class VentasComponent implements OnInit {
     }
     this.CalcularTotalComprado();
   }
+
   AgregarTipoDeEnvio(event: any) {
+    debugger;
     const nombreTipoEnvio = this.listaTipoDeEnvio.filter((tipocliente: any) => {
       return tipocliente.value == this.formularioVenta.controls['VEN_TIPOENVIO'].value;
     })[0]?.label;
+
     if (!nombreTipoEnvio) {
       this.alertasService.SetToast("Por Favor seleccione un tipo de envio.", 2);
       return;
     }
-    if (nombreTipoEnvio.toLowerCase().indexOf('local') >= 0) {
+
+    // variables condicionales 
+    const estaFueraDeBuga = (this.formularioVenta.controls['CLI_UBICACION'].value + '').toUpperCase() !== 'BUGA';
+    const esClienteDetal = this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[1].value // cliente detal 
+
+    // Detal - Buga - domicilio y envío gratis
+    if (esClienteDetal && !estaFueraDeBuga) {
       this.gastoDeEnvio = {
         GAS_CODIGO: 0,
         GAS_FECHACREACION: new Date(),
         GAS_FECHAGASTO: new Date(),
         MOG_CODIGO: this.formularioVenta.controls['VEN_TIPOENVIO'].value,
-        GAS_VALOR: 5000,
+        GAS_VALOR: 0,
         TIC_CODIGO: this.formularioVenta.controls['VEN_CUENTADESTINO'].value,
         GAS_ESTADO: true,
         USU_CEDULA: this.userLogged.USU_CEDULA,
@@ -388,14 +400,16 @@ export class VentasComponent implements OnInit {
         VEN_CODIGO: 0,
         MOTIVOSGASTOS: nombreTipoEnvio,
       }
+      return;
     }
-    if (nombreTipoEnvio.toLowerCase().indexOf('nacional') >= 0) {
+    //Detal - Envio - se agrega el gasto con valor de $12.000
+    if (esClienteDetal && estaFueraDeBuga) {
       this.gastoDeEnvio = {
         GAS_CODIGO: 0,
         GAS_FECHACREACION: new Date(),
         GAS_FECHAGASTO: new Date(),
         MOG_CODIGO: this.formularioVenta.controls['VEN_TIPOENVIO'].value,
-        GAS_VALOR: 15000,
+        GAS_VALOR: 12000,
         TIC_CODIGO: this.formularioVenta.controls['VEN_CUENTADESTINO'].value,
         GAS_ESTADO: true,
         USU_CEDULA: this.userLogged.USU_CEDULA,
@@ -403,6 +417,41 @@ export class VentasComponent implements OnInit {
         VEN_CODIGO: 0,
         MOTIVOSGASTOS: nombreTipoEnvio,
       }
+      return;
+    }
+    //Mayorista - Buga - se cobra domicilio al cliente $2.500
+    if (!esClienteDetal && !estaFueraDeBuga) {
+      this.gastoDeEnvio = {
+        GAS_CODIGO: 0,
+        GAS_FECHACREACION: new Date(),
+        GAS_FECHAGASTO: new Date(),
+        MOG_CODIGO: this.formularioVenta.controls['VEN_TIPOENVIO'].value,
+        GAS_VALOR: 2500,
+        TIC_CODIGO: this.formularioVenta.controls['VEN_CUENTADESTINO'].value,
+        GAS_ESTADO: true,
+        USU_CEDULA: this.userLogged.USU_CEDULA,
+        GAS_PENDIENTE: true,
+        VEN_CODIGO: 0,
+        MOTIVOSGASTOS: nombreTipoEnvio,
+      }
+      return;
+    }
+    //Mayorista - Envío- se cobra envío nacional $12.000
+    if (!esClienteDetal && estaFueraDeBuga) {
+      this.gastoDeEnvio = {
+        GAS_CODIGO: 0,
+        GAS_FECHACREACION: new Date(),
+        GAS_FECHAGASTO: new Date(),
+        MOG_CODIGO: this.formularioVenta.controls['VEN_TIPOENVIO'].value,
+        GAS_VALOR: 12000,
+        TIC_CODIGO: this.formularioVenta.controls['VEN_CUENTADESTINO'].value,
+        GAS_ESTADO: true,
+        USU_CEDULA: this.userLogged.USU_CEDULA,
+        GAS_PENDIENTE: true,
+        VEN_CODIGO: 0,
+        MOTIVOSGASTOS: nombreTipoEnvio,
+      }
+      return;
     }
   }
 
@@ -424,6 +473,15 @@ export class VentasComponent implements OnInit {
       // this.alertasService.SetToast("Debe ingresar el una cuenta destino.", 3);
       return;
     }
+    //obtenemos los datos sobre el tipo de venta
+    const nombreTipoCuenta = this.listaTipoDeCuenta.filter((tipocliente: any) => {
+      return tipocliente.value == this.formularioVenta.controls['VEN_CUENTADESTINO'].value;
+    });
+
+    const valorTotalVenta: number = this.listaProductos.reduce((acumulador, actual) => acumulador + actual.VED_PRECIOVENTA_TOTAL, 0) + 0;
+    const esVentaACredito: boolean = (nombreTipoCuenta[0].label && nombreTipoCuenta[0].label.toLowerCase().indexOf('credito') >= 0 ? true : false);
+    const esVentaAEfectivo: boolean = (nombreTipoCuenta[0].label && nombreTipoCuenta[0].label.toLowerCase().indexOf('efectivo') >= 0 ? true : false);
+
     if (!this.existeCliente) { //validamos que el cliente exista, en caso que no lo creamos 
       const cliente: Icliente = {
         ClI_ID: this.formularioVenta.controls['VENT_CEDULA'].value,
@@ -432,20 +490,30 @@ export class VentasComponent implements OnInit {
         CLI_UBICACION: this.formularioVenta.controls['CLI_UBICACION'].value,
         CLI_DIRECCION: this.formularioVenta.controls['CLI_DIRECCION'].value,
         CLI_FECHACREACION: new Date(),
-        CLI_ESTADO: true
+        CLI_ESTADO: true,
+        CLI_ESCREDITO: esVentaACredito,
       };
 
       this.clientesService.CrearCliente(cliente).subscribe((result: any) => {
         this.alertasService.SetToast("Cliente creado exitosamente.", 1);
       })
     }
-    const nombreTipoCuenta = this.listaTipoDeCuenta.filter((tipocliente: any) => {
-      return tipocliente.value == this.formularioVenta.controls['VEN_CUENTADESTINO'].value;
-    });
+    else {
+      const cliente: Icliente = {
+        ClI_ID: this.formularioVenta.controls['VENT_CEDULA'].value,
+        CLI_NOMBRE: this.formularioVenta.controls['CLI_NOMBRE'].value,
+        CLI_TIPOCLIENTE: this.formularioVenta.controls['CLI_TIPOCLIENTE'].value,
+        CLI_UBICACION: this.formularioVenta.controls['CLI_UBICACION'].value,
+        CLI_DIRECCION: this.formularioVenta.controls['CLI_DIRECCION'].value,
+        CLI_FECHACREACION: new Date(),
+        CLI_ESTADO: true,
+        CLI_ESCREDITO: esVentaACredito,
+      };
 
-    const valorTotalVenta: number = this.listaProductos.reduce((acumulador, actual) => acumulador + actual.VED_PRECIOVENTA_TOTAL, 0) + 0;
-    const ventaACredito: boolean = (nombreTipoCuenta[0].label && nombreTipoCuenta[0].label.toLowerCase().indexOf('credito') >= 0 ? true : false);
-    const ventaAEfectivo: boolean = (nombreTipoCuenta[0].label && nombreTipoCuenta[0].label.toLowerCase().indexOf('efectivo') >= 0 ? true : false);
+      this.clientesService.ActualizarCliente(cliente.ClI_ID, cliente).subscribe((result: any) => {
+        this.alertasService.SetToast("Cliente Actualizado exitosamente.", 1);
+      })
+    }
     const venta: Iventa = {
       VEN_CODIGO: 0,
       VEN_FECHACREACION: new Date(),
@@ -459,13 +527,13 @@ export class VentasComponent implements OnInit {
       CLI_TELEFONO: "0",
       CLI_TIPOCLIENTE: this.formularioVenta.controls['CLI_TIPOCLIENTE'].value,
       VEN_PRECIOTOTAL: valorTotalVenta,
-      VEN_ESTADOCREDITO: ventaACredito,
+      VEN_ESTADOCREDITO: esVentaACredito,
       VEN_ENVIO: false,
       VEN_DOMICILIO: false,
       VEN_OBSERVACIONES: "",
       VEN_ACTUALIZACION: new Date(),
       USU_CEDULA: this.userLogged.USU_CEDULA,
-      VEN_ESTADOVENTA: ventaAEfectivo,
+      VEN_ESTADOVENTA: esVentaAEfectivo,
       VEN_ESTADO: true,
       TIP_CODIGO: this.formularioVenta.controls['VEN_TIPOENVIO'].value,
       DetalleVentas: this.listaProductos,
@@ -483,7 +551,7 @@ export class VentasComponent implements OnInit {
         if (this.listaTipoDeEnvio.find(x => x.value == this.formularioVenta.controls['VEN_TIPOENVIO'].value)?.label?.toUpperCase() != "GRATIS") {
           this.gastoDeEnvio.VEN_CODIGO = result.Data;
           this.AbrirModalTipoCuentasGastos();
-        } 
+        }
         // else {
         //   this.ImprirFaturaCompra();
         // }
@@ -521,7 +589,6 @@ export class VentasComponent implements OnInit {
       data: { Listado: this.listaTipoDeCuenta, }
     })
     ref.onClose.subscribe((res) => {
-      debugger
       this.gastoDeEnvio.TIC_CODIGO = res;
       this.CrearGatosVenta();
     });
@@ -542,7 +609,6 @@ export class VentasComponent implements OnInit {
     this.alertasService.showLoading("Buscando venta")
     this.ventasService.BuscarVentaID(this.codigoVentaCreada).subscribe((result: Iventa) => {
       this.alertasService.hideLoading();
-      debugger;
       this.AbrirModaDetalleVentas(result);
     }, err => {
       this.alertasService.hideLoading();
@@ -599,10 +665,9 @@ export class VentasComponent implements OnInit {
     });
 
   }
-  Cotizar(){
-    debugger;
-    if(this.formularioVenta.controls['VEN_TIPOENVIO'].value==null || this.formularioVenta.controls['VEN_TIPOENVIO'].value==""){
-      this.alertasService.SetToast("Primero debe seleccionar el tipo de envio",2)
+  Cotizar() {
+    if (this.formularioVenta.controls['VEN_TIPOENVIO'].value == null || this.formularioVenta.controls['VEN_TIPOENVIO'].value == "") {
+      this.alertasService.SetToast("Primero debe seleccionar el tipo de envio", 2)
       return;
     }
     if (this.listaProductos.length == 0) {
@@ -616,10 +681,11 @@ export class VentasComponent implements OnInit {
       CLI_UBICACION: this.formularioVenta.controls['CLI_UBICACION'].value,
       CLI_DIRECCION: this.formularioVenta.controls['CLI_DIRECCION'].value,
       CLI_FECHACREACION: new Date(),
-      CLI_ESTADO: true
+      CLI_ESTADO: true,
+      CLI_ESCREDITO: true,
     };
-    var productos:IDetalleVentas[]=[];
-    for(let i=0;i<this.listaProductos.length;i++){
+    var productos: IDetalleVentas[] = [];
+    for (let i = 0; i < this.listaProductos.length; i++) {
       productos.push(this.listaProductos[i])
     }
     let ref = this.dialogService.open(CotizacionComponent, {
@@ -628,11 +694,10 @@ export class VentasComponent implements OnInit {
       contentStyle: { overflow: 'auto' },
       baseZIndex: 100,
       maximizable: true,
-      data: {Productos:productos,TipoEnvio:this.formularioVenta.controls['VEN_TIPOENVIO'].value,Cliente:cliente}
+      data: { Productos: productos, TipoEnvio: this.formularioVenta.controls['VEN_TIPOENVIO'].value, Cliente: cliente }
     });
   }
 }
-
 
 enum TiposDeEnvioEnum {
   EnvioGratis = "EnvioGratis",

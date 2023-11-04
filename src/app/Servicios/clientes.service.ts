@@ -34,8 +34,8 @@ export class ClientesService {
         return result.Data;
       }));
   }
-  ActualizarCliente(cliente: string) {
-    return this.http.put(this.url + 'PutCliente/' + cliente, cliente).pipe(
+  ActualizarCliente(codCliente: string, client: Icliente) {
+    return this.http.put(this.url + 'PutCliente/' + codCliente, client).pipe(
       map((result: any) => {
         return result.Data;
       }));

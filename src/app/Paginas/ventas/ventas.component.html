@@ -2,27 +2,19 @@
   <h1>Ventas</h1>
 
   <!-- Card informacion venta -->
-  <p-card header="Informacion Venta" [style]="{ width: '100%' }" class="card">
+  <!-- <p-card header="Informacion Venta" [style]="{ width: '100%' }" class="card">
     <form #myForm="ngForm" [formGroup]="formularioVenta" (ngSubmit)="FinalizarFactura(myForm)">
       <div>
         <label for="VEN_FECHAVENTA">Fecha Venta:</label>
         <p-calendar formControlName="VEN_FECHAVENTA" name="FechaVenta" [showTime]="true" hourFormat="12"></p-calendar>
       </div>
-      <!-- 
-    <div  >
-      <label for="VEN_TIPOPAGO">Tipo de pago:</label>
-      <p-dropdown formControlName="VEN_TIPOPAGO" [options]="listaTipoDePago" optionLabel="label" optionValue="value"
-        [filter]="true" filterBy="label" [showClear]="true" placeholder="Seleccione Pago"></p-dropdown>
-    </div> -->
-
       <div>
         <label for="VEN_CUENTADESTINO">Tipo de pago:</label>
         <p-dropdown formControlName="VEN_CUENTADESTINO" [options]="listaTipoDeCuenta" optionLabel="label"
           optionValue="value" placeholder="Seleccione Cuenta"></p-dropdown>
       </div>
     </form>
-  </p-card>
-
+  </p-card> -->
 
   <!-- Card CLiente  -->
   <p-card header="Cliente" [style]="{ width: '100%' }" class="card">
@@ -57,6 +49,11 @@
         <p-dropdown #tipoDeEnvioDropdown formControlName="VEN_TIPOENVIO" [options]="listaTipoDeEnvio"
           optionLabel="label" optionValue="value" placeholder="Seleccione una opcion"
           (onChange)="AgregarTipoDeEnvio($event)"></p-dropdown>
+      </div>
+      <div>
+        <label for="VEN_CUENTADESTINO">Tipo de pago:</label>
+        <p-dropdown formControlName="VEN_CUENTADESTINO" [options]="listaTipoDeCuenta" optionLabel="label"
+          optionValue="value" placeholder="Seleccione Cuenta"></p-dropdown>
       </div>
     </form>
   </p-card>
@@ -123,7 +120,7 @@
           type="Submit"></p-button>
         <p-button label="Cambiar Precio" style="margin-right: 10px" styleClass="p-button-rounded p-button-secondary"
           severity="secondary" (onClick)="CambiarPrecioDelProducto($event)"></p-button>
-          <p-button label="Cotizar" style="margin-right: 10px" styleClass="p-button-rounded p-button-help"
+        <p-button label="Cotizar" style="margin-right: 10px" styleClass="p-button-rounded p-button-help"
           severity="secondary" (onClick)="Cotizar()"></p-button>
       </div>
     </form>
@@ -164,9 +161,8 @@
           <td>{{ venta.VED_VALORDESCUENTO_UND |number }}%</td>
           <td style="min-width: 200px">
             <!-- <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"></button> -->
-            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-            pTooltip="Eliminar" tooltipPosition="top"
-              (click)="eliminarVenta(venta)"></button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" pTooltip="Eliminar"
+              tooltipPosition="top" (click)="eliminarVenta(venta)"></button>
           </td>
         </tr>
       </ng-template>

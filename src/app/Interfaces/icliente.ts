@@ -5,5 +5,6 @@ export interface Icliente{
     CLI_UBICACION:string,
     CLI_DIRECCION:string,
     CLI_FECHACREACION:Date,
-    CLI_ESTADO: boolean
+    CLI_ESTADO: boolean,
+    CLI_ESCREDITO: boolean,
 }
