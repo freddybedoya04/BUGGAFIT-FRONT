@@ -47,7 +47,6 @@ export class CotizacionComponent implements OnInit{
     this.ObtenerTipoDeGastoEnvio();
   }
   CalcularCotizacion(){
-    this.AgreagarEnvioAProductos();
     this.TotalComprado = this.listaProductos.reduce((anterior, actual) => {
       return anterior + actual.VED_PRECIOVENTA_TOTAL;
     }, 0)

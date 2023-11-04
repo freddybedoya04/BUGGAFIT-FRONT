@@ -36,13 +36,13 @@
 
       <div>
         <label for="CLI_UBICACION">Ubicacion:</label>
-        <input type="text" pInputText formControlName="CLI_UBICACION" />
+        <input type="text" pInputText formControlName="CLI_UBICACION" (blur)="AgregarTipoDeEnvio($event)"/>
       </div>
 
       <div>
         <label for="CLI_TIPOCLIENTE">Tipo de cliente:</label>
         <p-dropdown formControlName="CLI_TIPOCLIENTE" [options]="listaTipoDeCliente" optionLabel="label"
-          optionValue="value" placeholder="Seleccione Cliente"></p-dropdown>
+          optionValue="value" placeholder="Seleccione Cliente" (onChange)="AgregarTipoDeEnvio($event)"></p-dropdown>
       </div>
       <div class="form-group">
         <label for="VEN_TIPOENVIO">Tipo de Envio:</label>

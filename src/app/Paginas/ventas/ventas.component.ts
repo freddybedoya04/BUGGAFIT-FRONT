@@ -9,6 +9,7 @@ import { IDetalleVentas } from 'src/app/Interfaces/idetalle-ventas';
 import { IGasto } from 'src/app/Interfaces/igasto';
 import { Iproducto } from 'src/app/Interfaces/iproducto';
 import { Iventa } from 'src/app/Interfaces/iventa';
+import { ITiposEnvios } from 'src/app/Interfaces/tipos-envios';
 import { CotizacionComponent } from 'src/app/Modales/cotizacion/cotizacion.component';
 import { DetalleVentasComponent } from 'src/app/Modales/detalle-ventas/detalle-ventas.component';
 import { PagoEnvioComponent } from 'src/app/Modales/pago-envio/pago-envio.component';
@@ -48,6 +49,7 @@ export class VentasComponent implements OnInit {
   TotalComprado: number;
   _totalVentaMaxValue: number = 0;
   codigoVentaCreada: number = 0;
+  listadoTiposDeEnvio: ITiposEnvios[] = [];
   //Listas de los dropdown
   listaTipoDeCliente: SelectItem[] = [
     {
@@ -84,6 +86,8 @@ export class VentasComponent implements OnInit {
     }
   ];
 
+
+
   constructor(
     private formBuilder: FormBuilder,
     private primengConfig: PrimeNGConfig,
@@ -105,7 +109,7 @@ export class VentasComponent implements OnInit {
       VEN_FECHAVENTA: [{ value: new Date(), disabled: true }, Validators.required],
       VEN_TIPOENVIO: [null, Validators.required],
       VEN_CUENTADESTINO: [null, Validators.required],
-      VEN_OBSERVACIONES:[null],
+      VEN_OBSERVACIONES: [null],
       CLI_ID: [null],
       CLI_NOMBRE: [null, Validators.required],
       CLI_DIRECCION: [null, Validators.required],
@@ -145,7 +149,7 @@ export class VentasComponent implements OnInit {
       USU_CEDULA: this.userLogged.USU_CEDULA,
       GAS_PENDIENTE: false,
       VEN_CODIGO: 0,
-     GAS_OBSERVACIONES:''
+      GAS_OBSERVACIONES: ''
     }
     this.TotalComprado = 0;
   }
@@ -178,6 +182,7 @@ export class VentasComponent implements OnInit {
         this.alertasService.SetToast("No hay Motivos de envio.", 3);
         return;
       }
+      this.listadoTiposDeEnvio = result;
       this.listaTipoDeEnvio = result.map((item: any) => {
         const selectItem: SelectItem = {
           label: item.TIP_NOMBRE,
@@ -373,87 +378,45 @@ export class VentasComponent implements OnInit {
 
   AgregarTipoDeEnvio(event: any) {
     debugger;
-    const nombreTipoEnvio = this.listaTipoDeEnvio.filter((tipocliente: any) => {
-      return tipocliente.value == this.formularioVenta.controls['VEN_TIPOENVIO'].value;
-    })[0]?.label;
+    const tipoEnvio: ITiposEnvios = this.listadoTiposDeEnvio.filter((tipoEnvio: ITiposEnvios) => {
+      return tipoEnvio.TIP_CODIGO == this.formularioVenta.controls['VEN_TIPOENVIO'].value;
+    })[0];
 
-    if (!nombreTipoEnvio) {
+    if (!this.formularioVenta.controls['CLI_UBICACION'].value || this.formularioVenta.controls['CLI_UBICACION'].value === '') {
+      this.alertasService.SetToast("Por Favor ingrese la ubicacion.", 2);
+      this.formularioVenta.controls['VEN_TIPOENVIO'].setValue('')
+      return;
+    }
+    if (!this.formularioVenta.controls['CLI_TIPOCLIENTE'].value || this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === '') {
+      this.alertasService.SetToast("Debe seleccionar un tipo de cliente.", 2);
+      this.formularioVenta.controls['VEN_TIPOENVIO'].setValue('')
+      return;
+    }
+    if (!tipoEnvio) {
       this.alertasService.SetToast("Por Favor seleccione un tipo de envio.", 2);
+      this.formularioVenta.controls['VEN_TIPOENVIO'].setValue('')
       return;
     }
 
     // variables condicionales 
-    const estaFueraDeBuga = (this.formularioVenta.controls['CLI_UBICACION'].value + '').toUpperCase() !== 'BUGA';
+    const estaFueraDeBuga = (this.formularioVenta.controls['CLI_UBICACION'].value + '').toUpperCase().indexOf('BUGA') < 0;
     const esClienteDetal = this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[1].value // cliente detal 
-
-    // Detal - Buga - domicilio y envío gratis
-    if (esClienteDetal && !estaFueraDeBuga) {
-      this.gastoDeEnvio = {
-        GAS_CODIGO: 0,
-        GAS_FECHACREACION: new Date(),
-        GAS_FECHAGASTO: new Date(),
-        MOG_CODIGO: this.formularioVenta.controls['VEN_TIPOENVIO'].value,
-        GAS_VALOR: 0,
-        TIC_CODIGO: this.formularioVenta.controls['VEN_CUENTADESTINO'].value,
-        GAS_ESTADO: true,
-        USU_CEDULA: this.userLogged.USU_CEDULA,
-        GAS_PENDIENTE: true,
-        VEN_CODIGO: 0,
-        GAS_OBSERVACIONES: nombreTipoEnvio,
-      }
-      return;
+    // creamos el gasto
+    this.gastoDeEnvio = {
+      GAS_CODIGO: 0,
+      GAS_FECHACREACION: new Date(),
+      GAS_FECHAGASTO: new Date(),
+      MOG_CODIGO: tipoEnvio.TIP_CODIGO,
+      GAS_VALOR: tipoEnvio.TIP_VALOR,
+      TIC_CODIGO: this.formularioVenta.controls['VEN_CUENTADESTINO'].value,
+      GAS_ESTADO: true,
+      USU_CEDULA: this.userLogged.USU_CEDULA,
+      GAS_PENDIENTE: true,
+      VEN_CODIGO: 0,
+      GAS_OBSERVACIONES: "",
     }
-    //Detal - Envio - se agrega el gasto con valor de $12.000
-    if (esClienteDetal && estaFueraDeBuga) {
-      this.gastoDeEnvio = {
-        GAS_CODIGO: 0,
-        GAS_FECHACREACION: new Date(),
-        GAS_FECHAGASTO: new Date(),
-        MOG_CODIGO: this.formularioVenta.controls['VEN_TIPOENVIO'].value,
-        GAS_VALOR: 12000,
-        TIC_CODIGO: this.formularioVenta.controls['VEN_CUENTADESTINO'].value,
-        GAS_ESTADO: true,
-        USU_CEDULA: this.userLogged.USU_CEDULA,
-        GAS_PENDIENTE: true,
-        VEN_CODIGO: 0,
-        GAS_OBSERVACIONES: nombreTipoEnvio,
-      }
-      return;
-    }
-    //Mayorista - Buga - se cobra domicilio al cliente $2.500
-    if (!esClienteDetal && !estaFueraDeBuga) {
-      this.gastoDeEnvio = {
-        GAS_CODIGO: 0,
-        GAS_FECHACREACION: new Date(),
-        GAS_FECHAGASTO: new Date(),
-        MOG_CODIGO: this.formularioVenta.controls['VEN_TIPOENVIO'].value,
-        GAS_VALOR: 2500,
-        TIC_CODIGO: this.formularioVenta.controls['VEN_CUENTADESTINO'].value,
-        GAS_ESTADO: true,
-        USU_CEDULA: this.userLogged.USU_CEDULA,
-        GAS_PENDIENTE: true,
-        VEN_CODIGO: 0,
-        GAS_OBSERVACIONES: nombreTipoEnvio,
-      }
-      return;
-    }
-    //Mayorista - Envío- se cobra envío nacional $12.000
-    if (!esClienteDetal && estaFueraDeBuga) {
-      this.gastoDeEnvio = {
-        GAS_CODIGO: 0,
-        GAS_FECHACREACION: new Date(),
-        GAS_FECHAGASTO: new Date(),
-        MOG_CODIGO: this.formularioVenta.controls['VEN_TIPOENVIO'].value,
-        GAS_VALOR: 12000,
-        TIC_CODIGO: this.formularioVenta.controls['VEN_CUENTADESTINO'].value,
-        GAS_ESTADO: true,
-        USU_CEDULA: this.userLogged.USU_CEDULA,
-        GAS_PENDIENTE: true,
-        VEN_CODIGO: 0,
-       GAS_OBSERVACIONES: nombreTipoEnvio,
-      }
-      return;
-    }
+    this.AgreagarEnvioAProductos(esClienteDetal, estaFueraDeBuga, this.gastoDeEnvio.GAS_VALOR);
+    this.CalcularTotalComprado();
   }
 
   FinalizarFactura(event?: any) {
@@ -697,6 +660,39 @@ export class VentasComponent implements OnInit {
       maximizable: true,
       data: { Productos: productos, TipoEnvio: this.formularioVenta.controls['VEN_TIPOENVIO'].value, Cliente: cliente }
     });
+  }
+
+  AgreagarEnvioAProductos(esClienteDetal: boolean, estaFueraDeBuga: boolean, costoDelEnvio: number) {
+    let producto: IDetalleVentas = {
+      VED_CODIGO: 0,
+      VEN_CODIGO: 0,
+      PRO_CODIGO: '9999',
+      PRO_NOMBRE: 'ENVIO',
+      VED_UNIDADES: '1',
+      VED_PRECIOVENTA_UND: costoDelEnvio,
+      VED_VALORDESCUENTO_UND: 0,
+      VED_PRECIOVENTA_TOTAL: costoDelEnvio,
+      VED_ACTUALIZACION: new Date(),
+      VED_ESTADO: false
+    }
+    // Detal - Buga - domicilio y envío gratis
+    if (esClienteDetal && !estaFueraDeBuga) {
+      const index = this.listaProductos.findIndex(x => x.PRO_CODIGO === '9999')
+      if (index < 0) {
+        return;
+      }
+      this.listaProductos.shift();
+      return;
+    }
+
+    const index = this.listaProductos.findIndex(x => x.PRO_CODIGO === '9999')
+    if (index < 0) {
+      this.listaProductos.unshift(producto);
+      return;
+    }
+    this.listaProductos.shift();
+    this.listaProductos.unshift(producto);
+    return;
   }
 }
 
