@@ -68,7 +68,7 @@
                 <ng-template pTemplate="body" let-abono>
                     <tr>
                         <td>{{ abono.CAR_CODIGO}}</td>
-                        <td>{{ abono.CAR_FECHACREDITO | date:'MM/dd/yyyy' }}</td>
+                        <td>{{ abono.CAR_FECHACREDITO | date:'YYYY-MMM-dd' }}</td>
                         <td>{{ abono.CAR_VALORABONADO | number}}</td>
                         <td>{{ abono.TIC_NOMBRE }}</td>
                         <td>
@@ -96,7 +96,7 @@
                 <ng-template pTemplate="body" let-venta>
                     <tr>
                         <td>{{ venta.VEN_CODIGO}}</td>
-                        <td>{{ venta.VEN_FECHAVENTA | date:'MM/dd/yyyy' }}</td>
+                        <td>{{ venta.VEN_FECHAVENTA | date:'YYYY-MMM-dd' }}</td>
                         <td>{{ venta.VEN_PRECIOTOTAL | number}}</td>
                     </tr>
                 </ng-template>

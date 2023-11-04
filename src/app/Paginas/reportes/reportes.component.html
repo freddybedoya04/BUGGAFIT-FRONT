@@ -35,7 +35,7 @@
                     <button type="button" pButton pRipple icon="pi pi-file-excel"
                         class="p-button-rounded p-button-success mr-2"(click)="exportExcel()" pTooltip="Descargar reporte" tooltipPosition="top"></button>
                     <button pButton label="" icon="pi pi-filter" iconPos="left" class="p-button-raised p-button-rounded"
-                        (click)="dt2.reset()"
+                        (click)="searchKeyword='';dt2.reset()"
                         pTooltip="Quitar filtro" tooltipPosition="top" placeholder="Top"></button>
                     <span class="p-input-icon-left ml-auto">
                         <i class="pi pi-search"></i>
@@ -91,7 +91,7 @@
             <ng-template pTemplate="body" let-venta>
                 <tr>
                     <td>{{ venta.VEN_CODIGO }}</td>
-                    <td>{{ venta.VEN_FECHAVENTA | date : "yyyy-MM-dd" }}</td>
+                    <td>{{ venta.VEN_FECHAVENTA | date : "YYYY-MMM-dd" }}</td>
                     <td>{{ venta.TIC_NOMBRE }}</td>
                     <td>${{ venta.VEN_PRECIOTOTAL| number }}</td>
                     <td>

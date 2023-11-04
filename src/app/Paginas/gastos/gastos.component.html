@@ -30,7 +30,7 @@
                         class="p-button-rounded p-button-success mr-2" (click)="exportExcel()"pTooltip="Descargar reporte"
                         tooltipPosition="top"></button>
                     <button pButton label="" icon="pi pi-filter" pTooltip="Quitar filtro" tooltipPosition="top"
-                        iconPos="left" class="p-button-raised p-button-rounded" (click)="dt2.reset()"></button>
+                        iconPos="left" class="p-button-raised p-button-rounded" (click)="searchKeyword='';dt2.reset()"></button>
                     <span class="p-input-icon-left ml-auto">
                         <i class="pi pi-search"></i>
                         <input pInputText type="text" [(ngModel)]="searchKeyword"
@@ -53,7 +53,7 @@
                             
                     <th pSortableColumn="TIC_NOMBRE" style="width:20%">Tipo Cuenta<p-sortIcon
                             field="TIC_NOMBRE"></p-sortIcon></th>
-                    <th pSortableColumn="GAS_FECHAGASTO" style="width:20%">Fecha<p-sortIcon
+                    <th pSortableColumn="GAS_FECHAGASTO" style="min-width:200px">Fecha Gasto<p-sortIcon
                             field="GAS_FECHAGASTO"></p-sortIcon></th>
                     <th 
                     pSortableColumn="USU_NOMBRE" style="min-width:200px">Nombre Usuario <p-sortIcon

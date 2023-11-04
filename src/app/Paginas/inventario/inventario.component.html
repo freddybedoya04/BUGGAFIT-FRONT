@@ -26,7 +26,7 @@
             pTooltip="Descargar Reporte" tooltipPosition="top"></button>
           <button pButton label="" icon="pi pi-filter" iconPos="left" class="p-button-raised p-button-rounded"
           pTooltip="Quitar filtro" tooltipPosition="top"
-            (click)="dt2.reset()"></button>
+            (click)="searchKeyword='';dt2.reset()"></button>
           <span class="p-input-icon-left ml-auto">
             <i class="pi pi-search"></i>
             <input pInputText type="text" [(ngModel)]="searchKeyword"

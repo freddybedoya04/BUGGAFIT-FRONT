@@ -15,7 +15,7 @@
       <ng-template pTemplate="caption">
         <div class="EncabezadoTabla">
           <p-button label="Agregar Usuario" icon="pi pi-plus" (onClick)="AbrirModalUsuario()"></p-button>
-          <button pButton label="" icon="pi pi-filter" pTooltip="Quitar Filtro" tooltipPosition="top"iconPos="left" class="p-button-raised p-button-rounded" (click)="dt2.reset()"></button>
+          <button pButton label="" icon="pi pi-filter" pTooltip="Quitar Filtro" tooltipPosition="top"iconPos="left" class="p-button-raised p-button-rounded" (click)="searchKeyword='';dt2.reset()"></button>
           <span class="p-input-icon-left ml-auto">
             <i class="pi pi-search"></i>
             <input pInputText type="text" [(ngModel)]="searchKeyword"
