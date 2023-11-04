@@ -53,16 +53,38 @@
     </div>
 </div>
 <div class="Graficas">
-    <p-card header="Datos cuentas" [style]="{padding: '20px' }" styleClass="shadow-5">
-        <canvas id="barChart" width="300px" height="265"></canvas>
+    <p-card header="Cuentas" [style]="{padding: '20px' }" styleClass="shadow-5">
+        <p-table [value]="Tabla"
+        [tableStyle]="{ 'min-width': '20rem', 'max-height': '400px' }" [paginator]="true" [rows]="5"
+        [showCurrentPageReport]="true" [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords}'"
+        [scrollable]="true" [rowsPerPageOptions]="[5, 10]" styleClass="p-datatable-sm" class="custom-table">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 20%">Nombre</th>
+                <th style="width: 20%">Ingresos</th>
+                <th style="width: 20%">Compras</th>
+                <th style="width: 20%">Gastos</th>
+                <th style="width: 20%">total</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-cuenta>
+            <tr>
+                <td>{{ cuenta.Nombre}}</td>
+                <td>{{ cuenta.IngresosTotales |number}}</td>
+                <td>{{ cuenta.ComprasTotales |number}}</td>
+                <td>{{ cuenta.GastosTotales |number}}</td>
+                <td [ngClass]="{ 'texto-verde': cuenta.Saldo > 0, 'texto-rojo': cuenta.Saldo < 0 }">
+                    {{ cuenta.Saldo |number}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
     </p-card>
-    <p-card header="Productos más vendidos" [style]="{padding: '20px' }" styleClass="shadow-5">
+    <p-card header="Más Vendidos" [style]="{padding: '20px' }" styleClass="shadow-5">
         <p-table [value]="this.Indicadores.ProductosMasVendidos"
             [tableStyle]="{ 'min-width': '20rem', 'max-height': '400px' }" [paginator]="true" [rows]="5"
             [showCurrentPageReport]="true" [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords}'"
             [scrollable]="true" [rowsPerPageOptions]="[5, 10]" styleClass="p-datatable-sm" class="custom-table">
-            <ng-template pTemplate="caption">
-            </ng-template>
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width: 20%">Nombre</th>
@@ -79,24 +101,3 @@
     </p-card>
 
 </div>
-
-<!-- 
-<div class="container">
-    <div class="chart-container">
-        <p-chart type="bar"  ></p-chart>
-    </div>
-    <div class="table-container">
-        <p-table [value]="Indicadores.UltimasVentas"> 
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Fecha</th>
-              <th>Venta</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-rowData>
-            <tr>
-              <td>{{ rowData.fecha }}</td>
-              <td>{{ rowData.venta | currency: 'USD' }}</td>
-            </tr>
-          </ng-template>
-        </p-table> -->

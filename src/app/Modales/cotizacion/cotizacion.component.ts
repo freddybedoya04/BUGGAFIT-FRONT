@@ -21,6 +21,7 @@ export class CotizacionComponent implements OnInit{
   constructor(private config:DynamicDialogConfig,private ref:DynamicDialogRef,
     private tipoEnviosService:TiposEnviosService){
     this.cliente={
+      CLI_ESCREDITO:false,
       ClI_ID: '',
       CLI_NOMBRE: '',
       CLI_TIPOCLIENTE: '',
