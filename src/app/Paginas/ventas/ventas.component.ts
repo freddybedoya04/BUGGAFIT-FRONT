@@ -144,7 +144,7 @@ export class VentasComponent implements OnInit {
       USU_CEDULA: this.userLogged.USU_CEDULA,
       GAS_PENDIENTE: false,
       VEN_CODIGO: 0,
-      MOTIVOSGASTOS: ''
+     GAS_OBSERVACIONES:''
     }
     this.TotalComprado = 0;
   }
@@ -398,7 +398,7 @@ export class VentasComponent implements OnInit {
         USU_CEDULA: this.userLogged.USU_CEDULA,
         GAS_PENDIENTE: true,
         VEN_CODIGO: 0,
-        MOTIVOSGASTOS: nombreTipoEnvio,
+        GAS_OBSERVACIONES: nombreTipoEnvio,
       }
       return;
     }
@@ -415,7 +415,7 @@ export class VentasComponent implements OnInit {
         USU_CEDULA: this.userLogged.USU_CEDULA,
         GAS_PENDIENTE: true,
         VEN_CODIGO: 0,
-        MOTIVOSGASTOS: nombreTipoEnvio,
+        GAS_OBSERVACIONES: nombreTipoEnvio,
       }
       return;
     }
@@ -432,7 +432,7 @@ export class VentasComponent implements OnInit {
         USU_CEDULA: this.userLogged.USU_CEDULA,
         GAS_PENDIENTE: true,
         VEN_CODIGO: 0,
-        MOTIVOSGASTOS: nombreTipoEnvio,
+        GAS_OBSERVACIONES: nombreTipoEnvio,
       }
       return;
     }
@@ -449,7 +449,7 @@ export class VentasComponent implements OnInit {
         USU_CEDULA: this.userLogged.USU_CEDULA,
         GAS_PENDIENTE: true,
         VEN_CODIGO: 0,
-        MOTIVOSGASTOS: nombreTipoEnvio,
+       GAS_OBSERVACIONES: nombreTipoEnvio,
       }
       return;
     }

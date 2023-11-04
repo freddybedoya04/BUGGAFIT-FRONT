@@ -40,12 +40,13 @@ export class GastosComponent implements OnInit {
   }
   ngOnInit() {
     this.ConfigurarFechas();
+    this.BuscarGastoPorFechas();
     // this.BuscarGasto();
   }
   ConfigurarFechas() {
     this.FechaFin = new Date();
     this.FechaInicio = new Date(this.FechaFin)
-    this.FechaInicio.setDate(this.FechaInicio.getDate() - 7);
+    this.FechaInicio.setDate(this.FechaInicio.getDate() - 30);
   }
 
   AbrirModalGastos() {
@@ -59,7 +60,7 @@ export class GastosComponent implements OnInit {
     });
     ref.onClose.subscribe((res) => {
       this.FechaFin = new Date(Date.now());
-      this.BuscarComprasPorFechas();
+      this.BuscarGastoPorFechas();
     });
   };
 
@@ -84,7 +85,7 @@ export class GastosComponent implements OnInit {
       }
     );
   }
-  BuscarComprasPorFechas() {
+  BuscarGastoPorFechas() {
     this.ArmarFiltro();
     this.alertasService.showLoading("Buscando gastos...")
     this.gastosService.BuscarGastoPorFechas(this.filtro).subscribe(result => {
@@ -112,7 +113,7 @@ export class GastosComponent implements OnInit {
     });
     ref.onClose.subscribe((res) => {
       this.FechaFin = new Date(Date.now());
-      this.BuscarComprasPorFechas();
+      this.BuscarGastoPorFechas();
     });
   };
 
@@ -130,7 +131,7 @@ export class GastosComponent implements OnInit {
           this.gastosService.EliminarGasto(gasto.GAS_CODIGO).subscribe((result) => {
               this.alertasService.hideLoading();
               this.alertasService.SetToast('Gasto Eliminado', 1);
-              this.BuscarComprasPorFechas();
+              this.BuscarGastoPorFechas();
           },err=>{
             this.alertasService.hideLoading();
             this.alertasService.SetToast('Error al eliminar el Gasto: ' + err?.message, 3);
@@ -172,7 +173,7 @@ export class GastosComponent implements OnInit {
 
               this.alertasService.hideLoading();
               this.alertasService.SetToast('Gasto Cerrado', 1);
-              this.BuscarComprasPorFechas();
+              this.BuscarGastoPorFechas();
           },err=>{
             this.alertasService.hideLoading();
             this.alertasService.SetToast('Error al cerrar el Gasto: ' + err?.message, 3);

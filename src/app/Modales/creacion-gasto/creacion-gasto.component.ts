@@ -43,10 +43,10 @@ export class CreacionGastoComponent implements OnInit {
       TIC_CODIGO: [null, Validators.required],
       MOG_CODIGO: [null, Validators.required],
       VEN_CODIGO :0,
+      GAS_OBSERVACIONES:[null] 
     });
     this.gastoAEditar = {
       GAS_CODIGO: 0,
-      MOTIVOSGASTOS: '',
       GAS_VALOR: 0,
       GAS_PENDIENTE: false,
       GAS_FECHAGASTO: new Date(),
@@ -56,6 +56,7 @@ export class CreacionGastoComponent implements OnInit {
       VEN_CODIGO: 0,
       GAS_ESTADO: false,
       MOG_CODIGO: 0,
+      GAS_OBSERVACIONES:''
     };
   }
 
@@ -89,16 +90,16 @@ export class CreacionGastoComponent implements OnInit {
   
     const nuevoGasto: IGasto = {
       GAS_CODIGO: codigoGasto,
-      MOTIVOSGASTOS: this.formularioGasto.get('MOG_CODIGO')?.value,
+      GAS_OBSERVACIONES:this.formularioGasto.get('GAS_OBSERVACIONES')?.value,
       GAS_VALOR: this.formularioGasto.get('GAS_VALOR')?.value,
-      GAS_PENDIENTE: false,
+      GAS_PENDIENTE: this.formularioGasto.get('GAS_PENDIENTE')?.value,
       GAS_FECHAGASTO: this.formularioGasto.get('GAS_FECHAGASTO')?.value,
       USU_CEDULA: this.userLogged.USU_CEDULA,
       TIC_CODIGO: this.formularioGasto.get('TIC_CODIGO')?.value,
       VEN_CODIGO: 0,
-      GAS_ESTADO: this.formularioGasto.get('GAS_ESTADO')?.value,
+      GAS_ESTADO: true,
       MOG_CODIGO: this.formularioGasto.get('MOG_CODIGO')?.value,
-      GAS_FECHACREACION: this.formularioGasto.get('GAS_FECHACREACION')?.value,
+      GAS_FECHACREACION:new Date(), 
     };
   
     this.alerta.showLoading('Actualizando gasto');
@@ -128,12 +129,12 @@ CrearGasto() {
 
     const nuevoGasto: IGasto = {
       GAS_CODIGO: this.formularioGasto.get('GAS_CODIGO')?.value,
-      MOTIVOSGASTOS: this.formularioGasto.get('MOTIVOSGASTOS')?.value,
+      GAS_OBSERVACIONES: this.formularioGasto.get('GAS_OBSERVACIONES')?.value,
       GAS_VALOR: this.formularioGasto.get('GAS_VALOR')?.value,
       GAS_PENDIENTE: this.formularioGasto.get('GAS_PENDIENTE')?.value,
       GAS_FECHAGASTO: this.formularioGasto.get('GAS_FECHAGASTO')?.value,
       USU_CEDULA: this.userLogged.USU_CEDULA, 
-      GAS_FECHACREACION: this.formularioGasto.get('GAS_FECHACREACION')?.value,
+      GAS_FECHACREACION: new Date(),
       TIC_CODIGO: this.formularioGasto.get('TIC_CODIGO')?.value,
       VEN_CODIGO: 0,
       GAS_ESTADO: this.formularioGasto.get('GAS_ESTADO')?.value,
@@ -208,10 +209,11 @@ CrearGasto() {
       // Llena los campos del formulario con los valores del gasto a editar
       this.formularioGasto.get('GAS_CODIGO')?.setValue(this.gastoAEditar.GAS_CODIGO.toString());
 
-      this.formularioGasto.get('MOTIVOSGASTOS')?.setValue(this.gastoAEditar.MOTIVOSGASTOS);
+      this.formularioGasto.get('GAS_OBSERVACIONES')?.setValue(this.gastoAEditar.GAS_OBSERVACIONES);
       this.formularioGasto.get('GAS_VALOR')?.setValue(this.gastoAEditar.GAS_VALOR);
       this.formularioGasto.get('GAS_PENDIENTE')?.setValue(this.gastoAEditar.GAS_PENDIENTE);
       this.formularioGasto.get('GAS_FECHAGASTO')?.setValue(new Date(this.gastoAEditar.GAS_FECHAGASTO));
+      this.formularioGasto.get('GAS_FECHACREACION')?.setValue(this.gastoAEditar.GAS_FECHACREACION)
       this.formularioGasto.get('USU_CEDULA')?.setValue(this.gastoAEditar.USU_CEDULA);
     } else {
       this.formularioGasto.get('GAS_FECHAGASTO')?.setValue(this.FechaActual);

@@ -64,7 +64,7 @@ AbrirModalUsuario(){
   
       const workbook: XLSX.WorkBook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
       const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-      this.saveAsExcelFile(excelBuffer, 'usuarios');
+      this.saveAsExcelFile(excelBuffer, 'Reporte-Usuarios');
     });
   }
   

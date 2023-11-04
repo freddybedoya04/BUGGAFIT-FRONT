@@ -6,9 +6,9 @@ export interface IGasto {
     GAS_PENDIENTE: boolean;
     GAS_VALOR: number;
     MOG_CODIGO: number;
-    MOTIVOSGASTOS: string;
     TIC_CODIGO: number;
     USU_CEDULA: string;
     VEN_CODIGO?: number;
     MOG_NOMBRE?:string;
+    GAS_OBSERVACIONES?:string
 }

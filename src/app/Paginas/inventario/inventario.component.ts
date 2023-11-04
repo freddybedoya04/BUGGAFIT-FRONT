@@ -34,11 +34,12 @@ export class InventarioComponent implements OnInit {
   }
   ngOnInit() {
     this.BuscarProductos();
+    this.ConfigurarFechas();
   }
   ConfigurarFechas() {
     this.FechaFin = new Date();
     this.FechaInicio = new Date(this.FechaFin)
-    this.FechaInicio.setDate(this.FechaInicio.getDate() - 7);
+    this.FechaInicio.setDate(this.FechaInicio.getDate() - 30);
   }
 
   AbrirModalProductos() {

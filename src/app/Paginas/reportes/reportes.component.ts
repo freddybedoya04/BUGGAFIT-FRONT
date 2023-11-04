@@ -40,13 +40,14 @@ export class ReportesComponent implements OnInit {
     ];
     this.activeItem = this.items[0];
     this.ConfigurarFechas();
+    this.BuscarVentasPorFechas();
     // this.LlenadoVentas();
   }
 
   ConfigurarFechas() {
     this.FechaFin = new Date();
     this.FechaInicio = new Date(this.FechaFin)
-    this.FechaInicio.setDate(this.FechaInicio.getDate() - 7);
+    this.FechaInicio.setDate(this.FechaInicio.getDate() - 30);
   }
   getSeverity(estado: boolean) {
 

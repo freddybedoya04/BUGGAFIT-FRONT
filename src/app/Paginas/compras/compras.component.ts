@@ -31,11 +31,13 @@ export class ComprasComponent implements OnInit {
   }
   ngOnInit(): void {
     this.ConfigurarFechas();
+    this.BuscarComprasPorFechas();
   }
   ConfigurarFechas() {
     this.FechaFin = new Date();
     this.FechaInicio = new Date(this.FechaFin)
-    this.FechaInicio.setDate(this.FechaInicio.getDate() - 7);
+    this.FechaInicio.setDate(this.FechaInicio.getDate() - 30);
+    // this.FechaInicio.setDate(1)
   }
   AbrirModalCreacion() {
     let ref = this.dialogService.open(CreacionCompraComponent, {
@@ -131,7 +133,7 @@ export class ComprasComponent implements OnInit {
       
       const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
       const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-      this.saveAsExcelFile(excelBuffer, 'Compras');
+      this.saveAsExcelFile(excelBuffer, 'Reportes Compras',);
     });
   }
   
