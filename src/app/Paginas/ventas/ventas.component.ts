@@ -497,7 +497,7 @@ export class VentasComponent implements OnInit {
       VEN_ESTADOCREDITO: esVentaACredito,
       VEN_ENVIO: false,
       VEN_DOMICILIO: false,
-      VEN_OBSERVACIONES: "",
+      VEN_OBSERVACIONES: this.formularioVenta.controls['VEN_OBSERVACIONES'].value,
       VEN_ACTUALIZACION: new Date(),
       USU_CEDULA: this.userLogged.USU_CEDULA,
       VEN_ESTADOVENTA: esVentaAEfectivo,
