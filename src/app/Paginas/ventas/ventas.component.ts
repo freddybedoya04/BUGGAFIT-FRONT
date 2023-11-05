@@ -43,6 +43,7 @@ export class VentasComponent implements OnInit {
   tipodecuentaSeleccionado: any;
   tipoClienteSeleccionado!: string;
   existeCliente: boolean = false;
+  ClienteCredito:boolean=false;
   gastoDeEnvio: IGasto;
   motivosDeEnvio: any;
   userLogged: any;
@@ -201,12 +202,14 @@ export class VentasComponent implements OnInit {
         this.formularioVenta.controls['CLI_DIRECCION'].setValue('');
         this.formularioVenta.controls['CLI_UBICACION'].setValue('');
         this.alertasService.SetToast("El cliente no existe. Por favor diligencie los datos para crearlo.", 2);
+        this.ClienteCredito=false;
         return;
       }
       this.existeCliente = true;
       this.formularioVenta.controls['CLI_NOMBRE'].setValue(result.CLI_NOMBRE);
       this.formularioVenta.controls['CLI_DIRECCION'].setValue(result.CLI_DIRECCION);
       this.formularioVenta.controls['CLI_UBICACION'].setValue(result.CLI_UBICACION);
+      this.ClienteCredito=result.CLI_ESCREDITO==null?false:result.CLI_ESCREDITO;
       const tipoCliente = this.listaTipoDeCliente.filter((tipocliente: SelectItem) => {
         return tipocliente.value == result.CLI_TIPOCLIENTE;
       });
@@ -471,7 +474,7 @@ export class VentasComponent implements OnInit {
         CLI_DIRECCION: this.formularioVenta.controls['CLI_DIRECCION'].value,
         CLI_FECHACREACION: new Date(),
         CLI_ESTADO: true,
-        CLI_ESCREDITO: esVentaACredito,
+        CLI_ESCREDITO: esVentaACredito==true?esVentaACredito:this.ClienteCredito,
       };
 
       this.clientesService.ActualizarCliente(cliente.ClI_ID, cliente).subscribe((result: any) => {
@@ -554,6 +557,10 @@ export class VentasComponent implements OnInit {
     })
     ref.onClose.subscribe((res) => {
       this.gastoDeEnvio.TIC_CODIGO = res;
+      debugger;
+      if(this.listaTipoDeCuenta.find(x=>x.value==res)?.label?.toUpperCase()=="EFECTIVO"){
+        this.gastoDeEnvio.GAS_PENDIENTE=false;
+      }
       this.CrearGatosVenta();
     });
   }
