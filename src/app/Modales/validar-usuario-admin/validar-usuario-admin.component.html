@@ -12,13 +12,14 @@
             </div>
             <div>
                 <label for="VEN_CUENTADESTINO">Contraseña:</label>
-                <input type="text" [(ngModel)]="credencialesDeAcceso.Password" pInputText />
+                <input type="Password" [(ngModel)]="credencialesDeAcceso.Password" pInputText />
             </div>
         </section>
-    </p-card>
-    <div>
-        <div class="buttonContainer">
-            <p-button (click)="Validar()" label="Validar"></p-button>
+        <div>
+            <div class="buttonContainer">
+                <p-button (click)="Validar()" label="Validar"></p-button>
+            </div>
         </div>
-    </div>
+    </p-card>
+   
 </div>
