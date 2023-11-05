@@ -27,6 +27,7 @@ export class EstadisticasComponent implements OnInit {
     ingresosCuentas:any[];
     GastosCuentas:any[];
     ComprasCuentas:any[];
+    AbonosCuentas:any[];
     ProductosMasVendidos:any[];
   } = {
     Ventas: 0,
@@ -39,6 +40,7 @@ export class EstadisticasComponent implements OnInit {
     ingresosCuentas:[],
     GastosCuentas:[],
     ComprasCuentas:[],
+    AbonosCuentas:[],
     ProductosMasVendidos:[]
   };
 
@@ -81,6 +83,7 @@ export class EstadisticasComponent implements OnInit {
       this.Indicadores.ingresosCuentas=data.Data.DatosGraficas.IngresosCuentas;
       this.Indicadores.GastosCuentas=data.Data.DatosGraficas.GastosCuentas;
       this.Indicadores.ComprasCuentas=data.Data.DatosGraficas.ComprasCuentas;
+      this.Indicadores.AbonosCuentas=data.Data.DatosGraficas.AbonosCuentas;
       this.Indicadores.ProductosMasVendidos=data.Data.DatosGraficas.ProductosMasVendidos;
       this.Generartabla();
     },err=>{
@@ -96,7 +99,9 @@ export class EstadisticasComponent implements OnInit {
         let obj={
           Nombre:element.Cuenta,
           IngresosTotales:this.Indicadores.ingresosCuentas.filter(cuenta => cuenta && cuenta.MovimientoTotal && cuenta.Nombre === element.Cuenta)
-          .reduce((total, cuenta) => total + cuenta.MovimientoTotal, 0),
+          .reduce((total, cuenta) => total + cuenta.MovimientoTotal, 0) +
+          this.Indicadores.AbonosCuentas.filter(cuenta => cuenta && cuenta.MovimientoTotal && cuenta.Nombre === element.Cuenta)
+          .reduce((total, cuenta) => total + cuenta.MovimientoTotal, 0) ,
           ComprasTotales:this.Indicadores.ComprasCuentas.filter(cuenta => cuenta && cuenta.MovimientoTotal && cuenta.Nombre === element.Cuenta)
           .reduce((total, cuenta) => total + cuenta.MovimientoTotal, 0),
           GastosTotales:this.Indicadores.GastosCuentas.filter(cuenta => cuenta && cuenta.MovimientoTotal && cuenta.Nombre === element.Cuenta)
