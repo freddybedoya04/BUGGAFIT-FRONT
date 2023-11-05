@@ -616,8 +616,8 @@ export class VentasComponent implements OnInit {
     }
     let ref = this.dialogService.open(ValidarUsuarioAdminComponent, {
       header: 'Validar Usuario',
-      width: '60%',
-      contentStyle: { overflow: 'auto' },
+      width: '25%',
+      contentStyle: { overflow: 'auto','background-color':'#eff3f8'},
       baseZIndex: 100,
       maximizable: true,
       data: {}

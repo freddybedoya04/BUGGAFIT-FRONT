@@ -3,25 +3,21 @@
     flex-direction: row;
     justify-content: flex-end;
     gap: 10px;
+    height: 100vh;
 }
-
 
 .card {
     margin: 7px;
     padding: 7px;
     display: flex;
     flex-direction: column;
+    max-width: 400px; 
+    margin: 0 auto; 
 }
 
 .card section {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 10px;
-}
-.card form {
-    grid-column: 1/-1;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     grid-gap: 10px;
 }
 
@@ -50,6 +46,7 @@
 }
 
 .card .buttonContainer {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    place-content: center;
+    margin-top: 20px;
 }
