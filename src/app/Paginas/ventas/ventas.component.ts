@@ -505,7 +505,9 @@ export class VentasComponent implements OnInit {
       TIP_CODIGO: this.formularioVenta.controls['VEN_TIPOENVIO'].value,
       DetalleVentas: this.listaProductos,
     }
-
+    if(venta.VEN_OBSERVACIONES==null || venta.VEN_OBSERVACIONES==undefined){
+      venta.VEN_OBSERVACIONES="";
+    }
     this.alertasService.showLoading("Creando venta")
     this.ventasService.CrearVenta(venta).subscribe((result: any) => {
       this.alertasService.hideLoading();
