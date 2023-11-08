@@ -150,7 +150,7 @@ export class GastosComponent implements OnInit {
       
       const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
       const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-      this.saveAsExcelFile(excelBuffer, 'gastos');
+      this.saveAsExcelFile(excelBuffer, 'Reportes-gastos');
     });
   }
   
