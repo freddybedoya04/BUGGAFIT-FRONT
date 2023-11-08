@@ -23,6 +23,9 @@ import { CreacionGastoComponent } from 'src/app/Modales/creacion-gasto/creacion-
 import { PagoEnvioComponent } from 'src/app/Modales/pago-envio/pago-envio.component';
 import { CotizacionComponent } from 'src/app/Modales/cotizacion/cotizacion.component';
 import { CreditosComponent } from 'src/app/Paginas/creditos/creditos.component';
+import { CuentasComponent } from 'src/app/Paginas/cuentas/cuentas.component';
+import { CreacionCuentasComponent } from 'src/app/Modales/creacion-cuentas/creacion-cuentas.component';
+
 
 @NgModule({
   declarations: [
@@ -43,7 +46,9 @@ import { CreditosComponent } from 'src/app/Paginas/creditos/creditos.component';
     CreacionGastoComponent,
     PagoEnvioComponent,
     CotizacionComponent,
-    CreditosComponent
+    CreditosComponent,
+    CuentasComponent,
+    CreacionCuentasComponent
 
   ],
   imports: [

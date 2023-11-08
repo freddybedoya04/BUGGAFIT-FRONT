@@ -1,0 +1,62 @@
+h1 {
+    text-align: center;
+    font-size: 30px;
+    margin:40px ;
+}
+
+.TotalCuenta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;   
+}
+
+.TotalCuenta p-card {
+    padding: 10px;
+    font-family: 'Poppins', sans-serif;
+    }
+.TotalCuentaLabel {
+    font-weight: bold;
+    text-align: center;
+}
+
+.TotalCuentaValor {
+    margin-top: 5px; 
+    text-align: center;
+}
+
+.Filtro {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin: 20px;
+    align-items: center;
+}
+
+.Filtro p {
+    flex: 1 0 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    label{
+        font-family: 'Poppins', sans-serif;
+    }
+}
+.EncabezadoTabla{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+
+/* custom-table.css */
+:host ::ng-deep .p-datatable .p-datatable-tbody tr > td {
+    text-align: center !important;
+    font-family: 'Poppins', sans-serif;
+  }
+  :host ::ng-deep .p-datatable .p-datatable-thead > tr > th  {
+    text-align: center !important;
+    font-family: 'Poppins', sans-serif;
+  }

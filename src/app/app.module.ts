@@ -13,6 +13,8 @@ import { FormateadorPrecioDirective } from './Directivas/formateador-precio.dire
 import { PrecioPipe } from './Pipes/precio-pipe.pipe';
 import { ValidarUsuarioAdminComponent } from './Modales/validar-usuario-admin/validar-usuario-admin.component';
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +22,7 @@ import { ValidarUsuarioAdminComponent } from './Modales/validar-usuario-admin/va
     FormateadorPrecioDirective,
     PrecioPipe,
     ValidarUsuarioAdminComponent,
-    
+  
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,73 @@
+.Principal{
+    background-color: #eff3f8;
+}
+.cabecera{
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+.custom-dialog {
+    background-color: blue;
+  }
+.EncabezadoTabla {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
+}
+.card {
+    margin: 7px;
+    padding: 7px;
+    display: flex;
+    flex-direction: column;
+}
+
+.card section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
+
+.card div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 80%;
+}
+
+.card div input {
+    border-radius: 10px;
+    width: 100%;
+}
+:host ::ng-deep .p-calendar,
+:host ::ng-deep .p-dropdown,
+:host ::ng-deep .p-inputtext,
+:host ::ng-deep .p-inputNumber,
+:host ::ng-deep .p-checkbox{
+    height: 2rem;
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    min-width: 100px;
+}
+.Numerico{
+    width: 100%;
+}
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+}
+
+@media screen and (max-width: 1400px) {
+    .card section {
+      grid-template-columns: repeat(2,1fr); /* Cambia a una sola columna */
+      /* Otras propiedades de grid que deseas modificar en tablet */
+    }
+  }
+  
+  @media screen and (max-width: 786px) {
+     .card section {
+        grid-template-columns: 1fr;
+    }
+  }
