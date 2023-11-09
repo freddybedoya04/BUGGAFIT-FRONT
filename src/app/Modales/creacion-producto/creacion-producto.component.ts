@@ -115,7 +115,7 @@ export class CreacionProductoComponent implements OnInit {
               }
               else{
                 this.alerta.hideLoading();
-                this.alerta.SetToast('Error al actualizar el producto: ' + result?.message, 3);
+                this.alerta.SetToast('Error al actualizar el producto: ' + result?.Message, 3);
                 console.error(result);
               }
             }

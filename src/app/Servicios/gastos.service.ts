@@ -3,6 +3,7 @@ import { HttpClientService } from './http-client.service';
 import { map } from 'rxjs';
 import { IGasto } from '../Interfaces/igasto';
 import { IFiltro } from '../Interfaces/ifiltro';
+import { IApiResponse } from '../Interfaces/iapiresponse';
 
 @Injectable({
   providedIn: 'root'
@@ -19,51 +20,51 @@ export class GastosService {
       }));
   }
   CrearGastoVenta(gasto: IGasto) {
-    return this.http.post(this.url + 'PostGastoVenta', gasto).pipe(
-      map((result: any) => {
+    return this.http.post<IApiResponse>(this.url + 'PostGastoVenta', gasto).pipe(
+      map((result: IApiResponse) => {
         return result.StatusCode;
       }));
   }
   CrearGasto(gasto: IGasto) {
-    return this.http.post(this.url + 'PostGasto', gasto).pipe(
-      map((result: any) => {
+    return this.http.post<IApiResponse>(this.url + 'PostGasto', gasto).pipe(
+      map((result: IApiResponse) => {
         return result;
       }));
   }
   BuscarGastoPorFechas(filtro: IFiltro) {
-    return this.http.post(this.url + 'ListarGastosPorFecha', filtro).pipe(
-      map((result: any) => {
+    return this.http.post<IApiResponse>(this.url + 'ListarGastosPorFecha', filtro).pipe(
+      map((result: IApiResponse) => {
         return result;
       }));
   }
   
   CerrarGasto(gasto: number) {
-    return this.http.get(this.url + 'GetCerrarGasto/' + gasto).pipe(
-      map((result: any) => {
+    return this.http.get<IApiResponse>(this.url + 'GetCerrarGasto/' + gasto).pipe(
+      map((result: IApiResponse) => {
         return result.StatusCode;
       }));
   }
   BuscarGastos() {
-    return this.http.get(this.url + 'GetGastos').pipe(
-      map((result: any) => {
+    return this.http.get<IApiResponse>(this.url + 'GetGastos').pipe(
+      map((result: IApiResponse) => {
         return result.Data
       }));
   }
   BuscarGastoID(gasto: string) {
-    return this.http.get(this.url + 'GetGasto/' + gasto).pipe(
-      map((result: any) => {
+    return this.http.get<IApiResponse>(this.url + 'GetGasto/' + gasto).pipe(
+      map((result: IApiResponse) => {
         return result.Data;
       }));
   }
   EliminarGasto(codigoGasto: number) {
-    return this.http.delete(this.url + 'DeleteGasto/' + codigoGasto).pipe(
-      map((result: any) => {
+    return this.http.delete<IApiResponse>(this.url + 'DeleteGasto/' + codigoGasto).pipe(
+      map((result: IApiResponse) => {
         return result;
       }));
   }
   ActualizarGasto(codGasto: string, gasto: IGasto) {
-    return this.http.put(this.url + 'PutGasto/' + codGasto, gasto).pipe(
-      map((result: any) => {
+    return this.http.put<IApiResponse>(this.url + 'PutGasto/' + codGasto, gasto).pipe(
+      map((result: IApiResponse) => {
         return result;
       }));
   }

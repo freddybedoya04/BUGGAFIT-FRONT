@@ -3,6 +3,7 @@ import { HttpClientService } from './http-client.service';
 import { Observable,map } from 'rxjs';
 import { Iusuario } from '../Interfaces/iusuario';
 import { ILogin } from '../Interfaces/ilogin';
+import { IApiResponse } from '../Interfaces/iapiresponse';
 
 @Injectable({
   providedIn: 'root'
@@ -26,25 +27,25 @@ export class UsuarioService {
   }
 
   ListarUsuarios(){
-    return this.http.get(this.url + 'GetUsuarios').pipe(
-      map((result: any) => {
+    return this.http.get<IApiResponse>(this.url + 'GetUsuarios').pipe(
+      map((result: IApiResponse) => {
         return result
       }));
   }
   ListarPerfiles(){
-    return this.http.get(this.url + 'GetPerfiles').pipe(
-      map((result: any) => {
+    return this.http.get<IApiResponse>(this.url + 'GetPerfiles').pipe(
+      map((result: IApiResponse) => {
         return result
       }));
   }
   ValidarUsuarioAdmin(login: ILogin){
-    return this.http.post(this.url + "ValidarUsuarioAdmin", login).pipe(
-      map((result: any) => {
+    return this.http.post<IApiResponse>(this.url + "ValidarUsuarioAdmin", login).pipe(
+      map((result: IApiResponse) => {
         return result;
       }));
   }
   ListarPantallasPermisos(perfil:string){
-    return this.http.get(this.url + 'ListarPantallasPermisos/'+perfil).pipe(
+    return this.http.get<any>(this.url + 'ListarPantallasPermisos/'+perfil).pipe(
       map((result: any) => {
         return result
       }));

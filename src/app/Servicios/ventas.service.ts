@@ -4,6 +4,7 @@ import { Iventa } from '../Interfaces/iventa';
 import { Observable, map } from 'rxjs';
 import { IFiltro } from '../Interfaces/ifiltro';
 import { Iabonos } from '../Interfaces/iabonos';
+import { IApiResponse } from '../Interfaces/iapiresponse';
 
 @Injectable({
   providedIn: 'root'
@@ -14,86 +15,86 @@ export class VentasService {
   constructor(private http: HttpClientService) { }
 
   BuscarVentas() {
-    return this.http.get(this.url + 'GetVentas').pipe(
-      map((result: any) => {
+    return this.http.get<IApiResponse>(this.url + 'GetVentas').pipe(
+      map((result: IApiResponse) => {
         return result.Data;
       }));
   }
   BuscarVentaID(venta: number) {
-    return this.http.get(this.url + 'GetVenta/' + venta).pipe(
-      map((result: any) => {
+    return this.http.get<IApiResponse>(this.url + 'GetVenta/' + venta).pipe(
+      map((result: IApiResponse) => {
         return result.Data;
       }));
   }
   BuscarVentasPorFechas(filtro:IFiltro){
-    return this.http.post(this.url+'PostListadoVenta',filtro).pipe(
-      map((result: any) => {
+    return this.http.post<IApiResponse>(this.url+'PostListadoVenta',filtro).pipe(
+      map((result: IApiResponse) => {
         return result.Data;
       }));
   }
   CrearVenta(venta: Iventa) {
-    return this.http.post(this.url + 'PostVenta', venta).pipe(
-      map((result: any) => {
+    return this.http.post<IApiResponse>(this.url + 'PostVenta', venta).pipe(
+      map((result: IApiResponse) => {
         return result;
       }));
   }
   EliminarVenta(venta: number) {
-    return this.http.delete(this.url + 'DeleteVentas/' + venta).pipe(
-      map((result: any) => {
+    return this.http.delete<IApiResponse>(this.url + 'DeleteVentas/' + venta).pipe(
+      map((result: IApiResponse) => {
         return result.Data;
       }));
   }
   ActualizarVenta(venta: number) {
-    return this.http.put(this.url + 'PutVenta/' + venta, venta).pipe(
-      map((result: any) => {
+    return this.http.put<IApiResponse>(this.url + 'PutVenta/' + venta, venta).pipe(
+      map((result: IApiResponse) => {
         return result.Data;
       }));
   }
   ActualizarEstadoVenta(venta: number) {
-    return this.http.get(this.url + 'ActualizarEstadoVenta/' + venta).pipe(
-      map((result: any) => {
+    return this.http.get<IApiResponse>(this.url + 'ActualizarEstadoVenta/' + venta).pipe(
+      map((result: IApiResponse) => {
         return result;
       }));
   }
   BuscarTipoCuentas() {
-    return this.http.get('TipoCuentas/GetTipoCuentas').pipe(
-      map((result: any) => {
+    return this.http.get<IApiResponse>('TipoCuentas/GetTipoCuentas').pipe(
+      map((result: IApiResponse) => {
         return result.Data;
       }));
   }
   ListarDetallePorCodigoVenta(venta:number) {
-    return this.http.get(this.url+'ListarDetallePorCodigoVenta/'+venta).pipe(
-      map((result: any) => {
+    return this.http.get<IApiResponse>(this.url+'ListarDetallePorCodigoVenta/'+venta).pipe(
+      map((result: IApiResponse) => {
         return result.Data;
       }));
   }
   ListarAbonosPorCodigoVenta(venta:number) {
-    return this.http.get(this.url+'ListarAbonosPorCodigoVenta/'+venta).pipe(
-      map((result: any) => {
+    return this.http.get<IApiResponse>(this.url+'ListarAbonosPorCodigoVenta/'+venta).pipe(
+      map((result: IApiResponse) => {
         return result.Data;
       }));
   }
   CrearAbono(abono: Iabonos) {
-    return this.http.post(this.url + 'CrearAbono', abono).pipe(
-      map((result: any) => {
+    return this.http.post<IApiResponse>(this.url + 'CrearAbono', abono).pipe(
+      map((result: IApiResponse) => {
         return result;
       }));
   }
   EliminarAbono(Abono: number) {
-    return this.http.delete(this.url + 'DeleteAbono/' + Abono).pipe(
-      map((result: any) => {
+    return this.http.delete<IApiResponse>(this.url + 'DeleteAbono/' + Abono).pipe(
+      map((result: IApiResponse) => {
         return result.Data;
       }));
   }
   ActualizarAbono(Abono:Iabonos) {
-    return this.http.put(this.url + 'PutAbonos/', Abono).pipe(
-      map((result: any) => {
+    return this.http.put<IApiResponse>(this.url + 'PutAbonos/', Abono).pipe(
+      map((result: IApiResponse) => {
         return result.Data;
       }));
   }
   FinalizarCredito(venta:number) {
-    return this.http.get(this.url + 'FinalizarCredito/'+venta).pipe(
-      map((result: any) => {
+    return this.http.get<IApiResponse>(this.url + 'FinalizarCredito/'+venta).pipe(
+      map((result: IApiResponse) => {
         return result.Data;
       }));
   }
