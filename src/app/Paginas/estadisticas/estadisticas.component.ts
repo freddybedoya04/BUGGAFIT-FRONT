@@ -3,6 +3,8 @@ import { DashboardService } from 'src/app/Servicios/daschboard.service';
 import { IFiltro } from 'src/app/Interfaces/ifiltro';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { Chart, registerables } from 'chart.js';
+import { TipoCuentaService } from 'src/app/Servicios/tipocuenta.service';
+import { ITipocuenta } from 'src/app/Interfaces/itipocuenta';
 
 @Component({
   selector: 'app-estadisticas',
@@ -15,7 +17,8 @@ export class EstadisticasComponent implements OnInit {
   filtro: IFiltro;
   backgroundColors: string[] = [];
   borderColors: string[] = [];
-  Tabla: { Nombre: string, IngresosTotales: any,ComprasTotales: any,GastosTotales: any,Saldo:number }[] = [];
+  listaCuenta: ITipocuenta[] = [];
+  Tabla: { Nombre: string, IngresosTotales: any, ComprasTotales: any, GastosTotales: any, Saldo: number }[] = [];
   Indicadores: {
     Ventas: number;
     Gastos: number;
@@ -23,29 +26,31 @@ export class EstadisticasComponent implements OnInit {
     Utilidades: number;
     Deudas: number;
     Creditos: number;
-    UltimasVentas: any[]; 
-    ingresosCuentas:any[];
-    GastosCuentas:any[];
-    ComprasCuentas:any[];
-    AbonosCuentas:any[];
-    ProductosMasVendidos:any[];
+    UltimasVentas: any[];
+    ingresosCuentas: any[];
+    GastosCuentas: any[];
+    ComprasCuentas: any[];
+    AbonosCuentas: any[];
+    ProductosMasVendidos: any[];
   } = {
-    Ventas: 0,
-    Gastos: 0,
-    Compras: 0,
-    Utilidades: 0,
-    Deudas: 0,
-    Creditos: 0,
-    UltimasVentas: [], 
-    ingresosCuentas:[],
-    GastosCuentas:[],
-    ComprasCuentas:[],
-    AbonosCuentas:[],
-    ProductosMasVendidos:[]
-  };
+      Ventas: 0,
+      Gastos: 0,
+      Compras: 0,
+      Utilidades: 0,
+      Deudas: 0,
+      Creditos: 0,
+      UltimasVentas: [],
+      ingresosCuentas: [],
+      GastosCuentas: [],
+      ComprasCuentas: [],
+      AbonosCuentas: [],
+      ProductosMasVendidos: []
+    };
 
   constructor(private dashboardService: DashboardService,
-    private aletasService:AlertasService) {
+    private aletasService: AlertasService,
+    private tipoCuentaService: TipoCuentaService,
+  ) {
     this.FechaFin = new Date();
     this.FechaInicio = new Date();
     this.filtro = {
@@ -55,16 +60,24 @@ export class EstadisticasComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.CargarCuentas();
     this.ConfigurarFechas();
     this.calcularIndicadores();
   }
 
+  CargarCuentas() {
+    this.tipoCuentaService.ObtenerCuentas().subscribe((result: any) => {
+      if (result) {
+        this.listaCuenta = result;
+      }
+    });
+  }
   ConfigurarFechas() {
     debugger;
-    let Fecha=new Date();
-    this.FechaInicio = new Date(Fecha.getFullYear(),Fecha.getMonth(),1,6,0,0);
-    const ultimoDiaNoviembre = new Date(Fecha.getFullYear(),Fecha.getMonth(), 0).getDate();
-    this.FechaFin = new Date(Fecha.getFullYear(),Fecha.getMonth(),ultimoDiaNoviembre,6,0,0);
+    let Fecha = new Date();
+    this.FechaInicio = new Date(Fecha.getFullYear(), Fecha.getMonth(), 1, 6, 0, 0);
+    const ultimoDiaNoviembre = new Date(Fecha.getFullYear(), Fecha.getMonth(), 0).getDate();
+    this.FechaFin = new Date(Fecha.getFullYear(), Fecha.getMonth(), ultimoDiaNoviembre, 6, 0, 0);
   }
 
   calcularIndicadores() {
@@ -79,38 +92,37 @@ export class EstadisticasComponent implements OnInit {
       this.Indicadores.Utilidades = this.Indicadores.Ventas - this.Indicadores.Gastos - this.Indicadores.Compras;
       this.Indicadores.Deudas = data.Data.DatosCards.SumaDeudas;
       this.Indicadores.Creditos = data.Data.DatosCards.SumaCreditos;
-      this.Indicadores.UltimasVentas = data.Data.DatosGraficas.VentasRealizadas; 
-      this.Indicadores.ingresosCuentas=data.Data.DatosGraficas.IngresosCuentas;
-      this.Indicadores.GastosCuentas=data.Data.DatosGraficas.GastosCuentas;
-      this.Indicadores.ComprasCuentas=data.Data.DatosGraficas.ComprasCuentas;
-      this.Indicadores.AbonosCuentas=data.Data.DatosGraficas.AbonosCuentas;
-      this.Indicadores.ProductosMasVendidos=data.Data.DatosGraficas.ProductosMasVendidos;
+      this.Indicadores.UltimasVentas = data.Data.DatosGraficas.VentasRealizadas;
+      this.Indicadores.ingresosCuentas = data.Data.DatosGraficas.IngresosCuentas;
+      this.Indicadores.GastosCuentas = data.Data.DatosGraficas.GastosCuentas;
+      this.Indicadores.ComprasCuentas = data.Data.DatosGraficas.ComprasCuentas;
+      this.Indicadores.AbonosCuentas = data.Data.DatosGraficas.AbonosCuentas;
+      this.Indicadores.ProductosMasVendidos = data.Data.DatosGraficas.ProductosMasVendidos;
       this.Generartabla();
-    },err=>{
+    }, err => {
       this.aletasService.hideLoading();
-      this.aletasService.SetToast('Error al traer informacion de estadisticas',3)
+      this.aletasService.SetToast('Error al traer informacion de estadisticas', 3)
     });
   }
-  Generartabla(){
-      debugger;
-     var cuentas=this.Indicadores.ingresosCuentas.map((item)=>({Cuenta:item.Nombre}))
-     this.Tabla=[];
-     cuentas.forEach(element => {
-        let obj={
-          Nombre:element.Cuenta,
-          IngresosTotales:this.Indicadores.ingresosCuentas.filter(cuenta => cuenta && cuenta.MovimientoTotal && cuenta.Nombre === element.Cuenta)
+  Generartabla() {
+    debugger;
+    this.Tabla = [];
+    this.listaCuenta.forEach(element => {
+      let obj = {
+        Nombre: element.TIC_NOMBRE,
+        IngresosTotales: this.Indicadores.ingresosCuentas.filter(cuenta => cuenta && cuenta.MovimientoTotal && cuenta.Nombre === element.TIC_NOMBRE)
           .reduce((total, cuenta) => total + cuenta.MovimientoTotal, 0) +
-          this.Indicadores.AbonosCuentas.filter(cuenta => cuenta && cuenta.MovimientoTotal && cuenta.Nombre === element.Cuenta)
-          .reduce((total, cuenta) => total + cuenta.MovimientoTotal, 0) ,
-          ComprasTotales:this.Indicadores.ComprasCuentas.filter(cuenta => cuenta && cuenta.MovimientoTotal && cuenta.Nombre === element.Cuenta)
+          this.Indicadores.AbonosCuentas.filter(cuenta => cuenta && cuenta.MovimientoTotal && cuenta.Nombre === element.TIC_NOMBRE)
+            .reduce((total, cuenta) => total + cuenta.MovimientoTotal, 0),
+        ComprasTotales: this.Indicadores.ComprasCuentas.filter(cuenta => cuenta && cuenta.MovimientoTotal && cuenta.Nombre === element.TIC_NOMBRE)
           .reduce((total, cuenta) => total + cuenta.MovimientoTotal, 0),
-          GastosTotales:this.Indicadores.GastosCuentas.filter(cuenta => cuenta && cuenta.MovimientoTotal && cuenta.Nombre === element.Cuenta)
+        GastosTotales: this.Indicadores.GastosCuentas.filter(cuenta => cuenta && cuenta.MovimientoTotal && cuenta.Nombre === element.TIC_NOMBRE)
           .reduce((total, cuenta) => total + cuenta.MovimientoTotal, 0),
-          Saldo:0
-        };
-        obj.Saldo=obj.IngresosTotales - obj.ComprasTotales -obj.GastosTotales;
-        this.Tabla.push(obj)
-     });
+        Saldo: 0
+      };
+      obj.Saldo = obj.IngresosTotales - obj.ComprasTotales - obj.GastosTotales;
+      this.Tabla.push(obj)
+    });
   }
 
 }

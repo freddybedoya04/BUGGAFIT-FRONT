@@ -43,7 +43,7 @@ export class VentasComponent implements OnInit {
   tipodecuentaSeleccionado: any;
   tipoClienteSeleccionado!: string;
   existeCliente: boolean = false;
-  ClienteCredito:boolean=false;
+  ClienteCredito: boolean = false;
   gastoDeEnvio: IGasto;
   motivosDeEnvio: any;
   userLogged: any;
@@ -202,14 +202,14 @@ export class VentasComponent implements OnInit {
         this.formularioVenta.controls['CLI_DIRECCION'].setValue('');
         this.formularioVenta.controls['CLI_UBICACION'].setValue('');
         this.alertasService.SetToast("El cliente no existe. Por favor diligencie los datos para crearlo.", 2);
-        this.ClienteCredito=false;
+        this.ClienteCredito = false;
         return;
       }
       this.existeCliente = true;
       this.formularioVenta.controls['CLI_NOMBRE'].setValue(result.CLI_NOMBRE);
       this.formularioVenta.controls['CLI_DIRECCION'].setValue(result.CLI_DIRECCION);
       this.formularioVenta.controls['CLI_UBICACION'].setValue(result.CLI_UBICACION);
-      this.ClienteCredito=result.CLI_ESCREDITO==null?false:result.CLI_ESCREDITO;
+      this.ClienteCredito = result.CLI_ESCREDITO == null ? false : result.CLI_ESCREDITO;
       const tipoCliente = this.listaTipoDeCliente.filter((tipocliente: SelectItem) => {
         return tipocliente.value == result.CLI_TIPOCLIENTE;
       });
@@ -474,7 +474,7 @@ export class VentasComponent implements OnInit {
         CLI_DIRECCION: this.formularioVenta.controls['CLI_DIRECCION'].value,
         CLI_FECHACREACION: new Date(),
         CLI_ESTADO: true,
-        CLI_ESCREDITO: esVentaACredito==true?esVentaACredito:this.ClienteCredito,
+        CLI_ESCREDITO: esVentaACredito == true ? esVentaACredito : this.ClienteCredito,
       };
 
       this.clientesService.ActualizarCliente(cliente.ClI_ID, cliente).subscribe((result: any) => {
@@ -492,6 +492,7 @@ export class VentasComponent implements OnInit {
       CLI_NOMBRE: this.formularioVenta.controls['CLI_NOMBRE'].value,
       CLI_DIRECCION: this.formularioVenta.controls['CLI_DIRECCION'].value,
       CLI_TELEFONO: "0",
+      CLI_UBICACION: this.formularioVenta.controls['CLI_UBICACION'].value,
       CLI_TIPOCLIENTE: this.formularioVenta.controls['CLI_TIPOCLIENTE'].value,
       VEN_PRECIOTOTAL: valorTotalVenta,
       VEN_ESTADOCREDITO: esVentaACredito,
@@ -505,8 +506,8 @@ export class VentasComponent implements OnInit {
       TIP_CODIGO: this.formularioVenta.controls['VEN_TIPOENVIO'].value,
       DetalleVentas: this.listaProductos,
     }
-    if(venta.VEN_OBSERVACIONES==null || venta.VEN_OBSERVACIONES==undefined){
-      venta.VEN_OBSERVACIONES="";
+    if (venta.VEN_OBSERVACIONES == null || venta.VEN_OBSERVACIONES == undefined) {
+      venta.VEN_OBSERVACIONES = "";
     }
     this.alertasService.showLoading("Creando venta")
     this.ventasService.CrearVenta(venta).subscribe((result: any) => {
@@ -560,8 +561,8 @@ export class VentasComponent implements OnInit {
     ref.onClose.subscribe((res) => {
       this.gastoDeEnvio.TIC_CODIGO = res;
       debugger;
-      if(this.listaTipoDeCuenta.find(x=>x.value==res)?.label?.toUpperCase()=="EFECTIVO"){
-        this.gastoDeEnvio.GAS_PENDIENTE=false;
+      if (this.listaTipoDeCuenta.find(x => x.value == res)?.label?.toUpperCase() == "EFECTIVO") {
+        this.gastoDeEnvio.GAS_PENDIENTE = false;
       }
       this.CrearGatosVenta();
     });
@@ -619,7 +620,7 @@ export class VentasComponent implements OnInit {
     let ref = this.dialogService.open(ValidarUsuarioAdminComponent, {
       header: 'Validar Usuario',
       width: '25%',
-      contentStyle: { overflow: 'auto','background-color':'#eff3f8'},
+      contentStyle: { overflow: 'auto', 'background-color': '#eff3f8' },
       baseZIndex: 100,
       maximizable: true,
       data: {}
@@ -685,7 +686,7 @@ export class VentasComponent implements OnInit {
       VED_ESTADO: false
     }
     // Detal - Buga - domicilio y envío gratis
-    if (esClienteDetal && !estaFueraDeBuga) {
+    if (esClienteDetal) {
       const index = this.listaProductos.findIndex(x => x.PRO_CODIGO === '9999')
       if (index < 0) {
         return;

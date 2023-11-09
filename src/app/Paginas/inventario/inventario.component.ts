@@ -108,7 +108,7 @@ export class InventarioComponent implements OnInit {
             }
             else {
               this.alertasService.hideLoading();
-              this.alertasService.SetToast('Error al eliminar el producto: ' + result?.message, 3);
+              this.alertasService.SetToast('Error al eliminar el producto: ' + result?.Message, 3);
               console.error(result);
             }
           });
