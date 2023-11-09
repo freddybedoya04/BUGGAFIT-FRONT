@@ -257,7 +257,7 @@ export class CreacionCompraComponent implements OnInit {
         COM_ENBODEGA: this.Bodega,
         COM_ESTADO: true,
         COM_CREDITO: this.Credito,
-        USU_CEDULA: '9999',
+        USU_CEDULA: this.userLogged.USU_CEDULA,
         DetalleCompras: this.ListaProductosComprados
       }
       this.alerta.showLoading("Actualizando compra")
