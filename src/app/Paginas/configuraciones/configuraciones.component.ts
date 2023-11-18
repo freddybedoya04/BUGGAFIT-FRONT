@@ -55,6 +55,7 @@ export class ConfiguracionesComponent implements OnInit {
       TIC_CODIGO: 0,
       TIC_NOMBRE: "",
       TIC_NUMEROREFERENCIA: 0,
+      TIC_DINEROTOTAL:0,
       TIC_FECHACREACION: new Date(),
       TIC_ESTADO: false,
     };
@@ -201,6 +202,11 @@ export class ConfiguracionesComponent implements OnInit {
       this.alertasService.SetToast("Ya existe una cuenta con este numero de refereencia", 2);
       return;
     }
+    if (this.Cuenta.TIC_DINEROTOTAL==null){
+      this.alertasService.SetToast("No puede dejar el valor dinero total en blanco", 2);
+      return;
+    }
+    
 
     this.alertasService.showLoading("Creando cuenta");
     this.tipoCuentaService.CrearCuenta(this.Cuenta).subscribe(x => {
@@ -208,6 +214,7 @@ export class ConfiguracionesComponent implements OnInit {
       this.ActivarFormularioCuenta = false;
       this.Cuenta.TIC_NOMBRE = "";
       this.Cuenta.TIC_NUMEROREFERENCIA = 0;
+      this.Cuenta.TIC_DINEROTOTAL = 0;
       this.CargarCuentas();
       this.alertasService.SetToast("Se creó cuenta correctamente", 1)
     }, err => {
@@ -338,6 +345,31 @@ export class ConfiguracionesComponent implements OnInit {
       this.alertasService.SetToast(err, 3)
     })
   }
+
+  ActualizarTipoCuenta() {
+    if (this.Cuenta.TIC_DINEROTOTAL == null) {
+      this.alertasService.SetToast("Debe llenar el campo Dinero total", 2);
+      return;
+    }
+    if (this.Cuenta.TIC_NUMEROREFERENCIA == null) {
+      this.alertasService.SetToast("Debe llenar el campo numero de referencia", 2);
+      return;
+    }
+    this.alertasService.showLoading("Actuaizando tipo de Cuenta.");
+    this.tipoCuentaService.ActualizarCuenta(this.Cuenta).subscribe(x => {
+      this.alertasService.hideLoading();
+      this.ActivarFormularioCuenta = false;
+      this.Cuenta.TIC_CODIGO = 0;
+      this.Cuenta.TIC_NUMEROREFERENCIA=0;
+      this.Cuenta.TIC_DINEROTOTAL=0;
+      this.CargarCuentas();
+      this.alertasService.SetToast("Se modificó el tipo de cuenta correctamente", 1)
+    }, err => {
+      this.alertasService.hideLoading();
+      console.log(err);
+      this.alertasService.SetToast(err, 3)
+    })
+  }
   //#endregion
   PonerEnFormulario(envio: ITiposEnvios) {
     debugger
@@ -350,5 +382,18 @@ export class ConfiguracionesComponent implements OnInit {
       TIP_ESTADO: true,
     }
     this.ActivarFormularioTipoEnvio = true;
+  }
+  PonerEnFormularioTipoCuenta(cuenta: ITipocuenta) {
+    debugger
+    
+    this.Cuenta={
+      TIC_CODIGO: cuenta.TIC_CODIGO,
+      TIC_NOMBRE: cuenta.TIC_NOMBRE,
+      TIC_NUMEROREFERENCIA: cuenta.TIC_NUMEROREFERENCIA,
+      TIC_DINEROTOTAL: cuenta.TIC_DINEROTOTAL,
+      TIC_ESTADO: true,
+      TIC_FECHACREACION:new Date()
+    }
+    this.ActivarFormularioCuenta = true;
   }
 }

@@ -4,4 +4,5 @@ export interface ITipocuenta {
     TIC_NUMEROREFERENCIA: number;
     TIC_FECHACREACION: Date;
     TIC_ESTADO: boolean;
+    TIC_DINEROTOTAL?:number
 }

@@ -31,8 +31,9 @@ export class TipoCuentaService {
       }));
   }
   ActualizarCuenta(cuenta: ITipocuenta) {
-    return this.http.post<IApiResponse>(this.url + 'PutTipoCuenta' +cuenta.TIC_CODIGO , cuenta).pipe(
+    return this.http.put<IApiResponse>(this.url + 'PutTipoCuenta/' +cuenta.TIC_CODIGO , cuenta).pipe(
       map((result: IApiResponse) => {
+        debugger
         return result;
       }));
   }
