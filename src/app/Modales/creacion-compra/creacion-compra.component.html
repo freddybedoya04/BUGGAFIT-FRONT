@@ -13,14 +13,14 @@
                 </div>
                 <div>
                     <label for="TIC_CODIGO">Medio de pago:</label>
-                    <p-dropdown formControlName="TIC_CODIGO" [options]="listaTipoDeCuenta" optionLabel="label"
-                    optionValue="value" placeholder="Seleccione Cuenta"></p-dropdown>
+                    <p-dropdown  formControlName="TIC_CODIGO" [options]="listaTipoDeCuenta" optionLabel="label"
+                    optionValue="value" placeholder="Seleccione Cuenta" [readonly]="EsEdicion==true"></p-dropdown>
                 </div>
     
             </form>
             <div style="align-items: flex-start;display: flex;gap: 10px;">
-                <p-checkbox id="Bodega" [binary]="true" [(ngModel)]="Bodega" label="En bodega" ></p-checkbox>
-                <p-checkbox id="Credito" [binary]="true"[(ngModel)]="Credito" label="Deuda" ></p-checkbox>
+                <p-checkbox id="Bodega" [binary]="true" [(ngModel)]="Bodega" label="En bodega"  ></p-checkbox>
+                <!-- <p-checkbox id="Credito" [binary]="true"[(ngModel)]="Credito" label="Deuda" ></p-checkbox> -->
             </div>
         </section>
 

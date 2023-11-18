@@ -21,10 +21,10 @@
         ></p-dropdown>
       </div>
       
-      <div>
+      <!-- <div>
         <label for="GAS_PENDIENTE">Pendiente Pago:</label>
         <p-checkbox formControlName="GAS_PENDIENTE"[binary]="true"></p-checkbox>
-      </div>
+      </div> -->
     </section>
   </p-card >
     <p-card [style]="{ width: '100%' }" class="card">
@@ -37,17 +37,22 @@
             optionLabel="label"
             optionValue="value"
             placeholder="Seleccione Cuenta"
+            [readonly]="esEdicion==true"
           ></p-dropdown>
+<!-- 
+          <input type="text" pInputText formControlName="TIC_CODIGO" matInput autocomplete="off"> -->
         </div>
   
         <div>
           <label for="GAS_VALOR">Valor:</label>
-          <p-inputNumber
+          <p-inputNumber 
             class="Numerico"
             mode="decimal"
             locale="en-US"
             formControlName="GAS_VALOR"
+            [readonly]="esEdicion==true"
           ></p-inputNumber>
+          <!-- <input *ngIf="esEdicion==true" type="text" pInputText formControlName="GAS_VALOR" readonly="true" matInput autocomplete="off"> -->
         </div>
         <div>
           <label for="GAS_OBSERVACIONES">Detalle Gasto:</label>

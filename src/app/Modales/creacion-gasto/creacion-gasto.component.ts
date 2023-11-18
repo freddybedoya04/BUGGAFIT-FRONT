@@ -38,7 +38,7 @@ export class CreacionGastoComponent implements OnInit {
     this.FechaActual = new Date(Date.now());
     this.formularioGasto = this.formBuilder.group({
       GAS_VALOR: [null, Validators.required],
-      GAS_PENDIENTE: false,
+      // GAS_PENDIENTE: false,
       GAS_FECHAGASTO: [this.FechaActual, Validators.required],
       TIC_CODIGO: [null, Validators.required],
       MOG_CODIGO: [null, Validators.required],
@@ -126,12 +126,11 @@ CrearGasto() {
         return;
       }
     }
-
     const nuevoGasto: IGasto = {
       GAS_CODIGO: this.formularioGasto.get('GAS_CODIGO')?.value,
       GAS_OBSERVACIONES: this.formularioGasto.get('GAS_OBSERVACIONES')?.value,
       GAS_VALOR: this.formularioGasto.get('GAS_VALOR')?.value,
-      GAS_PENDIENTE: this.formularioGasto.get('GAS_PENDIENTE')?.value,
+      GAS_PENDIENTE: false,
       GAS_FECHAGASTO: this.formularioGasto.get('GAS_FECHAGASTO')?.value,
       USU_CEDULA: this.userLogged.USU_CEDULA, 
       GAS_FECHACREACION: new Date(),

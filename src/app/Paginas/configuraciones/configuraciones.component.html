@@ -113,7 +113,12 @@
                         </div>
                         <div>
                             <label>Dinero total:</label>
-                            <input type="text" pInputText [(ngModel)]="Cuenta.TIC_DINEROTOTAL" />
+                            <p-inputNumber
+                            class="Numerico"
+                            mode="decimal"
+                            locale="en-US"
+                            [(ngModel)]="Cuenta.TIC_DINEROTOTAL"
+                          ></p-inputNumber>
                         </div>
                         <div class="BotonAgregar">
                             <p-button *ngIf="Cuenta.TIC_CODIGO !=0" label="Actualizar Cuenta" icon="pi pi-plus" (onClick)="ActualizarTipoCuenta()"></p-button>
