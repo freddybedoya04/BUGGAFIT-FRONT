@@ -46,8 +46,12 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
+
                     <th pSortableColumn="VEN_CODIGO" style="width: 5%">
                         #<p-sortIcon field="VEN_CODIGO"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="VEN_ESANULADA" style="width: 5%">
+                        Anulada<p-sortIcon field="VEN_ESANULADA"></p-sortIcon>
                     </th>
                     <th pSortableColumn="VEN_FECHAVENTA" style="width: 15%">
                         Fecha <p-sortIcon field="VEN_FECHAVENTA"></p-sortIcon>
@@ -89,8 +93,9 @@
 
             </ng-template>
             <ng-template pTemplate="body" let-venta>
-                <tr>
+                <tr [style]="venta.VEN_ESANULADA ? 'background-color:  rgba(255, 0, 0, 0.26);':'background-color: #fff;'">
                     <td>{{ venta.VEN_CODIGO }}</td>
+                    <td><i *ngIf="venta.VEN_ESANULADA" class="pi pi-exclamation-triangle"></i></td>
                     <td>{{ venta.VEN_FECHAVENTA | date : "YYYY-MMM-dd" }}</td>
                     <td>{{ venta.TIC_NOMBRE }}</td>
                     <td>${{ venta.VEN_PRECIOTOTAL| number }}</td>
@@ -119,7 +124,7 @@
                         <button pButton pRipple icon="pi pi-search" class="p-button-rounded p-button-info "
                             pTooltip="Ver Detalles" tooltipPosition="top" placeholder="Top" (click)="BuscarDetalles(venta)"></button>
                         <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                            pTooltip="Eliminar" tooltipPosition="top" placeholder="Top" (click)="EliminarVenta(venta)"></button>
+                            pTooltip="Eliminar" tooltipPosition="top" placeholder="Top" (click)="EliminarVenta(venta)" [disabled]="venta.VEN_ESANULADA"></button>
                     </td>
                 </tr>
             </ng-template>

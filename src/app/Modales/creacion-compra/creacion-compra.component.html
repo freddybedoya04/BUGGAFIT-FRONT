@@ -8,7 +8,7 @@
                 </div>
                 <div>
                     <label for="COM_PROVEEDOR">Proveedor:</label>
-                    <input type="text" pInputText formControlName="COM_PROVEEDOR" matInput autocomplete="off">
+                    <input type="text" pInputText formControlName="COM_PROVEEDOR" [readonly]="Compra.COM_ESANULADA" matInput autocomplete="off">
         
                 </div>
                 <div>
@@ -19,7 +19,7 @@
     
             </form>
             <div style="align-items: flex-start;display: flex;gap: 10px;">
-                <p-checkbox id="Bodega" [binary]="true" [(ngModel)]="Bodega" label="En bodega"  ></p-checkbox>
+                <p-checkbox id="Bodega" [binary]="true" [(ngModel)]="Bodega" label="En bodega" [readonly]="Compra.COM_ESANULADA==true" ></p-checkbox>
                 <!-- <p-checkbox id="Credito" [binary]="true"[(ngModel)]="Credito" label="Deuda" ></p-checkbox> -->
             </div>
         </section>

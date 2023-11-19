@@ -44,8 +44,15 @@ export class VentasService {
         return result.Data;
       }));
   }
+
   ActualizarVenta(venta: number) {
     return this.http.put<IApiResponse>(this.url + 'PutVenta/' + venta, venta).pipe(
+      map((result: IApiResponse) => {
+        return result.Data;
+      }));
+  }
+  AnularVenta(venta: number) {
+    return this.http.put<IApiResponse>(this.url + 'AnularVenta/' + venta, venta).pipe(
       map((result: IApiResponse) => {
         return result.Data;
       }));
@@ -82,6 +89,12 @@ export class VentasService {
   }
   EliminarAbono(Abono: number) {
     return this.http.delete<IApiResponse>(this.url + 'DeleteAbono/' + Abono).pipe(
+      map((result: IApiResponse) => {
+        return result.Data;
+      }));
+  }
+  AnularAbono(abono: number) {
+    return this.http.put<IApiResponse>(this.url + 'AnularAbono/' + abono, abono).pipe(
       map((result: IApiResponse) => {
         return result.Data;
       }));

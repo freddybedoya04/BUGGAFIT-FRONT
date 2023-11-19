@@ -11,4 +11,5 @@ export interface IGasto {
     VEN_CODIGO?: number;
     MOG_NOMBRE?:string;
     GAS_OBSERVACIONES?:string
+    GAS_ESANULADA?:boolean,
 }

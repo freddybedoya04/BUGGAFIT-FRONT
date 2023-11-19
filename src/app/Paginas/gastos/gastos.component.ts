@@ -1,12 +1,12 @@
-import { Component, OnInit,ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { IFiltro } from 'src/app/Interfaces/ifiltro';
 import { IGasto } from 'src/app/Interfaces/igasto';
 import { CreacionGastoComponent } from 'src/app/Modales/creacion-gasto/creacion-gasto.component';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { GastosService } from 'src/app/Servicios/gastos.service';
-import * as FileSaver from 'file-saver'; 
-import * as XLSX from 'xlsx'; 
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 
 
 @Component({
@@ -53,10 +53,10 @@ export class GastosComponent implements OnInit {
     let ref = this.dialogService.open(CreacionGastoComponent, {
       header: 'Nuevo Gasto',
       width: '60%',
-      contentStyle: { overflow: 'auto','background-color':'#eff3f8' },
+      contentStyle: { overflow: 'auto', 'background-color': '#eff3f8' },
       baseZIndex: 100,
       maximizable: true,
-      data: { esEdicion: false}
+      data: { esEdicion: false }
     });
     ref.onClose.subscribe((res) => {
       this.FechaFin = new Date(Date.now());
@@ -66,7 +66,7 @@ export class GastosComponent implements OnInit {
 
   BuscarGasto() {
     this.alertasService.showLoading("Cargando gastos");
-    
+
     // Llamar al servicio para obtener todos los gastos
     this.gastosService.BuscarGastos().subscribe(
       (result: any) => {
@@ -90,8 +90,8 @@ export class GastosComponent implements OnInit {
     this.alertasService.showLoading("Buscando gastos...")
     this.gastosService.BuscarGastoPorFechas(this.filtro).subscribe(result => {
       console.log(result);
-      if(result === null)
-      this.alertasService.SetToast("No hay Gastos", 2);
+      if (result === null)
+        this.alertasService.SetToast("No hay Gastos", 2);
       this.alertasService.hideLoading();
       this.listaGastos = result.Data;
     })
@@ -106,7 +106,7 @@ export class GastosComponent implements OnInit {
     let ref = this.dialogService.open(CreacionGastoComponent, {
       header: 'Editar Gasto',
       width: '60%',
-      contentStyle: { overflow: 'auto','background-color':'#eff3f8' },
+      contentStyle: { overflow: 'auto', 'background-color': '#eff3f8' },
       baseZIndex: 100,
       maximizable: true,
       data: { esEdicion: true, gastoAEditar: gasto }
@@ -128,7 +128,18 @@ export class GastosComponent implements OnInit {
       (resolve: any) => {
         if (resolve) {
           this.alertasService.showLoading('Eliminando el producto');
-          this.gastosService.EliminarGasto(gasto.GAS_CODIGO).subscribe((result) => {
+          if (gasto.GAS_PENDIENTE == true) {
+            this.gastosService.EliminarGasto(gasto.GAS_CODIGO).subscribe((result) => {
+              this.alertasService.hideLoading();
+              this.alertasService.SetToast('Gasto Eliminado', 1);
+              this.BuscarGastoPorFechas();
+            }, err => {
+              this.alertasService.hideLoading();
+              this.alertasService.SetToast('Error al eliminar el Gasto: ' + err?.message, 3);
+              console.error(err);
+            });
+          } else {
+            this.gastosService.AnularGasto(gasto.GAS_CODIGO).subscribe((result) => {
               this.alertasService.hideLoading();
               this.alertasService.SetToast('Gasto Eliminado', 1);
               this.BuscarGastoPorFechas();
@@ -137,6 +148,8 @@ export class GastosComponent implements OnInit {
             this.alertasService.SetToast('Error al eliminar el Gasto: ' + err?.message, 3);
             console.error(err);
           });
+          }
+
         }
       })
   }
@@ -147,22 +160,22 @@ export class GastosComponent implements OnInit {
     }
     import("xlsx").then((xlsx) => {
       const worksheet: XLSX.WorkSheet = xlsx.utils.json_to_sheet(this.listaGastos, { header: this.customColumnHeaders });
-      
+
       const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
       const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
       this.saveAsExcelFile(excelBuffer, 'Reportes-gastos');
     });
   }
-  
-  
-  
+
+
+
   saveAsExcelFile(buffer: any, fileName: string): void {
     const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const EXCEL_EXTENSION = '.xlsx';
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
-    FileSaver.saveAs(data, fileName );
+    FileSaver.saveAs(data, fileName);
   }
-  
+
 
   CerrarGasto(gasto: IGasto) {
     this.alertasService.confirmacion("Desea Cerrar el gasto con codigo: " + gasto.GAS_CODIGO).then(
@@ -171,10 +184,10 @@ export class GastosComponent implements OnInit {
           this.alertasService.showLoading('Cerrando Gasto');
           this.gastosService.CerrarGasto(gasto.GAS_CODIGO).subscribe((result: any) => {
 
-              this.alertasService.hideLoading();
-              this.alertasService.SetToast('Gasto Cerrado', 1);
-              this.BuscarGastoPorFechas();
-          },err=>{
+            this.alertasService.hideLoading();
+            this.alertasService.SetToast('Gasto Cerrado', 1);
+            this.BuscarGastoPorFechas();
+          }, err => {
             this.alertasService.hideLoading();
             this.alertasService.SetToast('Error al cerrar el Gasto: ' + err?.message, 3);
             console.error(err);

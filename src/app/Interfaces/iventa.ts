@@ -25,5 +25,6 @@ VEN_ESTADOVENTA : boolean,
 VEN_ESTADO : boolean
 TIP_CODIGO?:number,
 TIP_NOMBRE?:string,
-DetalleVentas?:IDetalleVentas[];
+DetalleVentas?:IDetalleVentas[],
+VEN_ESANULADA?:boolean,
 }

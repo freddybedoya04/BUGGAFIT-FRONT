@@ -89,18 +89,30 @@ export class ComprasComponent implements OnInit {
   }
 
   EliminarCompra(compra:Icompras){
-    
+    debugger;
     this.alertas.confirmacion("Esta seguro de eliminar la compra # "+compra.COM_CODIGO+"?").then(result=>{
       if(result){
         this.alertas.showLoading("Eliminano compra")
-        this._comprasService.EliminarCompra(compra).subscribe(x=>{
-          this.alertas.hideLoading();
-          this.alertas.SetToast("Se elimino Corretamente",1)
-          this.BuscarComprasPorFechas();
-        },err=>{
-          this.alertas.hideLoading();
-          this.alertas.SetToast(err,3)
-        })
+        if(compra.COM_CREDITO){
+          this._comprasService.EliminarCompra(compra).subscribe(x=>{
+            this.alertas.hideLoading();
+            this.alertas.SetToast("Se elimino Corretamente",1)
+            this.BuscarComprasPorFechas();
+          },err=>{
+            this.alertas.hideLoading();
+            this.alertas.SetToast(err,3)
+          });
+        }else{
+          this._comprasService.AnularCompra(compra).subscribe(x=>{
+            this.alertas.hideLoading();
+            this.alertas.SetToast("Se elimino Corretamente",1)
+            this.BuscarComprasPorFechas();
+          },err=>{
+            this.alertas.hideLoading();
+            this.alertas.SetToast(err,3)
+          })
+        }
+
       }
     })
   }

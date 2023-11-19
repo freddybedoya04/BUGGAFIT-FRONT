@@ -5,4 +5,7 @@ export interface Iabonos {
     CAR_VALORABONADO: number;
     TIC_CODIGO: number;
     TIC_NOMBRE: string;
+    USU_CEDULA?:string;
+    CAR_ESTADOCREDITO?:number;
+    CAR_ESANULADA?:boolean;
   }

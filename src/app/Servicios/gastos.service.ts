@@ -62,6 +62,12 @@ export class GastosService {
         return result;
       }));
   }
+  AnularGasto(gasto: number) {
+    return this.http.put<IApiResponse>(this.url + 'AnularGasto/' + gasto, gasto).pipe(
+      map((result: IApiResponse) => {
+        return result;
+      }));
+  }
   ActualizarGasto(codGasto: string, gasto: IGasto) {
     return this.http.put<IApiResponse>(this.url + 'PutGasto/' + codGasto, gasto).pipe(
       map((result: IApiResponse) => {

@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Iabonos } from 'src/app/Interfaces/iabonos';
@@ -8,8 +8,8 @@ import { AbonosComponent } from 'src/app/Modales/abonos/abonos.component';
 import { DetalleVentasComponent } from 'src/app/Modales/detalle-ventas/detalle-ventas.component';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { VentasService } from 'src/app/Servicios/ventas.service';
-import * as FileSaver from 'file-saver'; 
-import * as XLSX from 'xlsx'; 
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-reportes',
   templateUrl: './reportes.component.html',
@@ -25,7 +25,7 @@ export class ReportesComponent implements OnInit {
   @ViewChild('dt2', { static: true }) table: any;
   customColumnHeaders: string[] = [];
   public searchKeyword: string = '';
-  constructor(private alertas:AlertasService,private ventasService:VentasService,private dialogService:DialogService) {
+  constructor(private alertas: AlertasService, private ventasService: VentasService, private dialogService: DialogService) {
     this.FechaFin = new Date();
     this.FechaInicio = new Date();
     this.filtro = {
@@ -51,13 +51,13 @@ export class ReportesComponent implements OnInit {
   }
   getSeverity(estado: boolean) {
 
-      switch (estado) {
-        case true:
-          return 'success';
-        case false:
-          return 'warning';
-      }
-    
+    switch (estado) {
+      case true:
+        return 'success';
+      case false:
+        return 'warning';
+    }
+
 
   }
   BuscarVentasPorFechas() {
@@ -76,34 +76,46 @@ export class ReportesComponent implements OnInit {
     this.filtro.FechaFin = this.FechaFin.toISOString();
     this.filtro.FechaInicio = this.FechaInicio.toISOString();
   }
-  EliminarVenta(venta:Iventa){
+  EliminarVenta(venta: Iventa) {
     debugger
-    this.alertas.confirmacion("Esta seguro de eliminar la venta # "+venta.VEN_CODIGO+"?").then(result=>{
-      if(result){
+    this.alertas.confirmacion("Esta seguro de eliminar la venta # " + venta.VEN_CODIGO + "?").then(result => {
+      if (result) {
         this.alertas.showLoading("Eliminano venta")
-        this.ventasService.EliminarVenta(venta.VEN_CODIGO).subscribe(x=>{
-          this.alertas.hideLoading();
-          this.alertas.SetToast("Se elimino corretamente",1)
-          this.BuscarVentasPorFechas();
-        },err=>{
-          this.alertas.hideLoading();
-          this.alertas.SetToast(err,3)
-        })
+        if (venta.VEN_ESTADOVENTA == true) {
+          this.ventasService.AnularVenta(venta.VEN_CODIGO).subscribe(x => {
+            this.alertas.hideLoading();
+            this.alertas.SetToast("Se elimino corretamente", 1)
+            this.BuscarVentasPorFechas();
+          }, err => {
+            this.alertas.hideLoading();
+            this.alertas.SetToast(err, 3)
+          })
+        } else {
+          this.ventasService.EliminarVenta(venta.VEN_CODIGO).subscribe(x => {
+            this.alertas.hideLoading();
+            this.alertas.SetToast("Se elimino corretamente", 1)
+            this.BuscarVentasPorFechas();
+          }, err => {
+            this.alertas.hideLoading();
+            this.alertas.SetToast(err, 3)
+          })
+        }
+
       }
     })
   }
-  ActualizarEstadoVenta(venta:Iventa){
+  ActualizarEstadoVenta(venta: Iventa) {
     debugger
-    this.alertas.confirmacion("Esta seguro de confirmar la venta # "+venta.VEN_CODIGO+"?").then(result=>{
-      if(result){
+    this.alertas.confirmacion("Esta seguro de confirmar la venta # " + venta.VEN_CODIGO + "?").then(result => {
+      if (result) {
         this.alertas.showLoading("Confirmando venta")
-        this.ventasService.ActualizarEstadoVenta(venta.VEN_CODIGO).subscribe(x=>{
+        this.ventasService.ActualizarEstadoVenta(venta.VEN_CODIGO).subscribe(x => {
           this.alertas.hideLoading();
-          this.alertas.SetToast("Se confirmo corretamente",1)
+          this.alertas.SetToast("Se confirmo corretamente", 1)
           this.BuscarVentasPorFechas();
-        },err=>{
+        }, err => {
           this.alertas.hideLoading();
-          this.alertas.SetToast(err,3)
+          this.alertas.SetToast(err, 3)
         })
       }
     })
@@ -114,70 +126,70 @@ export class ReportesComponent implements OnInit {
       this.alertas.SetToast('No hay datos para exportar.', 2);
       return;
     }
-  
+
     import("xlsx").then((xlsx) => {
       const worksheet: XLSX.WorkSheet = xlsx.utils.json_to_sheet(this.ventas, { header: this.customColumnHeaders });
-      
+
       const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
       const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
       this.saveAsExcelFile(excelBuffer, 'Reportes');
     });
   }
-  
-  
-  
+
+
+
   saveAsExcelFile(buffer: any, fileName: string): void {
     const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const EXCEL_EXTENSION = '.xlsx';
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
     FileSaver.saveAs(data, fileName);
   }
-  BuscarDetalles(venta:Iventa){
-    let nuevaVenta:Iventa=venta;
+  BuscarDetalles(venta: Iventa) {
+    let nuevaVenta: Iventa = venta;
     this.alertas.showLoading("Cargando información de venta");
-    this.ventasService.ListarDetallePorCodigoVenta(venta.VEN_CODIGO).subscribe(x=>{
+    this.ventasService.ListarDetallePorCodigoVenta(venta.VEN_CODIGO).subscribe(x => {
       this.alertas.hideLoading();
-      nuevaVenta.DetalleVentas=x;
+      nuevaVenta.DetalleVentas = x;
       this.AbrirModaDetalleVentas(nuevaVenta);
-    },err=>{
+    }, err => {
       this.alertas.hideLoading();
-      this.alertas.SetToast('Error al traer detalles  de la venta',3)
+      this.alertas.SetToast('Error al traer detalles  de la venta', 3)
     })
   }
-  AbrirModaDetalleVentas(venta:Iventa) {
+  AbrirModaDetalleVentas(venta: Iventa) {
     let ref = this.dialogService.open(DetalleVentasComponent, {
-      header: 'Venta #'+venta.VEN_CODIGO,
+      header: 'Venta #' + venta.VEN_CODIGO,
       width: '60%',
       baseZIndex: 100,
       maximizable: true,
-      contentStyle:{'background-color':'#eff3f8'},
-      data:{Venta:venta,}
+      contentStyle: { 'background-color': '#eff3f8' },
+      data: { Venta: venta, }
     })
     ref.onClose.subscribe((res) => {
     });
   }
 
-  BuscarAbonos(venta:Iventa){
+  BuscarAbonos(venta: Iventa) {
     this.alertas.showLoading("Cargando información de abonos");
-    this.ventasService.ListarAbonosPorCodigoVenta(venta.VEN_CODIGO).subscribe((abonos:Iabonos[])=>{
+    this.ventasService.ListarAbonosPorCodigoVenta(venta.VEN_CODIGO).subscribe((abonos: Iabonos[]) => {
       this.alertas.hideLoading();
-      this.AbrirModaAbonos(venta,abonos);
-    },err=>{
+      this.AbrirModaAbonos(venta, abonos);
+    }, err => {
       this.alertas.hideLoading();
-      this.alertas.SetToast('Error al traer los abonos  de la venta',3)
+      this.alertas.SetToast('Error al traer los abonos  de la venta', 3)
     })
   }
-  AbrirModaAbonos(venta:Iventa,abonos:Iabonos[]) {
+  AbrirModaAbonos(venta: Iventa, abonos: Iabonos[]) {
     let ref = this.dialogService.open(AbonosComponent, {
-      header: 'Venta #'+venta.VEN_CODIGO,
+      header: 'Venta #' + venta.VEN_CODIGO,
       width: '60%',
       baseZIndex: 100,
       maximizable: true,
-      contentStyle:{'background-color':'#eff3f8'},
-      data:{Venta:venta,Abonos:abonos}
+      contentStyle: { 'background-color': '#eff3f8' },
+      data: { Venta: venta, Abonos: abonos }
     })
     ref.onClose.subscribe((res) => {
-      if(res==true){
+      if (res == true) {
         this.BuscarVentasPorFechas();
       }
     });

@@ -20,6 +20,9 @@ export class ComprasService {
   EliminarCompra(compra:Icompras):Observable<any>{
     return this.http.delete(this.url+compra.COM_CODIGO);
   }
+  AnularCompra(compra:Icompras):Observable<any>{
+    return this.http.put(this.url+'AnularCompra/'+compra.COM_CODIGO,compra);
+  }
   ActualizarCompra(compra:Icompras):Observable<any>{
     return this.http.put(this.url+'ActualizarCompra',compra);
   }

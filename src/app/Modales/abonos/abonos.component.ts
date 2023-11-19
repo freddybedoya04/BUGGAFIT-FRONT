@@ -23,11 +23,13 @@ export class AbonosComponent implements OnInit {
   totalAbonado: number = 0;
   listaTipoDeCuenta: SelectItem[] = [];
   CuentaSeleccionada: SelectItem;
-  esEditar:boolean=false;
-  credito:Icredito;
+  esEditar: boolean = false;
+  credito: Icredito;
+  userLogged: any;
   constructor(private ventasService: VentasService, private alertasService: AlertasService,
-    private config: DynamicDialogConfig,public ref: DynamicDialogRef,
-    private creditoService:CreditosService) {
+    private config: DynamicDialogConfig, public ref: DynamicDialogRef,
+    private creditoService: CreditosService) {
+    this.userLogged = JSON.parse(localStorage.getItem('user') || "");
     this.venta = {
       VEN_CODIGO: 0,
       VEN_FECHACREACION: new Date(),
@@ -57,14 +59,15 @@ export class AbonosComponent implements OnInit {
       CAR_FECHACREDITO: new Date(),
       CAR_VALORABONADO: 0,
       TIC_CODIGO: 0,
-      TIC_NOMBRE: ""
+      TIC_NOMBRE: "",
+      USU_CEDULA: ""
     };
 
     this.CuentaSeleccionada = {
       label: '',
       value: ''
     }
-    this.credito={
+    this.credito = {
       CLI_ID: '',
       CLI_NOMBRE: '',
       Ventas: [],
@@ -75,7 +78,7 @@ export class AbonosComponent implements OnInit {
     }
   }
   ngOnInit(): void {
-    this.credito=this.config.data.Credito;
+    this.credito = this.config.data.Credito;
     this.ObtenerTipoCuentas();
     this.FormateoDeDatos();
   }
@@ -90,7 +93,7 @@ export class AbonosComponent implements OnInit {
         this.alertasService.SetToast("No hay Cuentas asignadas.", 3);
         return;
       }
-      this.listaTipoDeCuenta = result.filter((x: { TIC_NOMBRE: string; })=>!x.TIC_NOMBRE.toLocaleUpperCase().includes("CREDITO")).map((item: any) => {
+      this.listaTipoDeCuenta = result.filter((x: { TIC_NOMBRE: string; }) => !x.TIC_NOMBRE.toLocaleUpperCase().includes("CREDITO")).map((item: any) => {
         const selectItem: SelectItem = {
           label: item.TIC_NOMBRE,
           value: item.TIC_CODIGO
@@ -103,16 +106,17 @@ export class AbonosComponent implements OnInit {
   CalcularSaldo() {
     this.CalcularTotalAbonado();
     this.saldo = this.venta.VEN_PRECIOTOTAL - this.totalAbonado;
-    this.config.header = 'Saldo pendiente $' + (this.venta.VEN_ESTADOCREDITO==true? this.saldo.toLocaleString('en-US'):0);
+    this.config.header = 'Saldo pendiente $' + (this.venta.VEN_ESTADOCREDITO == true ? this.saldo.toLocaleString('en-US') : 0);
   }
   CalcularTotalAbonado() {
     this.totalAbonado = this.abonos.reduce((total, elemento) => total + elemento.CAR_VALORABONADO, 0);
   }
   AgregarAbono() {
-    if( this.ValidarIngresoAbono()) return;
-    let cuenta=this.listaTipoDeCuenta.find(x=>x.value==this.CuentaSeleccionada)?.value;
-    this.nuevoAbono.TIC_CODIGO =cuenta;
+    if (this.ValidarIngresoAbono()) return;
+    let cuenta = this.listaTipoDeCuenta.find(x => x.value == this.CuentaSeleccionada)?.value;
+    this.nuevoAbono.TIC_CODIGO = cuenta;
     this.nuevoAbono.VEN_CODIGO = this.credito.Ventas[0].VEN_CODIGO;
+    this.nuevoAbono.USU_CEDULA = this.userLogged.USU_CEDULA;
     this.alertasService.showLoading("Creando Abono");
     this.ventasService.CrearAbono(this.nuevoAbono).subscribe(x => {
       this.alertasService.hideLoading();
@@ -124,7 +128,7 @@ export class AbonosComponent implements OnInit {
       console.log(err);
     });
   }
-  ValidarIngresoAbono():boolean {
+  ValidarIngresoAbono(): boolean {
     if (this.CuentaSeleccionada == null) {
       this.alertasService.SetToast('Debe seleccionar un tipo de pago', 2)
       return true;
@@ -139,41 +143,54 @@ export class AbonosComponent implements OnInit {
     this.alertasService.showLoading("Cargando información de crédito");
     this.creditoService.ObtenerCreditoCliente(this.credito.CLI_ID).subscribe((creditoAux: Icredito) => {
       this.alertasService.hideLoading();
-      this.credito=creditoAux;
+      this.credito = creditoAux;
       this.LimpiarFormulario();
     }, err => {
       this.alertasService.hideLoading();
       this.alertasService.SetToast('Error al traer los datos del crédito', 3)
     })
   }
-  EliminarAbono(abono:Iabonos){
+  EliminarAbono(abono: Iabonos) {
     debugger
-    this.alertasService.confirmacion("Esta seguro de eliminar el abono # "+abono.CAR_CODIGO+"?").then(result=>{
-      if(result){
+    this.alertasService.confirmacion("Esta seguro de eliminar el abono # " + abono.CAR_CODIGO + "?").then(result => {
+      if (result) {
         this.alertasService.showLoading("Eliminano abono")
-        this.ventasService.EliminarAbono(abono.CAR_CODIGO).subscribe(x=>{
-          this.alertasService.hideLoading();
-          this.alertasService.SetToast("Se elimino corretamente",1)
-          this.ListarAbonos();
-        },err=>{
-          this.alertasService.hideLoading();
-          this.alertasService.SetToast(err,3)
-        })
+        if (abono.CAR_ESTADOCREDITO == 0) {
+          this.ventasService.EliminarAbono(abono.CAR_CODIGO).subscribe(x => {
+            this.alertasService.hideLoading();
+            this.alertasService.SetToast("Se elimino corretamente", 1)
+            this.ListarAbonos();
+          }, err => {
+            this.alertasService.hideLoading();
+            this.alertasService.SetToast(err, 3)
+          })
+        }
+        else {
+          this.ventasService.AnularAbono(abono.CAR_CODIGO).subscribe(x => {
+            this.alertasService.hideLoading();
+            this.alertasService.SetToast("Se elimino corretamente", 1)
+            this.ListarAbonos();
+          }, err => {
+            this.alertasService.hideLoading();
+            this.alertasService.SetToast(err, 3)
+          })
+        }
+
       }
     })
   }
-  SeleccionarAbono(abono:Iabonos){
-    this.nuevoAbono=abono;
-    this.CuentaSeleccionada=this.listaTipoDeCuenta.find(x=>x.value==this.nuevoAbono.TIC_CODIGO)?.value;
+  SeleccionarAbono(abono: Iabonos) {
+    this.nuevoAbono = abono;
+    this.CuentaSeleccionada = this.listaTipoDeCuenta.find(x => x.value == this.nuevoAbono.TIC_CODIGO)?.value;
     let fecha = new Date(this.nuevoAbono.CAR_FECHACREDITO);
-    this.nuevoAbono.CAR_FECHACREDITO= new Date()
+    this.nuevoAbono.CAR_FECHACREDITO = new Date()
     this.nuevoAbono.CAR_FECHACREDITO.setDate(fecha.getDate());
-    this.esEditar=true;
+    this.esEditar = true;
   }
-  ActualizarAbono(){
-    if( this.ValidarIngresoAbono()) return;
-    let cuenta=this.listaTipoDeCuenta.find(x=>x.value==this.CuentaSeleccionada)?.value;
-    this.nuevoAbono.TIC_CODIGO =cuenta;
+  ActualizarAbono() {
+    if (this.ValidarIngresoAbono()) return;
+    let cuenta = this.listaTipoDeCuenta.find(x => x.value == this.CuentaSeleccionada)?.value;
+    this.nuevoAbono.TIC_CODIGO = cuenta;
     this.alertasService.showLoading("Actualizando Abono");
     this.ventasService.ActualizarAbono(this.nuevoAbono).subscribe(x => {
       this.alertasService.hideLoading();
@@ -186,27 +203,27 @@ export class AbonosComponent implements OnInit {
     });
   }
 
-  FinalizarCredito(){
-    let mensaje="¿Esta seguro de finalizar el credito?"
-    if(this.saldo>0){
-      mensaje="Aun hay $"+this.saldo.toLocaleString('en-US') + "  pendiente ¿Esta seguro de finalizar el credito?"
+  FinalizarCredito() {
+    let mensaje = "¿Esta seguro de finalizar el credito?"
+    if (this.saldo > 0) {
+      mensaje = "Aun hay $" + this.saldo.toLocaleString('en-US') + "  pendiente ¿Esta seguro de finalizar el credito?"
     }
     debugger
-    this.alertasService.confirmacion(mensaje).then(result=>{
-      if(result){
+    this.alertasService.confirmacion(mensaje).then(result => {
+      if (result) {
         this.alertasService.showLoading("Finalizando credito")
-        this.ventasService.FinalizarCredito(this.venta.VEN_CODIGO).subscribe(x=>{
+        this.ventasService.FinalizarCredito(this.venta.VEN_CODIGO).subscribe(x => {
           this.alertasService.hideLoading();
-          this.alertasService.SetToast("Se finalizó el credito corretamente",1)
+          this.alertasService.SetToast("Se finalizó el credito corretamente", 1)
           this.ref.close(true);
-        },err=>{
+        }, err => {
           this.alertasService.hideLoading();
-          this.alertasService.SetToast(err,3)
+          this.alertasService.SetToast(err, 3)
         })
       }
     })
   }
-  LimpiarFormulario(){
+  LimpiarFormulario() {
     this.CuentaSeleccionada = {
       label: '',
       value: ''
@@ -219,6 +236,18 @@ export class AbonosComponent implements OnInit {
       TIC_CODIGO: 0,
       TIC_NOMBRE: ""
     };
-    this.esEditar=false;
+    this.esEditar = false;
+  }
+  getSeverity(estado: any) {
+
+    switch (estado) {
+      case 1:
+        return 'success';
+      case 0:
+        return 'danger';
+      default:
+        return "";
+    }
+
   }
 }

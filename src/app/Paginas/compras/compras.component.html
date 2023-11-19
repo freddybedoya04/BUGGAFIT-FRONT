@@ -42,9 +42,10 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th pSortableColumn="COM_CODIGO" style="width:20%">Code <p-sortIcon field="COM_CODIGO"></p-sortIcon>
+                    <th pSortableColumn="COM_CODIGO" style="width:20%">Codigo <p-sortIcon field="COM_CODIGO"></p-sortIcon>
                     </th>
-                    <!-- <th>Fecha Creación</th> -->
+                    <th pSortableColumn="COM_ESANULADA" style="width:20%">Anulada <p-sortIcon
+                        field="COM_ESANULADA"></p-sortIcon></th>
                     <th pSortableColumn="COM_FECHACOMPRA" style="width:20%">Fecha Compra <p-sortIcon
                             field="COM_FECHACOMPRA"></p-sortIcon></th>
                     <th pSortableColumn="COM_VALORCOMPRA" style="width:20%">Valor Compra <p-sortIcon
@@ -61,9 +62,9 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-compra>
-                <tr>
+                <tr [style]="compra.COM_ESANULADA ? 'background-color:  rgba(255, 0, 0, 0.26);':'background-color: #fff;'">
                     <td>{{ compra.COM_CODIGO }}</td>
-                    <!-- <td>{{ compra.COM_FECHACREACION | date: 'YYYY-MMM-dd' }}</td> -->
+                    <td><i *ngIf="compra.COM_ESANULADA" class="pi pi-exclamation-triangle"></i></td>
                     <td>{{ compra.COM_FECHACOMPRA | date: 'YYYY-MMM-dd' }}</td>
                     <td>{{ compra.COM_VALORCOMPRA |number }}</td>
                     <td>{{ compra.COM_PROVEEDOR }}</td>
@@ -86,7 +87,7 @@
                             placeholder="Top"></button>
                         <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
                             (click)="EliminarCompra(compra)" pTooltip="Eliminar" tooltipPosition="top"
-                            placeholder="Top"></button>
+                            placeholder="Top" [disabled]="compra.COM_ESANULADA"></button>
                     </td>
                 </tr>
             </ng-template>

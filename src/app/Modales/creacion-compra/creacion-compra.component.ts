@@ -81,7 +81,8 @@ export class CreacionCompraComponent implements OnInit {
       "COM_ESTADO": false,
       "COM_CREDITO": false,
       "USU_CEDULA": "",
-      "DetalleCompras": []
+      "DetalleCompras": [],
+      "COM_ESANULADA":false
     }
 
 

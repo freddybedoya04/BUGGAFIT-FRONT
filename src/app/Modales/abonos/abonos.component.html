@@ -59,16 +59,23 @@
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="width: 20%">#</th>
+                        <th style="width: 10%">Anulado</th>
                         <th style="width: 20%">Fecha Abono</th>
+                        <th style="width: 10%">Confirmada</th>
                         <th style="width: 20%"> Valor </th>
                         <th style="width: 20%">Cuenta</th>
                         <th style="width: 200px;">Acciones</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-abono>
-                    <tr>
+                    <tr [style]="abono.CAR_ESANULADA ? 'background-color:  rgba(255, 0, 0, 0.26);':'background-color: #fff;'">
                         <td>{{ abono.CAR_CODIGO}}</td>
+                        <td><i *ngIf="abono.CAR_ESANULADA" class="pi pi-exclamation-triangle"></i></td>
                         <td>{{ abono.CAR_FECHACREDITO | date:'YYYY-MMM-dd' }}</td>
+                        <td>
+                            <p-tag [value]="abono.CAR_ESTADOCREDITO==1 ? 'SI':'NO'"
+                                [severity]="getSeverity(abono.CAR_ESTADOCREDITO)"></p-tag>
+                        </td>
                         <td>{{ abono.CAR_VALORABONADO | number}}</td>
                         <td>{{ abono.TIC_NOMBRE }}</td>
                         <td>

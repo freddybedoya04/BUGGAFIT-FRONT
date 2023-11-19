@@ -14,5 +14,6 @@ export interface Icompras {
     COM_CREDITO: boolean;
     USU_CEDULA: string;
     DetalleCompras?:IdetalleCompra[];
+    COM_ESANULADA?:boolean;
   }
   
