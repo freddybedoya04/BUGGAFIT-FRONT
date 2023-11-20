@@ -13,4 +13,5 @@ export interface Iproducto {
     PRO_ESTADO: boolean;
     COM_CANTIDAD?:number;
     EstaEnAlerta?: boolean;
+    PRO_REGALO?:boolean;
   }

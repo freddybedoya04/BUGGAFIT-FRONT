@@ -138,6 +138,7 @@ export class VentasComponent implements OnInit {
       PRO_FECHACREACION: new Date(),
       PRO_ESTADO: false,
       COM_CANTIDAD: 0,
+      PRO_REGALO:true
     };
     this.gastoDeEnvio = {
       GAS_CODIGO: 0,
@@ -319,11 +320,7 @@ export class VentasComponent implements OnInit {
       this.alertasService.SetToast("No hay la cantidad necesaria del producto.", 3);
       return;
     }
-    if (!this.formularioVenta.controls['PRO_VALORTOTAL'].value || this.formularioVenta.controls['PRO_VALORTOTAL'].value === null) { // validacion valor total
-      // Agregar mensaje de error
-      this.alertasService.SetToast("El valor total no puede estas vacio.", 3);
-      return;
-    }
+ 
     if (this.formularioVenta.controls['PRO_DESCUENTO'].value == "") {
       this.formularioVenta.controls['PRO_DESCUENTO'].setValue('0');
     }
@@ -353,6 +350,7 @@ export class VentasComponent implements OnInit {
       PRO_FECHACREACION: new Date(),
       PRO_ESTADO: false,
       COM_CANTIDAD: 0,
+      PRO_REGALO:false
     };
     // this.formularioVenta.controls['PRO_CODIGO'].setValue('');
     this.formularioVenta.controls['PRO_NOMBRE'].setValue('');
@@ -612,33 +610,47 @@ export class VentasComponent implements OnInit {
       this.productos = x;
     })
   }
-
   CambiarPrecioDelProducto(event: Event) {
     if (!this.producto && this.formularioVenta.controls['PRO_PRECIO'].value === '') {
-      this.alertasService.SetToast("Debe buscar un producto", 3)
+        this.alertasService.SetToast("Debe buscar un producto", 3);
+        return;
     }
-    let ref = this.dialogService.open(ValidarUsuarioAdminComponent, {
-      header: 'Validar Usuario',
-      width: '25%',
-      contentStyle: { overflow: 'auto', 'background-color': '#eff3f8' },
-      baseZIndex: 100,
-      maximizable: true,
-      data: {}
-    });
-    ref.onClose.subscribe((res) => {
-      if (res) {
+
+    const esProductoRegalo: boolean = this.producto?.PRO_REGALO ?? false;
+
+    if (esProductoRegalo) {
+        // No es necesario validar si es regalo, habilitamos los controles directamente
         this.formularioVenta.controls['PRO_PRECIO'].enable();
         this.formularioVenta.controls['PRO_VALORTOTAL'].enable();
         this.formularioVenta.controls['PRO_DESCUENTO'].enable();
-      }
-      else {
-        this.formularioVenta.controls['PRO_PRECIO'].disable();
-        this.formularioVenta.controls['PRO_VALORTOTAL'].disable();
-        this.formularioVenta.controls['PRO_DESCUENTO'].disable();
-      }
-    });
+    } else {
+        // Si no es regalo, validamos el usuario como lo haces actualmente
+        let ref = this.dialogService.open(ValidarUsuarioAdminComponent, {
+            header: 'Validar Usuario',
+            width: '25%',
+            contentStyle: { overflow: 'auto', 'background-color': '#eff3f8' },
+            baseZIndex: 100,
+            maximizable: true,
+            data: {}
+        });
 
-  }
+        ref.onClose.subscribe((res) => {
+            if (res) {
+                this.formularioVenta.controls['PRO_PRECIO'].enable();
+                this.formularioVenta.controls['PRO_VALORTOTAL'].enable();
+                this.formularioVenta.controls['PRO_DESCUENTO'].enable();
+            } else {
+                this.formularioVenta.controls['PRO_PRECIO'].disable();
+                this.formularioVenta.controls['PRO_VALORTOTAL'].disable();
+                this.formularioVenta.controls['PRO_DESCUENTO'].disable();
+            }
+        });
+    }
+}
+
+
+
+  
   Cotizar() {
     if (this.formularioVenta.controls['VEN_TIPOENVIO'].value == null || this.formularioVenta.controls['VEN_TIPOENVIO'].value == "") {
       this.alertasService.SetToast("Primero debe seleccionar el tipo de envio", 2)

@@ -15,6 +15,8 @@ export class EstadisticasComponent implements OnInit {
   FechaInicio: Date;
   FechaFin: Date;
   filtro: IFiltro;
+  @ViewChild('dt2', { static: true }) table: any;
+  public searchKeyword: string = '';
   backgroundColors: string[] = [];
   borderColors: string[] = [];
   listaCuenta: ITipocuenta[] = [];

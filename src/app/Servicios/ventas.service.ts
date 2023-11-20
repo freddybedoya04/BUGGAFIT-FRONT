@@ -5,6 +5,7 @@ import { Observable, map } from 'rxjs';
 import { IFiltro } from '../Interfaces/ifiltro';
 import { Iabonos } from '../Interfaces/iabonos';
 import { IApiResponse } from '../Interfaces/iapiresponse';
+import { IDetalleVentas } from '../Interfaces/idetalle-ventas';
 
 @Injectable({
   providedIn: 'root'
@@ -68,6 +69,14 @@ export class VentasService {
         return result.Data;
       }));
   }
+  BuscarDetallesPorFecha(filtro: IFiltro): Observable<IDetalleVentas[]> {
+    return this.http.post<IApiResponse>(this.url + 'BuscarDetallesPorFecha', filtro).pipe(
+        map((result: IApiResponse) => {
+            return result.Data as IDetalleVentas[];
+        })
+    );
+}
+
   ListarAbonosPorCodigoVenta(venta:number) {
     return this.http.get<IApiResponse>(this.url+'ListarAbonosPorCodigoVenta/'+venta).pipe(
       map((result: IApiResponse) => {
