@@ -138,7 +138,7 @@ export class VentasComponent implements OnInit {
       PRO_FECHACREACION: new Date(),
       PRO_ESTADO: false,
       COM_CANTIDAD: 0,
-      PRO_REGALO:true
+      PRO_REGALO:false
     };
     this.gastoDeEnvio = {
       GAS_CODIGO: 0,

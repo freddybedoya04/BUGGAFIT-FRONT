@@ -33,7 +33,7 @@ export class EstadisticasComponent implements OnInit {
     GastosCuentas: any[];
     ComprasCuentas: any[];
     AbonosCuentas: any[];
-    ProductosMasVendidos: any[];
+    ProductosVendidos: any[];
   } = {
       Ventas: 0,
       Gastos: 0,
@@ -46,7 +46,7 @@ export class EstadisticasComponent implements OnInit {
       GastosCuentas: [],
       ComprasCuentas: [],
       AbonosCuentas: [],
-      ProductosMasVendidos: []
+      ProductosVendidos: []
     };
 
   constructor(private dashboardService: DashboardService,
@@ -99,7 +99,8 @@ export class EstadisticasComponent implements OnInit {
       this.Indicadores.GastosCuentas = data.Data.DatosGraficas.GastosCuentas;
       this.Indicadores.ComprasCuentas = data.Data.DatosGraficas.ComprasCuentas;
       this.Indicadores.AbonosCuentas = data.Data.DatosGraficas.AbonosCuentas;
-      this.Indicadores.ProductosMasVendidos = data.Data.DatosGraficas.ProductosMasVendidos;
+      this.Indicadores.ProductosVendidos = data.Data.DatosGraficas.ProductosVendidos;
+      console.log(this.Indicadores.ProductosVendidos)
       this.Generartabla();
     }, err => {
       this.aletasService.hideLoading();
