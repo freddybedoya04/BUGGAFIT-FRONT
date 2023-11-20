@@ -127,7 +127,7 @@
 </div>
 </div>
 <div *ngIf="mostrarDetalles">
-<p-card [header]="activeItem.label==undefined?'':activeItem.label" [style]="{ margin: '20px', padding: '20px' }"
+<p-card header="Detalle Venta" [style]="{ margin: '20px', padding: '20px' }"
     styleClass="shadow-5">
     <p-table #dt2 [value]="detallesVentas" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
         [tableStyle]="{ 'min-width': '90rem', 'max-height': '600px' }"

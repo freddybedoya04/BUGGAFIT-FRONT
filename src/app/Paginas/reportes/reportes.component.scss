@@ -28,3 +28,8 @@ h1 {
     justify-content: flex-end;
     gap: 10px;
 }
+
+:host ::ng-deep .p-dropdown
+{
+ margin-top: 23px;
+}

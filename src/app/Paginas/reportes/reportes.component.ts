@@ -44,7 +44,8 @@ export class ReportesComponent implements OnInit {
   ngOnInit() {
     this.items = [
       { label: 'Ventas' },
-      { label: 'Cartera' }
+      { label: 'Cartera' },
+      {label:'Detalles Venta'}
     ];
     this.activeItem = this.items[0];
     this.ConfigurarFechas();
@@ -66,7 +67,7 @@ export class ReportesComponent implements OnInit {
     this.mostrarVentas = cambio.value === 'ventas';
     this.mostrarDetalles = cambio.value === 'detalles';
   }
-  
+
   getSeverity(estado: boolean) {
 
       switch (estado) {
