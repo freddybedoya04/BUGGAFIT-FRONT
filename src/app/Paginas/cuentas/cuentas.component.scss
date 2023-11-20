@@ -6,9 +6,10 @@ h1 {
 
 .TotalCuenta {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;   
+    justify-content: center;  
+    flex-wrap: wrap;
+    gap: 12px; 
 }
 
 .TotalCuenta p-card {
@@ -19,6 +20,15 @@ h1 {
     font-weight: bold;
     text-align: center;
 }
+.texto-verde {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .texto-rojo {
+    color: red;
+    font-weight: bold;
+  }
 
 .TotalCuentaValor {
     margin-top: 5px; 
