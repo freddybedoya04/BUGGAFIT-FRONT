@@ -8,7 +8,8 @@ import { SelectItem } from 'primeng/api';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { TransaccionesService } from 'src/app/Servicios/transacciones.service';
 import { ITransaccion } from 'src/app/Interfaces/itransaccion';
-
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-cuentas',
@@ -23,6 +24,7 @@ export class CuentasComponent implements OnInit {
   CuentaSeleccionada: ITipocuenta;
   listaTipoDeCuenta: ITipocuenta[] = [];
   listaTrasacciones: ITransaccion[] = [];
+  customColumnHeaders: string[] = [];
   constructor(
     private dialogService: DialogService,
     private alertas: AlertasService,
@@ -80,6 +82,30 @@ export class CuentasComponent implements OnInit {
       this.alertas.hideLoading();
       this.alertas.SetToast(err, 3);
     })
+  }
+  exportExcel() {
+
+    if (this.listaTrasacciones.length === 0) {
+      this.alertas.SetToast('No hay datos para exportar.', 2);
+      return;
+    }
+
+    import("xlsx").then((xlsx) => {
+      const worksheet: XLSX.WorkSheet = xlsx.utils.json_to_sheet(this.listaTrasacciones, { header: this.customColumnHeaders });
+
+      const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      this.saveAsExcelFile(excelBuffer, 'Transacciones');
+    });
+  }
+
+
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
+    FileSaver.saveAs(data, fileName);
   }
   BuscarTransaccionesPorFechasYCuenta() {
     this.ArmarFiltro();
