@@ -27,7 +27,8 @@
 
 
         <p>
-            <p-button label="Buscar" icon="pi pi-search" [ngStyle]="{ 'margin-top': '20px' }" (onClick)="BuscarTransferencias()"></p-button>
+            <p-button label="Buscar" icon="pi pi-search" [ngStyle]="{ 'margin-top': '20px' }"
+                (onClick)="BuscarTransferencias()"></p-button>
         </p>
 
     </div>
@@ -42,19 +43,22 @@
     <p-card header="Transacciones" [style]="{margin:'20px',padding:'20px'}" styleClass="shadow-5">
         <p-table #dt2 [value]="listaTrasacciones" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
             [tableStyle]="{'min-width': '90rem','max-height':'600px'}" styleClass="p-datatable-sm"
+            [(selection)]="listaTrasaccionesSeleccionadas"
             currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} compras"
-            [rowsPerPageOptions]="[5, 10, 50]" [globalFilterFields]="['TRA_CODIGO','TRA_TIPO','TIC_NOMBRE','USU_NOMBRE']" class="custom-table">
+            [rowsPerPageOptions]="[5, 10, 50]"
+            [globalFilterFields]="['TRA_CODIGO','TRA_TIPO','TIC_NOMBRE','USU_NOMBRE']" class="custom-table">
             <ng-template pTemplate="caption">
                 <div class="EncabezadoTabla">
                     <p-button label="Transferir dinero" icon="pi pi-plus" (onClick)="AbrirModalCuenta()"></p-button>
-                    <button type="button" pButton pRipple icon="pi pi-file-excel"
-                        class="p-button-rounded 
-                        p-button-success mr-2" 
-                        (click)="exportExcel()" pTooltip="Descargar reporte"
+                    <button type="button" pButton pRipple icon="pi pi-file-excel" class="p-button-rounded 
+                        p-button-success mr-2" (click)="exportExcel()" pTooltip="Descargar reporte"
                         tooltipPosition="top"></button>
                     <button pButton label="" icon="pi pi-filter" pTooltip="Quitar filtro" tooltipPosition="top"
                         iconPos="left" class="p-button-raised p-button-rounded"
                         (click)="searchKeyword='';dt2.reset()"></button>
+                    <button *ngIf="listaTrasaccionesSeleccionadas.length>0" pButton pRipple icon="pi pi-check"
+                        class="p-button-rounded p-button-success" pTooltip="Confirmar" tooltipPosition="top"
+                        placeholder="Top" (click)="ConfirmarTransacciones(listaTrasaccionesSeleccionadas)"></button>
                     <span class="p-input-icon-left ml-auto">
                         <i class="pi pi-search"></i>
                         <input pInputText type="text" [(ngModel)]="searchKeyword"
@@ -64,41 +68,57 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
+                    <th style="width: 5%">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
                     <!-- <th pSortableColumn="EstaEnAlerta" style="width:20%">Info <p-sortIcon
                             field="EstaEnAlerta"></p-sortIcon></th> -->
-                    <th pSortableColumn="TRA_CODIGO" style="width:10%">Codigo<p-sortIcon field="TRA_CODIGO"></p-sortIcon></th>
+                    <th pSortableColumn="TRA_CODIGO" style="width:10%">Codigo<p-sortIcon
+                            field="TRA_CODIGO"></p-sortIcon></th>
                     <th pSortableColumn="TRA_TIPO" style="width:20%">Tipo<p-sortIcon field="TRA_TIPO"></p-sortIcon></th>
-                    <th pSortableColumn="TRA_VALOR" style="width:20%">Valor <p-sortIcon field="TRA_VALOR"></p-sortIcon></th>
-                    <th pSortableColumn="TIC_NOMBRE" style="width:20%">Cuenta <p-sortIcon field="TIC_NOMBRE"></p-sortIcon></th>
-                    <th pSortableColumn="TRA_CODIGOENLACE" style="width:10%">Enlace <p-sortIcon field="TRA_CODIGOENLACE"></p-sortIcon></th>
-                    <th pSortableColumn="TRA_FECHACREACION" style="width:20%">Fecha<p-sortIcon field="TRA_FECHACREACION"></p-sortIcon></th>
-                    <th pSortableColumn="TRA_CONFIRMADA" style="width:10%">Confirmacion<p-sortIcon field="TRA_CONFIRMADA"></p-sortIcon></th>
-                    <th pSortableColumn="TRA_FUEANULADA" style="width:10%">Anulada<p-sortIcon field="TRA_FUEANULADA"></p-sortIcon></th>
-                    <th pSortableColumn="USU_NOMBRE" style="width:10%">Confirmador<p-sortIcon field="USU_NOMBREUSU_NOMBRE"></p-sortIcon></th>
+                    <th pSortableColumn="TRA_VALOR" style="width:20%">Valor <p-sortIcon field="TRA_VALOR"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="TIC_NOMBRE" style="width:20%">Cuenta <p-sortIcon
+                            field="TIC_NOMBRE"></p-sortIcon></th>
+                    <th pSortableColumn="TRA_CODIGOENLACE" style="width:10%">Enlace <p-sortIcon
+                            field="TRA_CODIGOENLACE"></p-sortIcon></th>
+                    <th pSortableColumn="TRA_FECHACREACION" style="width:20%">Fecha<p-sortIcon
+                            field="TRA_FECHACREACION"></p-sortIcon></th>
+                    <th pSortableColumn="TRA_CONFIRMADA" style="width:10%">Confirmacion<p-sortIcon
+                            field="TRA_CONFIRMADA"></p-sortIcon></th>
+                    <th pSortableColumn="TRA_FUEANULADA" style="width:10%">Anulada<p-sortIcon
+                            field="TRA_FUEANULADA"></p-sortIcon></th>
+                    <th pSortableColumn="USU_NOMBRE" style="width:10%">Confirmador<p-sortIcon
+                            field="USU_NOMBREUSU_NOMBRE"></p-sortIcon></th>
                     <th style="min-width:200px" alignFrozen="right" pFrozenColumn>Acciones</th>
 
             </ng-template>
             <ng-template pTemplate="body" let-transaccion>
                 <tr>
+                    <td>
+                        <p-tableCheckbox [value]="transaccion"
+                            [disabled]="transaccion.TRA_CONFIRMADA===true || transaccion.TRA_FUEANULADA===true"></p-tableCheckbox>
+                    </td>
                     <td>{{transaccion.TRA_CODIGO}}</td>
                     <td>{{transaccion.TRA_TIPO}}</td>
-                    <td  [ngClass]="{ 'texto-verde': transaccion.TRA_VALOR > 0, 
+                    <td [ngClass]="{ 'texto-verde': transaccion.TRA_VALOR > 0, 
                     'texto-rojo': transaccion.TRA_VALOR < 0 }">${{transaccion.TRA_VALOR | number}}</td>
                     <td>{{transaccion.TIC_NOMBRE}}</td>
                     <td>{{transaccion.TRA_CODIGOENLACE}}</td>
                     <td>{{transaccion.TRA_FECHACREACION | date : "YYYY-MMM-dd"}}</td>
                     <td>
                         <p-tag [value]="transaccion.TRA_CONFIRMADA==true ? 'SI':'NO'"
-                        [severity]="getSeverity(transaccion.TRA_CONFIRMADA)"></p-tag>
+                            [severity]="getSeverity(transaccion.TRA_CONFIRMADA)"></p-tag>
                     </td>
                     <td>
                         <p-tag [value]="transaccion.TRA_FUEANULADA==true ? 'SI':'NO'"
-                        [severity]="getSeverity(transaccion.TRA_FUEANULADA)"></p-tag>
+                            [severity]="getSeverity(transaccion.TRA_FUEANULADA)"></p-tag>
                     </td>
                     <td>{{transaccion.USU_NOMBRE}}</td>
                     <td class="Acciones">
                         <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success"
-                            pTooltip="Confirmar" tooltipPosition="top" placeholder="Top" (click)="ConfirmarTransaccion(transaccion)"></button>
+                            pTooltip="Confirmar" tooltipPosition="top" placeholder="Top"
+                            (click)="ConfirmarTransaccion(transaccion)"></button>
                         <!-- <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
                             pTooltip="Eliminar Gasto" tooltipPosition="top" placeholder="Top"></button> -->
                     </td>

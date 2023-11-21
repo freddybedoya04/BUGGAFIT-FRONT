@@ -24,6 +24,7 @@ export class CuentasComponent implements OnInit {
   CuentaSeleccionada: ITipocuenta;
   listaTipoDeCuenta: ITipocuenta[] = [];
   listaTrasacciones: ITransaccion[] = [];
+  listaTrasaccionesSeleccionadas: ITransaccion[] = [];
   customColumnHeaders: string[] = [];
   constructor(
     private dialogService: DialogService,
@@ -63,11 +64,11 @@ export class CuentasComponent implements OnInit {
     this.FechaInicio = new Date(this.FechaFin)
     this.FechaInicio.setDate(this.FechaInicio.getDate() - 30);
   }
-  BuscarTransferencias(){
-    if(this.CuentaSeleccionada ==null || this.CuentaSeleccionada.TIC_CODIGO==-1){
+  BuscarTransferencias() {
+    if (this.CuentaSeleccionada == null || this.CuentaSeleccionada.TIC_CODIGO == -1) {
       this.BuscarTransaccionesPorFechas();
-      
-    }else{
+
+    } else {
       this.BuscarTransaccionesPorFechasYCuenta();
     }
     this.ObtenerTipoCuentas();
@@ -110,7 +111,7 @@ export class CuentasComponent implements OnInit {
   BuscarTransaccionesPorFechasYCuenta() {
     this.ArmarFiltro();
     this.alertas.showLoading("Buscando transacciones...")
-    this.transaccionesService.ObtenerTraansaccionesPorFechayCuenta(this.filtro,this.CuentaSeleccionada.TIC_CODIGO).subscribe(result => {
+    this.transaccionesService.ObtenerTraansaccionesPorFechayCuenta(this.filtro, this.CuentaSeleccionada.TIC_CODIGO).subscribe(result => {
       this.alertas.hideLoading();
       this.listaTrasacciones = result;
     }, err => {
@@ -128,15 +129,33 @@ export class CuentasComponent implements OnInit {
       if (result) {
         this.alertas.showLoading("Confirmando Transaccion")
 
-          this.transaccionesService.ConfirmarTransaccion(Transaccion.TRA_CODIGO).subscribe(x => {
-            this.alertas.hideLoading();
-            this.alertas.SetToast("Se Actualizo corretamente", 1)
-            this.BuscarTransferencias();
-          }, err => {
-            this.alertas.hideLoading();
-            this.alertas.SetToast(err, 3)
-          })
+        this.transaccionesService.ConfirmarTransaccion(Transaccion.TRA_CODIGO).subscribe(x => {
+          this.alertas.hideLoading();
+          this.alertas.SetToast("Se Actualizo corretamente", 1)
+          this.BuscarTransferencias();
+        }, err => {
+          this.alertas.hideLoading();
+          this.alertas.SetToast(err, 3)
+        })
 
+      }
+    })
+  }
+  ConfirmarTransacciones(Transaccion: ITransaccion[]) {
+    const transacciones = Transaccion.map((transaccion: any) => {
+      return transaccion.TRA_CODIGO;
+    })
+    this.alertas.confirmacion("Esta seguro de Confirmar las " + Transaccion.length + " Transacciones?").then(result => {
+      if (result) {
+        this.alertas.showLoading("Confirmando Transaccion")
+        this.transaccionesService.ConfirmarVariasTransacciones(transacciones).subscribe(x => {
+          this.alertas.hideLoading();
+          this.alertas.SetToast("Se Actualizo corretamente", 1)
+          this.BuscarTransferencias();
+        }, err => {
+          this.alertas.hideLoading();
+          this.alertas.SetToast(err, 3)
+        })
       }
     })
   }
