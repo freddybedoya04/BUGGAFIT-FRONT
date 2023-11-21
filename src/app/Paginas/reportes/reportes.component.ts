@@ -152,6 +152,30 @@ export class ReportesComponent implements OnInit {
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
     FileSaver.saveAs(data, fileName);
   }
+  exportExcelDetalle() {
+
+    if (this.ventas.length === 0) {
+      this.alertas.SetToast('No hay datos para exportar.', 2);
+      return;
+    }
+  
+    import("xlsx").then((xlsx) => {
+      const worksheet: XLSX.WorkSheet = xlsx.utils.json_to_sheet(this.detallesVentas, { header: this.customColumnHeaders });
+      
+      const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      this.saveAsExcelFileDetalle(excelBuffer, 'Reportes Detalle');
+    });
+  }
+  
+  
+  
+  saveAsExcelFileDetalle(buffer: any, fileName: string): void {
+    const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
+    FileSaver.saveAs(data, fileName);
+  }
   BuscarDetalles(venta:Iventa){
     let nuevaVenta:Iventa=venta;
     this.alertas.showLoading("Cargando información de venta");

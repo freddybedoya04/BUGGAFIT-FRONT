@@ -139,7 +139,7 @@
             <div class="EncabezadoTabla">
                 <!-- Puedes mantener o personalizar los botones de exportar y quitar filtro según tus necesidades -->
                 <button type="button" pButton pRipple icon="pi pi-file-excel"
-                    class="p-button-rounded p-button-success mr-2" (click)="exportExcel()"
+                    class="p-button-rounded p-button-success mr-2" (click)="exportExcelDetalle()"
                     pTooltip="Descargar reporte" tooltipPosition="top"></button>
                 <button pButton label="" icon="pi pi-filter" iconPos="left"
                     class="p-button-raised p-button-rounded" (click)="searchKeyword='';dt2.reset()"
@@ -180,9 +180,9 @@
                 <td>{{ detalleVenta.PRO_CODIGO }}</td>
                 <td>{{ detalleVenta.VED_UNIDADES }}</td>
                 <td>${{ detalleVenta.VED_PRECIOVENTA_UND | number }}</td>
-                <td>${{ detalleVenta.VED_VALORDESCUENTO_UND | number }}</td>
+                <td>{{ detalleVenta.VED_VALORDESCUENTO_UND  }}%</td>
                 <td>${{ detalleVenta.VED_PRECIOVENTA_TOTAL | number }}</td>
-                <td>${{ detalleVenta.VED_ACTUALIZACION | date:'YYYY-MMM-dd '}}</td>
+                <td>{{ detalleVenta.VED_ACTUALIZACION | date:'YYYY-MMM-dd '}}</td>
             </tr>
         </ng-template>
     </p-table>
