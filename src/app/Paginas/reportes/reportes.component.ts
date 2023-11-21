@@ -154,7 +154,7 @@ export class ReportesComponent implements OnInit {
   }
   exportExcelDetalle() {
 
-    if (this.ventas.length === 0) {
+    if (this.detallesVentas.length === 0) {
       this.alertas.SetToast('No hay datos para exportar.', 2);
       return;
     }
