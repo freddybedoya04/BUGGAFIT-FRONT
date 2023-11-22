@@ -137,7 +137,6 @@ export class CuentasComponent implements OnInit {
           this.alertas.hideLoading();
           this.alertas.SetToast(err, 3)
         })
-
       }
     })
   }
@@ -169,8 +168,9 @@ export class CuentasComponent implements OnInit {
       maximizable: true,
       data: { esEdicion: false }
     });
-
-
+    ref.onClose.subscribe((res) => {
+      this.BuscarTransferencias();
+    });
   };
   getSeverity(estado: any) {
 

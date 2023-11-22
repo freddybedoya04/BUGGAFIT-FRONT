@@ -6,6 +6,7 @@ import { IApiResponse } from '../Interfaces/iapiresponse';
 import { IFiltro } from '../Interfaces/ifiltro';
 import { CuentasComponent } from '../Paginas/cuentas/cuentas.component';
 import { ITransaccion } from '../Interfaces/itransaccion';
+import { ITransaccionCuentas } from '../Interfaces/itransaccion-cuentas';
 @Injectable({
   providedIn: 'root'
 })
@@ -44,6 +45,13 @@ export class TransaccionesService {
   }
   ConfirmarTransacciones(listaTransacciones: number[]) {
     return this.http.post<IApiResponse>(this.url + 'ConfirmarTransacciones', listaTransacciones).pipe(
+      map((result: IApiResponse) => {
+        return result;
+      }));
+  }
+  TransaccionEntreCuentas(transaccion: ITransaccionCuentas) {
+    transaccion.CedulaConfirmador = JSON.parse(localStorage.getItem('user') || "").USU_CEDULA;
+    return this.http.post<IApiResponse>(this.url + 'CrearTransaccionEntreCuentas', transaccion).pipe(
       map((result: IApiResponse) => {
         return result;
       }));

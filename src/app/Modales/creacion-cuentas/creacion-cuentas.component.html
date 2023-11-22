@@ -1,50 +1,29 @@
 <div class="contenedorPricipal">
-    <form >
-    <p-card header="Agregar Transaccion"  [style]="{ width: '100%' }" class="card">
-   <section>
-      
-        <div>
-          <label >Cuenta Origen:</label>
-          <p-dropdown
-           
-            optionLabel="label"
-           
-            optionValue="value"
-            placeholder="Seleccionar Cuenta"
-          ></p-dropdown>
-        </div>
-        
-        <div>
-            <label >Cuenta Destino:</label>
-            <p-dropdown
-              optionLabel="label"
-         
-              optionValue="value"
-              placeholder="Seleccionar Cuenta"
-            ></p-dropdown>
-          </div>
-       
-    
-          <div>
-            <label>Cantidad:</label>
-            <p-inputNumber
-              class="Numerico"
-              mode="decimal"
-              locale="en-US"
-          
-              
-            
-            ></p-inputNumber>
-          </div>
-   
-      </section>
-    </p-card >
-   
-  </form>
-    <div>
-      <div class="buttonContainer">
-        <p-button (click)="AgregarTansaccion()" label="Agregar" > </p-button>
+  <p-card header="Agregar Transaccion" [style]="{ width: '100%' }" class="card">
+    <section>
+      <div>
+        <label>Cuenta Origen:</label>
+        <p-dropdown [options]="listaTipoDeCuenta" [(ngModel)]="this.transaccionCuentas.IdCuentaOrigen"
+          optionLabel="TIC_NOMBRE" optionValue="TIC_CODIGO" [showClear]="true"
+          placeholder="Seleccione Cuenta"></p-dropdown>
       </div>
+
+      <div>
+        <label>Cuenta Destino:</label>
+        <p-dropdown [options]="listaTipoDeCuenta" [(ngModel)]="this.transaccionCuentas.IdCuentaDestino"
+          optionLabel="TIC_NOMBRE" optionValue="TIC_CODIGO" [showClear]="true"
+          placeholder="Seleccione Cuenta"></p-dropdown>
+      </div>
+      <div>
+        <label>Cantidad:</label>
+        <p-inputNumber [(ngModel)]="this.transaccionCuentas.ValorTranferencia" inputId="cantidad" class="Numerico"
+          mode="decimal" locale="en-US"></p-inputNumber>
+      </div>
+    </section>
+  </p-card>
+  <div>
+    <div class="buttonContainer">
+      <p-button (click)="AgregarTansaccion()" label="Agregar"> </p-button>
     </div>
   </div>
-  
+</div>
