@@ -562,8 +562,7 @@ AgregarProducto(event: any) {
   AbrirModalTipoCuentasGastos() {
     let ref = this.dialogService.open(PagoEnvioComponent, {
       header: 'Seleccione el tipo de de pago para el gasto de envio',
-      width: '50%',
-      height: '400px',
+      width: '30%',
       baseZIndex: 100,
       maximizable: false,
       dismissableMask: false,

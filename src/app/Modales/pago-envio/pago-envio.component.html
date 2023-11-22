@@ -2,7 +2,7 @@
     <div>
         <label for="VEN_CUENTADESTINO">Tipo de pago:</label>
         <p-dropdown [(ngModel)]="EnvioSeleccionado" [options]="listaTipoDeCuenta" optionLabel="label"
-            optionValue="value" placeholder="Seleccione Cuenta"></p-dropdown>
+            optionValue="value" placeholder="Seleccione Cuenta" appendTo="body"></p-dropdown>
     </div>
     <div>
         <p-button label="Finalizar" class="Boton" styleClass="p-button-rounded" (onClick)="Finalizar()"></p-button>

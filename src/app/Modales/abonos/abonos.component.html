@@ -24,13 +24,13 @@
         <section>
             <div>
                 <label for="VEN_FECHAVENTA">Fecha abono:</label>
-                <p-calendar [(ngModel)]="nuevoAbono.CAR_FECHACREDITO"></p-calendar>
+                <p-calendar [(ngModel)]="nuevoAbono.CAR_FECHACREDITO" appendTo="body"></p-calendar>
 
             </div>
             <div>
                 <label for="VEN_CUENTADESTINO">Tipo de pago:</label>
                 <p-dropdown [options]="listaTipoDeCuenta" ngmo optionLabel="label" optionValue="value"
-                    placeholder="Seleccione Cuenta" [(ngModel)]="CuentaSeleccionada"></p-dropdown>
+                    placeholder="Seleccione Cuenta" [(ngModel)]="CuentaSeleccionada" appendTo="body"></p-dropdown>
             </div>
             <div>
                 <label for="VEN_CUENTADESTINO">Valor $:</label>

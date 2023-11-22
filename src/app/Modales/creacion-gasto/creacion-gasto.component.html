@@ -8,6 +8,7 @@
         formControlName="GAS_FECHAGASTO"
         [showTime]="true"
         hourFormat="12"
+        appendTo="body"
       ></p-calendar>
     </div>
       <div>
@@ -18,6 +19,7 @@
           formControlName="MOG_CODIGO"
           optionValue="value"
           placeholder="Seleccionar Motivo"
+          appendTo="body"
         ></p-dropdown>
       </div>
       
@@ -38,6 +40,7 @@
             optionValue="value"
             placeholder="Seleccione Cuenta"
             [readonly]="esEdicion==true"
+            appendTo="body"
           ></p-dropdown>
 <!-- 
           <input type="text" pInputText formControlName="TIC_CODIGO" matInput autocomplete="off"> -->

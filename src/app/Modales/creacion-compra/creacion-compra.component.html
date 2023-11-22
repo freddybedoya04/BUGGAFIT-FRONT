@@ -4,7 +4,7 @@
             <form [formGroup]="formularioCompra">
                 <div>
                     <label>Fecha de compra:</label>
-                    <p-calendar formControlName="COM_FechaCompra" [showTime]="true" hourFormat="12"></p-calendar>
+                    <p-calendar formControlName="COM_FechaCompra" [showTime]="true" hourFormat="12" appendTo="body"></p-calendar>
                 </div>
                 <div>
                     <label for="COM_PROVEEDOR">Proveedor:</label>
@@ -14,7 +14,7 @@
                 <div>
                     <label for="TIC_CODIGO">Medio de pago:</label>
                     <p-dropdown  formControlName="TIC_CODIGO" [options]="listaTipoDeCuenta" optionLabel="label"
-                    optionValue="value" placeholder="Seleccione Cuenta" [readonly]="EsEdicion==true"></p-dropdown>
+                    optionValue="value" placeholder="Seleccione Cuenta" [readonly]="EsEdicion==true" appendTo="body"></p-dropdown>
                 </div>
     
             </form>
@@ -30,7 +30,7 @@
         <section>
             <div>
                 <label>Producto</label>
-                <p-dropdown [options]="productos" [(ngModel)]="productoSeleccionado" (ngModelChange)="CambioProducto()" optionLabel="PRO_NOMBRE" [filter]="true" filterBy="PRO_NOMBRE" [showClear]="true" placeholder="Seleccione Producto">
+                <p-dropdown [options]="productos" [(ngModel)]="productoSeleccionado" (ngModelChange)="CambioProducto()" optionLabel="PRO_NOMBRE" appendTo="body" [filter]="true" filterBy="PRO_NOMBRE" [showClear]="true" placeholder="Seleccione Producto">
                     <ng-template pTemplate="selectedItem">
                             <div>{{ productoSeleccionado.PRO_NOMBRE }}</div>
                     </ng-template>
