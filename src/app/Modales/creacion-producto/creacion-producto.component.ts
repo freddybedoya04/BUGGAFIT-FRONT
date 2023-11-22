@@ -41,6 +41,7 @@ export class CreacionProductoComponent implements OnInit {
       UNIDADES_MINIMA_ALERTA: [null, [Validators.required, Validators.min(0)]],
       PRO_CATEGORIA: [null, Validators.required],
       PRO_MARCA: [null, Validators.required],
+      PRO_REGALO:false
     });
     this.productoAEditar = {
       PRO_CODIGO: '',
@@ -56,6 +57,7 @@ export class CreacionProductoComponent implements OnInit {
       PRO_FECHACREACION: new Date(),
       PRO_ESTADO: false,
       COM_CANTIDAD: 0,
+      PRO_REGALO:false
     };
   }
 
@@ -101,6 +103,7 @@ export class CreacionProductoComponent implements OnInit {
             PRO_FECHACREACION: new Date(),
             PRO_ESTADO: true,
             PRO_UNIDADES_MINIMAS_ALERTA: this.formularioProducto.get('UNIDADES_MINIMA_ALERTA')?.value,
+            PRO_REGALO: this.formularioProducto.get('PRO_REGALO')?.value 
           };
           this.productoAEditar = _producto;
 
@@ -154,6 +157,7 @@ export class CreacionProductoComponent implements OnInit {
               PRO_FECHACREACION: new Date(),
               PRO_ESTADO: true,
               PRO_UNIDADES_MINIMAS_ALERTA: this.formularioProducto.get('UNIDADES_MINIMA_ALERTA')?.value,
+              PRO_REGALO: this.formularioProducto.get('PRO_REGALO')?.value 
             };
 
             this.alerta.showLoading('Creando nuevo producto');
@@ -238,6 +242,7 @@ export class CreacionProductoComponent implements OnInit {
       this.formularioProducto.get('PRO_NOMBRE')?.setValue(this.productoAEditar?.PRO_NOMBRE)
       this.formularioProducto.get('PRO_PRECIO_COMPRA')?.setValue(this.productoAEditar.PRO_PRECIO_COMPRA);
       this.formularioProducto.get('PRO_PRECIO_MAYORISTA')?.setValue(this.productoAEditar.PRO_PRECIOVENTA_MAYORISTA);
+      this.formularioProducto.get('PRO_REGALO')?.setValue(this.productoAEditar.PRO_REGALO);
       this.formularioProducto.get('PRO_PRECIO_DETAL')?.setValue(this.productoAEditar.PRO_PRECIOVENTA_DETAL);
       this.formularioProducto.get('PRO_UNIDADES_DISPONIBLES')?.setValue(this.productoAEditar.PRO_UNIDADES_DISPONIBLES);
       this.formularioProducto.get('UNIDADES_MINIMA_ALERTA')?.setValue(this.productoAEditar.PRO_UNIDADES_MINIMAS_ALERTA);

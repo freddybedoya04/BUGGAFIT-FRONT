@@ -8,8 +8,10 @@ import { AbonosComponent } from 'src/app/Modales/abonos/abonos.component';
 import { DetalleVentasComponent } from 'src/app/Modales/detalle-ventas/detalle-ventas.component';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { VentasService } from 'src/app/Servicios/ventas.service';
-import * as FileSaver from 'file-saver';
-import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver'; 
+import * as XLSX from 'xlsx'; 
+import { IDetalleVentas } from 'src/app/Interfaces/idetalle-ventas';
+import { Table } from 'primeng/table';
 @Component({
   selector: 'app-reportes',
   templateUrl: './reportes.component.html',
@@ -17,11 +19,17 @@ import * as XLSX from 'xlsx';
 })
 export class ReportesComponent implements OnInit {
   FechaInicio: Date;
+  tablaSeleccionada: string = 'ventas';
   FechaFin: Date;
   items: MenuItem[] = [];
   activeItem: MenuItem = {};
   ventas: Iventa[] = [];
   filtro: IFiltro;
+  data: any[] = []; 
+  mostrarVentas: boolean = true;
+  mostrarDetalles: boolean = false;
+
+  detallesVentas:IDetalleVentas[]=[]
   @ViewChild('dt2', { static: true }) table: any;
   customColumnHeaders: string[] = [];
   public searchKeyword: string = '';
@@ -36,19 +44,30 @@ export class ReportesComponent implements OnInit {
   ngOnInit() {
     this.items = [
       { label: 'Ventas' },
-      { label: 'Cartera' }
+      { label: 'Cartera' },
+      {label:'Detalles Venta'}
     ];
     this.activeItem = this.items[0];
     this.ConfigurarFechas();
     this.BuscarVentasPorFechas();
+    this.BuscarDetallesPorFecha();
     // this.LlenadoVentas();
   }
+    tablas: any[] = [
+    { label: 'Ventas', value: 'ventas' },
+    { label: 'Detalles', value: 'detalles' }
+  ];
 
   ConfigurarFechas() {
     this.FechaFin = new Date();
     this.FechaInicio = new Date(this.FechaFin)
     this.FechaInicio.setDate(this.FechaInicio.getDate() - 30);
   }
+  cambiarFuenteDatos(cambio:any) {
+    this.mostrarVentas = cambio.value === 'ventas';
+    this.mostrarDetalles = cambio.value === 'detalles';
+  }
+
   getSeverity(estado: boolean) {
 
     switch (estado) {
@@ -60,6 +79,7 @@ export class ReportesComponent implements OnInit {
 
 
   }
+
   BuscarVentasPorFechas() {
     this.ArmarFiltro();
     this.alertas.showLoading("Buscando ventas...")
@@ -144,8 +164,32 @@ export class ReportesComponent implements OnInit {
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
     FileSaver.saveAs(data, fileName);
   }
-  BuscarDetalles(venta: Iventa) {
-    let nuevaVenta: Iventa = venta;
+  exportExcelDetalle() {
+
+    if (this.detallesVentas.length === 0) {
+      this.alertas.SetToast('No hay datos para exportar.', 2);
+      return;
+    }
+  
+    import("xlsx").then((xlsx) => {
+      const worksheet: XLSX.WorkSheet = xlsx.utils.json_to_sheet(this.detallesVentas, { header: this.customColumnHeaders });
+      
+      const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      this.saveAsExcelFileDetalle(excelBuffer, 'Reportes Detalle');
+    });
+  }
+  
+  
+  
+  saveAsExcelFileDetalle(buffer: any, fileName: string): void {
+    const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
+    FileSaver.saveAs(data, fileName);
+  }
+  BuscarDetalles(venta:Iventa){
+    let nuevaVenta:Iventa=venta;
     this.alertas.showLoading("Cargando información de venta");
     this.ventasService.ListarDetallePorCodigoVenta(venta.VEN_CODIGO).subscribe(x => {
       this.alertas.hideLoading();
@@ -179,7 +223,33 @@ export class ReportesComponent implements OnInit {
       this.alertas.SetToast('Error al traer los abonos  de la venta', 3)
     })
   }
-  AbrirModaAbonos(venta: Iventa, abonos: Iabonos[]) {
+// En tu componente (ReportesComponent)
+
+BuscarDetallesPorFecha() {
+  this.ArmarFiltro();
+  this.alertas.showLoading("Buscando detalles por fecha");
+
+  this.ventasService.BuscarDetallesPorFecha(this.filtro).subscribe(
+    (detalles: IDetalleVentas[]) => {
+      this.alertas.hideLoading();
+
+      if (!detalles || detalles.length === 0) {
+        this.alertas.SetToast("No hay detalles de ventas", 2);
+      } else {
+        this.detallesVentas = detalles;
+      }
+    },
+    (error) => {
+      console.error('Error al buscar detalles de la venta por fecha:', error);
+      this.alertas.hideLoading();
+      this.alertas.SetToast('Error al traer detalles de la venta por fecha', 3);
+    }
+  );
+}
+
+
+
+  AbrirModaAbonos(venta:Iventa,abonos:Iabonos[]) {
     let ref = this.dialogService.open(AbonosComponent, {
       header: 'Venta #' + venta.VEN_CODIGO,
       width: '60%',

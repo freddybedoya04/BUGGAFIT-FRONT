@@ -12,6 +12,10 @@
     padding-top: 20px; 
     margin: 10px;
 }
+.EncabezadoTabla{
+    display: flex;
+    gap: 10px;
+}
 
 .p-card {
     background-color: #f5f5f5; 
@@ -90,7 +94,14 @@
     padding: 10px; 
     float: left;
 }
-
+:host ::ng-deep .p-datatable .p-datatable-tbody tr > td {
+    text-align: center !important;
+    font-family: 'Poppins', sans-serif;
+  }
+  :host ::ng-deep .p-datatable .p-datatable-thead > tr > th  {
+    text-align: center !important;
+    font-family: 'Poppins', sans-serif;
+  }
 @media screen and (max-width: 1400px) {
     .Indicadores  {
       grid-template-columns: repeat(2,1fr); /* Cambia a una sola columna */

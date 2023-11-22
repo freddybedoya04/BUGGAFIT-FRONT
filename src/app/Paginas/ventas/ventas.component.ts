@@ -138,6 +138,7 @@ export class VentasComponent implements OnInit {
       PRO_FECHACREACION: new Date(),
       PRO_ESTADO: false,
       COM_CANTIDAD: 0,
+      PRO_REGALO:false
     };
     this.gastoDeEnvio = {
       GAS_CODIGO: 0,
@@ -218,30 +219,46 @@ export class VentasComponent implements OnInit {
       this.alertasService.SetToast("Cliente encontrado.", 1);
     });
   }
-
   AutocompletarProducto() {
-    if (!this.formularioVenta.controls['CLI_TIPOCLIENTE'].value || this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === null) //en caso que no se haya seleccionado un tipo de cliente 
-    {
-      // Agregar mensaje de error
+    if (!this.formularioVenta.controls['CLI_TIPOCLIENTE'].value || this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === null) {
       this.alertasService.SetToast("Debe seleccionar un tipo de cliente.", 2);
       return;
     }
+  
     let valorTotal;
+  
     this.formularioVenta.controls['PRO_NOMBRE'].setValue(this.producto.PRO_NOMBRE);
-    if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[0].value) { //mayorista
+  
+    // Verificar si el producto es un regalo
+    const esProductoRegalo: boolean = this.producto?.PRO_REGALO ?? false;
+  
+    if (esProductoRegalo) {
+      // Habilitar los campos directamente para productos regalo
+      this.formularioVenta.controls['PRO_PRECIO'].enable();
+      this.formularioVenta.controls['PRO_VALORTOTAL'].enable();
+      this.formularioVenta.controls['PRO_DESCUENTO'].enable();
+    } else {
+      // Deshabilitar los campos si no es regalo
+      this.formularioVenta.controls['PRO_PRECIO'].disable();
+      this.formularioVenta.controls['PRO_VALORTOTAL'].disable();
+      this.formularioVenta.controls['PRO_DESCUENTO'].disable();
+    }
+  
+    if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[0].value) {
       valorTotal = this.producto.PRO_PRECIOVENTA_MAYORISTA;
       this.formularioVenta.controls['PRO_PRECIO'].setValue(valorTotal);
     }
-    if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[1].value) { //Al detal
+  
+    if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[1].value) {
       valorTotal = this.producto.PRO_PRECIOVENTA_DETAL;
       this.formularioVenta.controls['PRO_PRECIO'].setValue(valorTotal);
     }
-    console.log()
+  
     this.formularioVenta.controls['PRO_CANTIDADVENTA'].setValue(1);
     this.formularioVenta.controls['PRO_VALORTOTAL'].setValue(valorTotal);
     this._totalVentaMaxValue = valorTotal ?? Number.MAX_VALUE;
   }
-
+  
   CalcularValorTotal(event: any) {
     if (!this.formularioVenta.controls['PRO_PRECIO'].value || this.formularioVenta.controls['PRO_PRECIO'].value == '') {
       // this.alertasService.SetToast("El producto no tiene precio por unidad.", 3);
@@ -301,13 +318,12 @@ export class VentasComponent implements OnInit {
     this.formularioVenta.controls['PRO_DESCUENTO'].setValue(totalDescuento.toFixed(1));
   }
 
-  AgregarProducto(event: any) {
+AgregarProducto(event: any) {
     if (this.producto == null) {
       this.alertasService.SetToast("Seleecione un producto.", 2);
       return;
     }
     const codigoProducto = this.producto.PRO_CODIGO;
-
     // Verificar si el producto ya ha sido agregado
     const productoExistente = this.listaProductos.find((producto) => producto.PRO_CODIGO?.toLocaleUpperCase() == codigoProducto.toLocaleUpperCase());
     if (productoExistente) {
@@ -319,11 +335,7 @@ export class VentasComponent implements OnInit {
       this.alertasService.SetToast("No hay la cantidad necesaria del producto.", 3);
       return;
     }
-    if (!this.formularioVenta.controls['PRO_VALORTOTAL'].value || this.formularioVenta.controls['PRO_VALORTOTAL'].value === null) { // validacion valor total
-      // Agregar mensaje de error
-      this.alertasService.SetToast("El valor total no puede estas vacio.", 3);
-      return;
-    }
+ 
     if (this.formularioVenta.controls['PRO_DESCUENTO'].value == "") {
       this.formularioVenta.controls['PRO_DESCUENTO'].setValue('0');
     }
@@ -353,6 +365,7 @@ export class VentasComponent implements OnInit {
       PRO_FECHACREACION: new Date(),
       PRO_ESTADO: false,
       COM_CANTIDAD: 0,
+      PRO_REGALO:false
     };
     // this.formularioVenta.controls['PRO_CODIGO'].setValue('');
     this.formularioVenta.controls['PRO_NOMBRE'].setValue('');
@@ -612,33 +625,39 @@ export class VentasComponent implements OnInit {
       this.productos = x;
     })
   }
-
   CambiarPrecioDelProducto(event: Event) {
     if (!this.producto && this.formularioVenta.controls['PRO_PRECIO'].value === '') {
-      this.alertasService.SetToast("Debe buscar un producto", 3)
+        this.alertasService.SetToast("Debe buscar un producto", 3);
+        return;
     }
-    let ref = this.dialogService.open(ValidarUsuarioAdminComponent, {
-      header: 'Validar Usuario',
-      width: '25%',
-      contentStyle: { overflow: 'auto', 'background-color': '#eff3f8' },
-      baseZIndex: 100,
-      maximizable: true,
-      data: {}
-    });
-    ref.onClose.subscribe((res) => {
-      if (res) {
-        this.formularioVenta.controls['PRO_PRECIO'].enable();
-        this.formularioVenta.controls['PRO_VALORTOTAL'].enable();
-        this.formularioVenta.controls['PRO_DESCUENTO'].enable();
-      }
-      else {
-        this.formularioVenta.controls['PRO_PRECIO'].disable();
-        this.formularioVenta.controls['PRO_VALORTOTAL'].disable();
-        this.formularioVenta.controls['PRO_DESCUENTO'].disable();
-      }
-    });
 
-  }
+        // Si no es regalo, validamos el usuario como lo haces actualmente
+        let ref = this.dialogService.open(ValidarUsuarioAdminComponent, {
+            header: 'Validar Usuario',
+            width: '25%',
+            contentStyle: { overflow: 'auto', 'background-color': '#eff3f8' },
+            baseZIndex: 100,
+            maximizable: true,
+            data: {}
+        });
+
+        ref.onClose.subscribe((res) => {
+            if (res) {
+                this.formularioVenta.controls['PRO_PRECIO'].enable();
+                this.formularioVenta.controls['PRO_VALORTOTAL'].enable();
+                this.formularioVenta.controls['PRO_DESCUENTO'].enable();
+            } else {
+                this.formularioVenta.controls['PRO_PRECIO'].disable();
+                this.formularioVenta.controls['PRO_VALORTOTAL'].disable();
+                this.formularioVenta.controls['PRO_DESCUENTO'].disable();
+            }
+        });
+    }
+
+
+
+
+  
   Cotizar() {
     if (this.formularioVenta.controls['VEN_TIPOENVIO'].value == null || this.formularioVenta.controls['VEN_TIPOENVIO'].value == "") {
       this.alertasService.SetToast("Primero debe seleccionar el tipo de envio", 2)

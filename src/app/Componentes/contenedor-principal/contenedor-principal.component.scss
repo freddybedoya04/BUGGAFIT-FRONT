@@ -17,7 +17,7 @@ body, html {
   width: 300px;
   transition: width 0.5s;
   position: relative;
-  height: 100%;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -56,7 +56,7 @@ body, html {
   align-items: center;
   justify-content: flex-start;
   text-decoration: none;
-  padding: 10px 50px;
+  padding: 7px 50px;
   color: white;
   font-size: 18px;
   transition: all 0.5s;
@@ -134,7 +134,7 @@ body, html {
 .collapsed.sidebar {
   width: 80px;
   transition: width 0.5s;
- 
+ height: auto;
 }
 .collapsed .container-image{
   margin-top: 0px;
@@ -143,6 +143,7 @@ body, html {
   flex: 1;
   overflow-y: auto;
 }
+
 
 
 

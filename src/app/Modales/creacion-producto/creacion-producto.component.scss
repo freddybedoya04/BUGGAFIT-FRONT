@@ -45,7 +45,8 @@
 :host ::ng-deep .p-calendar,
 :host ::ng-deep .p-dropdown,
 :host ::ng-deep .p-inputtext,
-:host ::ng-deep .p-inputNumber {
+:host ::ng-deep .p-inputNumber,
+:host ::ng-deep .p-checkbox {
     height: 2rem;
     border-radius: 10px;
     width: 100%;
