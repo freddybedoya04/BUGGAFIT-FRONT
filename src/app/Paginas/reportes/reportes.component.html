@@ -134,7 +134,7 @@
         [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords} ' + (activeItem.label==undefined?'':activeItem.label)"
         [scrollable]="true" [rowsPerPageOptions]="[5, 10, 50]" class="custom-table"
         styleClass="p-datatable-sm"
-        [globalFilterFields]="['PRO_CODIGO','VED_UNIDADES','VED_PRECIOVENTA_UND','VED_VALORDESCUENTO_UND','VED_PRECIOVENTA_TOTAL']">
+        [globalFilterFields]="['PRO_CODIGO','VED_UNIDADES','VED_PRECIOVENTA_UND','VED_VALORDESCUENTO_UND','VED_PRECIOVENTA_TOTAL','PRO_NOMBRE']">
         <ng-template pTemplate="caption">
             <div class="EncabezadoTabla">
                 <!-- Puedes mantener o personalizar los botones de exportar y quitar filtro según tus necesidades -->
@@ -154,6 +154,9 @@
         <ng-template pTemplate="header">
             <tr>
                 <!-- Puedes personalizar los encabezados según tus necesidades -->
+                <th pSortableColumn="PRO_NOMBRE" style="width: 10%">
+                    Nombre <p-sortIcon field="PRO_NOMBRE"></p-sortIcon>
+                </th>
                 <th pSortableColumn="VEN_CODIGO" style="width: 10%">
                     Código Venta <p-sortIcon field="PRO_CODIGO"></p-sortIcon>
                 </th>
@@ -177,6 +180,7 @@
         <ng-template pTemplate="body" let-detalleVenta>
             <tr>
                 <!-- Puedes personalizar las columnas según tus necesidades -->
+                <td>{{detalleVenta.PRO_NOMBRE}}</td>
                 <td>{{ detalleVenta.PRO_CODIGO }}</td>
                 <td>{{ detalleVenta.VED_UNIDADES }}</td>
                 <td>${{ detalleVenta.VED_PRECIOVENTA_UND | number }}</td>
