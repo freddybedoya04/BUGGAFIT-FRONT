@@ -68,9 +68,9 @@ export class EstadisticasComponent implements OnInit {
   }
 
   CargarCuentas() {
-    this.tipoCuentaService.ObtenerCuentas().subscribe((result: any) => {
+    this.tipoCuentaService.ObtenerCuentas().subscribe((result: ITipocuenta[]) => {
       if (result) {
-        this.listaCuenta = result;
+        this.listaCuenta = result.filter(x=>x.TIC_NOMBRE.toLocaleUpperCase()!="CREDITO");
       }
     });
   }
@@ -126,6 +126,8 @@ export class EstadisticasComponent implements OnInit {
       obj.Saldo = obj.IngresosTotales - obj.ComprasTotales - obj.GastosTotales;
       this.Tabla.push(obj)
     });
+   this.Indicadores.Utilidades= this.Tabla.reduce((total:number,actual)=>total+actual.Saldo,0);
   }
+  
 
 }

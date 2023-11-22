@@ -162,13 +162,14 @@ export class CuentasComponent implements OnInit {
   AbrirModalCuenta() {
     let ref = this.dialogService.open(CreacionCuentasComponent, {
       header: '',
-      width: '60%',
+      width: '40%',
       contentStyle: { overflow: 'auto', 'background-color': '#eff3f8' },
       baseZIndex: 100,
       maximizable: true,
       data: { esEdicion: false }
     });
     ref.onClose.subscribe((res) => {
+      this.FechaFin = new Date(Date.now());
       this.BuscarTransferencias();
     });
   };

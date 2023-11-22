@@ -24,7 +24,8 @@
 
 .card section {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(1, 1fr);
+    justify-items: center;
     grid-gap: 10px;
 }
 
@@ -58,16 +59,3 @@
     display: flex;
     justify-content: center;
 }
-
-@media screen and (max-width: 1400px) {
-    .card section {
-      grid-template-columns: repeat(2,1fr); /* Cambia a una sola columna */
-      /* Otras propiedades de grid que deseas modificar en tablet */
-    }
-  }
-  
-  @media screen and (max-width: 786px) {
-     .card section {
-        grid-template-columns: 1fr;
-    }
-  }
