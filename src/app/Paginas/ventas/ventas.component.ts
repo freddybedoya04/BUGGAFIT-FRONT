@@ -568,6 +568,7 @@ AgregarProducto(event: any) {
       maximizable: false,
       dismissableMask: false,
       closeOnEscape: false,
+      closable:false,
       contentStyle: { 'background-color': '#eff3f8' },
       data: { Listado: this.listaTipoDeCuenta, }
     })

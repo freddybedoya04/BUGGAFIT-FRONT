@@ -35,7 +35,8 @@
     <div class="TotalCuenta">
         <p-card *ngFor="let cuenta of listaTipoDeCuenta" [ngStyle]="{ 'flex': '1 0 125px' }">
             <div class="TotalCuentaLabel">{{cuenta.TIC_NOMBRE}}</div>
-            <div class="TotalCuentaValor">${{cuenta.TIC_DINEROTOTAL | number}}</div>
+            <div class="TotalCuentaValor" [ngClass]="{ 'texto-verde': (cuenta.TIC_DINEROTOTAL==null?0:cuenta.TIC_DINEROTOTAL) > 0, 
+                'texto-rojo': (cuenta.TIC_DINEROTOTAL==null?0:cuenta.TIC_DINEROTOTAL) < 0 }">${{cuenta.TIC_DINEROTOTAL | number}}</div>
         </p-card>
     </div>
     <br>
@@ -43,7 +44,7 @@
     <p-card header="Transacciones" [style]="{margin:'20px',padding:'20px'}" styleClass="shadow-5">
         <p-table #dt2 [value]="listaTrasacciones" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
             [tableStyle]="{'min-width': '90rem','max-height':'600px'}" styleClass="p-datatable-sm"
-            [(selection)]="listaTrasaccionesSeleccionadas"
+            [(selection)]="listaTrasaccionesSeleccionadas" 
             currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} compras"
             [rowsPerPageOptions]="[5, 10, 50]"
             [globalFilterFields]="['TRA_CODIGO','TRA_TIPO','TIC_NOMBRE','USU_NOMBRE']" class="custom-table">
@@ -118,7 +119,7 @@
                     <td class="Acciones">
                         <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success"
                             pTooltip="Confirmar" tooltipPosition="top" placeholder="Top"
-                            (click)="ConfirmarTransaccion(transaccion)"></button>
+                            (click)="ConfirmarTransaccion(transaccion) "  [disabled]="transaccion.TRA_CONFIRMADA===true || transaccion.TRA_FUEANULADA===true"></button>
                         <!-- <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
                             pTooltip="Eliminar Gasto" tooltipPosition="top" placeholder="Top"></button> -->
                     </td>
