@@ -228,12 +228,16 @@ export class VentasComponent implements OnInit {
     let valorTotal;
   
     this.formularioVenta.controls['PRO_NOMBRE'].setValue(this.producto.PRO_NOMBRE);
-  
+    this.formularioVenta.controls['PRO_PRECIO'].valueChanges.subscribe((newValue) => {
+      // Llama a la función para calcular el valor total cuando cambie el precio
+      this.CalcularValorTotal(null);
+    });
     // Verificar si el producto es un regalo
     const esProductoRegalo: boolean = this.producto?.PRO_REGALO ?? false;
   
     if (esProductoRegalo) {
       // Habilitar los campos directamente para productos regalo
+      this.formularioVenta.controls['PRO_PRECIO'].enable();
       this.formularioVenta.controls['PRO_VALORTOTAL'].enable();
       this.formularioVenta.controls['PRO_DESCUENTO'].enable();
     } else {
