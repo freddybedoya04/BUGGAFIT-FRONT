@@ -234,7 +234,6 @@ export class VentasComponent implements OnInit {
   
     if (esProductoRegalo) {
       // Habilitar los campos directamente para productos regalo
-      this.formularioVenta.controls['PRO_PRECIO'].enable();
       this.formularioVenta.controls['PRO_VALORTOTAL'].enable();
       this.formularioVenta.controls['PRO_DESCUENTO'].enable();
     } else {
@@ -318,56 +317,78 @@ export class VentasComponent implements OnInit {
     this.formularioVenta.controls['PRO_DESCUENTO'].setValue(totalDescuento.toFixed(1));
   }
 
-AgregarProducto(event: any) {
-    if (this.producto == null) {
-      this.alertasService.SetToast("Seleecione un producto.", 2);
-      return;
+  AgregarProducto(event: any) {
+    if (!this.producto || !this.producto.PRO_CODIGO) {
+        this.alertasService.SetToast("Seleccione un producto.", 2);
+        return;
     }
+
+    const cantidadVenta = this.formularioVenta.controls['PRO_CANTIDADVENTA'].value;
+    const precioVenta = this.formularioVenta.controls['PRO_PRECIO'].value;
+
+    if (cantidadVenta <= 0 || precioVenta < 0) {
+        this.alertasService.SetToast("La cantidad debe ser mayor a 0 y el precio debe ser mayor o igual a 0.", 2);
+        return;
+    }
+
     const codigoProducto = this.producto.PRO_CODIGO;
+
     // Verificar si el producto ya ha sido agregado
-    const productoExistente = this.listaProductos.find((producto) => producto.PRO_CODIGO?.toLocaleUpperCase() == codigoProducto.toLocaleUpperCase());
+    const productoExistente = this.listaProductos.find(producto => producto.PRO_CODIGO?.toUpperCase() === codigoProducto.toUpperCase());
     if (productoExistente) {
-      this.alertasService.SetToast("Este producto ya ha sido agregado.", 2);
-      return;
+        this.alertasService.SetToast("Este producto ya ha sido agregado.", 2);
+        return;
     }
-    if (this.formularioVenta.controls['PRO_CANTIDADVENTA'].value > (this.producto.PRO_UNIDADES_DISPONIBLES ?? 0)) { // validacion de cantidad de producto
-      // Agregar mensaje de error
-      this.alertasService.SetToast("No hay la cantidad necesaria del producto.", 3);
-      return;
+
+    if (cantidadVenta > (this.producto.PRO_UNIDADES_DISPONIBLES ?? 0)) {
+        this.alertasService.SetToast("No hay suficientes unidades disponibles del producto.", 3);
+        return;
     }
- 
-    if (this.formularioVenta.controls['PRO_DESCUENTO'].value == "") {
-      this.formularioVenta.controls['PRO_DESCUENTO'].setValue('0');
+
+    const descuento = this.formularioVenta.controls['PRO_DESCUENTO'].value || 0;
+
+    if (descuento < 0) {
+        this.alertasService.SetToast("El descuento no puede ser negativo.", 3);
+        return;
     }
+
+    const total = this.formularioVenta.controls['PRO_VALORTOTAL'].value || 0;
+
+    if (total < 0) {
+        this.alertasService.SetToast("El valor total no puede ser negativo.", 3);
+        return;
+    }
+
     const detalleVenta: IDetalleVentas = {
-      VED_CODIGO: 0,
-      VEN_CODIGO: 0,
-      PRO_CODIGO: this.producto.PRO_CODIGO,
-      PRO_NOMBRE: this.producto.PRO_NOMBRE,
-      VED_UNIDADES: this.formularioVenta.controls['PRO_CANTIDADVENTA'].value,
-      VED_PRECIOVENTA_UND: this.formularioVenta.controls['PRO_PRECIO'].value,
-      VED_VALORDESCUENTO_UND: this.formularioVenta.controls['PRO_DESCUENTO'].value ?? 0,
-      VED_PRECIOVENTA_TOTAL: this.formularioVenta.controls['PRO_VALORTOTAL'].value,
-      VED_ACTUALIZACION: new Date(),
-      VED_ESTADO: true,
-    }
-    this.producto = {
-      PRO_CODIGO: '',
-      PRO_NOMBRE: '',
-      PRO_MARCA: '',
-      PRO_CATEGORIA: '',
-      PRO_PRECIO_COMPRA: 0,
-      PRO_PRECIOVENTA_DETAL: 0,
-      PRO_PRECIOVENTA_MAYORISTA: 0,
-      PRO_UNIDADES_DISPONIBLES: 0,
-      PRO_UNIDADES_MINIMAS_ALERTA: 0,
-      PRO_ACTUALIZACION: new Date(),
-      PRO_FECHACREACION: new Date(),
-      PRO_ESTADO: false,
-      COM_CANTIDAD: 0,
-      PRO_REGALO:false
+        VED_CODIGO: 0,
+        VEN_CODIGO: 0,
+        PRO_CODIGO: this.producto.PRO_CODIGO,
+        PRO_NOMBRE: this.producto.PRO_NOMBRE,
+        VED_UNIDADES: cantidadVenta,
+        VED_PRECIOVENTA_UND: precioVenta,
+        VED_VALORDESCUENTO_UND: descuento,
+        VED_PRECIOVENTA_TOTAL: total,
+        VED_ACTUALIZACION: new Date(),
+        VED_ESTADO: true,
     };
-    // this.formularioVenta.controls['PRO_CODIGO'].setValue('');
+
+    this.producto = {
+        PRO_CODIGO: '',
+        PRO_NOMBRE: '',
+        PRO_MARCA: '',
+        PRO_CATEGORIA: '',
+        PRO_PRECIO_COMPRA: 0,
+        PRO_PRECIOVENTA_DETAL: 0,
+        PRO_PRECIOVENTA_MAYORISTA: 0,
+        PRO_UNIDADES_DISPONIBLES: 0,
+        PRO_UNIDADES_MINIMAS_ALERTA: 0,
+        PRO_ACTUALIZACION: new Date(),
+        PRO_FECHACREACION: new Date(),
+        PRO_ESTADO: false,
+        COM_CANTIDAD: 0,
+        PRO_REGALO: false
+    };
+
     this.formularioVenta.controls['PRO_NOMBRE'].setValue('');
     this.formularioVenta.controls['PRO_CANTIDADVENTA'].setValue('');
     this.formularioVenta.controls['PRO_PRECIO'].setValue('');
@@ -377,12 +398,13 @@ AgregarProducto(event: any) {
     this.formularioVenta.controls['PRO_CODIGO'].clearValidators();
     this.formularioVenta.controls['PRO_CANTIDADVENTA'].clearValidators();
     this.formularioVenta.controls['PRO_DESCUENTO'].clearValidators();
-    // this.codigoProdcutoInput.nativeElement.focus();
 
     this.listaProductos.push(detalleVenta); // Agregamos el producto a la lista
-    this.alertasService.SetToast("Producto agregado con exito.", 1);
+    this.alertasService.SetToast("Producto agregado con éxito.", 1);
     this.CalcularTotalComprado();
-  }
+}
+
+
   eliminarVenta(venta: IDetalleVentas) {
     const index = this.listaProductos.indexOf(venta);
     if (index !== -1) {

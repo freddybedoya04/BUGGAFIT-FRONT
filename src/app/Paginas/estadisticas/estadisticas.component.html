@@ -85,7 +85,7 @@
             [tableStyle]="{ 'min-width': '20rem', 'max-height': '400px' }" [paginator]="true" [rows]="5"
             [showCurrentPageReport]="true" [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords}'"
             [scrollable]="true" [rowsPerPageOptions]="[5, 10]" 
-            [globalFilterFields]="['Codigo']"
+            [globalFilterFields]="['Codigo','Nombre']"
             styleClass="p-datatable-sm" class="custom-table">
             <ng-template pTemplate="header">
                 <div class="EncabezadoTabla">
@@ -99,7 +99,9 @@
             iconPos="left" class="p-button-raised p-button-rounded" (click)="searchKeyword='';dt2.reset()"></button>
         </div>
                 <tr>
-                    
+                    <th pSortableColumn="Nombre" style="width: 15%">
+                        Nombre <p-sortIcon field="Nombre"></p-sortIcon>
+                       </th>
                     <th pSortableColumn="Codigo" style="width: 15%">
                      Codigo <p-sortIcon field="Codigo"></p-sortIcon>
                     </th>
@@ -113,6 +115,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-producto>
                 <tr>
+                    <td>{{ producto.Nombre}}</td>
                     <td>{{ producto.Codigo}}</td>
                     <td>{{ producto.Precio | currency}}</td>
                     <td>{{ producto.CantidadProducto}}</td>
