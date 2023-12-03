@@ -61,6 +61,7 @@
       </div>
     </form>
   </p-card>
+  <h2 *ngIf="AplicaDescuento==true" style="text-align: center;font-weight: bold;color: red;">Atencion: Todos los productos seleccionados tendran un descuento de ${{Descuento |number}}</h2>
   <!-- Card producto -->
   <p-card header="Informacion producto" [style]="{ width: '100%' }" class="card">
     <form #myForm="ngForm" [formGroup]="formularioVenta" (ngSubmit)="FinalizarFactura(myForm)">

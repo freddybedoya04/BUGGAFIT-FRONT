@@ -6,6 +6,7 @@ import { IFiltro } from '../Interfaces/ifiltro';
 import { Iabonos } from '../Interfaces/iabonos';
 import { IApiResponse } from '../Interfaces/iapiresponse';
 import { IDetalleVentas } from '../Interfaces/idetalle-ventas';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ import { IDetalleVentas } from '../Interfaces/idetalle-ventas';
 export class VentasService {
 
   url: string = "Ventas/";
-  constructor(private http: HttpClientService) { }
+  constructor(private http: HttpClientService,private http2:HttpClient) { }
 
   BuscarVentas() {
     return this.http.get<IApiResponse>(this.url + 'GetVentas').pipe(
@@ -119,5 +120,8 @@ export class VentasService {
       map((result: IApiResponse) => {
         return result.Data;
       }));
+  }
+  getConfig(): Observable<any> {
+    return this.http2.get<any>('assets/Data/config.json');
   }
 }

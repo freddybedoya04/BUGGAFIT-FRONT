@@ -33,7 +33,8 @@ export class VentasComponent implements OnInit {
   @ViewChild("tipoDeEnvioDropdown") tipoDeEnvioDropdown!: Dropdown;
   @ViewChild("cantidadInput") cantidadInput!: ElementRef;
   @ViewChild("myForm") myForm!: Form;
-
+  Descuento:any;
+  AplicaDescuento:boolean;
   productos: Iproducto[] = [];
   producto: Iproducto;
   productosAgregados: string[] = [];
@@ -154,14 +155,20 @@ export class VentasComponent implements OnInit {
       GAS_OBSERVACIONES: ''
     }
     this.TotalComprado = 0;
+    this.AplicaDescuento=false;
   }
   ngOnInit(): void {
     this.ObtenerTipoCuentas();
     this.ObtenerTipoDeGastoEnvio();
     this.LlenadoProductos();
-
+    this.ObtenerDescuento();
   }
-
+  ObtenerDescuento(){
+    this.ventasService.getConfig().subscribe(config=>{
+      console.log("Descuento: "+config.Descuento)
+      this.Descuento=config.Descuento;
+    })
+  }
   ObtenerTipoCuentas() {
     this.ventasService.BuscarTipoCuentas().subscribe((result: any) => {
       if (result === null) {
@@ -253,7 +260,14 @@ export class VentasComponent implements OnInit {
     }
   
     if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[1].value) {
-      valorTotal = this.producto.PRO_PRECIOVENTA_DETAL;
+      if(!esProductoRegalo && this.AplicaDescuento){
+        valorTotal=( this.producto.PRO_PRECIOVENTA_DETAL - this.Descuento);
+        if(valorTotal<0){
+          valorTotal=0;
+        }
+      }else{
+        valorTotal=this.producto.PRO_PRECIOVENTA_DETAL;
+      }
       this.formularioVenta.controls['PRO_PRECIO'].setValue(valorTotal);
     }
   
@@ -458,6 +472,11 @@ export class VentasComponent implements OnInit {
       GAS_OBSERVACIONES: "",
     }
     this.AgreagarEnvioAProductos(esClienteDetal, estaFueraDeBuga, this.gastoDeEnvio.GAS_VALOR);
+    if(esClienteDetal && !estaFueraDeBuga){
+      this.AplicaDescuento=true;
+    }else{
+      this.AplicaDescuento=false;
+    }
     this.CalcularTotalComprado();
   }
 
@@ -739,7 +758,6 @@ export class VentasComponent implements OnInit {
       this.listaProductos.shift();
       return;
     }
-
     const index = this.listaProductos.findIndex(x => x.PRO_CODIGO === '9999')
     if (index < 0) {
       this.listaProductos.unshift(producto);
