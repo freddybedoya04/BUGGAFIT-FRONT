@@ -39,6 +39,7 @@
         <input type="text" pInputText formControlName="CLI_UBICACION" (blur)="AgregarTipoDeEnvio($event)"/>
       </div>
 
+    
       <div>
         <label for="CLI_TIPOCLIENTE">Tipo de cliente:</label>
         <p-dropdown formControlName="CLI_TIPOCLIENTE" [options]="listaTipoDeCliente" optionLabel="label"
@@ -54,6 +55,15 @@
         <label for="VEN_CUENTADESTINO">Tipo de pago:</label>
         <p-dropdown formControlName="VEN_CUENTADESTINO" [options]="listaTipoDeCuenta" optionLabel="label"
           optionValue="value" placeholder="Seleccione Cuenta"></p-dropdown>
+      </div>
+      <div>
+        <label for="CLI_TELEFONO">Telefono:</label>
+        <input type="text" pInputText formControlName="CLI_TELEFONO"/>
+      </div>
+      
+      <div>
+        <label for="CLI_CORRREO">Correo electronico:</label>
+        <input type="text" pInputText formControlName="CLI_CORREO"/>
       </div>
       <div>
         <label for="VEN_OBSERVACIONES">Observaciones:</label>

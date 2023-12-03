@@ -116,6 +116,8 @@ export class VentasComponent implements OnInit {
       CLI_DIRECCION: [null, Validators.required],
       CLI_UBICACION: [null, Validators.required],
       CLI_TIPOCLIENTE: [null, Validators.required],
+      CLI_TELEFONO: [null],
+      CLI_CORREO:[null],
       PRO_CODIGO: [null],
       PRO_NOMBRE: [{ value: '', disabled: true }],
       VENT_CEDULA: [null],
@@ -202,6 +204,8 @@ export class VentasComponent implements OnInit {
         this.formularioVenta.controls['CLI_NOMBRE'].setValue('');
         this.formularioVenta.controls['CLI_DIRECCION'].setValue('');
         this.formularioVenta.controls['CLI_UBICACION'].setValue('');
+        this.formularioVenta.controls['CLI_TELEFONO'].setValue('');
+        this.formularioVenta.controls['CLI_CORREO'].setValue('');
         this.alertasService.SetToast("El cliente no existe. Por favor diligencie los datos para crearlo.", 2);
         this.ClienteCredito = false;
         return;
@@ -210,6 +214,8 @@ export class VentasComponent implements OnInit {
       this.formularioVenta.controls['CLI_NOMBRE'].setValue(result.CLI_NOMBRE);
       this.formularioVenta.controls['CLI_DIRECCION'].setValue(result.CLI_DIRECCION);
       this.formularioVenta.controls['CLI_UBICACION'].setValue(result.CLI_UBICACION);
+      this.formularioVenta.controls['CLI_TELEFONO'].setValue(result.CLI_TELEFONO);
+      this.formularioVenta.controls['CLI_CORREO'].setValue(result.CLI_CORREO);
       this.ClienteCredito = result.CLI_ESCREDITO == null ? false : result.CLI_ESCREDITO;
       const tipoCliente = this.listaTipoDeCliente.filter((tipocliente: SelectItem) => {
         return tipocliente.value == result.CLI_TIPOCLIENTE;
@@ -495,6 +501,8 @@ export class VentasComponent implements OnInit {
         CLI_TIPOCLIENTE: this.formularioVenta.controls['CLI_TIPOCLIENTE'].value,
         CLI_UBICACION: this.formularioVenta.controls['CLI_UBICACION'].value,
         CLI_DIRECCION: this.formularioVenta.controls['CLI_DIRECCION'].value,
+        CLI_CORREO: this.formularioVenta.controls['CLI_CORREO'].value,
+        CLI_TELEFONO:this.formularioVenta.controls['CLI_TELEFONO'].value,
         CLI_FECHACREACION: new Date(),
         CLI_ESTADO: true,
         CLI_ESCREDITO: esVentaACredito,
@@ -511,6 +519,8 @@ export class VentasComponent implements OnInit {
         CLI_TIPOCLIENTE: this.formularioVenta.controls['CLI_TIPOCLIENTE'].value,
         CLI_UBICACION: this.formularioVenta.controls['CLI_UBICACION'].value,
         CLI_DIRECCION: this.formularioVenta.controls['CLI_DIRECCION'].value,
+        CLI_CORREO: this.formularioVenta.controls['CLI_CORREO'].value,
+        CLI_TELEFONO:this.formularioVenta.controls['CLI_TELEFONO'].value,
         CLI_FECHACREACION: new Date(),
         CLI_ESTADO: true,
         CLI_ESCREDITO: esVentaACredito == true ? esVentaACredito : this.ClienteCredito,
@@ -530,7 +540,7 @@ export class VentasComponent implements OnInit {
       CLI_ID: this.formularioVenta.controls['VENT_CEDULA'].value,
       CLI_NOMBRE: this.formularioVenta.controls['CLI_NOMBRE'].value,
       CLI_DIRECCION: this.formularioVenta.controls['CLI_DIRECCION'].value,
-      CLI_TELEFONO: "0",
+      CLI_TELEFONO: this.formularioVenta.controls['CLI_TELEFONO'].value,
       CLI_UBICACION: this.formularioVenta.controls['CLI_UBICACION'].value,
       CLI_TIPOCLIENTE: this.formularioVenta.controls['CLI_TIPOCLIENTE'].value,
       VEN_PRECIOTOTAL: valorTotalVenta,
@@ -699,6 +709,8 @@ export class VentasComponent implements OnInit {
       CLI_TIPOCLIENTE: this.formularioVenta.controls['CLI_TIPOCLIENTE'].value,
       CLI_UBICACION: this.formularioVenta.controls['CLI_UBICACION'].value,
       CLI_DIRECCION: this.formularioVenta.controls['CLI_DIRECCION'].value,
+      CLI_CORREO: this.formularioVenta.controls['CLI_CORREO'].value,
+      CLI_TELEFONO:this.formularioVenta.controls['CLI_TELEFONO'].value,
       CLI_FECHACREACION: new Date(),
       CLI_ESTADO: true,
       CLI_ESCREDITO: true,

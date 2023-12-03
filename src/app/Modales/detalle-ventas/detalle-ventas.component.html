@@ -53,6 +53,15 @@
             </div>
 
             <div>
+                <label for="CLI_TELEFONO">Telefono:</label>
+                <input type="text" [(ngModel)]="venta.CLI_TELEFONO" pInputText disabled="true"/>
+            </div>
+            
+            <div>
+                <label for="CLI_CORREO">Correo:</label>
+                <input type="text" [(ngModel)]="venta.CLI_CORREO" pInputText disabled="true"/>
+            </div>
+            <div>
                 <label for="CLI_UBICACION">Ubicacion:</label>
                 <input type="text"  [(ngModel)]="venta.CLI_UBICACION" pInputText disabled="true"/>
             </div>
@@ -65,6 +74,7 @@
                 <label for="TIP_NOMBRE">Tipo de Envio:</label>
                 <input type="text" [(ngModel)]="venta.TIP_NOMBRE" pInputText disabled="true"/>
             </div>
+           
         </section>
 
     </p-card>

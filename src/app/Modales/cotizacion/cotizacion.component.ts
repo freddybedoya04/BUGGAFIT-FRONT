@@ -27,6 +27,8 @@ export class CotizacionComponent implements OnInit{
       CLI_TIPOCLIENTE: '',
       CLI_UBICACION: '',
       CLI_DIRECCION: '',
+      CLI_CORREO:'',
+      CLI_TELEFONO:0 ,
       CLI_FECHACREACION: new Date(),
       CLI_ESTADO: false
     };

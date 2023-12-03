@@ -7,4 +7,6 @@ export interface Icliente{
     CLI_FECHACREACION:Date,
     CLI_ESTADO: boolean,
     CLI_ESCREDITO: boolean,
+    CLI_TELEFONO:number,
+    CLI_CORREO:string
 }

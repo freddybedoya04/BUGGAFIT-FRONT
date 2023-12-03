@@ -40,7 +40,7 @@ export class AbonosComponent implements OnInit {
       CLI_ID: 0,
       CLI_NOMBRE: '',
       CLI_DIRECCION: '',
-      CLI_TELEFONO: '',
+      CLI_TELEFONO: 0,
       CLI_TIPOCLIENTE: '',
       VEN_PRECIOTOTAL: 0,
       VEN_ESTADOCREDITO: false,
