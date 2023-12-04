@@ -251,7 +251,6 @@ export class VentasComponent implements OnInit {
     if (esProductoRegalo) {
       // Habilitar los campos directamente para productos regalo
       this.formularioVenta.controls['PRO_PRECIO'].enable();
-      this.formularioVenta.controls['PRO_VALORTOTAL'].enable();
       this.formularioVenta.controls['PRO_DESCUENTO'].enable();
     } else {
       // Deshabilitar los campos si no es regalo
