@@ -14,7 +14,7 @@
                 <div>
                     <label for="TIC_CODIGO">Medio de pago:</label>
                     <p-dropdown  formControlName="TIC_CODIGO" [options]="listaTipoDeCuenta" optionLabel="label"
-                    optionValue="value" placeholder="Seleccione Cuenta" [readonly]="EsEdicion==true" appendTo="body"></p-dropdown>
+                    optionValue="value" placeholder="Seleccione Cuenta" [readonly]="EsEdicion==true" appendTo="body" [filter]="true" filterBy=""></p-dropdown>
                 </div>
     
             </form>

@@ -17,7 +17,8 @@
     <p-table #dt2 [value]="listaProductos" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
       [tableStyle]="{'min-width': '90rem','max-height':'600px'}" styleClass="p-datatable-sm"
       currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} productos"
-      [rowsPerPageOptions]="[5, 10, 50]" [globalFilterFields]="['PRO_CODIGO','PRO_NOMBRE','PRO_MARCA']"
+      [rowsPerPageOptions]="[5, 10, 50]" 
+      [scrollable]="true" [globalFilterFields]="['PRO_CODIGO','PRO_NOMBRE','PRO_MARCA']"
       class="custom-table">
       <ng-template pTemplate="caption">
         <div class="EncabezadoTabla">
@@ -50,7 +51,7 @@
           <th pSortableColumn="PRO_MARCA" style="min-width:200px">Marca <p-sortIcon field="PRO_MARCA"></p-sortIcon></th>
           <th pSortableColumn="PRO_CATEGORIA" style="min-width:200px">Categoria <p-sortIcon
               field="PRO_CATEGORIA"></p-sortIcon></th>
-          <th style="min-width:200px" alignFrozen="right" pFrozenColumn>Acciones</th>
+          <th style="min-width:200px" alignFrozen="left" pFrozenColumn>Acciones</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-producto>
@@ -65,7 +66,7 @@
           <td>{{ producto.PRO_PRECIOVENTA_DETAL|number }}</td>
           <td>{{ producto.PRO_MARCA }}</td>
           <td>{{ producto.PRO_CATEGORIA }}</td>
-          <td class="Acciones">
+          <td class="Acciones" alignFrozen="right" pFrozenColumn [frozen]="true">
             <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" pTooltip="Editar" tooltipPosition="top"(click)="EditarProducto(producto)"></button>
             <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" pTooltip="Eliminar" tooltipPosition="top"(click)="BorrarProducto(producto)"></button>
           </td>

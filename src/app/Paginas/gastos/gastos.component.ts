@@ -85,6 +85,17 @@ export class GastosComponent implements OnInit {
       }
     );
   }
+  getSeverity(estado: boolean) {
+
+    switch (estado) {
+      case true:
+        return 'success';
+      case false:
+        return 'warning';
+    }
+
+
+  }
   BuscarGastoPorFechas() {
     this.ArmarFiltro();
     this.alertasService.showLoading("Buscando gastos...")

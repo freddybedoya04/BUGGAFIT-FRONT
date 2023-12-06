@@ -21,6 +21,7 @@ import { InventarioService } from 'src/app/Servicios/inventario.service';
 import { MotivosGastosService } from 'src/app/Servicios/motivosgastos.service';
 import { TiposEnviosService } from 'src/app/Servicios/tipos-envios.service';
 import { VentasService } from 'src/app/Servicios/ventas.service';
+import { UsuarioService } from 'src/app/Servicios/usuario.service';
 
 @Component({
   selector: 'app-ventas',
@@ -101,6 +102,7 @@ export class VentasComponent implements OnInit {
     private motivoGastosService: MotivosGastosService,
     private tipoEnviosService: TiposEnviosService,
     private dialogService: DialogService,
+    private usuarioService:UsuarioService
   ) {
     this.userLogged = JSON.parse(localStorage.getItem('user') || "");
     const isUserAdmin = (this.userLogged.USU_NOMBREROL.toLowerCase() === 'admin' ||
@@ -215,8 +217,11 @@ export class VentasComponent implements OnInit {
         this.formularioVenta.controls['CLI_CORREO'].setValue('');
         this.alertasService.SetToast("El cliente no existe. Por favor diligencie los datos para crearlo.", 2);
         this.ClienteCredito = false;
+        this.formularioVenta.controls['CLI_TIPOCLIENTE'].enable(); 
         return;
       }
+      
+  
       this.existeCliente = true;
       this.formularioVenta.controls['CLI_NOMBRE'].setValue(result.CLI_NOMBRE);
       this.formularioVenta.controls['CLI_DIRECCION'].setValue(result.CLI_DIRECCION);
@@ -224,14 +229,18 @@ export class VentasComponent implements OnInit {
       this.formularioVenta.controls['CLI_TELEFONO'].setValue(result.CLI_TELEFONO);
       this.formularioVenta.controls['CLI_CORREO'].setValue(result.CLI_CORREO);
       this.ClienteCredito = result.CLI_ESCREDITO == null ? false : result.CLI_ESCREDITO;
+  
       const tipoCliente = this.listaTipoDeCliente.filter((tipocliente: SelectItem) => {
         return tipocliente.value == result.CLI_TIPOCLIENTE;
       });
+  
       this.formularioVenta.controls['CLI_TIPOCLIENTE'].setValue((tipoCliente.length > 0) ? tipoCliente[0].value : null);
+      this.formularioVenta.controls['CLI_TIPOCLIENTE'].disable(); 
       this.tipoDeEnvioDropdown.focus();
       this.alertasService.SetToast("Cliente encontrado.", 1);
     });
   }
+  
   AutocompletarProducto() {
     if (!this.formularioVenta.controls['CLI_TIPOCLIENTE'].value || this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === null) {
       this.alertasService.SetToast("Debe seleccionar un tipo de cliente.", 2);
@@ -244,6 +253,7 @@ export class VentasComponent implements OnInit {
     this.formularioVenta.controls['PRO_PRECIO'].valueChanges.subscribe((newValue) => {
       // Llama a la función para calcular el valor total cuando cambie el precio
       this.CalcularValorTotal(null);
+      
     });
     // Verificar si el producto es un regalo
     const esProductoRegalo: boolean = this.producto?.PRO_REGALO ?? false;
@@ -495,8 +505,13 @@ export class VentasComponent implements OnInit {
 
       }
     }
-    if (this.listaProductos.length == 0) {
-      this.alertasService.SetToast('Debe agregar almenos un producto.', 2);
+    const hasProducts = this.listaProductos.some(product => product.PRO_NOMBRE !== 'ENVIO' && 'envio');
+    if (!hasProducts && this.listaProductos.length === 1) {
+        this.alertasService.SetToast('Debe agregar al menos un producto diferente al ENVIO.', 2);
+        return;
+    }
+    if (this.listaProductos.length==0) {
+      this.alertasService.SetToast('Debe agregar al menos un producto.', 2);
       return;
     }
     if (!this.formularioVenta.controls['VEN_CUENTADESTINO'].value || this.formularioVenta.controls['VEN_CUENTADESTINO'].value === null) {
@@ -686,7 +701,7 @@ export class VentasComponent implements OnInit {
         return;
     }
 
-        // Si no es regalo, validamos el usuario como lo haces actualmente
+        
         let ref = this.dialogService.open(ValidarUsuarioAdminComponent, {
             header: 'Validar Usuario',
             width: '25%',

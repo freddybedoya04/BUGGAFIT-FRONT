@@ -9,6 +9,7 @@
       [tableStyle]="{'min-width': '90rem','max-height':'600px'}"
       currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} compras"
       [rowsPerPageOptions]="[5, 10, 50]"
+      [scrollable]="true" 
       [globalFilterFields]="['USU_NOMBRE', 'USU_CEDULA', 'USU_ROL']"
       class="custom-table"
     >
@@ -42,7 +43,7 @@
           <td>{{ usuario.USU_NOMBRE }}</td>
           <td>{{ usuario.USU_CEDULA }}</td>
           <td>{{ usuario.USU_NOMBREROL }}</td>
-          <td style="min-width:200px">
+          <td class="Acciones" alignFrozen="right" pFrozenColumn [frozen]="true">
             <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" pTooltip="Editar"tooltipPosition="top" (click)="EditarUsuario(usuario)"></button>
             <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" pTooltip="Eliminar" tooltipPosition="top"(click)="EliminarUsuario(usuario)"></button>
           </td>

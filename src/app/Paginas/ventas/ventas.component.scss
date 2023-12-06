@@ -58,11 +58,19 @@ h1 {
     gap: 5px;
     width: 80%;
   }
+
+  
   
   .card form div input {
     border-radius: 10px;
     width: 100%;
   }
+  :host ::ng-deep .p-dropdown-filter-icon{
+    position: absolute;
+    top: 40%;
+    margin-top: -0.5rem;
+  }
+  
 :host ::ng-deep .p-calendar,
 :host ::ng-deep .p-dropdown,
 :host ::ng-deep .p-inputtext,
@@ -82,6 +90,8 @@ h1 {
   flex-direction: row;
 
  }
+
+
 
 
  @media screen and (max-width: 1400px) {

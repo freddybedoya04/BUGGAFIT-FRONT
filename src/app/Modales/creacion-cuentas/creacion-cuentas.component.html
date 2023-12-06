@@ -5,14 +5,14 @@
         <label>Cuenta Origen:</label>
         <p-dropdown [options]="listaTipoDeCuenta" [(ngModel)]="this.transaccionCuentas.IdCuentaOrigen"
           optionLabel="TIC_NOMBRE" optionValue="TIC_CODIGO" [showClear]="true"
-          placeholder="Seleccione Cuenta" appendTo="body"></p-dropdown>
+          placeholder="Seleccione Cuenta" appendTo="body" [filter]="true" filterBy=""></p-dropdown>
       </div>
 
       <div>
         <label>Cuenta Destino:</label>
         <p-dropdown [options]="listaTipoDeCuenta" [(ngModel)]="this.transaccionCuentas.IdCuentaDestino"
           optionLabel="TIC_NOMBRE" optionValue="TIC_CODIGO" [showClear]="true"
-          placeholder="Seleccione Cuenta" appendTo="body"></p-dropdown>
+          placeholder="Seleccione Cuenta" appendTo="body" [filter]="true" filterBy=""></p-dropdown>
       </div>
       <div>
         <label>Cantidad:</label>

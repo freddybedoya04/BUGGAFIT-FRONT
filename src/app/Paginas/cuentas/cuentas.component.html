@@ -14,7 +14,7 @@
         <p>
             <label>Cuenta:</label>
             <p-dropdown [options]="listaTipoDeCuenta" [(ngModel)]="CuentaSeleccionada" optionLabel="TIC_NOMBRE"
-                [showClear]="true" placeholder="Seleccione Cuenta">
+                [showClear]="true" placeholder="Seleccione Cuenta"[filter]="true" filterBy="">
                 <ng-template pTemplate="selectedItem">
                     <div>{{ CuentaSeleccionada.TIC_NOMBRE }}</div>
                 </ng-template>
@@ -47,6 +47,7 @@
             [(selection)]="listaTrasaccionesSeleccionadas" 
             currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} compras"
             [rowsPerPageOptions]="[5, 10, 50]"
+            [scrollable]="true" 
             [globalFilterFields]="['TRA_CODIGO','TRA_TIPO','TIC_NOMBRE','USU_NOMBRE']" class="custom-table">
             <ng-template pTemplate="caption">
                 <div class="EncabezadoTabla">
@@ -116,7 +117,7 @@
                             [severity]="getSeverity(transaccion.TRA_FUEANULADA)"></p-tag>
                     </td>
                     <td>{{transaccion.USU_NOMBRE}}</td>
-                    <td class="Acciones">
+                    <td class="Acciones" alignFrozen="right" pFrozenColumn [frozen]="true">
                         <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success"
                             pTooltip="Confirmar" tooltipPosition="top" placeholder="Top"
                             (click)="ConfirmarTransaccion(transaccion) "  [disabled]="transaccion.TRA_CONFIRMADA===true || transaccion.TRA_FUEANULADA===true"></button>

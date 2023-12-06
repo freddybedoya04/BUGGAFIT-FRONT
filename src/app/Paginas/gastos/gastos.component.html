@@ -21,7 +21,8 @@
         <p-table #dt2 [value]="listaGastos" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
             [tableStyle]="{'min-width': '90rem','max-height':'600px'}" styleClass="p-datatable-sm"
             currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} compras"
-            [rowsPerPageOptions]="[5, 10, 50]" [globalFilterFields]="['GAS_CODIGO','TIC_NOMBRE','MOG_NOMBRE']"
+            [rowsPerPageOptions]="[5, 10, 50]" 
+            [scrollable]="true" [globalFilterFields]="['GAS_CODIGO','TIC_NOMBRE','MOG_NOMBRE']"
             class="custom-table">
             <ng-template pTemplate="caption">
                 <div class="EncabezadoTabla">
@@ -73,12 +74,15 @@
                     <td><i *ngIf="gasto.GAS_ESANULADA" class="pi pi-exclamation-triangle"></i></td>
                     <td>{{ gasto.MOG_NOMBRE }}</td>
                     <td>{{ gasto.GAS_VALOR | number}}</td>
-                    <td>{{ gasto.GAS_PENDIENTE ? 'Si' : 'No'}}</td>
+                    <td>
+                        <p-tag [value]="gasto.GAS_PENDIENTE==true ? 'SI':'NO'"
+                        [severity]="getSeverity(gasto.GAS_PENDIENTE)"></p-tag>
+                    </td>
                     <td>{{ gasto.TIC_NOMBRE }}</td>
                     <td>{{ gasto.GAS_FECHAGASTO | date:'YYYY-MMM-dd '}}</td>
                     <td>{{ gasto.USU_NOMBRE}}</td>
                     <!-- <td>{{ gasto.GAS_OBSERVACIONES}}</td> -->
-                    <td class="Acciones">
+                    <td class="Acciones"alignFrozen="right" pFrozenColumn [frozen]="true">
                         <!-- <button [disabled]="gasto.GAS_PENDIENTE !== true" pButton pRipple icon="pi pi-check"
                             class="p-button-rounded p-button-success" pTooltip="Cerrar Gasto" tooltipPosition="top"
                             placeholder="Top" (click)="CerrarGasto(gasto)"></button> -->
