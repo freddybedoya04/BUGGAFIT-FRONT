@@ -53,6 +53,8 @@ export class VentasComponent implements OnInit {
   _totalVentaMaxValue: number = 0;
   codigoVentaCreada: number = 0;
   listadoTiposDeEnvio: ITiposEnvios[] = [];
+  isUserAdmin: boolean = false;
+
   //Listas de los dropdown
   listaTipoDeCliente: SelectItem[] = [
     {
@@ -105,7 +107,7 @@ export class VentasComponent implements OnInit {
     private usuarioService:UsuarioService
   ) {
     this.userLogged = JSON.parse(localStorage.getItem('user') || "");
-    const isUserAdmin = (this.userLogged.USU_NOMBREROL.toLowerCase() === 'admin' ||
+     this.isUserAdmin = (this.userLogged.USU_NOMBREROL.toLowerCase() === 'admin' ||
       this.userLogged.USU_NOMBREROL.toLowerCase() === 'administrador' ||
       this.userLogged.USU_NOMBREROL.toLowerCase() === 'administrator');
 
@@ -118,7 +120,7 @@ export class VentasComponent implements OnInit {
       CLI_NOMBRE: [null, Validators.required],
       CLI_DIRECCION: [null, Validators.required],
       CLI_UBICACION: [null, Validators.required],
-      CLI_TIPOCLIENTE: [null, Validators.required],
+      CLI_TIPOCLIENTE:  [null, Validators.required],
       CLI_TELEFONO: [null],
       CLI_CORREO:[null],
       PRO_CODIGO: [null],
@@ -126,8 +128,8 @@ export class VentasComponent implements OnInit {
       VENT_CEDULA: [null],
       PRO_PRECIO: [{ value: 0, disabled: true }],
       PRO_CANTIDADVENTA: [null],
-      PRO_VALORTOTAL: [{ value: 0, disabled: !isUserAdmin }],
-      PRO_DESCUENTO: [{ value: 0, disabled: !isUserAdmin }],
+      PRO_VALORTOTAL: [{ value: 0, disabled: !this.isUserAdmin }],
+      PRO_DESCUENTO: [{ value: 0, disabled: !this.isUserAdmin }],
     });
     this.producto = {
       PRO_CODIGO: '',
@@ -207,39 +209,52 @@ export class VentasComponent implements OnInit {
   }
 
   AutocompletarCedula() {
-    this.clientesService.BuscarClienteID(this.formularioVenta.controls['VENT_CEDULA'].value).subscribe((result: Icliente) => {
-      if (!result || result === null) { // en caso que llege vacio el cliente
-        this.existeCliente = false;
-        this.formularioVenta.controls['CLI_NOMBRE'].setValue('');
-        this.formularioVenta.controls['CLI_DIRECCION'].setValue('');
-        this.formularioVenta.controls['CLI_UBICACION'].setValue('');
-        this.formularioVenta.controls['CLI_TELEFONO'].setValue('');
-        this.formularioVenta.controls['CLI_CORREO'].setValue('');
-        this.alertasService.SetToast("El cliente no existe. Por favor diligencie los datos para crearlo.", 2);
-        this.ClienteCredito = false;
-        this.formularioVenta.controls['CLI_TIPOCLIENTE'].enable(); 
-        return;
-      }
-      
+    this.clientesService.BuscarClienteID(this.formularioVenta.controls['VENT_CEDULA'].value)
+      .subscribe((result: Icliente) => {
+        if (!result || result === null) {
+          this.existeCliente = false;
+          this.formularioVenta.controls['CLI_NOMBRE'].setValue('');
+          this.formularioVenta.controls['CLI_DIRECCION'].setValue('');
+          this.formularioVenta.controls['CLI_UBICACION'].setValue('');
+          this.formularioVenta.controls['CLI_TELEFONO'].setValue('');
+          this.formularioVenta.controls['CLI_CORREO'].setValue('');
+          this.alertasService.SetToast("El cliente no existe. Por favor diligencie los datos para crearlo.", 2);
+          this.ClienteCredito = false;
   
-      this.existeCliente = true;
-      this.formularioVenta.controls['CLI_NOMBRE'].setValue(result.CLI_NOMBRE);
-      this.formularioVenta.controls['CLI_DIRECCION'].setValue(result.CLI_DIRECCION);
-      this.formularioVenta.controls['CLI_UBICACION'].setValue(result.CLI_UBICACION);
-      this.formularioVenta.controls['CLI_TELEFONO'].setValue(result.CLI_TELEFONO);
-      this.formularioVenta.controls['CLI_CORREO'].setValue(result.CLI_CORREO);
-      this.ClienteCredito = result.CLI_ESCREDITO == null ? false : result.CLI_ESCREDITO;
+          // Deshabilitar CLI_TIPOCLIENTE solo si el usuario no es administrador
+          if (!this.isUserAdmin) {
+            this.formularioVenta.controls['CLI_TIPOCLIENTE'].enable();
+          }
   
-      const tipoCliente = this.listaTipoDeCliente.filter((tipocliente: SelectItem) => {
-        return tipocliente.value == result.CLI_TIPOCLIENTE;
+          return;
+        }
+  
+        this.existeCliente = true;
+        this.formularioVenta.controls['CLI_NOMBRE'].setValue(result.CLI_NOMBRE);
+        this.formularioVenta.controls['CLI_DIRECCION'].setValue(result.CLI_DIRECCION);
+        this.formularioVenta.controls['CLI_UBICACION'].setValue(result.CLI_UBICACION);
+        this.formularioVenta.controls['CLI_TELEFONO'].setValue(result.CLI_TELEFONO);
+        this.formularioVenta.controls['CLI_CORREO'].setValue(result.CLI_CORREO);
+        this.ClienteCredito = result.CLI_ESCREDITO == null ? false : result.CLI_ESCREDITO;
+  
+        const tipoClienteControl = this.formularioVenta.controls['CLI_TIPOCLIENTE'];
+        const tipoCliente = this.listaTipoDeCliente.filter((tipocliente: SelectItem) => {
+          return tipocliente.value == result.CLI_TIPOCLIENTE;
+        });
+  
+        this.formularioVenta.controls['CLI_TIPOCLIENTE'].setValue((tipoCliente.length > 0) ? tipoCliente[0].value : null);
+  
+        // Deshabilitar CLI_TIPOCLIENTE solo si el usuario no es administrador
+        if (!this.isUserAdmin) {
+          tipoClienteControl.disable();
+        }
+  
+        this.tipoDeEnvioDropdown.focus();
+        this.alertasService.SetToast("Cliente encontrado.", 1);
       });
-  
-      this.formularioVenta.controls['CLI_TIPOCLIENTE'].setValue((tipoCliente.length > 0) ? tipoCliente[0].value : null);
-      this.formularioVenta.controls['CLI_TIPOCLIENTE'].disable(); 
-      this.tipoDeEnvioDropdown.focus();
-      this.alertasService.SetToast("Cliente encontrado.", 1);
-    });
   }
+  
+  
   
   AutocompletarProducto() {
     if (!this.formularioVenta.controls['CLI_TIPOCLIENTE'].value || this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === null) {
