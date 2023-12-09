@@ -120,9 +120,13 @@
                             [(ngModel)]="Cuenta.TIC_DINEROTOTAL"
                           ></p-inputNumber>
                         </div>
+                        <div style="align-items: flex-start;display: flex;gap: 10px;">
+                            <p-checkbox id="Bodega" [binary]="true" [(ngModel)]="Cuenta.TIC_ESTIPOENVIO" label="Es para envio"></p-checkbox>
+                            <!-- <p-checkbox id="Credito" [binary]="true"[(ngModel)]="Credito" label="Deuda" ></p-checkbox> -->
+                        </div>
                         <div class="BotonAgregar">
-                            <p-button *ngIf="Cuenta.TIC_CODIGO !=0" label="Actualizar Cuenta" icon="pi pi-plus" (onClick)="ActualizarTipoCuenta()"></p-button>
-                            <p-button *ngIf="Cuenta.TIC_CODIGO ==0"label="Agregar Cuenta" icon="pi pi-plus" (onClick)="AgregarCuenta()"></p-button>
+                            <p-button *ngIf="Cuenta.TIC_CODIGO !=0" label="Actualizar" icon="pi pi-plus" (onClick)="ActualizarTipoCuenta()"></p-button>
+                            <p-button *ngIf="Cuenta.TIC_CODIGO ==0"label="Agregar" icon="pi pi-plus" (onClick)="AgregarCuenta()"></p-button>
                             <p-button label="Cancelar" styleClass="p-button-danger" (onClick)="ActivarFormularioCuenta=false"></p-button>
                         </div>
                     </section>
@@ -141,10 +145,11 @@
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
-                                <th style="width: 20%">#</th>
+                                <th style="width: 10%">#</th>
                                 <th style="width: 20%">Cuenta</th>
                                 <th style="width: 20%">Dinero total</th>
-                                <th style="width: 20%">Referencia</th>
+                                <th style="width: 10%">Referencia</th>
+                                <th style="width: 20%">Es Para envios</th>
                                 <th style="width: 20%">Acciones</th>
                             </tr>
                         </ng-template>
@@ -154,6 +159,10 @@
                                 <td>{{ cuenta.TIC_NOMBRE}}</td>
                                 <td>{{ cuenta.TIC_DINEROTOTAL | number}}</td>
                                 <td>{{ cuenta.TIC_NUMEROREFERENCIA}}</td>
+                                <td>
+                                    <p-tag [value]="cuenta.TIC_ESTIPOENVIO ? 'SI':'NO'"
+                                    [severity]="getSeverity(cuenta.TIC_ESTIPOENVIO)"></p-tag>
+                                </td>
                                 <td>
                                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info"
                                     pTooltip="Editar valor" tooltipPosition="top"

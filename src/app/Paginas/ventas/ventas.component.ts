@@ -184,7 +184,8 @@ export class VentasComponent implements OnInit {
       this.listaTipoDeCuenta = result.map((item: any) => {
         const selectItem: SelectItem = {
           label: item.TIC_NOMBRE,
-          value: item.TIC_CODIGO
+          value: item.TIC_CODIGO,
+          title:item.TIC_ESTIPOENVIO.toString()
         }
         return selectItem;
       });
@@ -261,7 +262,10 @@ export class VentasComponent implements OnInit {
       this.alertasService.SetToast("Debe seleccionar un tipo de cliente.", 2);
       return;
     }
-  
+    if (!this.formularioVenta.controls['VEN_TIPOENVIO'].value || this.formularioVenta.controls['VEN_TIPOENVIO'].value === null) {
+      this.alertasService.SetToast("Debe seleccionar un tipo de envio.", 2);
+      return;
+    }
     let valorTotal;
   
     this.formularioVenta.controls['PRO_NOMBRE'].setValue(this.producto.PRO_NOMBRE);
@@ -394,8 +398,10 @@ export class VentasComponent implements OnInit {
         return;
     }
 
-    const descuento = this.formularioVenta.controls['PRO_DESCUENTO'].value || 0;
-
+    let descuento = this.formularioVenta.controls['PRO_DESCUENTO'].value || 0;
+    if(descuento=="" || descuento==null){
+      descuento=0;
+    }
     if (descuento < 0) {
         this.alertasService.SetToast("El descuento no puede ser negativo.", 3);
         return;
@@ -562,6 +568,24 @@ export class VentasComponent implements OnInit {
       })
     }
     else {
+      //logica para validar si es el pago es a credito y no se esta cobrando el envio se agrega al listado de productos para que afecte el total de lo vendido
+      debugger;
+      if(esVentaACredito && this.listaProductos.findIndex(x=>x.PRO_CODIGO=="9999")==-1){
+        let producto: IDetalleVentas = {
+          VED_CODIGO: 0,
+          VEN_CODIGO: 0,
+          PRO_CODIGO: '9999',
+          PRO_NOMBRE: 'ENVIO',
+          VED_UNIDADES: '1',
+          VED_PRECIOVENTA_UND: this.gastoDeEnvio.GAS_VALOR,
+          VED_VALORDESCUENTO_UND: 0,
+          VED_PRECIOVENTA_TOTAL: this.gastoDeEnvio.GAS_VALOR,
+          VED_ACTUALIZACION: new Date(),
+          VED_ESTADO: false
+        }
+        this.listaProductos.unshift(producto);
+        this.CalcularTotalComprado();
+      }
       const cliente: Icliente = {
         ClI_ID: this.formularioVenta.controls['VENT_CEDULA'].value,
         CLI_NOMBRE: this.formularioVenta.controls['CLI_NOMBRE'].value,
@@ -592,7 +616,7 @@ export class VentasComponent implements OnInit {
       CLI_TELEFONO: this.formularioVenta.controls['CLI_TELEFONO'].value,
       CLI_UBICACION: this.formularioVenta.controls['CLI_UBICACION'].value,
       CLI_TIPOCLIENTE: this.formularioVenta.controls['CLI_TIPOCLIENTE'].value,
-      VEN_PRECIOTOTAL: valorTotalVenta,
+      VEN_PRECIOTOTAL: this.TotalComprado,
       VEN_ESTADOCREDITO: esVentaACredito,
       VEN_ENVIO: false,
       VEN_DOMICILIO: false,
@@ -654,7 +678,7 @@ export class VentasComponent implements OnInit {
       closeOnEscape: false,
       closable:false,
       contentStyle: { 'background-color': '#eff3f8' },
-      data: { Listado: this.listaTipoDeCuenta, }
+      data: { Listado: this.listaTipoDeCuenta.filter(x=>x.title=="true"), }
     })
     ref.onClose.subscribe((res) => {
       this.gastoDeEnvio.TIC_CODIGO = res;

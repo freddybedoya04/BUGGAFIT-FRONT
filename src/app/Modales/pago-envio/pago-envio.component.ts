@@ -20,6 +20,7 @@ export class PagoEnvioComponent implements OnInit {
     }
   }
   ngOnInit(): void {
+    debugger
     this.listaTipoDeCuenta = this.config.data.Listado;
   }
   Finalizar() {
