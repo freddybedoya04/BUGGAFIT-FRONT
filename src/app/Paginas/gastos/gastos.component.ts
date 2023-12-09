@@ -7,6 +7,7 @@ import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { GastosService } from 'src/app/Servicios/gastos.service';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import { IMotivoGasto } from 'src/app/Interfaces/imotivo-gasto';
 
 
 @Component({
@@ -19,11 +20,11 @@ export class GastosComponent implements OnInit {
   FechaFin: Date;
   filtro: IFiltro;
   listaGastos: IGasto[] = [];
+  listaEstadisticaGastos: any[] = [];
+
   public searchKeyword: string = '';
   @ViewChild('dt2', { static: true }) table: any;
   customColumnHeaders: string[] = [];
-
-
 
   constructor(
     private dialogService: DialogService,
@@ -63,6 +64,18 @@ export class GastosComponent implements OnInit {
       this.BuscarGastoPorFechas();
     });
   };
+
+  BuscarBalanceDeGastos() {
+    this.ArmarFiltro();
+    this.alertasService.showLoading("Buscando gastos...")
+    this.gastosService.BuscarEstadisticaGastosPorFechas(this.filtro).subscribe(result => {
+      console.log(result);
+      if (result === null)
+        this.alertasService.SetToast("No hay Gastos", 2);
+      this.alertasService.hideLoading();
+      this.listaEstadisticaGastos = result.Data;
+    })
+  }
 
   BuscarGasto() {
     this.alertasService.showLoading("Cargando gastos");
@@ -106,8 +119,8 @@ export class GastosComponent implements OnInit {
       this.alertasService.hideLoading();
       this.listaGastos = result.Data;
     })
+    this.BuscarBalanceDeGastos();
   }
-
   ArmarFiltro() {
     this.filtro.FechaFin = this.FechaFin.toISOString();
     this.filtro.FechaInicio = this.FechaInicio.toISOString();
@@ -154,11 +167,11 @@ export class GastosComponent implements OnInit {
               this.alertasService.hideLoading();
               this.alertasService.SetToast('Gasto Eliminado', 1);
               this.BuscarGastoPorFechas();
-          },err=>{
-            this.alertasService.hideLoading();
-            this.alertasService.SetToast('Error al eliminar el Gasto: ' + err?.message, 3);
-            console.error(err);
-          });
+            }, err => {
+              this.alertasService.hideLoading();
+              this.alertasService.SetToast('Error al eliminar el Gasto: ' + err?.message, 3);
+              console.error(err);
+            });
           }
 
         }

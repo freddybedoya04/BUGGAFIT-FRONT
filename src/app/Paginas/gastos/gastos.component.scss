@@ -22,11 +22,42 @@ h1 {
         font-family: 'Poppins', sans-serif;
     }
 }
+
 .EncabezadoTabla{
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     gap: 10px;
+}
+
+.TotalCuenta {
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+    flex-wrap: wrap;
+    gap: 12px; 
+}
+.TotalCuenta p-card {
+    padding: 10px;
+    font-family: 'Poppins', sans-serif;
+    }
+.TotalCuentaLabel {
+    font-weight: bold;
+    text-align: center;
+}
+.texto-verde {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .texto-rojo {
+    color: red;
+    font-weight: bold;
+  }
+
+.TotalCuentaValor {
+    margin-top: 5px; 
+    text-align: center;
 }
 
 /* custom-table.css */

@@ -14,7 +14,7 @@
         <p>
             <label>Cuenta:</label>
             <p-dropdown [options]="listaTipoDeCuenta" [(ngModel)]="CuentaSeleccionada" optionLabel="TIC_NOMBRE"
-                [showClear]="true" placeholder="Seleccione Cuenta"[filter]="true" filterBy="">
+                [showClear]="true" placeholder="Seleccione Cuenta" [filter]="true" filterBy="">
                 <ng-template pTemplate="selectedItem">
                     <div>{{ CuentaSeleccionada.TIC_NOMBRE }}</div>
                 </ng-template>
@@ -24,30 +24,26 @@
                 </ng-template>
             </p-dropdown>
         </p>
-
-
         <p>
             <p-button label="Buscar" icon="pi pi-search" [ngStyle]="{ 'margin-top': '20px' }"
                 (onClick)="BuscarTransferencias()"></p-button>
         </p>
-
     </div>
     <div class="TotalCuenta">
         <p-card *ngFor="let cuenta of listaTipoDeCuenta" [ngStyle]="{ 'flex': '1 0 125px' }">
             <div class="TotalCuentaLabel">{{cuenta.TIC_NOMBRE}}</div>
             <div class="TotalCuentaValor" [ngClass]="{ 'texto-verde': (cuenta.TIC_DINEROTOTAL==null?0:cuenta.TIC_DINEROTOTAL) > 0, 
-                'texto-rojo': (cuenta.TIC_DINEROTOTAL==null?0:cuenta.TIC_DINEROTOTAL) < 0 }">${{cuenta.TIC_DINEROTOTAL | number}}</div>
+                'texto-rojo': (cuenta.TIC_DINEROTOTAL==null?0:cuenta.TIC_DINEROTOTAL) < 0 }">${{cuenta.TIC_DINEROTOTAL
+                | number}}</div>
         </p-card>
     </div>
     <br>
-
     <p-card header="Transacciones" [style]="{margin:'20px',padding:'20px'}" styleClass="shadow-5">
         <p-table #dt2 [value]="listaTrasacciones" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
             [tableStyle]="{'min-width': '90rem','max-height':'600px'}" styleClass="p-datatable-sm"
-            [(selection)]="listaTrasaccionesSeleccionadas" 
+            [(selection)]="listaTrasaccionesSeleccionadas"
             currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} compras"
-            [rowsPerPageOptions]="[5, 10, 50]"
-            [scrollable]="true" 
+            [rowsPerPageOptions]="[5, 10, 50]" [scrollable]="true"
             [globalFilterFields]="['TRA_CODIGO','TRA_TIPO','TIC_NOMBRE','USU_NOMBRE']" class="custom-table">
             <ng-template pTemplate="caption">
                 <div class="EncabezadoTabla">
@@ -93,7 +89,6 @@
                     <th pSortableColumn="USU_NOMBRE" style="width:10%">Confirmador<p-sortIcon
                             field="USU_NOMBREUSU_NOMBRE"></p-sortIcon></th>
                     <th style="min-width:200px" alignFrozen="right" pFrozenColumn>Acciones</th>
-
             </ng-template>
             <ng-template pTemplate="body" let-transaccion>
                 <tr>
@@ -120,14 +115,13 @@
                     <td class="Acciones" alignFrozen="right" pFrozenColumn [frozen]="true">
                         <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success"
                             pTooltip="Confirmar" tooltipPosition="top" placeholder="Top"
-                            (click)="ConfirmarTransaccion(transaccion) "  [disabled]="transaccion.TRA_CONFIRMADA===true || transaccion.TRA_FUEANULADA===true"></button>
+                            (click)="ConfirmarTransaccion(transaccion) "
+                            [disabled]="transaccion.TRA_CONFIRMADA===true || transaccion.TRA_FUEANULADA===true"></button>
                         <!-- <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
                             pTooltip="Eliminar Gasto" tooltipPosition="top" placeholder="Top"></button> -->
                     </td>
                 </tr>
             </ng-template>
-
-
         </p-table>
     </p-card>
 </div>
