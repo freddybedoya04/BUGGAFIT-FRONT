@@ -29,8 +29,8 @@
             </div>
             <div>
                 <label for="VEN_CUENTADESTINO">Tipo de pago:</label>
-                <p-dropdown [options]="listaTipoDeCuenta" ngmo optionLabel="label" optionValue="value"
-                    placeholder="Seleccione Cuenta" [(ngModel)]="CuentaSeleccionada" appendTo="body"></p-dropdown>
+                <p-dropdown formControlName="VEN_CUENTADESTINO" [options]="listaTipoDeCuenta" optionLabel="label"
+                optionValue="value" placeholder="Seleccione Cuenta" [filter]="true" filterBy=""></p-dropdown>
             </div>
             <div>
                 <label for="VEN_CUENTADESTINO">Valor $:</label>

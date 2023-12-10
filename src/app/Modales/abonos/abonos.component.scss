@@ -15,7 +15,12 @@ span{
     display: flex;
     flex-direction: column;
 }
-
+:host ::ng-deep .p-dropdown-filter-icon{
+    position: absolute;
+    top: 35%;
+    margin-top: -0.5rem;
+  }
+  
 .card section {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

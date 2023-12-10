@@ -126,10 +126,10 @@ export class VentasComponent implements OnInit {
       PRO_CODIGO: [null],
       PRO_NOMBRE: [{ value: '', disabled: true }],
       VENT_CEDULA: [null],
-      PRO_PRECIO: [{ value: 0, disabled: true }],
-      PRO_CANTIDADVENTA: [null],
-      PRO_VALORTOTAL: [{ value: 0, disabled: !this.isUserAdmin }],
-      PRO_DESCUENTO: [{ value: 0, disabled: !this.isUserAdmin }],
+      PRO_PRECIO: [{ value: 0, disabled: true }, Validators.min(0)],
+      PRO_CANTIDADVENTA: [null, Validators.min(0)],
+      PRO_VALORTOTAL: [{ value: 0, disabled: !this.isUserAdmin }, Validators.min(0)],
+      PRO_DESCUENTO: [{ value: 0, disabled: !this.isUserAdmin }, Validators.min(0)],
     });
     this.producto = {
       PRO_CODIGO: '',
@@ -403,8 +403,12 @@ export class VentasComponent implements OnInit {
     const cantidadVenta = this.formularioVenta.controls['PRO_CANTIDADVENTA'].value;
     const precioVenta = this.formularioVenta.controls['PRO_PRECIO'].value;
 
-    if (cantidadVenta <= 0 || precioVenta < 0) {
-        this.alertasService.SetToast("La cantidad debe ser mayor a 0 y el precio debe ser mayor o igual a 0.", 2);
+    // Add validation checks for empty or non-numeric fields
+    if (
+        cantidadVenta == null || cantidadVenta <= 0 ||
+        precioVenta == null || precioVenta === '' || isNaN(precioVenta) || precioVenta < 0
+    ) {
+        this.alertasService.SetToast("La cantidad debe ser mayor a 0 y el precio debe ser un valor numérico mayor o igual a 0.", 2);
         return;
     }
 
@@ -431,8 +435,8 @@ export class VentasComponent implements OnInit {
 
     const total = this.formularioVenta.controls['PRO_VALORTOTAL'].value || 0;
 
-    if (total < 0) {
-        this.alertasService.SetToast("El valor total no puede ser negativo.", 3);
+    if (isNaN(total) || total < 0) {
+        this.alertasService.SetToast("El valor total debe ser un valor numérico mayor o igual a 0.", 3);
         return;
     }
 
@@ -482,14 +486,22 @@ export class VentasComponent implements OnInit {
 }
 
 
-  eliminarVenta(venta: IDetalleVentas) {
-    const index = this.listaProductos.indexOf(venta);
-    if (index !== -1) {
+
+
+eliminarVenta(venta: IDetalleVentas) {
+  if (venta.PRO_CODIGO === '9999' || venta.PRO_NOMBRE === 'ENVIO') {
+      this.alertasService.SetToast("No puedes eliminar este producto.", 2);
+      return;
+  }
+
+  const index = this.listaProductos.indexOf(venta);
+  if (index !== -1) {
       this.listaProductos.splice(index, 1);
       this.alertasService.SetToast("Producto eliminado.", 1);
-    }
-    this.CalcularTotalComprado();
   }
+  this.CalcularTotalComprado();
+}
+
 
   AgregarTipoDeEnvio(event: any) {
     debugger;
@@ -759,10 +771,12 @@ export class VentasComponent implements OnInit {
                 this.formularioVenta.controls['PRO_PRECIO'].enable();
                 this.formularioVenta.controls['PRO_VALORTOTAL'].enable();
                 this.formularioVenta.controls['PRO_DESCUENTO'].enable();
+                this.formularioVenta.controls['CLI_TIPOCLIENTE'].enable();
             } else {
                 this.formularioVenta.controls['PRO_PRECIO'].disable();
                 this.formularioVenta.controls['PRO_VALORTOTAL'].disable();
                 this.formularioVenta.controls['PRO_DESCUENTO'].disable();
+                this.formularioVenta.controls['CLI_TIPOCLIENTE'].disable();
             }
         });
     }

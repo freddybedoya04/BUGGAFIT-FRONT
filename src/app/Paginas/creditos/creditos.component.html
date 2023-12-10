@@ -29,7 +29,7 @@
                     <th pSortableColumn="TotalVendido" style="width:20%">Total credito <p-sortIcon field="TotalVendido"></p-sortIcon></th>
                     <th pSortableColumn="TotalAbonado" style="width:20%">Total abonado <p-sortIcon field="TotalAbonado"></p-sortIcon></th>
                     <th pSortableColumn="DiferenciaTotal" style="width:20%">Saldo <p-sortIcon field="DiferenciaTotal"></p-sortIcon></th>
-                    <th>Detalles</th>
+                    <th  alignFrozen="right" pFrozenColumn [frozen]="true">Detalles</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-credito>
@@ -41,7 +41,7 @@
                     <td [ngClass]="{ 'texto-verde': credito.DiferenciaTotal < 0, 'texto-rojo': credito.DiferenciaTotal > 0 }">
                         {{ credito.DiferenciaTotal | number }}
                       </td>
-                      <td>
+                      <td  alignFrozen="right" pFrozenColumn [frozen]="true">
                         <button pButton pRipple icon="pi pi-plus" class="p-button-rounded p-button-help"
                         pTooltip="Abonos" tooltipPosition="top" placeholder="Top" (click)="AbrirModal(credito)"></button>
                       </td>

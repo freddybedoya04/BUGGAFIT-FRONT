@@ -33,15 +33,15 @@
                             <tr>
                                 <th style="width: 20%">#</th>
                                 <th style="width: 20%">Marca</th>
-                                <th style="width: 20%">Acciones</th>
+                                <th  alignFrozen="right" pFrozenColumn [frozen]="true" style="width: 20%">Acciones</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-marca>
                             <tr>
                                 <td>{{ marca.MAR_CODIGO}}</td>
                                 <td>{{ marca.MAR_NOMBRE}}</td>
-                                <td>
-                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                <td alignFrozen="right"  pFrozenColumn [frozen]="true">
+                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" 
                                         pTooltip="Eliminar" tooltipPosition="top"
                                         (click)="EliminarMarca(marca)"></button>
                                 </td>
@@ -59,7 +59,7 @@
                             <input type="text" pInputText [(ngModel)]="Categoria.CAT_NOMBRE" />
                         </div>
                         <div class="BotonAgregar">
-                            <p-button label="Agregar Categoria" icon="pi pi-plus" 
+                            <p-button label="Agregar Categoria" icon="pi pi-plus" alignFrozen="right" pFrozenColumn [frozen]="true"
                                 (onClick)="AgregarCategoria()"></p-button>
                                 <p-button label="Cancelar" styleClass="p-button-danger" (onClick)="ActivarFormularioCategoria=false"></p-button>
                         </div>
@@ -75,24 +75,24 @@
                         <ng-template pTemplate="caption">
                             <div class="EncabezadoTabla">
                                 <p-button *ngIf="ActivarFormularioCategoria==false" label="Agregar Categoria"
-                                    icon="pi pi-plus" (onClick)="ActivarFormularioCategoria=true"></p-button>
+                                    icon="pi pi-plus" (onClick)="ActivarFormularioCategoria=true" alignFrozen="right" pFrozenColumn [frozen]="true"></p-button>
                             </div>
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
                                 <th style="width: 20%">#</th>
                                 <th style="width: 20%">Categoria</th>
-                                <th style="width: 20%">Acciones</th>
+                                <th   alignFrozen="right" pFrozenColumn [frozen]="true"style="width: 20%">Acciones</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-categoria>
                             <tr>
                                 <td>{{ categoria.CAT_CODIGO}}</td>
                                 <td>{{ categoria.CAT_NOMBRE}}</td>
-                                <td>
-                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                <td  alignFrozen="right" pFrozenColumn [frozen]="true">
+                                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" 
                                         pTooltip="Eliminar" tooltipPosition="top"
-                                        (click)="EliminarCategoria(categoria)"></button>
+                                        (click)="EliminarCategoria(categoria) "></button>
                                 </td>
                             </tr>
                         </ng-template>
@@ -120,7 +120,7 @@
                             [(ngModel)]="Cuenta.TIC_DINEROTOTAL"
                           ></p-inputNumber>
                         </div>
-                        <div class="BotonAgregar">
+                        <div class="BotonAgregar"  alignFrozen="right" pFrozenColumn [frozen]="true">
                             <p-button *ngIf="Cuenta.TIC_CODIGO !=0" label="Actualizar Cuenta" icon="pi pi-plus" (onClick)="ActualizarTipoCuenta()"></p-button>
                             <p-button *ngIf="Cuenta.TIC_CODIGO ==0"label="Agregar Cuenta" icon="pi pi-plus" (onClick)="AgregarCuenta()"></p-button>
                             <p-button label="Cancelar" styleClass="p-button-danger" (onClick)="ActivarFormularioCuenta=false"></p-button>
@@ -145,7 +145,7 @@
                                 <th style="width: 20%">Cuenta</th>
                                 <th style="width: 20%">Dinero total</th>
                                 <th style="width: 20%">Referencia</th>
-                                <th style="width: 20%">Acciones</th>
+                                <th  alignFrozen="right" pFrozenColumn [frozen]="true" style="width: 20%">Acciones</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-cuenta>
@@ -154,7 +154,7 @@
                                 <td>{{ cuenta.TIC_NOMBRE}}</td>
                                 <td>{{ cuenta.TIC_DINEROTOTAL | number}}</td>
                                 <td>{{ cuenta.TIC_NUMEROREFERENCIA}}</td>
-                                <td>
+                                <td  alignFrozen="right" pFrozenColumn [frozen]="true">
                                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info"
                                     pTooltip="Editar valor" tooltipPosition="top"
                                     (click)="PonerEnFormularioTipoCuenta(cuenta)"></button>
@@ -185,10 +185,10 @@
                             [(ngModel)]="Envio.TIP_VALOR"
                           ></p-inputNumber>
                         </div>
-                        <div class="BotonAgregar">
+                        <div class="BotonAgregar" alignFrozen="right" pFrozenColumn [frozen]="true">
                             <p-button *ngIf="Envio.TIP_CODIGO !=0" label="Actualizar Valor" icon="pi pi-plus" (onClick)="ActualizarTipoEnvio()"></p-button>
                             <p-button *ngIf="Envio.TIP_CODIGO ==0"label="Agregar" icon="pi pi-plus" (onClick)="AgregarTipoEnvio()"></p-button>
-                            <p-button label="Cancelar" styleClass="p-button-danger" (onClick)="ActivarFormularioTipoEnvio=false;
+                            <p-button label="Cancelar" styleClass="p-button-danger"  (onClick)="ActivarFormularioTipoEnvio=false;
                             Envio.TIP_CODIGO=0;Envio.TIP_VALOR=0;Envio.TIP_NOMBRE=''"></p-button>
                         </div>
                     </section>
@@ -201,8 +201,8 @@
                         [scrollable]="true" [rowsPerPageOptions]="[5, 10, 50]" styleClass="p-datatable-sm"
                         class="custom-table">
                         <ng-template pTemplate="caption">
-                            <div class="EncabezadoTabla">
-                                <p-button *ngIf="ActivarFormularioTipoEnvio==false" label="Agregar Cuenta"
+                            <div class="EncabezadoTabla" alignFrozen="right" pFrozenColumn [frozen]="true">
+                                <p-button *ngIf="ActivarFormularioTipoEnvio==false" label="Agregar Cuenta" 
                                 icon="pi pi-plus" (onClick)="ActivarFormularioTipoEnvio=true"></p-button>
                             </div>
                         </ng-template>
@@ -211,7 +211,7 @@
                                 <th style="width: 20%">#</th>
                                 <th style="width: 20%">Tipo envio</th>
                                 <th style="width: 20%">Valor</th>
-                                <th style="width: 20%">Acciones</th>
+                                <th   alignFrozen="right" pFrozenColumn [frozen]="true"style="width: 20%">Acciones</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-envio>
@@ -219,8 +219,8 @@
                                 <td>{{ envio.TIP_CODIGO}}</td>
                                 <td>{{ envio.TIP_NOMBRE}}</td>
                                 <td>{{ envio.TIP_VALOR | number}}</td>
-                                <td>
-                                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info"
+                                <td alignFrozen="right" pFrozenColumn [frozen]="true">
+                                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info" 
                                         pTooltip="Editar valor" tooltipPosition="top"
                                         (click)="PonerEnFormulario(envio)"></button>
                                 </td>
@@ -240,7 +240,7 @@
                         <div class="BotonAgregar">
                             <p-button label="Agregar Motivo" icon="pi pi-plus"
                                 (onClick)="AgregarMotivoGasto()"></p-button>
-                                <p-button label="Cancelar" styleClass="p-button-danger" (onClick)="ActivarFormularioMotivoGasto=false"></p-button>
+                                <p-button label="Cancelar" styleClass="p-button-danger" alignFrozen="right" pFrozenColumn [frozen]="true" (onClick)="ActivarFormularioMotivoGasto=false"></p-button>
                         </div>
                     </section>
                 </p-card>
@@ -261,16 +261,16 @@
                             <tr>
                                 <th style="width: 20%">#</th>
                                 <th style="width: 20%">Motivo</th>
-                                <th style="width: 20%">Acciones</th>
+                                <th  alignFrozen="right" pFrozenColumn [frozen]="true" style="width: 20%">Acciones</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-motivo>
                             <tr>
                                 <td>{{ motivo.MOG_CODIGO}}</td>
                                 <td>{{ motivo.MOG_NOMBRE}}</td>
-                                <td>
+                                <td alignFrozen="right" pFrozenColumn [frozen]="true">
                                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-                                        pTooltip="Eliminar" tooltipPosition="top"
+                                        pTooltip="Eliminar" tooltipPosition="top" 
                                         (click)="EliminarMotivoGasto(motivo)"></button>
                                 </td>
                             </tr>
