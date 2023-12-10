@@ -91,7 +91,7 @@ export class EstadisticasComponent implements OnInit {
       this.Indicadores.Ventas = data.Data.DatosCards.SumaVentas;
       this.Indicadores.Gastos = data.Data.DatosCards.SumaGastos;
       this.Indicadores.Compras = data.Data.DatosCards.SumaCompras;
-      this.Indicadores.Utilidades = this.Indicadores.Ventas - this.Indicadores.Gastos - this.Indicadores.Compras;
+      this.Indicadores.Utilidades = data.Data.DatosCards.Utilidades;
       this.Indicadores.Deudas = data.Data.DatosCards.SumaDeudas;
       this.Indicadores.Creditos = data.Data.DatosCards.SumaCreditos;
       this.Indicadores.UltimasVentas = data.Data.DatosGraficas.VentasRealizadas;
@@ -126,7 +126,7 @@ export class EstadisticasComponent implements OnInit {
       obj.Saldo = obj.IngresosTotales - obj.ComprasTotales - obj.GastosTotales;
       this.Tabla.push(obj)
     });
-   this.Indicadores.Utilidades= this.Tabla.reduce((total:number,actual)=>total+actual.Saldo,0);
+  //  this.Indicadores.Utilidades= this.Tabla.reduce((total:number,actual)=>total+actual.Saldo,0);
   }
   
 

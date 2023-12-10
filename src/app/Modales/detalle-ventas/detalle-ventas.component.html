@@ -29,6 +29,11 @@
                 <label for="VEN_OBSERVACIONES">observaciones</label>
                 <input type="text" [(ngModel)]="venta.VEN_OBSERVACIONES"pInputText disabled="true" />
             </div>
+            <div>
+                <label for="VEN_GASTOENVIO">Gasto envio</label>
+                <h3 style="color: red;font-weight: bold;" >{{venta.VEN_COSTOENVIO |number}}</h3>
+                
+            </div>
         </section>
 
     </p-card>
