@@ -16,6 +16,13 @@
                 (onClick)="BuscarGastoPorFechas()"></p-button>
         </p>
     </div>
+    <div class="TotalCuenta">
+        <p-card *ngFor="let mogGasto of listaEstadisticaGastos" [ngStyle]="{ 'flex': '1 0 125px' }">
+            <div class="TotalCuentaLabel">{{mogGasto.MOG_NOMBRE}}</div>
+            <div class="TotalCuentaValor" [ngClass]="{ 'texto-verde': (mogGasto.MOG_VALORGASTADO==null?0:mogGasto.MOG_VALORGASTADO) > 0, 
+                'texto-rojo': (mogGasto.MOG_VALORGASTADO==null?0:mogGasto.MOG_VALORGASTADO) < 0 }">${{mogGasto.MOG_VALORGASTADO | number}}</div>
+        </p-card>
+    </div>
     <br>
     <p-card header="Gastos" [style]="{margin:'20px',padding:'20px'}" styleClass="shadow-5">
         <p-table #dt2 [value]="listaGastos" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"

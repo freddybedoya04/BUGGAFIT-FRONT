@@ -107,7 +107,7 @@
         <span class="p-input-icon-left">
           <label>Precio:</label>
           <i style="top: 2.1rem;font-size: 18px;">$</i>
-          <input type="text" pInputText formControlName="PRO_PRECIO" FormateadorPrecio  />
+          <input (keyup)="CalcularDescuentoPorcentajePrecioUnitario($event)" type="text" pInputText formControlName="PRO_PRECIO" FormateadorPrecio  />
         </span>
       </div>
 
@@ -128,7 +128,7 @@
             formControlName="PRO_DESCUENTO" />
         </span>
       </div>
-      <div class="buttonContainer">
+      <div class="buttonContainer" style="padding-top: 20px;">
         <p-button label="Agregar" style="margin-right: 10px" styleClass="p-button-rounded"
           (onClick)="AgregarProducto($event)"></p-button>
         <p-button label="Realizar Factura" styleClass="p-button-rounded p-button-success" style="margin-right: 10px"

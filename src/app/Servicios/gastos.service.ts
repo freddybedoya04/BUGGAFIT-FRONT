@@ -37,7 +37,12 @@ export class GastosService {
         return result;
       }));
   }
-  
+  BuscarEstadisticaGastosPorFechas(filtro: IFiltro) {
+    return this.http.post<IApiResponse>(this.url + 'EstadisticaGastos', filtro).pipe(
+      map((result: IApiResponse) => {
+        return result;
+      }));
+  }
   CerrarGasto(gasto: number) {
     return this.http.get<IApiResponse>(this.url + 'GetCerrarGasto/' + gasto).pipe(
       map((result: IApiResponse) => {

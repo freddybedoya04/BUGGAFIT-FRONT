@@ -311,6 +311,34 @@ export class VentasComponent implements OnInit {
     this._totalVentaMaxValue = valorTotal ?? Number.MAX_VALUE;
   }
   
+  CalcularDescuentoPorcentajePrecioUnitario(event: any) {
+    if (!this.formularioVenta.controls['PRO_PRECIO'].value || this.formularioVenta.controls['PRO_PRECIO'].value == '') {
+      this.alertasService.SetToast("El producto no tiene precio por unidad.", 3);
+      this.formularioVenta.controls['PRO_DESCUENTO'].setValue(0);
+      return;
+    }
+    if (this.formularioVenta.controls['PRO_DESCUENTO'].value > 100 || this.formularioVenta.controls['PRO_DESCUENTO'].value < 0) {
+      this.formularioVenta.controls['PRO_DESCUENTO'].setValue(0);
+    }
+    let porcentajeDescuento = 0;
+    let valorNetoUnitario = 0;
+    if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[0].value) {
+      valorNetoUnitario = this.producto.PRO_PRECIOVENTA_MAYORISTA;
+    }
+  
+    if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[1].value) {
+      valorNetoUnitario = this.producto.PRO_PRECIOVENTA_DETAL;
+    }
+
+    try {
+      porcentajeDescuento = (1 - this.formularioVenta.controls['PRO_PRECIO'].value / valorNetoUnitario) * 100;
+    } catch (error) {
+      this.alertasService.SetToast("Error calculando el valor total.", 3);
+      return;
+    }
+    this.formularioVenta.controls['PRO_DESCUENTO'].setValue(porcentajeDescuento);
+  }
+
   CalcularValorTotal(event: any) {
     if (!this.formularioVenta.controls['PRO_PRECIO'].value || this.formularioVenta.controls['PRO_PRECIO'].value == '') {
       // this.alertasService.SetToast("El producto no tiene precio por unidad.", 3);
@@ -623,7 +651,7 @@ export class VentasComponent implements OnInit {
       VEN_OBSERVACIONES: this.formularioVenta.controls['VEN_OBSERVACIONES'].value,
       VEN_ACTUALIZACION: new Date(),
       USU_CEDULA: this.userLogged.USU_CEDULA,
-      VEN_ESTADOVENTA: esVentaAEfectivo,
+      VEN_ESTADOVENTA: false,
       VEN_ESTADO: true,
       TIP_CODIGO: this.formularioVenta.controls['VEN_TIPOENVIO'].value,
       DetalleVentas: this.listaProductos,
