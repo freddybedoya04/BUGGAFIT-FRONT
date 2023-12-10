@@ -140,7 +140,7 @@
                         [scrollable]="true" [rowsPerPageOptions]="[5, 10, 50]" styleClass="p-datatable-sm"
                         class="custom-table">
                         <ng-template pTemplate="caption">
-                            <div class="EncabezadoTabla">
+                            <div alignFrozen="right" pFrozenColumn [frozen]="true"class="EncabezadoTabla">
                                 <p-button *ngIf="ActivarFormularioCuenta==false" label="Agregar Cuenta"
                                     icon="pi pi-plus" (onClick)="ActivarFormularioCuenta=true"></p-button>
                             </div>
@@ -167,7 +167,7 @@
                                     <p-tag [value]="cuenta.TIC_ESTIPOENVIO ? 'SI':'NO'"
                                     [severity]="getSeverity(cuenta.TIC_ESTIPOENVIO)"></p-tag>
                                 </td>
-                                <td>
+                                <td alignFrozen="right" pFrozenColumn [frozen]="true">
 
                                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info"
                                     pTooltip="Editar valor" tooltipPosition="top"

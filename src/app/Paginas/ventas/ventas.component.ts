@@ -210,6 +210,8 @@ export class VentasComponent implements OnInit {
   }
 
   AutocompletarCedula() {
+    this.listaProductos = [];
+    this.CalcularTotalComprado();
     this.clientesService.BuscarClienteID(this.formularioVenta.controls['VENT_CEDULA'].value)
       .subscribe((result: Icliente) => {
         if (!result || result === null) {
