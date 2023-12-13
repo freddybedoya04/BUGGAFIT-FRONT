@@ -599,7 +599,7 @@ eliminarVenta(venta: IDetalleVentas) {
         CLI_UBICACION: this.formularioVenta.controls['CLI_UBICACION'].value,
         CLI_DIRECCION: this.formularioVenta.controls['CLI_DIRECCION'].value,
         CLI_CORREO: this.formularioVenta.controls['CLI_CORREO'].value,
-        CLI_TELEFONO:this.formularioVenta.controls['CLI_TELEFONO'].value,
+        CLI_TELEFONO:this.formularioVenta.controls['CLI_TELEFONO'].value==""?null:this.formularioVenta.controls['CLI_TELEFONO'].value,
         CLI_FECHACREACION: new Date(),
         CLI_ESTADO: true,
         CLI_ESCREDITO: esVentaACredito,
@@ -635,12 +635,11 @@ eliminarVenta(venta: IDetalleVentas) {
         CLI_UBICACION: this.formularioVenta.controls['CLI_UBICACION'].value,
         CLI_DIRECCION: this.formularioVenta.controls['CLI_DIRECCION'].value,
         CLI_CORREO: this.formularioVenta.controls['CLI_CORREO'].value,
-        CLI_TELEFONO:this.formularioVenta.controls['CLI_TELEFONO'].value,
+        CLI_TELEFONO:this.formularioVenta.controls['CLI_TELEFONO'].value==""?null:this.formularioVenta.controls['CLI_TELEFONO'].value,
         CLI_FECHACREACION: new Date(),
         CLI_ESTADO: true,
         CLI_ESCREDITO: esVentaACredito == true ? esVentaACredito : this.ClienteCredito,
       };
-
       this.clientesService.ActualizarCliente(cliente.ClI_ID, cliente).subscribe((result: any) => {
         this.alertasService.SetToast("Cliente Actualizado exitosamente.", 1);
       })
@@ -655,7 +654,7 @@ eliminarVenta(venta: IDetalleVentas) {
       CLI_ID: this.formularioVenta.controls['VENT_CEDULA'].value,
       CLI_NOMBRE: this.formularioVenta.controls['CLI_NOMBRE'].value,
       CLI_DIRECCION: this.formularioVenta.controls['CLI_DIRECCION'].value,
-      CLI_TELEFONO: this.formularioVenta.controls['CLI_TELEFONO'].value,
+      CLI_TELEFONO: this.formularioVenta.controls['CLI_TELEFONO'].value==""?null:this.formularioVenta.controls['CLI_TELEFONO'].value,
       CLI_UBICACION: this.formularioVenta.controls['CLI_UBICACION'].value,
       CLI_TIPOCLIENTE: this.formularioVenta.controls['CLI_TIPOCLIENTE'].value,
       VEN_PRECIOTOTAL: this.TotalComprado,
