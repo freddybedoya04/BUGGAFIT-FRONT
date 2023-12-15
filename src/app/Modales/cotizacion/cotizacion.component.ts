@@ -43,7 +43,7 @@ export class CotizacionComponent implements OnInit{
     this.Fecha=formatDate(new Date(), 'dd/MM/yyyy', 'en-US');
   }
   ngOnInit(): void {
-    debugger
+    
     this.listaProductos=this.config.data.Productos;
     this.cliente=this.config.data.Cliente;
     this.ObtenerTipoDeGastoEnvio();

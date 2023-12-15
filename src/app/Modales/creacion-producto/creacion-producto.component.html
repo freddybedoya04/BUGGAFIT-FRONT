@@ -12,20 +12,28 @@
                 </div>
                 <div>
                     <label for="PRO_CATEGORIA">Categoría:</label>
-                    <p-dropdown [options]="listaCategorias" formControlName="PRO_CATEGORIA"
-                        optionLabel="label" [filter]="true" filterBy="label" [showClear]="true"
-                        optionValue="value" placeholder="Seleccione Categoria"></p-dropdown>
+                    <p-dropdown [options]="listaCategorias" formControlName="PRO_CATEGORIA" optionLabel="label"
+                        [filter]="true" filterBy="label" [showClear]="true" optionValue="value"
+                        placeholder="Seleccione Categoria"></p-dropdown>
                 </div>
                 <div>
                     <label for="PRO_MARCA">Marca:</label>
-                    <p-dropdown [options]="listaMarcas"  optionValue="value" formControlName="PRO_MARCA"
-                        optionLabel="label" [filter]="true" filterBy="label" [showClear]="true"
-                        [virtualScroll]="true" [virtualScrollItemSize]="38" placeholder="Seleccione Categoria"></p-dropdown>
+                    <p-dropdown [options]="listaMarcas" optionValue="value" formControlName="PRO_MARCA"
+                        optionLabel="label" [filter]="true" filterBy="label" [showClear]="true" [virtualScroll]="true"
+                        [virtualScrollItemSize]="38" placeholder="Seleccione Categoria"></p-dropdown>
                 </div>
                 <div>
                     <label for="PRO_REGALO">Regalo:</label>
-                    <p-checkbox formControlName="PRO_REGALO"[binary]="true"></p-checkbox>
-                  </div>
+                    <p-checkbox formControlName="PRO_REGALO" [binary]="true"></p-checkbox>
+                </div>
+                <div>
+                    <label for="PRO_UNIDADREGALO">Unidades regalo</label>
+                    <input type="text" pInputText formControlName="PRO_UNIDADREGALO" matInput autocomplete="off">
+                </div>
+                <div>
+                    <label for="PRO_UNIDAD_MINIMAREGALO">Unidades minimas para regalo:</label>
+                    <input type="text" pInputText formControlName="PRO_UNIDAD_MINIMAREGALO" matInput autocomplete="off">
+                </div>
             </section>
         </p-card>
 
@@ -40,39 +48,27 @@
                 <div>
                     <label for="UNIDADES_MINIMA_ALERTA">Unidades Minimas:</label>
                     <input type="text" pInputText formControlName=UNIDADES_MINIMA_ALERTA matInput autocomplete="off">
-                    
-    
+
+
                 </div>
                 <div>
                     <label for="PRO_PRECIO_COMPRA">Precio Compra:</label>
                     <!-- <input type="text" pInputText formControlName=PRO_PRECIO_COMPRA matInput autocomplete="off"> -->
-                    <p-inputNumber
-                    class="Numerico"
-                    mode="decimal"
-                    locale="en-US"
-                    formControlName=PRO_PRECIO_COMPRA
-                  ></p-inputNumber>
-    
+                    <p-inputNumber class="Numerico" mode="decimal" locale="en-US"
+                        formControlName=PRO_PRECIO_COMPRA></p-inputNumber>
+
                 </div>
                 <div>
                     <label for="PRO_PRECIO_MAYORISTA">Precio de Mayorista:</label>
                     <!-- <input type="text" pInputText formControlName="PRO_PRECIO_MAYORISTA" matInput autocomplete="off"> -->
-                    <p-inputNumber
-                    class="Numerico"
-                    mode="decimal"
-                    locale="en-US"
-                    formControlName=PRO_PRECIO_MAYORISTA
-                  ></p-inputNumber>
+                    <p-inputNumber class="Numerico" mode="decimal" locale="en-US"
+                        formControlName=PRO_PRECIO_MAYORISTA></p-inputNumber>
                 </div>
                 <div>
                     <label for="PRO_PRECIO_ DETAL">Precio Detal:</label>
                     <!-- <input type="text" pInputText formControlName="PRO_PRECIO_DETAL" matInput autocomplete="off"> -->
-                    <p-inputNumber
-                    class="Numerico"
-                    mode="decimal"
-                    locale="en-US"
-                    formControlName=PRO_PRECIO_DETAL
-                  ></p-inputNumber>
+                    <p-inputNumber class="Numerico" mode="decimal" locale="en-US"
+                        formControlName=PRO_PRECIO_DETAL></p-inputNumber>
                 </div>
             </section>
         </p-card>

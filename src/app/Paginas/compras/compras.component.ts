@@ -89,7 +89,7 @@ export class ComprasComponent implements OnInit {
   }
 
   EliminarCompra(compra:Icompras){
-    debugger;
+    ;
     this.alertas.confirmacion("Esta seguro de eliminar la compra # "+compra.COM_CODIGO+"?").then(result=>{
       if(result){
         this.alertas.showLoading("Eliminano compra")

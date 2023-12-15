@@ -23,7 +23,7 @@ export class CreditosComponent implements OnInit{
   ObtenerCreditos(){
     this.alertasService.showLoading("Cargando creditos")
     this.creditoService.ObtenerPersonasCredito().subscribe(x =>{
-      debugger
+      
       this.alertasService.hideLoading();
       this.creditos=x;
     },err =>{

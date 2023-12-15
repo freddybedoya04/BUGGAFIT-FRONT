@@ -41,7 +41,7 @@ export class DetalleVentasComponent implements OnInit {
     };
   }
   ngOnInit(): void {
-    debugger
+    
    this.venta=this.config.data.Venta;
    this.Impresion=this.config.data.Impresion??false;
    let fecha = new Date(this.venta.VEN_FECHAVENTA);

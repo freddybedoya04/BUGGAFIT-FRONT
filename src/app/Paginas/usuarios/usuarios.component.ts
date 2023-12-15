@@ -38,7 +38,7 @@ AbrirModalUsuario(){
     data:{esEdicion:false}
   });
   ref.onClose.subscribe((res) => {
-    debugger;
+    ;
     this.ListarUsuarios();
   });
   }

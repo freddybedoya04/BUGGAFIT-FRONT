@@ -97,7 +97,7 @@ export class ReportesComponent implements OnInit {
     this.filtro.FechaInicio = this.FechaInicio.toISOString();
   }
   EliminarVenta(venta: Iventa) {
-    debugger
+    
     this.alertas.confirmacion("Esta seguro de eliminar la venta # " + venta.VEN_CODIGO + "?").then(result => {
       if (result) {
         this.alertas.showLoading("Eliminano venta")
@@ -125,7 +125,7 @@ export class ReportesComponent implements OnInit {
     })
   }
   ActualizarEstadoVenta(venta: Iventa) {
-    debugger
+    
     this.alertas.confirmacion("Esta seguro de confirmar la venta # " + venta.VEN_CODIGO + "?").then(result => {
       if (result) {
         this.alertas.showLoading("Confirmando venta")

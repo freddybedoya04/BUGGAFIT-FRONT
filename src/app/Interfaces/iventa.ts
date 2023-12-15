@@ -29,4 +29,5 @@ TIP_NOMBRE?:string,
 DetalleVentas?:IDetalleVentas[],
 VEN_ESANULADA?:boolean,
 VEN_COSTOENVIO?:number,
+VEN_TIENE_REGALOSDEMAS?:boolean
 }

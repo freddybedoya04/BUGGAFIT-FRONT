@@ -375,7 +375,7 @@ export class ConfiguracionesComponent implements OnInit {
   }
   //#endregion
   PonerEnFormulario(envio: ITiposEnvios) {
-    debugger
+    
 
     this.Envio = {
       TIP_CODIGO: envio.TIP_CODIGO,
@@ -387,7 +387,7 @@ export class ConfiguracionesComponent implements OnInit {
     this.ActivarFormularioTipoEnvio = true;
   }
   PonerEnFormularioTipoCuenta(cuenta: ITipocuenta) {
-    debugger
+    
 
     this.Cuenta = {
       TIC_CODIGO: cuenta.TIC_CODIGO,

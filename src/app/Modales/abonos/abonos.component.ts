@@ -151,7 +151,7 @@ export class AbonosComponent implements OnInit {
     })
   }
   EliminarAbono(abono: Iabonos) {
-    debugger
+    
     this.alertasService.confirmacion("Esta seguro de eliminar el abono # " + abono.CAR_CODIGO + "?").then(result => {
       if (result) {
         this.alertasService.showLoading("Eliminano abono")
@@ -208,7 +208,7 @@ export class AbonosComponent implements OnInit {
     if (this.saldo > 0) {
       mensaje = "Aun hay $" + this.saldo.toLocaleString('en-US') + "  pendiente ¿Esta seguro de finalizar el credito?"
     }
-    debugger
+    
     this.alertasService.confirmacion(mensaje).then(result => {
       if (result) {
         this.alertasService.showLoading("Finalizando credito")

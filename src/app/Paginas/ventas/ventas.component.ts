@@ -22,6 +22,7 @@ import { MotivosGastosService } from 'src/app/Servicios/motivosgastos.service';
 import { TiposEnviosService } from 'src/app/Servicios/tipos-envios.service';
 import { VentasService } from 'src/app/Servicios/ventas.service';
 import { UsuarioService } from 'src/app/Servicios/usuario.service';
+import { LiteralArray } from '@angular/compiler';
 
 @Component({
   selector: 'app-ventas',
@@ -34,8 +35,8 @@ export class VentasComponent implements OnInit {
   @ViewChild("tipoDeEnvioDropdown") tipoDeEnvioDropdown!: Dropdown;
   @ViewChild("cantidadInput") cantidadInput!: ElementRef;
   @ViewChild("myForm") myForm!: Form;
-  Descuento:any;
-  AplicaDescuento:boolean;
+  Descuento: any;
+  AplicaDescuento: boolean;
   productos: Iproducto[] = [];
   producto: Iproducto;
   productosAgregados: string[] = [];
@@ -104,10 +105,10 @@ export class VentasComponent implements OnInit {
     private motivoGastosService: MotivosGastosService,
     private tipoEnviosService: TiposEnviosService,
     private dialogService: DialogService,
-    private usuarioService:UsuarioService
+    private usuarioService: UsuarioService
   ) {
     this.userLogged = JSON.parse(localStorage.getItem('user') || "");
-     this.isUserAdmin = (this.userLogged.USU_NOMBREROL.toLowerCase() === 'admin' ||
+    this.isUserAdmin = (this.userLogged.USU_NOMBREROL.toLowerCase() === 'admin' ||
       this.userLogged.USU_NOMBREROL.toLowerCase() === 'administrador' ||
       this.userLogged.USU_NOMBREROL.toLowerCase() === 'administrator');
 
@@ -120,9 +121,9 @@ export class VentasComponent implements OnInit {
       CLI_NOMBRE: [null, Validators.required],
       CLI_DIRECCION: [null, Validators.required],
       CLI_UBICACION: [null, Validators.required],
-      CLI_TIPOCLIENTE:  [null, Validators.required],
+      CLI_TIPOCLIENTE: [null, Validators.required],
       CLI_TELEFONO: [null],
-      CLI_CORREO:[null],
+      CLI_CORREO: [null],
       PRO_CODIGO: [null],
       PRO_NOMBRE: [{ value: '', disabled: true }],
       VENT_CEDULA: [null],
@@ -145,7 +146,7 @@ export class VentasComponent implements OnInit {
       PRO_FECHACREACION: new Date(),
       PRO_ESTADO: false,
       COM_CANTIDAD: 0,
-      PRO_REGALO:false
+      PRO_REGALO: false
     };
     this.gastoDeEnvio = {
       GAS_CODIGO: 0,
@@ -161,7 +162,7 @@ export class VentasComponent implements OnInit {
       GAS_OBSERVACIONES: ''
     }
     this.TotalComprado = 0;
-    this.AplicaDescuento=false;
+    this.AplicaDescuento = false;
   }
   ngOnInit(): void {
     this.ObtenerTipoCuentas();
@@ -169,10 +170,10 @@ export class VentasComponent implements OnInit {
     this.LlenadoProductos();
     this.ObtenerDescuento();
   }
-  ObtenerDescuento(){
-    this.ventasService.getConfig().subscribe(config=>{
-      console.log("Descuento: "+config.Descuento)
-      this.Descuento=config.Descuento;
+  ObtenerDescuento() {
+    this.ventasService.getConfig().subscribe(config => {
+      console.log("Descuento: " + config.Descuento)
+      this.Descuento = config.Descuento;
     })
   }
   ObtenerTipoCuentas() {
@@ -185,7 +186,7 @@ export class VentasComponent implements OnInit {
         const selectItem: SelectItem = {
           label: item.TIC_NOMBRE,
           value: item.TIC_CODIGO,
-          title:item.TIC_ESTIPOENVIO.toString()
+          title: item.TIC_ESTIPOENVIO.toString()
         }
         return selectItem;
       });
@@ -223,15 +224,15 @@ export class VentasComponent implements OnInit {
           this.formularioVenta.controls['CLI_CORREO'].setValue('');
           this.alertasService.SetToast("El cliente no existe. Por favor diligencie los datos para crearlo.", 2);
           this.ClienteCredito = false;
-  
+
           // Deshabilitar CLI_TIPOCLIENTE solo si el usuario no es administrador
           if (!this.isUserAdmin) {
             this.formularioVenta.controls['CLI_TIPOCLIENTE'].enable();
           }
-  
+
           return;
         }
-  
+
         this.existeCliente = true;
         this.formularioVenta.controls['CLI_NOMBRE'].setValue(result.CLI_NOMBRE);
         this.formularioVenta.controls['CLI_DIRECCION'].setValue(result.CLI_DIRECCION);
@@ -239,26 +240,26 @@ export class VentasComponent implements OnInit {
         this.formularioVenta.controls['CLI_TELEFONO'].setValue(result.CLI_TELEFONO);
         this.formularioVenta.controls['CLI_CORREO'].setValue(result.CLI_CORREO);
         this.ClienteCredito = result.CLI_ESCREDITO == null ? false : result.CLI_ESCREDITO;
-  
+
         const tipoClienteControl = this.formularioVenta.controls['CLI_TIPOCLIENTE'];
         const tipoCliente = this.listaTipoDeCliente.filter((tipocliente: SelectItem) => {
           return tipocliente.value == result.CLI_TIPOCLIENTE;
         });
-  
+
         this.formularioVenta.controls['CLI_TIPOCLIENTE'].setValue((tipoCliente.length > 0) ? tipoCliente[0].value : null);
-  
+
         // Deshabilitar CLI_TIPOCLIENTE solo si el usuario no es administrador
         if (!this.isUserAdmin) {
           tipoClienteControl.disable();
         }
-  
+
         this.tipoDeEnvioDropdown.focus();
         this.alertasService.SetToast("Cliente encontrado.", 1);
       });
   }
-  
-  
-  
+
+
+
   AutocompletarProducto() {
     if (!this.formularioVenta.controls['CLI_TIPOCLIENTE'].value || this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === null) {
       this.alertasService.SetToast("Debe seleccionar un tipo de cliente.", 2);
@@ -269,16 +270,16 @@ export class VentasComponent implements OnInit {
       return;
     }
     let valorTotal;
-  
+
     this.formularioVenta.controls['PRO_NOMBRE'].setValue(this.producto.PRO_NOMBRE);
     this.formularioVenta.controls['PRO_PRECIO'].valueChanges.subscribe((newValue) => {
       // Llama a la función para calcular el valor total cuando cambie el precio
       this.CalcularValorTotal(null);
-      
+
     });
     // Verificar si el producto es un regalo
     const esProductoRegalo: boolean = this.producto?.PRO_REGALO ?? false;
-  
+
     if (esProductoRegalo) {
       // Habilitar los campos directamente para productos regalo
       this.formularioVenta.controls['PRO_PRECIO'].enable();
@@ -290,29 +291,29 @@ export class VentasComponent implements OnInit {
       this.formularioVenta.controls['PRO_VALORTOTAL'].disable();
       this.formularioVenta.controls['PRO_DESCUENTO'].disable();
     }
-  
+
     if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[0].value) {
       valorTotal = this.producto.PRO_PRECIOVENTA_MAYORISTA;
       this.formularioVenta.controls['PRO_PRECIO'].setValue(valorTotal);
     }
-  
+
     if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[1].value) {
-      if(!esProductoRegalo && this.AplicaDescuento){
-        valorTotal=( this.producto.PRO_PRECIOVENTA_DETAL - this.Descuento);
-        if(valorTotal<0){
-          valorTotal=0;
+      if (!esProductoRegalo && this.AplicaDescuento) {
+        valorTotal = (this.producto.PRO_PRECIOVENTA_DETAL - this.Descuento);
+        if (valorTotal < 0) {
+          valorTotal = 0;
         }
-      }else{
-        valorTotal=this.producto.PRO_PRECIOVENTA_DETAL;
+      } else {
+        valorTotal = this.producto.PRO_PRECIOVENTA_DETAL;
       }
       this.formularioVenta.controls['PRO_PRECIO'].setValue(valorTotal);
     }
-  
+
     this.formularioVenta.controls['PRO_CANTIDADVENTA'].setValue(1);
     this.formularioVenta.controls['PRO_VALORTOTAL'].setValue(valorTotal);
     this._totalVentaMaxValue = valorTotal ?? Number.MAX_VALUE;
   }
-  
+
   CalcularDescuentoPorcentajePrecioUnitario(event: any) {
     if (!this.formularioVenta.controls['PRO_PRECIO'].value || this.formularioVenta.controls['PRO_PRECIO'].value == '') {
       this.alertasService.SetToast("El producto no tiene precio por unidad.", 3);
@@ -327,7 +328,7 @@ export class VentasComponent implements OnInit {
     if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[0].value) {
       valorNetoUnitario = this.producto.PRO_PRECIOVENTA_MAYORISTA;
     }
-  
+
     if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[1].value) {
       valorNetoUnitario = this.producto.PRO_PRECIOVENTA_DETAL;
     }
@@ -402,8 +403,8 @@ export class VentasComponent implements OnInit {
 
   AgregarProducto(event: any) {
     if (!this.producto || !this.producto.PRO_CODIGO) {
-        this.alertasService.SetToast("Seleccione un producto.", 2);
-        return;
+      this.alertasService.SetToast("Seleccione un producto.", 2);
+      return;
     }
 
     const cantidadVenta = this.formularioVenta.controls['PRO_CANTIDADVENTA'].value;
@@ -411,11 +412,11 @@ export class VentasComponent implements OnInit {
 
     // Add validation checks for empty or non-numeric fields
     if (
-        cantidadVenta == null || cantidadVenta <= 0 ||
-        precioVenta == null || precioVenta === '' || isNaN(precioVenta) || precioVenta < 0
+      cantidadVenta == null || cantidadVenta <= 0 ||
+      precioVenta == null || precioVenta === '' || isNaN(precioVenta) || precioVenta < 0
     ) {
-        this.alertasService.SetToast("La cantidad debe ser mayor a 0 y el precio debe ser un valor numérico mayor o igual a 0.", 2);
-        return;
+      this.alertasService.SetToast("La cantidad debe ser mayor a 0 y el precio debe ser un valor numérico mayor o igual a 0.", 2);
+      return;
     }
 
     const codigoProducto = this.producto.PRO_CODIGO;
@@ -423,59 +424,59 @@ export class VentasComponent implements OnInit {
     // Verificar si el producto ya ha sido agregado
     const productoExistente = this.listaProductos.find(producto => producto.PRO_CODIGO?.toUpperCase() === codigoProducto.toUpperCase());
     if (productoExistente) {
-        this.alertasService.SetToast("Este producto ya ha sido agregado.", 2);
-        return;
+      this.alertasService.SetToast("Este producto ya ha sido agregado.", 2);
+      return;
     }
 
     if (cantidadVenta > (this.producto.PRO_UNIDADES_DISPONIBLES ?? 0)) {
-        this.alertasService.SetToast("No hay suficientes unidades disponibles del producto.", 3);
-        return;
+      this.alertasService.SetToast("No hay suficientes unidades disponibles del producto.", 3);
+      return;
     }
 
     let descuento = this.formularioVenta.controls['PRO_DESCUENTO'].value || 0;
-    if(descuento=="" || descuento==null){
-      descuento=0;
+    if (descuento == "" || descuento == null) {
+      descuento = 0;
     }
     if (descuento < 0) {
-        this.alertasService.SetToast("El descuento no puede ser negativo.", 3);
-        return;
+      this.alertasService.SetToast("El descuento no puede ser negativo.", 3);
+      return;
     }
 
     const total = this.formularioVenta.controls['PRO_VALORTOTAL'].value || 0;
 
     if (isNaN(total) || total < 0) {
-        this.alertasService.SetToast("El valor total debe ser un valor numérico mayor o igual a 0.", 3);
-        return;
+      this.alertasService.SetToast("El valor total debe ser un valor numérico mayor o igual a 0.", 3);
+      return;
     }
 
     const detalleVenta: IDetalleVentas = {
-        VED_CODIGO: 0,
-        VEN_CODIGO: 0,
-        PRO_CODIGO: this.producto.PRO_CODIGO,
-        PRO_NOMBRE: this.producto.PRO_NOMBRE,
-        VED_UNIDADES: cantidadVenta,
-        VED_PRECIOVENTA_UND: precioVenta,
-        VED_VALORDESCUENTO_UND: descuento,
-        VED_PRECIOVENTA_TOTAL: total,
-        VED_ACTUALIZACION: new Date(),
-        VED_ESTADO: true,
+      VED_CODIGO: 0,
+      VEN_CODIGO: 0,
+      PRO_CODIGO: this.producto.PRO_CODIGO,
+      PRO_NOMBRE: this.producto.PRO_NOMBRE,
+      VED_UNIDADES: cantidadVenta,
+      VED_PRECIOVENTA_UND: precioVenta,
+      VED_VALORDESCUENTO_UND: descuento,
+      VED_PRECIOVENTA_TOTAL: total,
+      VED_ACTUALIZACION: new Date(),
+      VED_ESTADO: true,
     };
 
     this.producto = {
-        PRO_CODIGO: '',
-        PRO_NOMBRE: '',
-        PRO_MARCA: '',
-        PRO_CATEGORIA: '',
-        PRO_PRECIO_COMPRA: 0,
-        PRO_PRECIOVENTA_DETAL: 0,
-        PRO_PRECIOVENTA_MAYORISTA: 0,
-        PRO_UNIDADES_DISPONIBLES: 0,
-        PRO_UNIDADES_MINIMAS_ALERTA: 0,
-        PRO_ACTUALIZACION: new Date(),
-        PRO_FECHACREACION: new Date(),
-        PRO_ESTADO: false,
-        COM_CANTIDAD: 0,
-        PRO_REGALO: false
+      PRO_CODIGO: '',
+      PRO_NOMBRE: '',
+      PRO_MARCA: '',
+      PRO_CATEGORIA: '',
+      PRO_PRECIO_COMPRA: 0,
+      PRO_PRECIOVENTA_DETAL: 0,
+      PRO_PRECIOVENTA_MAYORISTA: 0,
+      PRO_UNIDADES_DISPONIBLES: 0,
+      PRO_UNIDADES_MINIMAS_ALERTA: 0,
+      PRO_ACTUALIZACION: new Date(),
+      PRO_FECHACREACION: new Date(),
+      PRO_ESTADO: false,
+      COM_CANTIDAD: 0,
+      PRO_REGALO: false
     };
 
     this.formularioVenta.controls['PRO_NOMBRE'].setValue('');
@@ -491,28 +492,28 @@ export class VentasComponent implements OnInit {
     this.listaProductos.push(detalleVenta); // Agregamos el producto a la lista
     this.alertasService.SetToast("Producto agregado con éxito.", 1);
     this.CalcularTotalComprado();
-}
+  }
 
 
 
 
-eliminarVenta(venta: IDetalleVentas) {
-  if (venta.PRO_CODIGO === '9999' || venta.PRO_NOMBRE === 'ENVIO') {
+  eliminarVenta(venta: IDetalleVentas) {
+    if (venta.PRO_CODIGO === '9999' || venta.PRO_NOMBRE === 'ENVIO') {
       this.alertasService.SetToast("No puedes eliminar este producto.", 2);
       return;
-  }
+    }
 
-  const index = this.listaProductos.indexOf(venta);
-  if (index !== -1) {
+    const index = this.listaProductos.indexOf(venta);
+    if (index !== -1) {
       this.listaProductos.splice(index, 1);
       this.alertasService.SetToast("Producto eliminado.", 1);
+    }
+    this.CalcularTotalComprado();
   }
-  this.CalcularTotalComprado();
-}
 
 
   AgregarTipoDeEnvio(event: any) {
-    debugger;
+    ;
     const tipoEnvio: ITiposEnvios = this.listadoTiposDeEnvio.filter((tipoEnvio: ITiposEnvios) => {
       return tipoEnvio.TIP_CODIGO == this.formularioVenta.controls['VEN_TIPOENVIO'].value;
     })[0];
@@ -551,14 +552,42 @@ eliminarVenta(venta: IDetalleVentas) {
       GAS_OBSERVACIONES: "",
     }
     this.AgreagarEnvioAProductos(esClienteDetal, estaFueraDeBuga, this.gastoDeEnvio.GAS_VALOR);
-    if(esClienteDetal && !estaFueraDeBuga){
-      this.AplicaDescuento=true;
-    }else{
-      this.AplicaDescuento=false;
+    if (esClienteDetal && !estaFueraDeBuga) {
+      this.AplicaDescuento = true;
+    } else {
+      this.AplicaDescuento = false;
     }
     this.CalcularTotalComprado();
   }
+  ValidacionCantidadRegalos(Carrito: IDetalleVentas[], cliente: string): boolean {
+    debugger;
+    let RegalosDemas = false
+    let Regalos = Carrito.filter(x => x.VED_PRECIOVENTA_UND == 0);
+    let NoRegalos = Carrito.filter(x => x.VED_PRECIOVENTA_UND != 0 && x.PRO_CODIGO != "9999");
 
+    let totalProductosNoRegalos = NoRegalos.reduce((anterior, actual) => {
+      return anterior + parseInt(actual.VED_UNIDADES);
+    }, 0)
+    let contador = totalProductosNoRegalos;
+    if (cliente == "MAYORISTA") {
+      contador = Math.round(totalProductosNoRegalos / 4);
+    }
+    for (let i = 0; i < Regalos.length; i++) {
+      let regalo = Regalos[i];
+      let producto = this.productos.find(x => x.PRO_CODIGO == regalo.PRO_CODIGO)
+      let numerador = parseInt(regalo.VED_UNIDADES);
+      let denominador = producto?.PRO_UNIDADREGALO == undefined ? 1 : producto?.PRO_UNIDADREGALO;
+      let multiplicador = producto?.PRO_UNIDAD_MINIMAREGALO == undefined ? 1 : producto?.PRO_UNIDAD_MINIMAREGALO;
+      let CantidadRegaloPorProducto = Math.round(numerador / denominador) * multiplicador;
+      contador = contador - CantidadRegaloPorProducto;
+      if (contador < 0) {
+        RegalosDemas = true;
+        break;
+      }
+    }
+    return RegalosDemas;
+
+  }
   FinalizarFactura(event?: any) {
     for (const control in this.formularioVenta.controls) {
       if (this.formularioVenta.controls[control].invalid) {
@@ -570,10 +599,10 @@ eliminarVenta(venta: IDetalleVentas) {
     }
     const hasProducts = this.listaProductos.some(product => product.PRO_NOMBRE !== 'ENVIO' && 'envio');
     if (!hasProducts && this.listaProductos.length === 1) {
-        this.alertasService.SetToast('Debe agregar al menos un producto diferente al ENVIO.', 2);
-        return;
+      this.alertasService.SetToast('Debe agregar al menos un producto diferente al ENVIO.', 2);
+      return;
     }
-    if (this.listaProductos.length==0) {
+    if (this.listaProductos.length == 0) {
       this.alertasService.SetToast('Debe agregar al menos un producto.', 2);
       return;
     }
@@ -599,7 +628,7 @@ eliminarVenta(venta: IDetalleVentas) {
         CLI_UBICACION: this.formularioVenta.controls['CLI_UBICACION'].value,
         CLI_DIRECCION: this.formularioVenta.controls['CLI_DIRECCION'].value,
         CLI_CORREO: this.formularioVenta.controls['CLI_CORREO'].value,
-        CLI_TELEFONO:this.formularioVenta.controls['CLI_TELEFONO'].value==""?null:this.formularioVenta.controls['CLI_TELEFONO'].value,
+        CLI_TELEFONO: this.formularioVenta.controls['CLI_TELEFONO'].value == "" ? null : this.formularioVenta.controls['CLI_TELEFONO'].value,
         CLI_FECHACREACION: new Date(),
         CLI_ESTADO: true,
         CLI_ESCREDITO: esVentaACredito,
@@ -611,8 +640,8 @@ eliminarVenta(venta: IDetalleVentas) {
     }
     else {
       //logica para validar si es el pago es a credito y no se esta cobrando el envio se agrega al listado de productos para que afecte el total de lo vendido
-      debugger;
-      if(esVentaACredito && this.listaProductos.findIndex(x=>x.PRO_CODIGO=="9999")==-1){
+      ;
+      if (esVentaACredito && this.listaProductos.findIndex(x => x.PRO_CODIGO == "9999") == -1) {
         let producto: IDetalleVentas = {
           VED_CODIGO: 0,
           VEN_CODIGO: 0,
@@ -635,7 +664,7 @@ eliminarVenta(venta: IDetalleVentas) {
         CLI_UBICACION: this.formularioVenta.controls['CLI_UBICACION'].value,
         CLI_DIRECCION: this.formularioVenta.controls['CLI_DIRECCION'].value,
         CLI_CORREO: this.formularioVenta.controls['CLI_CORREO'].value,
-        CLI_TELEFONO:this.formularioVenta.controls['CLI_TELEFONO'].value==""?null:this.formularioVenta.controls['CLI_TELEFONO'].value,
+        CLI_TELEFONO: this.formularioVenta.controls['CLI_TELEFONO'].value == "" ? null : this.formularioVenta.controls['CLI_TELEFONO'].value,
         CLI_FECHACREACION: new Date(),
         CLI_ESTADO: true,
         CLI_ESCREDITO: esVentaACredito == true ? esVentaACredito : this.ClienteCredito,
@@ -644,6 +673,24 @@ eliminarVenta(venta: IDetalleVentas) {
         this.alertasService.SetToast("Cliente Actualizado exitosamente.", 1);
       })
     }
+    if (this.listaProductos.filter(x => x.VED_PRECIOVENTA_UND == 0).length == 0) {
+      this.alertasService.confirmacion("No ha agregado ningun regalo, ¿Esta seguro de continuar?").then(
+        (resolve: any) => {
+          if (resolve) {
+            this.ConstruirVenta(nombreTipoCuenta,esVentaACredito)
+          }else{
+            return
+          }
+        })
+    }else{
+      this.ConstruirVenta(nombreTipoCuenta,esVentaACredito)
+    }
+   
+    this.formularioVenta.controls['PRO_PRECIO'].disable();
+    this.formularioVenta.controls['PRO_VALORTOTAL'].disable();
+    this.formularioVenta.controls['PRO_DESCUENTO'].disable();
+  }
+  ConstruirVenta(nombreTipoCuenta:any,esVentaACredito:boolean) {
     const venta: Iventa = {
       VEN_CODIGO: 0,
       VEN_FECHACREACION: new Date(),
@@ -654,7 +701,7 @@ eliminarVenta(venta: IDetalleVentas) {
       CLI_ID: this.formularioVenta.controls['VENT_CEDULA'].value,
       CLI_NOMBRE: this.formularioVenta.controls['CLI_NOMBRE'].value,
       CLI_DIRECCION: this.formularioVenta.controls['CLI_DIRECCION'].value,
-      CLI_TELEFONO: this.formularioVenta.controls['CLI_TELEFONO'].value==""?null:this.formularioVenta.controls['CLI_TELEFONO'].value,
+      CLI_TELEFONO: this.formularioVenta.controls['CLI_TELEFONO'].value == "" ? null : this.formularioVenta.controls['CLI_TELEFONO'].value,
       CLI_UBICACION: this.formularioVenta.controls['CLI_UBICACION'].value,
       CLI_TIPOCLIENTE: this.formularioVenta.controls['CLI_TIPOCLIENTE'].value,
       VEN_PRECIOTOTAL: this.TotalComprado,
@@ -668,10 +715,27 @@ eliminarVenta(venta: IDetalleVentas) {
       VEN_ESTADO: true,
       TIP_CODIGO: this.formularioVenta.controls['VEN_TIPOENVIO'].value,
       DetalleVentas: this.listaProductos,
+      VEN_TIENE_REGALOSDEMAS: false
     }
     if (venta.VEN_OBSERVACIONES == null || venta.VEN_OBSERVACIONES == undefined) {
       venta.VEN_OBSERVACIONES = "";
     }
+    if (this.ValidacionCantidadRegalos(this.listaProductos, this.formularioVenta.controls['CLI_TIPOCLIENTE'].value)) {
+      venta.VEN_TIENE_REGALOSDEMAS = true;
+      this.alertasService.confirmacion("Esta registrando regalos demas, ¿Esta seguro de continuar?").then(
+        (resolve: any) => {
+          if (resolve) {
+            this.CrearVenta(venta);
+          } else {
+            return;
+          }
+        })
+    } else {
+      this.CrearVenta(venta);
+    }
+
+  }
+  CrearVenta(venta: Iventa) {
     this.alertasService.showLoading("Creando venta")
     this.ventasService.CrearVenta(venta).subscribe((result: any) => {
       this.alertasService.hideLoading();
@@ -685,21 +749,15 @@ eliminarVenta(venta: IDetalleVentas) {
           this.gastoDeEnvio.VEN_CODIGO = result.Data;
           this.AbrirModalTipoCuentasGastos();
         }
-        // else {
-        //   this.ImprirFaturaCompra();
-        // }
         this.formularioVenta.reset();
         this.formularioVenta.controls['VEN_FECHAVENTA'].setValue(new Date())
         this.TotalComprado = 0;
-
+        this.AplicaDescuento = false;
       }
     }, err => {
       this.alertasService.hideLoading();
       this.alertasService.SetToast(err, 1);
     });
-    this.formularioVenta.controls['PRO_PRECIO'].disable();
-    this.formularioVenta.controls['PRO_VALORTOTAL'].disable();
-    this.formularioVenta.controls['PRO_DESCUENTO'].disable();
   }
   ImprirFaturaCompra() {
     this.alertasService.confirmacion("Desea visualizar la factura de venta # " + this.codigoVentaCreada).then(
@@ -717,13 +775,13 @@ eliminarVenta(venta: IDetalleVentas) {
       maximizable: false,
       dismissableMask: false,
       closeOnEscape: false,
-      closable:false,
+      closable: false,
       contentStyle: { 'background-color': '#eff3f8' },
-      data: { Listado: this.listaTipoDeCuenta.filter(x=>x.title=="true"), }
+      data: { Listado: this.listaTipoDeCuenta.filter(x => x.title == "true"), }
     })
     ref.onClose.subscribe((res) => {
       this.gastoDeEnvio.TIC_CODIGO = res;
-      debugger;
+      ;
       if (this.listaTipoDeCuenta.find(x => x.value == res)?.label?.toUpperCase() == "EFECTIVO") {
         this.gastoDeEnvio.GAS_PENDIENTE = false;
       }
@@ -777,39 +835,39 @@ eliminarVenta(venta: IDetalleVentas) {
   }
   CambiarPrecioDelProducto(event: Event) {
     if (!this.producto && this.formularioVenta.controls['PRO_PRECIO'].value === '') {
-        this.alertasService.SetToast("Debe buscar un producto", 3);
-        return;
-    }
-
-        
-        let ref = this.dialogService.open(ValidarUsuarioAdminComponent, {
-            header: 'Validar Usuario',
-            width: '25%',
-            contentStyle: { overflow: 'auto', 'background-color': '#eff3f8' },
-            baseZIndex: 100,
-            maximizable: true,
-            data: {}
-        });
-
-        ref.onClose.subscribe((res) => {
-            if (res) {
-                this.formularioVenta.controls['PRO_PRECIO'].enable();
-                this.formularioVenta.controls['PRO_VALORTOTAL'].enable();
-                this.formularioVenta.controls['PRO_DESCUENTO'].enable();
-                this.formularioVenta.controls['CLI_TIPOCLIENTE'].enable();
-            } else {
-                this.formularioVenta.controls['PRO_PRECIO'].disable();
-                this.formularioVenta.controls['PRO_VALORTOTAL'].disable();
-                this.formularioVenta.controls['PRO_DESCUENTO'].disable();
-                this.formularioVenta.controls['CLI_TIPOCLIENTE'].disable();
-            }
-        });
+      this.alertasService.SetToast("Debe buscar un producto", 3);
+      return;
     }
 
 
+    let ref = this.dialogService.open(ValidarUsuarioAdminComponent, {
+      header: 'Validar Usuario',
+      width: '25%',
+      contentStyle: { overflow: 'auto', 'background-color': '#eff3f8' },
+      baseZIndex: 100,
+      maximizable: true,
+      data: {}
+    });
+
+    ref.onClose.subscribe((res) => {
+      if (res) {
+        this.formularioVenta.controls['PRO_PRECIO'].enable();
+        this.formularioVenta.controls['PRO_VALORTOTAL'].enable();
+        this.formularioVenta.controls['PRO_DESCUENTO'].enable();
+        this.formularioVenta.controls['CLI_TIPOCLIENTE'].enable();
+      } else {
+        this.formularioVenta.controls['PRO_PRECIO'].disable();
+        this.formularioVenta.controls['PRO_VALORTOTAL'].disable();
+        this.formularioVenta.controls['PRO_DESCUENTO'].disable();
+        this.formularioVenta.controls['CLI_TIPOCLIENTE'].disable();
+      }
+    });
+  }
 
 
-  
+
+
+
   Cotizar() {
     if (this.formularioVenta.controls['VEN_TIPOENVIO'].value == null || this.formularioVenta.controls['VEN_TIPOENVIO'].value == "") {
       this.alertasService.SetToast("Primero debe seleccionar el tipo de envio", 2)
@@ -826,7 +884,7 @@ eliminarVenta(venta: IDetalleVentas) {
       CLI_UBICACION: this.formularioVenta.controls['CLI_UBICACION'].value,
       CLI_DIRECCION: this.formularioVenta.controls['CLI_DIRECCION'].value,
       CLI_CORREO: this.formularioVenta.controls['CLI_CORREO'].value,
-      CLI_TELEFONO:this.formularioVenta.controls['CLI_TELEFONO'].value,
+      CLI_TELEFONO: this.formularioVenta.controls['CLI_TELEFONO'].value,
       CLI_FECHACREACION: new Date(),
       CLI_ESTADO: true,
       CLI_ESCREDITO: true,

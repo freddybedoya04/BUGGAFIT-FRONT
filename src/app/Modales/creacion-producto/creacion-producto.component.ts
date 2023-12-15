@@ -41,7 +41,9 @@ export class CreacionProductoComponent implements OnInit {
       UNIDADES_MINIMA_ALERTA: [null, [Validators.required, Validators.min(0)]],
       PRO_CATEGORIA: [null, Validators.required],
       PRO_MARCA: [null, Validators.required],
-      PRO_REGALO:false
+      PRO_REGALO:false,
+      PRO_UNIDADREGALO:0,
+      PRO_UNIDAD_MINIMAREGALO:0
     });
     this.productoAEditar = {
       PRO_CODIGO: '',
@@ -57,7 +59,9 @@ export class CreacionProductoComponent implements OnInit {
       PRO_FECHACREACION: new Date(),
       PRO_ESTADO: false,
       COM_CANTIDAD: 0,
-      PRO_REGALO:false
+      PRO_REGALO:false,
+      PRO_UNIDADREGALO:0,
+      PRO_UNIDAD_MINIMAREGALO:0
     };
   }
 
@@ -103,8 +107,17 @@ export class CreacionProductoComponent implements OnInit {
             PRO_FECHACREACION: new Date(),
             PRO_ESTADO: true,
             PRO_UNIDADES_MINIMAS_ALERTA: this.formularioProducto.get('UNIDADES_MINIMA_ALERTA')?.value,
-            PRO_REGALO: this.formularioProducto.get('PRO_REGALO')?.value 
+            PRO_REGALO: this.formularioProducto.get('PRO_REGALO')?.value ,
+            PRO_UNIDADREGALO: parseInt( this.formularioProducto.get('PRO_UNIDADREGALO')?.value),
+            PRO_UNIDAD_MINIMAREGALO:parseInt( this.formularioProducto.get('PRO_UNIDAD_MINIMAREGALO')?.value),
           };
+          debugger
+          if(_producto.PRO_REGALO==true &&(Number.isNaN(_producto.PRO_UNIDADREGALO) || Number.isNaN(_producto.PRO_UNIDAD_MINIMAREGALO))){
+            this.alerta.SetToast("Debe llenar todos los campos de informacion de regalo",2)
+            this.formularioProducto.get('PRO_UNIDADREGALO')?.setErrors({ 'invalid': true });
+            this.formularioProducto.get('PRO_UNIDAD_MINIMAREGALO')?.setErrors({ 'invalid': true });
+            return
+          }
           this.productoAEditar = _producto;
 
           this.alerta.showLoading('Creando nuevo producto');
@@ -130,7 +143,7 @@ export class CreacionProductoComponent implements OnInit {
 
   CrearProducto() {
     try {
-      debugger
+      
       for (const control in this.formularioProducto.controls) {
         if (this.formularioProducto.controls[control].invalid) {
           this.alerta.SetToast(`El campo ${control.split('_')[1]} está incompleto`, 2);
@@ -157,9 +170,17 @@ export class CreacionProductoComponent implements OnInit {
               PRO_FECHACREACION: new Date(),
               PRO_ESTADO: true,
               PRO_UNIDADES_MINIMAS_ALERTA: this.formularioProducto.get('UNIDADES_MINIMA_ALERTA')?.value,
-              PRO_REGALO: this.formularioProducto.get('PRO_REGALO')?.value 
+              PRO_REGALO: this.formularioProducto.get('PRO_REGALO')?.value,
+              PRO_UNIDADREGALO: parseInt( this.formularioProducto.get('PRO_UNIDADREGALO')?.value),
+              PRO_UNIDAD_MINIMAREGALO: parseInt(this.formularioProducto.get('PRO_UNIDAD_MINIMAREGALO')?.value),
             };
-
+            debugger;
+            if(Producto.PRO_REGALO==true &&(Number.isNaN(Producto.PRO_UNIDADREGALO) || Number.isNaN(Producto.PRO_UNIDAD_MINIMAREGALO))){
+              this.formularioProducto.get('PRO_UNIDADREGALO')?.setErrors({ 'invalid': true });
+              this.formularioProducto.get('PRO_UNIDAD_MINIMAREGALO')?.setErrors({ 'invalid': true });
+              this.alerta.SetToast("Debe llenar todos los campos de informacion de regalo",2)
+              return
+            }
             this.alerta.showLoading('Creando nuevo producto');
             this.inventarioService.CrearProducto(Producto).subscribe(
               (result) => {
@@ -246,6 +267,8 @@ export class CreacionProductoComponent implements OnInit {
       this.formularioProducto.get('PRO_PRECIO_DETAL')?.setValue(this.productoAEditar.PRO_PRECIOVENTA_DETAL);
       this.formularioProducto.get('PRO_UNIDADES_DISPONIBLES')?.setValue(this.productoAEditar.PRO_UNIDADES_DISPONIBLES);
       this.formularioProducto.get('UNIDADES_MINIMA_ALERTA')?.setValue(this.productoAEditar.PRO_UNIDADES_MINIMAS_ALERTA);
+      this.formularioProducto.get('PRO_UNIDADREGALO')?.setValue(this.productoAEditar.PRO_UNIDADREGALO);
+      this.formularioProducto.get('PRO_UNIDAD_MINIMAREGALO')?.setValue(this.productoAEditar.PRO_UNIDAD_MINIMAREGALO);
     }
   }
 }

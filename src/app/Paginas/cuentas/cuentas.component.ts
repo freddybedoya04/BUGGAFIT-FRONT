@@ -124,7 +124,7 @@ export class CuentasComponent implements OnInit {
     this.filtro.FechaInicio = this.FechaInicio.toISOString();
   }
   ConfirmarTransaccion(Transaccion: ITransaccion) {
-    debugger
+    
     this.alertas.confirmacion("Esta seguro de Confirmar la Transaccion  # " + Transaccion.TRA_CODIGO + "?").then(result => {
       if (result) {
         this.alertas.showLoading("Confirmando Transaccion")

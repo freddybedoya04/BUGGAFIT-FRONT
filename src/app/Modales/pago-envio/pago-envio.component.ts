@@ -20,11 +20,11 @@ export class PagoEnvioComponent implements OnInit {
     }
   }
   ngOnInit(): void {
-    debugger
+    
     this.listaTipoDeCuenta = this.config.data.Listado;
   }
   Finalizar() {
-    debugger
+    
     if (this.EnvioSeleccionado == null || this.EnvioSeleccionado.label == "") {
       this.alertarService.SetToast("Debe Seleccionar una cuenta", 2);
       return;

@@ -94,7 +94,7 @@ export class CreacionCompraComponent implements OnInit {
   ngOnInit(): void {
     this.LlenadoProductos();
     this.ObtenerTipoCuentas();
-    debugger;
+    ;
     this.EsEdicion = this.config.data.esEdicion;
     if (this.EsEdicion == true) {
       this.Compra = this.config.data.nuevacompra;
@@ -131,7 +131,7 @@ export class CreacionCompraComponent implements OnInit {
     }
   }
   CalcularTotalProducto(Producto: IdetalleCompra) {
-    debugger;
+    ;
     const cantidad = Producto.DEC_UNIDADES ?? 0;
     this.ProductoComprado.DEC_PRECIOTOTAL = cantidad * Producto.DEC_PRECIOCOMPRA_PRODUCTO;
 
@@ -153,7 +153,7 @@ export class CreacionCompraComponent implements OnInit {
     this.LimpiarProducto();
   }
   EliminarProducto(Producto: IdetalleCompra) {
-    debugger;
+    ;
     if (this.EsEdicion == false) {
       let index = this.ListaProductosComprados.findIndex(x => x.PRO_CODIGO == Producto.PRO_CODIGO);
       this.ListaProductosComprados.splice(index, 1);
@@ -197,7 +197,7 @@ export class CreacionCompraComponent implements OnInit {
     }
   }
   CrearCompra() {
-    debugger;
+    ;
     try {
       const NuevaCompra: Icompras = {
         COM_CODIGO: 0,
@@ -245,7 +245,7 @@ export class CreacionCompraComponent implements OnInit {
   }
 
   ActualizarCompra() {
-    debugger;
+    ;
     try {
       const NuevaCompra: Icompras = {
         COM_CODIGO: this.Compra.COM_CODIGO,

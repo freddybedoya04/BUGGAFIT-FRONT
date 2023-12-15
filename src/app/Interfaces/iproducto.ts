@@ -14,4 +14,6 @@ export interface Iproducto {
     COM_CANTIDAD?:number;
     EstaEnAlerta?: boolean;
     PRO_REGALO?:boolean;
+    PRO_UNIDADREGALO?:number;
+    PRO_UNIDAD_MINIMAREGALO?:number;
   }

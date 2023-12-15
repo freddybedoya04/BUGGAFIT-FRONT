@@ -75,7 +75,7 @@ export class EstadisticasComponent implements OnInit {
     });
   }
   ConfigurarFechas() {
-    debugger;
+    ;
     let Fecha = new Date();
     this.FechaInicio = new Date(Fecha.getFullYear(), Fecha.getMonth(), 1, 6, 0, 0);
     const ultimoDiaNoviembre = new Date(Fecha.getFullYear(), Fecha.getMonth(), 0).getDate();
@@ -108,7 +108,7 @@ export class EstadisticasComponent implements OnInit {
     });
   }
   Generartabla() {
-    debugger;
+    ;
     this.Tabla = [];
     this.listaCuenta.forEach(element => {
       let obj = {
