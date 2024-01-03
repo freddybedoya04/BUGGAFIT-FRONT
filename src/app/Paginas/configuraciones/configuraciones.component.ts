@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { icategoria } from 'src/app/Interfaces/icategoria';
 import { imarca } from 'src/app/Interfaces/imarca';
 import { IMotivoGasto } from 'src/app/Interfaces/imotivo-gasto';
@@ -18,6 +18,8 @@ import { VentasService } from 'src/app/Servicios/ventas.service';
   styleUrls: ['./configuraciones.component.scss']
 })
 export class ConfiguracionesComponent implements OnInit {
+
+  @ViewChild("InputNombreCuenta") InputNombreCuenta: any;
   marcas: imarca[] = [];
   Marca: imarca;
   ActivarFormularioMarca: boolean = false;
@@ -302,15 +304,20 @@ export class ConfiguracionesComponent implements OnInit {
     })
   }
   EliminarCuenta(cuenta: ITipocuenta) {
-    this.alertasService.showLoading("Eliminando cuenta");
-    this.tipoCuentaService.EliminaCuenta(cuenta.TIC_CODIGO).subscribe(x => {
-      this.alertasService.hideLoading();
-      this.CargarCuentas();
-      this.alertasService.SetToast("Se eliminó cuenta correctamente", 1)
-    }, err => {
-      this.alertasService.hideLoading();
-      console.log(err);
-      this.alertasService.SetToast("Error al  eliminar cuenta", 3)
+    this.alertasService.confirmacion("Esta seguro de eliminar la cuenta "+ cuenta.TIC_NOMBRE + "?\nESTA ACCION ELIMINA EL DINERO Y NO ES REVERSIBLE.")
+    .then(result => {
+      if (result) {
+        this.alertasService.showLoading("Eliminando cuenta");
+        this.tipoCuentaService.EliminaCuenta(cuenta.TIC_CODIGO).subscribe(x => {
+          this.alertasService.hideLoading();
+          this.CargarCuentas();
+          this.alertasService.SetToast("Se eliminó cuenta correctamente", 1)
+        }, err => {
+          this.alertasService.hideLoading();
+          console.log(err);
+          this.alertasService.SetToast("Error al  eliminar cuenta", 3)
+        })
+      }
     })
   }
 
@@ -375,8 +382,6 @@ export class ConfiguracionesComponent implements OnInit {
   }
   //#endregion
   PonerEnFormulario(envio: ITiposEnvios) {
-    
-
     this.Envio = {
       TIP_CODIGO: envio.TIP_CODIGO,
       TIP_NOMBRE: envio.TIP_NOMBRE,
@@ -387,8 +392,7 @@ export class ConfiguracionesComponent implements OnInit {
     this.ActivarFormularioTipoEnvio = true;
   }
   PonerEnFormularioTipoCuenta(cuenta: ITipocuenta) {
-    
-
+    this.ActivarFormularioCuenta = true;
     this.Cuenta = {
       TIC_CODIGO: cuenta.TIC_CODIGO,
       TIC_NOMBRE: cuenta.TIC_NOMBRE,
@@ -398,7 +402,7 @@ export class ConfiguracionesComponent implements OnInit {
       TIC_FECHACREACION: new Date(),
       TIC_ESTIPOENVIO:cuenta.TIC_ESTIPOENVIO
     }
-    this.ActivarFormularioCuenta = true;
+    this.InputNombreCuenta?.nativeElement.focus();
   }
 
   getSeverity(estado: boolean) {
