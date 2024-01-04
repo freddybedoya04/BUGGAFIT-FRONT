@@ -35,3 +35,8 @@ section {
 :host ::ng-deep .p-accordion-content{
     background-color: #eff3f8;
 }
+.FiltroBuscar{
+    display: flex;
+    justify-content: flex-end;
+    float: right;
+}

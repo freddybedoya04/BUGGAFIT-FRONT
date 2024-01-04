@@ -37,6 +37,7 @@ export class ConfiguracionesComponent implements OnInit {
   ActivarFormularioMotivoGasto: boolean = false;
   envios: ITiposEnvios[] = [];
   Envio: ITiposEnvios;
+  public searchKeyword: string = '';
   ActivarFormularioTipoEnvio: boolean = false;
   constructor(private marcasSevice: MarcasService,
     private categoriasService: CategoriasService,
