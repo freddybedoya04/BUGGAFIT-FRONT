@@ -19,7 +19,10 @@ import { VentasService } from 'src/app/Servicios/ventas.service';
 })
 export class ConfiguracionesComponent implements OnInit {
 
+
   @ViewChild("InputNombreCuenta") InputNombreCuenta: any;
+  @ViewChild("InputEnvios") InputEnvios: any;
+  rowsPerPage: number = 50;
   marcas: imarca[] = [];
   Marca: imarca;
   ActivarFormularioMarca: boolean = false;
@@ -41,6 +44,7 @@ export class ConfiguracionesComponent implements OnInit {
     private motivoGastoService: MotivosGastosService,
     private tiposEnviosService: TiposEnviosService,
     private alertasService: AlertasService) {
+    this.rowsPerPage = alertasService.ObtenerNumeroDeLineasTablas();
     this.Marca = {
       MAR_CODIGO: 0,
       MAR_NOMBRE: "",
@@ -60,7 +64,7 @@ export class ConfiguracionesComponent implements OnInit {
       TIC_DINEROTOTAL: 0,
       TIC_FECHACREACION: new Date(),
       TIC_ESTADO: false,
-      TIC_ESTIPOENVIO:false
+      TIC_ESTIPOENVIO: false
     };
     this.MotivoGasto = {
       MOG_CODIGO: 0,
@@ -218,7 +222,7 @@ export class ConfiguracionesComponent implements OnInit {
       this.Cuenta.TIC_NOMBRE = "";
       this.Cuenta.TIC_NUMEROREFERENCIA = 0;
       this.Cuenta.TIC_DINEROTOTAL = 0;
-      this.Cuenta.TIC_ESTIPOENVIO=false;
+      this.Cuenta.TIC_ESTIPOENVIO = false;
       this.CargarCuentas();
       this.alertasService.SetToast("Se creó cuenta correctamente", 1)
     }, err => {
@@ -304,21 +308,21 @@ export class ConfiguracionesComponent implements OnInit {
     })
   }
   EliminarCuenta(cuenta: ITipocuenta) {
-    this.alertasService.confirmacion("Esta seguro de eliminar la cuenta "+ cuenta.TIC_NOMBRE + "?\nESTA ACCION ELIMINA EL DINERO Y NO ES REVERSIBLE.")
-    .then(result => {
-      if (result) {
-        this.alertasService.showLoading("Eliminando cuenta");
-        this.tipoCuentaService.EliminaCuenta(cuenta.TIC_CODIGO).subscribe(x => {
-          this.alertasService.hideLoading();
-          this.CargarCuentas();
-          this.alertasService.SetToast("Se eliminó cuenta correctamente", 1)
-        }, err => {
-          this.alertasService.hideLoading();
-          console.log(err);
-          this.alertasService.SetToast("Error al  eliminar cuenta", 3)
-        })
-      }
-    })
+    this.alertasService.confirmacion("Esta seguro de eliminar la cuenta " + cuenta.TIC_NOMBRE + "?\nESTA ACCION ELIMINA EL DINERO Y NO ES REVERSIBLE.")
+      .then(result => {
+        if (result) {
+          this.alertasService.showLoading("Eliminando cuenta");
+          this.tipoCuentaService.EliminaCuenta(cuenta.TIC_CODIGO).subscribe(x => {
+            this.alertasService.hideLoading();
+            this.CargarCuentas();
+            this.alertasService.SetToast("Se eliminó cuenta correctamente", 1)
+          }, err => {
+            this.alertasService.hideLoading();
+            console.log(err);
+            this.alertasService.SetToast("Error al  eliminar cuenta", 3)
+          })
+        }
+      })
   }
 
   EliminarMotivoGasto(motivo: IMotivoGasto) {
@@ -371,7 +375,7 @@ export class ConfiguracionesComponent implements OnInit {
       this.Cuenta.TIC_CODIGO = 0;
       this.Cuenta.TIC_NUMEROREFERENCIA = 0;
       this.Cuenta.TIC_DINEROTOTAL = 0;
-      this.Cuenta.TIC_ESTIPOENVIO=false;
+      this.Cuenta.TIC_ESTIPOENVIO = false;
       this.CargarCuentas();
       this.alertasService.SetToast("Se modificó el tipo de cuenta correctamente", 1)
     }, err => {
@@ -390,6 +394,8 @@ export class ConfiguracionesComponent implements OnInit {
       TIP_ESTADO: true,
     }
     this.ActivarFormularioTipoEnvio = true;
+    this.InputEnvios?.nativeElement.focus();
+
   }
   PonerEnFormularioTipoCuenta(cuenta: ITipocuenta) {
     this.ActivarFormularioCuenta = true;
@@ -400,7 +406,7 @@ export class ConfiguracionesComponent implements OnInit {
       TIC_DINEROTOTAL: cuenta.TIC_DINEROTOTAL,
       TIC_ESTADO: true,
       TIC_FECHACREACION: new Date(),
-      TIC_ESTIPOENVIO:cuenta.TIC_ESTIPOENVIO
+      TIC_ESTIPOENVIO: cuenta.TIC_ESTIPOENVIO
     }
     this.InputNombreCuenta?.nativeElement.focus();
   }
@@ -412,5 +418,9 @@ export class ConfiguracionesComponent implements OnInit {
       case false:
         return 'danger';
     }
+  }
+
+  CambioDeNumeroDePagina(event: any) {
+    this.alertasService.GuardarNumeroDeLineasTabla(event.rows)
   }
 }

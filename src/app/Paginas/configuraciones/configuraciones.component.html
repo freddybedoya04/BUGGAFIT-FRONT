@@ -19,9 +19,10 @@
                 </p-card>
                 <p-card header="Listado de marcas" [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
                     <p-table [value]="marcas" [tableStyle]="{ 'min-width': '40rem', 'max-height': '400px' }"
-                        [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+                        [paginator]="true" [rows]="rowsPerPage" (onPage)="CambioDeNumeroDePagina($event)"
+                        [showCurrentPageReport]="true"
                         [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords}'"
-                        [scrollable]="true" [rowsPerPageOptions]="[5, 10, 50]" styleClass="p-datatable-sm"
+                        [scrollable]="true" [rowsPerPageOptions]="[5, 20, 50]" styleClass="p-datatable-sm"
                         class="custom-table">
                         <ng-template pTemplate="caption">
                             <div class="EncabezadoTabla">
@@ -70,7 +71,7 @@
                 <p-card header="Listado de categorias" [style]="{ margin: '20px', padding: '20px' }"
                     styleClass="shadow-5">
                     <p-table [value]="categorias" [tableStyle]="{ 'min-width': '40rem', 'max-height': '400px' }"
-                        [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+                        [paginator]="true" [rows]="rowsPerPage" (onPage)="CambioDeNumeroDePagina($event)" [showCurrentPageReport]="true"
                         [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords}'"
                         [scrollable]="true" [rowsPerPageOptions]="[5, 10, 50]" styleClass="p-datatable-sm"
                         class="custom-table">
@@ -103,7 +104,9 @@
                 </p-card>
             </p-accordionTab>
             <p-accordionTab header="Cuentas">
-                <input #InputNombreCuenta style="opacity:0; filter:alpha(opacity=0); width: 0; height: 0; overflow: hidden; padding: 0; margin: 0;" pInputText />
+                <input #InputNombreCuenta
+                    style="opacity:0; filter:alpha(opacity=0); width: 0; height: 0; overflow: hidden; padding: 0; margin: 0;"
+                    pInputText />
                 <p-card [hidden]="!ActivarFormularioCuenta" header="Nueva Cuenta"
                     [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
                     <section>
@@ -140,7 +143,7 @@
 
                 <p-card header="Listado de cuentas" [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
                     <p-table [value]="cuentas" [tableStyle]="{ 'min-width': '40rem', 'max-height': '400px' }"
-                        [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+                        [paginator]="true" [rows]="rowsPerPage" (onPage)="CambioDeNumeroDePagina($event)" [showCurrentPageReport]="true"
                         [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords}'"
                         [scrollable]="true" [rowsPerPageOptions]="[5, 10, 50]" styleClass="p-datatable-sm"
                         class="custom-table">
@@ -187,6 +190,9 @@
                 </p-card>
             </p-accordionTab>
             <p-accordionTab header="Envios">
+                <input #InputEnvios
+                    style="opacity:0; filter:alpha(opacity=0); width: 0; height: 0; overflow: hidden; padding: 0; margin: 0;"
+                    pInputText />
                 <p-card *ngIf="ActivarFormularioTipoEnvio==true" header="Envio"
                     [style]="{ margin: '20px', padding: '20px' }" styleClass="shadow-5">
                     <section>
@@ -214,7 +220,7 @@
                 <p-card header="Listado tipos de envio" [style]="{ margin: '20px', padding: '20px' }"
                     styleClass="shadow-5">
                     <p-table [value]="envios" [tableStyle]="{ 'min-width': '40rem', 'max-height': '400px' }"
-                        [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+                        [paginator]="true" [rows]="rowsPerPage" (onPage)="CambioDeNumeroDePagina($event)" [showCurrentPageReport]="true"
                         [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords}'"
                         [scrollable]="true" [rowsPerPageOptions]="[5, 10, 50]" styleClass="p-datatable-sm"
                         class="custom-table">
@@ -266,7 +272,7 @@
                 <p-card header="Listado motivos de gastos" [style]="{ margin: '20px', padding: '20px' }"
                     styleClass="shadow-5">
                     <p-table [value]="motivos" [tableStyle]="{ 'min-width': '40rem', 'max-height': '400px' }"
-                        [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+                        [paginator]="true" [rows]="rowsPerPage" (onPage)="CambioDeNumeroDePagina($event)" [showCurrentPageReport]="true"
                         [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords}'"
                         [scrollable]="true" [rowsPerPageOptions]="[5, 10, 50]" styleClass="p-datatable-sm"
                         class="custom-table">

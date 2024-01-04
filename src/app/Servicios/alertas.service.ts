@@ -66,4 +66,11 @@ export class AlertasService {
   get message() {
     return this.loadingMessage.asObservable();
   }
+  
+  ObtenerNumeroDeLineasTablas(){
+    return Number(localStorage.getItem('numRowsTable')) || 5;
+  }
+  GuardarNumeroDeLineasTabla(numeroDeLineas: number){
+    localStorage.setItem('numRowsTable', String(numeroDeLineas));
+  }
 }
