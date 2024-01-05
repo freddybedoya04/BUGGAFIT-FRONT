@@ -59,7 +59,11 @@ h1 {
     justify-content: flex-end;
     gap: 10px;
 }
-
+.ValorTransaccion{
+    display: flex;
+    flex-direction: column;
+    padding: 15px!important;
+}
 
 /* custom-table.css */
 :host ::ng-deep .p-datatable .p-datatable-tbody tr > td {

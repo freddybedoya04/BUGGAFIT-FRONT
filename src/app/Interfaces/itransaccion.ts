@@ -12,4 +12,5 @@ export interface ITransaccion {
     USU_CEDULA_CONFIRMADOR: string;
     TRA_VALOR?: number;
     TIC_CODIGO: number;
+    GAS_VALOR?:number;
 }

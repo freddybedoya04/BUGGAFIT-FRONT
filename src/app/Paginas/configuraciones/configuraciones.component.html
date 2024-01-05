@@ -122,11 +122,17 @@
                             <label>Dinero total:</label>
                             <p-inputNumber class="Numerico" mode="decimal" locale="en-US"
                                 [(ngModel)]="Cuenta.TIC_DINEROTOTAL"></p-inputNumber>
-                        </div>
+                            </div>
+
+                            <div style="align-items: flex-start;display: flex;gap: 10px;">
+                                <p-checkbox id="Bodega" [binary]="true" [(ngModel)]="Cuenta.TIC_ESTIPOENVIO"
+                                    label="Es para envio"></p-checkbox>
+                                <!-- <p-checkbox id="Credito" [binary]="true"[(ngModel)]="Credito" label="Deuda" ></p-checkbox> -->
+                            </div>
                         <div class="BotonAgregar">
-                            <p-button *ngIf="Cuenta.TIC_CODIGO !=0" label="Actualizar Cuenta" icon="pi pi-plus"
+                            <p-button *ngIf="Cuenta.TIC_CODIGO !=0" label="Actualizar" icon="pi pi-plus"
                                 (onClick)="ActualizarTipoCuenta()"></p-button>
-                            <p-button *ngIf="Cuenta.TIC_CODIGO ==0" label="Agregar Cuenta" icon="pi pi-plus"
+                            <p-button *ngIf="Cuenta.TIC_CODIGO ==0" label="Agregar" icon="pi pi-plus"
                                 (onClick)="AgregarCuenta()"></p-button>
                             <p-button label="Cancelar" styleClass="p-button-danger"
                                 (onClick)="ActivarFormularioCuenta=false"></p-button>

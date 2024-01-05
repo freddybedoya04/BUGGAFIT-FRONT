@@ -98,8 +98,9 @@
                     </td>
                     <td>{{transaccion.TRA_CODIGO}}</td>
                     <td>{{transaccion.TRA_TIPO}}</td>
-                    <td [ngClass]="{ 'texto-verde': transaccion.TRA_VALOR > 0, 
-                    'texto-rojo': transaccion.TRA_VALOR < 0 }">${{transaccion.TRA_VALOR | number}}</td>
+                    <td class="ValorTransaccion"> <span [ngClass]="{ 'texto-verde': transaccion.TRA_VALOR > 0, 
+                        'texto-rojo': transaccion.TRA_VALOR < 0 }">${{transaccion.TRA_VALOR | number}}</span>
+                        <span class="texto-rojo">-${{transaccion.GAS_VALOR | number}}</span> </td>
                     <td>{{transaccion.TIC_NOMBRE}}</td>
                     <td>{{transaccion.TRA_CODIGOENLACE}}</td>
                     <td>{{transaccion.TRA_FECHACREACION | date : "YYYY-MMM-dd"}}</td>
