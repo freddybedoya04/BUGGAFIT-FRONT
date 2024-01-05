@@ -38,5 +38,10 @@ section {
 .FiltroBuscar{
     display: flex;
     justify-content: flex-end;
-    float: right;
+}
+
+.EncabezadoTabla{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
 }

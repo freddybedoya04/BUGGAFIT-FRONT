@@ -33,6 +33,7 @@ export class CuentasComponent implements OnInit {
 
     private tipoCuentaService: TipoCuentaService
   ) {
+    this.rowsPerPage = alertas.ObtenerNumeroDeLineasTablas();
     this.FechaFin = new Date();
     this.FechaInicio = new Date();
     this.filtro = {
@@ -184,6 +185,10 @@ export class CuentasComponent implements OnInit {
         return "";
     }
 
+  }
+  rowsPerPage: number = 50;
+  CambioDeNumeroDePagina(event: any) {
+    this.alertas.GuardarNumeroDeLineasTabla(event.rows)
   }
 }
 

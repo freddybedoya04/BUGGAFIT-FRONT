@@ -39,7 +39,7 @@
     </div>
     <br>
     <p-card header="Transacciones" [style]="{margin:'20px',padding:'20px'}" styleClass="shadow-5">
-        <p-table #dt2 [value]="listaTrasacciones" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+        <p-table #dt2 [value]="listaTrasacciones" [paginator]="true" [rows]="rowsPerPage" (onPage)="CambioDeNumeroDePagina($event)" [showCurrentPageReport]="true"
             [tableStyle]="{'min-width': '90rem','max-height':'600px'}" styleClass="p-datatable-sm"
             [(selection)]="listaTrasaccionesSeleccionadas"
             currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} compras"

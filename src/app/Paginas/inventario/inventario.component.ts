@@ -24,6 +24,7 @@ export class InventarioComponent implements OnInit {
     private alertasService: AlertasService,
     private inventarioService: InventarioService,
   ) {
+    this.rowsPerPage = alertasService.ObtenerNumeroDeLineasTablas();
     this.FechaFin = new Date();
     this.FechaInicio = new Date();
     this.filtro = {
@@ -114,6 +115,10 @@ export class InventarioComponent implements OnInit {
           });
         }
       })
+  }
+  rowsPerPage: number = 50;
+  CambioDeNumeroDePagina(event: any) {
+    this.alertasService.GuardarNumeroDeLineasTabla(event.rows)
   }
 }
 

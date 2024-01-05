@@ -25,7 +25,7 @@
     </div>
     <br>
     <p-card header="Gastos" [style]="{margin:'20px',padding:'20px'}" styleClass="shadow-5">
-        <p-table #dt2 [value]="listaGastos" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+        <p-table #dt2 [value]="listaGastos" [paginator]="true" [rows]="rowsPerPage" (onPage)="CambioDeNumeroDePagina($event)" [showCurrentPageReport]="true"
             [tableStyle]="{'min-width': '90rem','max-height':'600px'}" styleClass="p-datatable-sm"
             currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} compras"
             [rowsPerPageOptions]="[5, 10, 50]" 

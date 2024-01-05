@@ -31,6 +31,7 @@ export class GastosComponent implements OnInit {
     private alertasService: AlertasService,
     private gastosService: GastosService,
   ) {
+    this.rowsPerPage = alertasService.ObtenerNumeroDeLineasTablas();
     this.FechaFin = new Date();
     this.FechaInicio = new Date();
     this.filtro = {
@@ -218,5 +219,9 @@ export class GastosComponent implements OnInit {
           })
         }
       });
+  }
+  rowsPerPage: number = 50;
+  CambioDeNumeroDePagina(event: any) {
+    this.alertasService.GuardarNumeroDeLineasTabla(event.rows)
   }
 }

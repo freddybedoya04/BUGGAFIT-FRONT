@@ -54,7 +54,7 @@
         <p-card header="Lista de abonos"
             [style]="{ margin: '10px', padding: '10px' }" styleClass="shadow-5">
             <p-table #dt2 [value]="credito.Carteras" [tableStyle]="{ 'min-width': '20rem', 'max-height': '400px' }"
-                [paginator]="true" [rows]="5"
+                [paginator]="true" [rows]="rowsPerPage" (onPage)="CambioDeNumeroDePagina($event)"
                 styleClass="p-datatable-sm" class="custom-table">
                 <ng-template pTemplate="header">
                     <tr>
@@ -91,7 +91,7 @@
         <p-card header="Lista de ventas"
             [style]="{ margin: '10px', padding: '10px' }" styleClass="shadow-5">
             <p-table #dt2 [value]="credito.Ventas" [tableStyle]="{ 'min-width': '10rem', 'max-height': '400px' }"
-                [paginator]="true" [rows]="5"
+                [paginator]="true" [rows]="rowsPerPage" (onPage)="CambioDeNumeroDePagina($event)"
                 styleClass="p-datatable-sm" class="custom-table">
                 <ng-template pTemplate="header">
                     <tr>

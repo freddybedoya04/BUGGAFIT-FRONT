@@ -29,6 +29,7 @@ export class AbonosComponent implements OnInit {
   constructor(private ventasService: VentasService, private alertasService: AlertasService,
     private config: DynamicDialogConfig, public ref: DynamicDialogRef,
     private creditoService: CreditosService) {
+    this.rowsPerPage = alertasService.ObtenerNumeroDeLineasTablas();
     this.userLogged = JSON.parse(localStorage.getItem('user') || "");
     this.venta = {
       VEN_CODIGO: 0,
@@ -151,7 +152,7 @@ export class AbonosComponent implements OnInit {
     })
   }
   EliminarAbono(abono: Iabonos) {
-    
+
     this.alertasService.confirmacion("Esta seguro de eliminar el abono # " + abono.CAR_CODIGO + "?").then(result => {
       if (result) {
         this.alertasService.showLoading("Eliminano abono")
@@ -208,7 +209,7 @@ export class AbonosComponent implements OnInit {
     if (this.saldo > 0) {
       mensaje = "Aun hay $" + this.saldo.toLocaleString('en-US') + "  pendiente ¿Esta seguro de finalizar el credito?"
     }
-    
+
     this.alertasService.confirmacion(mensaje).then(result => {
       if (result) {
         this.alertasService.showLoading("Finalizando credito")
@@ -249,5 +250,10 @@ export class AbonosComponent implements OnInit {
         return "";
     }
 
+  }
+
+  rowsPerPage: number = 50;
+  CambioDeNumeroDePagina(event: any) {
+    this.alertasService.GuardarNumeroDeLineasTabla(event.rows)
   }
 }

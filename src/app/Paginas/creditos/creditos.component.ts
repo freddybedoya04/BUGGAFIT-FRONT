@@ -10,40 +10,45 @@ import { CreditosService } from 'src/app/Servicios/credito.service';
   templateUrl: './creditos.component.html',
   styleUrls: ['./creditos.component.scss']
 })
-export class CreditosComponent implements OnInit{
-  searchKeyword:string="";
-  creditos:Icredito[]=[];
-  constructor(private creditoService:CreditosService,private alertasService:AlertasService,
-    private dialogService:DialogService){
+export class CreditosComponent implements OnInit {
+  searchKeyword: string = "";
+  creditos: Icredito[] = [];
+  constructor(private creditoService: CreditosService, private alertasService: AlertasService,
+    private dialogService: DialogService) {
+    this.rowsPerPage = alertasService.ObtenerNumeroDeLineasTablas();
 
   }
   ngOnInit(): void {
     this.ObtenerCreditos();
   }
-  ObtenerCreditos(){
+  ObtenerCreditos() {
     this.alertasService.showLoading("Cargando creditos")
-    this.creditoService.ObtenerPersonasCredito().subscribe(x =>{
-      
+    this.creditoService.ObtenerPersonasCredito().subscribe(x => {
+
       this.alertasService.hideLoading();
-      this.creditos=x;
-    },err =>{
+      this.creditos = x;
+    }, err => {
       this.alertasService.hideLoading();
-      this.alertasService.SetToast("Error al consultar creditos",3)
+      this.alertasService.SetToast("Error al consultar creditos", 3)
       console.log(err)
     })
   }
 
-  AbrirModal(credito:Icredito) {
+  AbrirModal(credito: Icredito) {
     let ref = this.dialogService.open(AbonosComponent, {
-      header: 'Crédito '+ credito.CLI_NOMBRE,
+      header: 'Crédito ' + credito.CLI_NOMBRE,
       width: '75%',
       baseZIndex: 100,
       maximizable: true,
-      contentStyle:{'background-color':'#eff3f8'},
-      data:{Credito:credito}
+      contentStyle: { 'background-color': '#eff3f8' },
+      data: { Credito: credito }
     })
     ref.onClose.subscribe((res) => {
-        this.ObtenerCreditos();
+      this.ObtenerCreditos();
     });
+  }
+  rowsPerPage: number = 50;
+  CambioDeNumeroDePagina(event: any) {
+    this.alertasService.GuardarNumeroDeLineasTabla(event.rows)
   }
 }

@@ -22,6 +22,7 @@ export class ComprasComponent implements OnInit {
   @ViewChild('dt2', { static: true }) table: any;
   customColumnHeaders: string[] = [];
   constructor(private alertas: AlertasService, private _comprasService: ComprasService, public dialogService: DialogService) {
+    this.rowsPerPage = alertas.ObtenerNumeroDeLineasTablas();
     this.FechaFin = new Date();
     this.FechaInicio = new Date();
     this.filtro = {
@@ -156,5 +157,9 @@ export class ComprasComponent implements OnInit {
     const EXCEL_EXTENSION = '.xlsx';
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
     FileSaver.saveAs(data, fileName );
+  }
+  rowsPerPage: number = 50;
+  CambioDeNumeroDePagina(event: any) {
+    this.alertas.GuardarNumeroDeLineasTabla(event.rows)
   }
 }

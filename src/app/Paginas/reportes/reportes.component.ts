@@ -34,6 +34,7 @@ export class ReportesComponent implements OnInit {
   customColumnHeaders: string[] = [];
   public searchKeyword: string = '';
   constructor(private alertas: AlertasService, private ventasService: VentasService, private dialogService: DialogService) {
+    this.rowsPerPage = alertas.ObtenerNumeroDeLineasTablas();
     this.FechaFin = new Date();
     this.FechaInicio = new Date();
     this.filtro = {
@@ -263,5 +264,9 @@ BuscarDetallesPorFecha() {
         this.BuscarVentasPorFechas();
       }
     });
+  }
+  rowsPerPage: number = 50;
+  CambioDeNumeroDePagina(event: any) {
+    this.alertas.GuardarNumeroDeLineasTabla(event.rows)
   }
 }

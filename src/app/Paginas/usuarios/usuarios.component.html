@@ -4,7 +4,7 @@
   <p-card header="Listado de usuarios" [style]="{margin:'20px',padding:'20px'}" styleClass="shadow-5">
     <p-table #dt2 [value]="ListaUsuario"
       [paginator]="true"
-      [rows]="5"
+      [rows]="rowsPerPage" (onPage)="CambioDeNumeroDePagina($event)"
       [showCurrentPageReport]="true"
       [tableStyle]="{'min-width': '90rem','max-height':'600px'}"
       currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} compras"

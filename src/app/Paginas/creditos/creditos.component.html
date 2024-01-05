@@ -6,7 +6,7 @@
         <p-card header="Listado creditos" [style]="{ margin: '20px', padding: '20px' }"
         styleClass="shadow-5">
         <p-table #dt2 [value]="creditos" [tableStyle]="{ 'min-width': '20rem', 'max-height': '400px' }"
-            [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+            [paginator]="true" [rows]="rowsPerPage" (onPage)="CambioDeNumeroDePagina($event)" [showCurrentPageReport]="true"
             [currentPageReportTemplate]="'Mostrando {first} al {last} de {totalRecords}'"
             [scrollable]="true" [rowsPerPageOptions]="[5, 10, 50]" styleClass="p-datatable-sm"
             [scrollable]="true" [globalFilterFields]="['CLI_ID','CLI_NOMBRE']"
