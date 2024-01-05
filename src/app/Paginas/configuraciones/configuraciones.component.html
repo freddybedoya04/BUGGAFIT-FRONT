@@ -158,20 +158,27 @@
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
-                                <th style="width: 20%">#</th>
+                                <th style="width: 10%">#</th>
                                 <th style="width: 20%">Cuenta</th>
                                 <th style="width: 20%">Dinero total</th>
-                                <th style="width: 20%">Referencia</th>
+                                <th style="width: 10%">Referencia</th>
+                                <th style="width: 20%">Es Para envios</th>
                                 <th style="width: 20%">Acciones</th>
+
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-cuenta>
                             <tr>
                                 <td>{{ cuenta.TIC_CODIGO}}</td>
                                 <td>{{ cuenta.TIC_NOMBRE}}</td>
-                                <td>{{ cuenta.TIC_DINEROTOTAL}}</td>
+                                <td>{{ cuenta.TIC_DINEROTOTAL | number}}</td>
                                 <td>{{ cuenta.TIC_NUMEROREFERENCIA}}</td>
                                 <td>
+                                    <p-tag [value]="cuenta.TIC_ESTIPOENVIO ? 'SI':'NO'"
+                                        [severity]="getSeverity(cuenta.TIC_ESTIPOENVIO)"></p-tag>
+                                </td>
+                                <td alignFrozen="right" pFrozenColumn [frozen]="true">
+
                                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info"
                                         pTooltip="Editar valor" tooltipPosition="top"
                                         (click)="PonerEnFormularioTipoCuenta(cuenta)"></button>
