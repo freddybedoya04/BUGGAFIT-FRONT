@@ -39,7 +39,8 @@
     </div>
     <br>
     <p-card header="Transacciones" [style]="{margin:'20px',padding:'20px'}" styleClass="shadow-5">
-        <p-table #dt2 [value]="listaTrasacciones" [paginator]="true" [rows]="rowsPerPage" (onPage)="CambioDeNumeroDePagina($event)" [showCurrentPageReport]="true"
+        <p-table #dt2 [value]="listaTrasacciones" [paginator]="true" [rows]="rowsPerPage"
+            (onPage)="CambioDeNumeroDePagina($event)" [showCurrentPageReport]="true"
             [tableStyle]="{'min-width': '90rem','max-height':'600px'}" styleClass="p-datatable-sm"
             [(selection)]="listaTrasaccionesSeleccionadas"
             currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} compras"
@@ -86,8 +87,10 @@
                             field="TRA_CONFIRMADA"></p-sortIcon></th>
                     <th pSortableColumn="TRA_FUEANULADA" style="width:10%">Anulada<p-sortIcon
                             field="TRA_FUEANULADA"></p-sortIcon></th>
+                    <th pSortableColumn="CLI_NOMBRE" style="width:10%">Cliente<p-sortIcon
+                            field="CLI_NOMBRE"></p-sortIcon></th>
                     <th pSortableColumn="USU_NOMBRE" style="width:10%">Confirmador<p-sortIcon
-                            field="USU_NOMBREUSU_NOMBRE"></p-sortIcon></th>
+                            field="USU_NOMBRE"></p-sortIcon></th>
                     <th style="min-width:200px" alignFrozen="right" pFrozenColumn>Acciones</th>
             </ng-template>
             <ng-template pTemplate="body" let-transaccion>
@@ -100,7 +103,8 @@
                     <td>{{transaccion.TRA_TIPO}}</td>
                     <td class="ValorTransaccion"> <span [ngClass]="{ 'texto-verde': transaccion.TRA_VALOR > 0, 
                         'texto-rojo': transaccion.TRA_VALOR < 0 }">${{transaccion.TRA_VALOR | number}}</span>
-                        <span class="texto-rojo">-${{transaccion.GAS_VALOR | number}}</span> </td>
+                        <span class="texto-rojo">-${{transaccion.GAS_VALOR | number}}</span>
+                    </td>
                     <td>{{transaccion.TIC_NOMBRE}}</td>
                     <td>{{transaccion.TRA_CODIGOENLACE}}</td>
                     <td>{{transaccion.TRA_FECHACREACION | date : "YYYY-MMM-dd"}}</td>
@@ -112,6 +116,7 @@
                         <p-tag [value]="transaccion.TRA_FUEANULADA==true ? 'SI':'NO'"
                             [severity]="getSeverity(transaccion.TRA_FUEANULADA)"></p-tag>
                     </td>
+                    <td>{{transaccion.CLI_NOMBRE}}</td>
                     <td>{{transaccion.USU_NOMBRE}}</td>
                     <td class="Acciones" alignFrozen="right" pFrozenColumn [frozen]="true">
                         <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success"

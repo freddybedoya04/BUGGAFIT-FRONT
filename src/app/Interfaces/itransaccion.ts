@@ -13,4 +13,5 @@ export interface ITransaccion {
     TRA_VALOR?: number;
     TIC_CODIGO: number;
     GAS_VALOR?:number;
+    CLI_NOMBRE?: string;
 }
