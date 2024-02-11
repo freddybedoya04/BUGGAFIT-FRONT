@@ -53,6 +53,9 @@
                     <th pSortableColumn="VEN_TIENE_REGALOSDEMAS" style="width: 5%">
                         Mas Regalos<p-sortIcon field="VEN_TIENE_REGALOSDEMAS"></p-sortIcon>
                     </th>
+                    <th pSortableColumn="VEN_PRECIOS_MODIFICADOS" style="width: 5%">
+                        Precios Modificados<p-sortIcon field="VEN_PRECIOS_MODIFICADOS"></p-sortIcon>
+                    </th>
                     <th pSortableColumn="VEN_FECHAVENTA" style="width: 15%">
                         Fecha <p-sortIcon field="VEN_FECHAVENTA"></p-sortIcon>
                     </th>
@@ -94,12 +97,13 @@
             </ng-template>
             <ng-template pTemplate="body" let-venta>
                 <tr [ngStyle]="{
-                    'background-color': venta.VEN_ESANULADA ? 'rgba(255, 0, 0, 0.26)' : (venta.VEN_TIENE_REGALOSDEMAS ? 'rgba(217, 153, 44, 0.26)' : '#fff'),
-                    'font-weight': venta.VEN_TIENE_REGALOSDEMAS ? 'bold' : 'normal'
-                  }">
+                    'background-color': getBackgroundColor(venta),
+                    'font-weight': venta.VEN_TIENE_REGALOSDEMAS || venta.VEN_ESANULADA || venta.VEN_PRECIOS_MODIFICADOS? 'bold' : 'normal'
+                }">
                     <td>{{ venta.VEN_CODIGO }}</td>
                     <td><i *ngIf="venta.VEN_ESANULADA" class="pi pi-exclamation-triangle"></i></td>
                     <td><i *ngIf="venta.VEN_TIENE_REGALOSDEMAS" class="pi pi-exclamation-triangle"></i></td>
+                    <td><i *ngIf="venta.VEN_PRECIOS_MODIFICADOS" class="pi pi-exclamation-triangle"></i></td>
                     <td>{{ venta.VEN_FECHAVENTA | date : "YYYY-MMM-dd" }}</td>
                     <td>{{ venta.TIC_NOMBRE }}</td>
                     <td>${{ venta.VEN_PRECIOTOTAL| number }}</td>

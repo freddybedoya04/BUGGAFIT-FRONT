@@ -6,14 +6,15 @@
     <p-card header="" [style]="{ width: '100%' }" class="card">
         <section>
             <div>
-                <label for="VEN_FECHAVENTA">Cedula:</label>
-                <input type="text" [(ngModel)]="credencialesDeAcceso.Cedula" pInputText />
+                <label for="VEN_FECHAVENTA">Codigo de acceso:</label>
+                <!-- <input type="password" [(ngModel)]="credencialesDeAcceso.Cedula" pInputText  /> -->
+                <p-password [(ngModel)]="credencialesDeAcceso.Cedula" [toggleMask]="true" [feedback]="false"></p-password>
 
             </div>
-            <div>
+            <!-- <div>
                 <label for="VEN_CUENTADESTINO">Contraseña:</label>
                 <input type="Password" [(ngModel)]="credencialesDeAcceso.Password" pInputText />
-            </div>
+            </div> -->
         </section>
         <div>
             <div class="buttonContainer">

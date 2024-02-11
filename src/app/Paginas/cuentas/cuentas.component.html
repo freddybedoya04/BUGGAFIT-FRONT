@@ -45,7 +45,7 @@
             [(selection)]="listaTrasaccionesSeleccionadas"
             currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} compras"
             [rowsPerPageOptions]="[5, 10, 50]" [scrollable]="true"
-            [globalFilterFields]="['TRA_CODIGO','TRA_TIPO','TIC_NOMBRE','USU_NOMBRE']" class="custom-table">
+            [globalFilterFields]="['TRA_CODIGO','TRA_TIPO','TIC_NOMBRE','USU_NOMBRE','CLI_NOMBRE','TRA_VALOR']" class="custom-table">
             <ng-template pTemplate="caption">
                 <div class="EncabezadoTabla">
                     <p-button label="Transferir dinero" icon="pi pi-plus" (onClick)="AbrirModalCuenta()"></p-button>
@@ -70,8 +70,8 @@
                     <th style="width: 5%">
                         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
-                    <!-- <th pSortableColumn="EstaEnAlerta" style="width:20%">Info <p-sortIcon
-                            field="EstaEnAlerta"></p-sortIcon></th> -->
+                    <th pSortableColumn="TRA_TIPOALERTA" style="width:20%">Alerta <p-sortIcon
+                            field="TRA_TIPOALERTA"></p-sortIcon></th>
                     <th pSortableColumn="TRA_CODIGO" style="width:10%">Codigo<p-sortIcon
                             field="TRA_CODIGO"></p-sortIcon></th>
                     <th pSortableColumn="TRA_TIPO" style="width:20%">Tipo<p-sortIcon field="TRA_TIPO"></p-sortIcon></th>
@@ -94,11 +94,15 @@
                     <th style="min-width:200px" alignFrozen="right" pFrozenColumn>Acciones</th>
             </ng-template>
             <ng-template pTemplate="body" let-transaccion>
-                <tr>
+                <tr [ngStyle]="{
+                    'background-color': getBackgroundColor(transaccion),
+                    'font-weight': transaccion.TRA_TIPOALERTA !='' ? 'bold' : 'normal'
+                }">
                     <td>
                         <p-tableCheckbox [value]="transaccion"
                             [disabled]="transaccion.TRA_CONFIRMADA===true || transaccion.TRA_FUEANULADA===true"></p-tableCheckbox>
                     </td>
+                    <td><i *ngIf="transaccion.TRA_TIPOALERTA" class="pi pi-exclamation-triangle"></i></td>
                     <td>{{transaccion.TRA_CODIGO}}</td>
                     <td>{{transaccion.TRA_TIPO}}</td>
                     <td class="ValorTransaccion"> <span [ngClass]="{ 'texto-verde': transaccion.TRA_VALOR > 0, 

@@ -22,6 +22,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ChartModule } from 'primeng/chart';
 import { PanelModule } from 'primeng/panel';
 import { AccordionModule } from 'primeng/accordion';
+import { PasswordModule } from 'primeng/password';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { AccordionModule } from 'primeng/accordion';
     PanelModule,
     AccordionModule,
     NgxPrintModule,
+    PasswordModule
   ],
   exports:[
     ButtonModule,
@@ -69,7 +71,8 @@ import { AccordionModule } from 'primeng/accordion';
     ChartModule,
     PanelModule,
     AccordionModule,
-    NgxPrintModule
+    NgxPrintModule,
+    PasswordModule
   ]
 })
 export class SharedModule { }

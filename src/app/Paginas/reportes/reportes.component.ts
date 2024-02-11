@@ -77,9 +77,18 @@ export class ReportesComponent implements OnInit {
       case false:
         return 'warning';
     }
-
-
   }
+  getBackgroundColor(venta: any): string {
+    if (venta.VEN_ESANULADA) {
+        return 'rgba(255, 0, 0, 0.26)'; // Rojo
+    } else if (venta.VEN_TIENE_REGALOSDEMAS) {
+        return 'rgba(217, 153, 44, 0.26)'; // Amarillo
+    } else if (venta.VEN_PRECIOS_MODIFICADOS) {
+        return 'rgba(0, 95, 251, 0.29)'; // Azul claro
+    } else {
+        return '#fff'; // Blanco
+    }
+}
 
   BuscarVentasPorFechas() {
     this.ArmarFiltro();

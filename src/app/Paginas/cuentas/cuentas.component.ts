@@ -10,11 +10,12 @@ import { TransaccionesService } from 'src/app/Servicios/transacciones.service';
 import { ITransaccion } from 'src/app/Interfaces/itransaccion';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import { ITransaccionCuentas } from 'src/app/Interfaces/itransaccion-cuentas';
 
 @Component({
   selector: 'app-cuentas',
   templateUrl: './cuentas.component.html',
-  styleUrls: ['./cuentas.component.scss']
+  styleUrls: ['./cuentas.component.scss'],
 })
 export class CuentasComponent implements OnInit {
   public searchKeyword: string = '';
@@ -37,12 +38,12 @@ export class CuentasComponent implements OnInit {
     this.FechaFin = new Date();
     this.FechaInicio = new Date();
     this.filtro = {
-      FechaFin: "",
-      FechaInicio: ""
-    }
+      FechaFin: '',
+      FechaInicio: '',
+    };
     this.CuentaSeleccionada = {
       TIC_CODIGO: -1,
-      TIC_NOMBRE: "",
+      TIC_NOMBRE: '',
       TIC_NUMEROREFERENCIA: 0,
       TIC_DINEROTOTAL: 0,
       TIC_FECHACREACION: new Date(),
@@ -56,19 +57,25 @@ export class CuentasComponent implements OnInit {
     this.BuscarTransferencias();
   }
   ObtenerTipoCuentas() {
-    this.tipoCuentaService.ObtenerCuentas().subscribe((result: ITipocuenta[]) => {
-      this.listaTipoDeCuenta = result.filter(x => x.TIC_NOMBRE != "CREDITO");
-    });
+    this.tipoCuentaService
+      .ObtenerCuentas()
+      .subscribe((result: ITipocuenta[]) => {
+        this.listaTipoDeCuenta = result.filter(
+          (x) => x.TIC_NOMBRE != 'CREDITO'
+        );
+      });
   }
   ConfigurarFechas() {
     this.FechaFin = new Date();
-    this.FechaInicio = new Date(this.FechaFin)
+    this.FechaInicio = new Date(this.FechaFin);
     this.FechaInicio.setDate(this.FechaInicio.getDate() - 30);
   }
   BuscarTransferencias() {
-    if (this.CuentaSeleccionada == null || this.CuentaSeleccionada.TIC_CODIGO == -1) {
+    if (
+      this.CuentaSeleccionada == null ||
+      this.CuentaSeleccionada.TIC_CODIGO == -1
+    ) {
       this.BuscarTransaccionesPorFechas();
-
     } else {
       this.BuscarTransaccionesPorFechasYCuenta();
     }
@@ -76,88 +83,128 @@ export class CuentasComponent implements OnInit {
   }
   BuscarTransaccionesPorFechas() {
     this.ArmarFiltro();
-    this.alertas.showLoading("Buscando transacciones...")
-    this.transaccionesService.ObtenerTraansaccionesPorFecha(this.filtro).subscribe(result => {
-      this.alertas.hideLoading();
-      this.listaTrasacciones = result;
-    }, err => {
-      this.alertas.hideLoading();
-      this.alertas.SetToast(err, 3);
-    })
+    this.alertas.showLoading('Buscando transacciones...');
+    this.transaccionesService
+      .ObtenerTraansaccionesPorFecha(this.filtro)
+      .subscribe(
+        (result) => {
+          debugger;
+          this.alertas.hideLoading();
+          this.listaTrasacciones = result;
+        },
+        (err) => {
+          this.alertas.hideLoading();
+          this.alertas.SetToast(err, 3);
+        }
+      );
   }
   exportExcel() {
-
     if (this.listaTrasacciones.length === 0) {
       this.alertas.SetToast('No hay datos para exportar.', 2);
       return;
     }
 
-    import("xlsx").then((xlsx) => {
-      const worksheet: XLSX.WorkSheet = xlsx.utils.json_to_sheet(this.listaTrasacciones, { header: this.customColumnHeaders });
+    import('xlsx').then((xlsx) => {
+      const worksheet: XLSX.WorkSheet = xlsx.utils.json_to_sheet(
+        this.listaTrasacciones,
+        { header: this.customColumnHeaders }
+      );
 
-      const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
-      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+      const workbook: XLSX.WorkBook = {
+        Sheets: { data: worksheet },
+        SheetNames: ['data'],
+      };
+      const excelBuffer: any = xlsx.write(workbook, {
+        bookType: 'xlsx',
+        type: 'array',
+      });
       this.saveAsExcelFile(excelBuffer, 'Transacciones');
     });
   }
 
-
-
   saveAsExcelFile(buffer: any, fileName: string): void {
-    const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const EXCEL_TYPE =
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const EXCEL_EXTENSION = '.xlsx';
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
     FileSaver.saveAs(data, fileName);
   }
   BuscarTransaccionesPorFechasYCuenta() {
     this.ArmarFiltro();
-    this.alertas.showLoading("Buscando transacciones...")
-    this.transaccionesService.ObtenerTraansaccionesPorFechayCuenta(this.filtro, this.CuentaSeleccionada.TIC_CODIGO).subscribe(result => {
-      this.alertas.hideLoading();
-      this.listaTrasacciones = result;
-    }, err => {
-      this.alertas.hideLoading();
-      this.alertas.SetToast(err, 3);
-    })
+    this.alertas.showLoading('Buscando transacciones...');
+    this.transaccionesService
+      .ObtenerTraansaccionesPorFechayCuenta(
+        this.filtro,
+        this.CuentaSeleccionada.TIC_CODIGO
+      )
+      .subscribe(
+        (result) => {
+          this.alertas.hideLoading();
+          this.listaTrasacciones = result;
+        },
+        (err) => {
+          this.alertas.hideLoading();
+          this.alertas.SetToast(err, 3);
+        }
+      );
   }
   ArmarFiltro() {
     this.filtro.FechaFin = this.FechaFin.toISOString();
     this.filtro.FechaInicio = this.FechaInicio.toISOString();
   }
   ConfirmarTransaccion(Transaccion: ITransaccion) {
-    
-    this.alertas.confirmacion("Esta seguro de Confirmar la Transaccion  # " + Transaccion.TRA_CODIGO + "?").then(result => {
-      if (result) {
-        this.alertas.showLoading("Confirmando Transaccion")
+    this.alertas
+      .confirmacion(
+        'Esta seguro de Confirmar la Transaccion  # ' +
+          Transaccion.TRA_CODIGO +
+          '?'
+      )
+      .then((result) => {
+        if (result) {
+          this.alertas.showLoading('Confirmando Transaccion');
 
-        this.transaccionesService.ConfirmarTransaccion(Transaccion.TRA_CODIGO).subscribe(x => {
-          this.alertas.hideLoading();
-          this.alertas.SetToast("Se Actualizo corretamente", 1)
-          this.BuscarTransferencias();
-        }, err => {
-          this.alertas.hideLoading();
-          this.alertas.SetToast(err, 3)
-        })
-      }
-    })
+          this.transaccionesService
+            .ConfirmarTransaccion(Transaccion.TRA_CODIGO)
+            .subscribe(
+              (x) => {
+                this.alertas.hideLoading();
+                this.alertas.SetToast('Se Actualizo corretamente', 1);
+                this.BuscarTransferencias();
+              },
+              (err) => {
+                this.alertas.hideLoading();
+                this.alertas.SetToast(err, 3);
+              }
+            );
+        }
+      });
   }
   ConfirmarTransacciones(Transaccion: ITransaccion[]) {
     const transacciones = Transaccion.map((transaccion: any) => {
       return transaccion.TRA_CODIGO;
-    })
-    this.alertas.confirmacion("Esta seguro de Confirmar las " + Transaccion.length + " Transacciones?").then(result => {
-      if (result) {
-        this.alertas.showLoading("Confirmando Transaccion")
-        this.transaccionesService.ConfirmarVariasTransacciones(transacciones).subscribe(x => {
-          this.alertas.hideLoading();
-          this.alertas.SetToast("Se Actualizo corretamente", 1)
-          this.BuscarTransferencias();
-        }, err => {
-          this.alertas.hideLoading();
-          this.alertas.SetToast(err, 3)
-        })
-      }
-    })
+    });
+    this.alertas
+      .confirmacion(
+        'Esta seguro de Confirmar las ' + Transaccion.length + ' Transacciones?'
+      )
+      .then((result) => {
+        if (result) {
+          this.alertas.showLoading('Confirmando Transaccion');
+          this.transaccionesService
+            .ConfirmarVariasTransacciones(transacciones)
+            .subscribe(
+              (x) => {
+                this.alertas.hideLoading();
+                this.alertas.SetToast('Se Actualizo corretamente', 1);
+                this.BuscarTransferencias();
+              },
+              (err) => {
+                this.alertas.hideLoading();
+                this.alertas.SetToast(err, 3);
+              }
+            );
+        }
+      });
   }
 
   AbrirModalCuenta() {
@@ -167,28 +214,38 @@ export class CuentasComponent implements OnInit {
       contentStyle: { overflow: 'auto', 'background-color': '#eff3f8' },
       baseZIndex: 100,
       maximizable: true,
-      data: { esEdicion: false }
+      data: { esEdicion: false },
     });
     ref.onClose.subscribe((res) => {
       this.FechaFin = new Date(Date.now());
       this.BuscarTransferencias();
     });
-  };
-  getSeverity(estado: any) {
+  }
 
+  getSeverity(estado: any) {
     switch (estado) {
       case true:
         return 'success';
       case false:
         return 'danger';
       default:
-        return "";
+        return '';
     }
-
   }
+  getBackgroundColor(transaccion: ITransaccion) {
+    if (transaccion.TRA_TIPOALERTA == 'Anulada') {
+      return 'rgba(255, 0, 0, 0.26)'; // Rojo
+    } else if (transaccion.TRA_TIPOALERTA == 'Regalos') {
+      return 'rgba(217, 153, 44, 0.26)'; // Amarillo
+    } else if (transaccion.TRA_TIPOALERTA == 'Precios') {
+      return 'rgba(0, 95, 251, 0.29)'; // Azul claro
+    } else {
+      return '#fff'; // Blanco
+    }
+  }
+
   rowsPerPage: number = 50;
   CambioDeNumeroDePagina(event: any) {
-    this.alertas.GuardarNumeroDeLineasTabla(event.rows)
+    this.alertas.GuardarNumeroDeLineasTabla(event.rows);
   }
 }
-

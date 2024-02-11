@@ -4,6 +4,7 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ILogin } from 'src/app/Interfaces/ilogin';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { UsuarioService } from 'src/app/Servicios/usuario.service';
+import { VentasService } from 'src/app/Servicios/ventas.service';
 
 @Component({
   selector: 'app-validar-usuario-admin',
@@ -18,6 +19,7 @@ export class ValidarUsuarioAdminComponent {
   }
   constructor(
     private usuarioService: UsuarioService,
+    private ventasService: VentasService,
     private alerta: AlertasService,
     private confirmationService: ConfirmationService,
     public ref: DynamicDialogRef,
@@ -26,17 +28,16 @@ export class ValidarUsuarioAdminComponent {
   }
 
   Validar(){
-    this.alerta.showLoading("Validando Usuario");
-    this.usuarioService.ValidarUsuarioAdmin(this.credencialesDeAcceso).subscribe((result: any) => {
+    this.alerta.showLoading("Validando Código");
+    this.ventasService.getConfig().subscribe((result: any) => {
       this.alerta.hideLoading();
-      if(result){
-        this.alerta.SetToast("usuario Valido",1);
+      if(result.CodigoDescuento==this.credencialesDeAcceso.Cedula){
+        this.alerta.SetToast("Código valido",1);
         this.ref.close(true);
       }
       else{
-        this.alerta.SetToast("usuario no Valido", 3);
-        this.ref.close(false);
-
+        this.alerta.SetToast("Código inválido", 3);
+        // this.ref.close(false);
       }
     });
   }
