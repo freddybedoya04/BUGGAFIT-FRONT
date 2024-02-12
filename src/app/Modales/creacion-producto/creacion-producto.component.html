@@ -28,7 +28,7 @@
                 </div>
                 <div>
                     <label for="PRO_UNIDADREGALO">Unidades regalo</label>
-                    <input type="number" pInputText formControlName="PRO_UNIDADREGALO" matInput autocomplete="off">
+                    <input type="number" pInputText formControlName="PRO_UNIDADREGALO" matInput autocomplete="off" >
                 </div>
                 <div>
                     <label for="PRO_UNIDAD_MINIMAREGALO">Unidades minimas para regalo:</label>
@@ -54,21 +54,18 @@
                 <div>
                     <label for="PRO_PRECIO_COMPRA">Precio Compra:</label>
                     <!-- <input type="text" pInputText formControlName=PRO_PRECIO_COMPRA matInput autocomplete="off"> -->
-                    <p-inputNumber class="Numerico" mode="decimal" locale="en-US"
-                        formControlName=PRO_PRECIO_COMPRA></p-inputNumber>
+                    <p-inputNumber  formControlName=PRO_PRECIO_COMPRA inputId="minmaxfraction" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5"> </p-inputNumber>
 
                 </div>
                 <div>
                     <label for="PRO_PRECIO_MAYORISTA">Precio de Mayorista:</label>
                     <!-- <input type="text" pInputText formControlName="PRO_PRECIO_MAYORISTA" matInput autocomplete="off"> -->
-                    <p-inputNumber class="Numerico" mode="decimal" locale="en-US"
-                        formControlName=PRO_PRECIO_MAYORISTA></p-inputNumber>
+                    <p-inputNumber formControlName=PRO_PRECIO_MAYORISTA inputId="minmaxfraction" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5"> </p-inputNumber>
                 </div>
                 <div>
                     <label for="PRO_PRECIO_ DETAL">Precio Detal:</label>
                     <!-- <input type="text" pInputText formControlName="PRO_PRECIO_DETAL" matInput autocomplete="off"> -->
-                    <p-inputNumber class="Numerico" mode="decimal" locale="en-US"
-                        formControlName=PRO_PRECIO_DETAL></p-inputNumber>
+                    <p-inputNumber formControlName=PRO_PRECIO_DETAL inputId="minmaxfraction" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5"> </p-inputNumber>
                 </div>
             </section>
         </p-card>

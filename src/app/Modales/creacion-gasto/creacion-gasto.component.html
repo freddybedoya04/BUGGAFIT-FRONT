@@ -49,13 +49,7 @@
   
         <div>
           <label for="GAS_VALOR">Valor:</label>
-          <p-inputNumber 
-            class="Numerico"
-            mode="decimal"
-            locale="en-US"
-            formControlName="GAS_VALOR"
-            [readonly]="esEdicion==true"
-          ></p-inputNumber>
+          <p-inputNumber  formControlName="GAS_VALOR" inputId="minmaxfraction" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5"> </p-inputNumber>
           <!-- <input *ngIf="esEdicion==true" type="text" pInputText formControlName="GAS_VALOR" readonly="true" matInput autocomplete="off"> -->
         </div>
         <div>

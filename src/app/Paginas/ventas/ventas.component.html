@@ -106,17 +106,24 @@
       <div>
         <span class="p-input-icon-left">
           <label>Precio:</label>
-          <i style="top: 2.1rem;font-size: 18px;">$</i>
-          <input (keyup)="CalcularDescuentoPorcentajePrecioUnitario($event)" type="text" pInputText formControlName="PRO_PRECIO" FormateadorPrecio  />
+         
+          <p-inputNumber style=" display: flex;
+          flex-direction: column;
+          gap: 5px;
+          width: 100%; " (keyup)="CalcularDescuentoPorcentajePrecioUnitario($event)" formControlName="PRO_PRECIO" inputId="minmaxfraction" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5" inputId="currency-us"  mode="currency" currency="USD" locale="en-US"> </p-inputNumber>
         </span>
       </div>
 
       <div>
-        <span class="p-input-icon-left">
+        <span class="p-input-icon-left ">
           <label>Valor Total:</label>
-          <i style="top: 2.1rem;font-size: 18px;">$</i>
-          <input (keyup)="CalcularDescuentoPorcentaje($event)" type="number" [max]="_totalVentaMaxValue" min="0"
-            pInputText formControlName="PRO_VALORTOTAL" />
+         
+          <p-inputNumber style=" display: flex;
+          flex-direction: column;
+          gap: 5px;
+          width: 100%;
+          " (keyup)="CalcularDescuentoPorcentaje($event)" formControlName="PRO_VALORTOTAL" inputId="minmaxfraction" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5"  inputId="currency-us"  mode="currency" currency="USD" locale="en-US"> </p-inputNumber>
+        
         </span>
       </div>
 

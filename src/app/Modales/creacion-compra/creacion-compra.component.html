@@ -42,13 +42,8 @@
             </div>
             <div>
                 <label >Precio Und:</label>
-                <p-inputNumber
-                class="Numerico"
-                mode="decimal"
-                locale="en-US"
-                [(ngModel)]="ProductoComprado.DEC_PRECIOCOMPRA_PRODUCTO"
-                (ngModelChange)="CalcularTotalProducto(ProductoComprado)"
-              ></p-inputNumber>
+                <p-inputNumber  [(ngModel)]="ProductoComprado.DEC_PRECIOCOMPRA_PRODUCTO" inputId="minmaxfraction" 
+                (ngModelChange)="CalcularTotalProducto(ProductoComprado)" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5"> </p-inputNumber>
             </div>
             <div>
                 <label >Cantidad:</label>
@@ -65,13 +60,8 @@
             <div>
                 <label >Precio Total:</label>
 
-                <p-inputNumber
-                class="Numerico"
-                mode="decimal"
-                locale="en-US"
-                [(ngModel)]="ProductoComprado.DEC_PRECIOTOTAL"
-                [readonly]="true"
-              ></p-inputNumber>
+            
+            <p-inputNumber  [(ngModel)]="ProductoComprado.DEC_PRECIOTOTAL" [readonly]="true" inputId="minmaxfraction" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5"> </p-inputNumber>
     
             </div>
             <div class="buttonContainer">

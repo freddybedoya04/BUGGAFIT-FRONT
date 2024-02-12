@@ -30,13 +30,16 @@
         </p>
     </div>
     <div class="TotalCuenta">
-        <p-card *ngFor="let cuenta of listaTipoDeCuenta" [ngStyle]="{ 'flex': '1 0 125px' }">
+        <ng-container *ngFor="let cuenta of listaTipoDeCuenta">
+          <p-card [ngStyle]="{ 'flex': '1 0 125px' }" *ngIf="!mostrarSoloCuentaSeleccionada || (cuenta === CuentaSeleccionada)">
             <div class="TotalCuentaLabel">{{cuenta.TIC_NOMBRE}}</div>
             <div class="TotalCuentaValor" [ngClass]="{ 'texto-verde': (cuenta.TIC_DINEROTOTAL==null?0:cuenta.TIC_DINEROTOTAL) > 0, 
                 'texto-rojo': (cuenta.TIC_DINEROTOTAL==null?0:cuenta.TIC_DINEROTOTAL) < 0 }">${{cuenta.TIC_DINEROTOTAL
                 | number}}</div>
-        </p-card>
-    </div>
+          </p-card>
+        </ng-container>
+      </div>
+      
     <br>
     <p-card header="Transacciones" [style]="{margin:'20px',padding:'20px'}" styleClass="shadow-5">
         <p-table #dt2 [value]="listaTrasacciones" [paginator]="true" [rows]="rowsPerPage"

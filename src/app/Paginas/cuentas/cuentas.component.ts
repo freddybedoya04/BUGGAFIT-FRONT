@@ -22,6 +22,7 @@ export class CuentasComponent implements OnInit {
   FechaInicio: Date;
   FechaFin: Date;
   filtro: IFiltro;
+  mostrarSoloCuentaSeleccionada: boolean = false;
   CuentaSeleccionada: ITipocuenta;
   listaTipoDeCuenta: ITipocuenta[] = [];
   listaTrasacciones: ITransaccion[] = [];
@@ -76,11 +77,13 @@ export class CuentasComponent implements OnInit {
       this.CuentaSeleccionada.TIC_CODIGO == -1
     ) {
       this.BuscarTransaccionesPorFechas();
+      this.mostrarSoloCuentaSeleccionada = true;
     } else {
       this.BuscarTransaccionesPorFechasYCuenta();
     }
     this.ObtenerTipoCuentas();
   }
+  
   BuscarTransaccionesPorFechas() {
     this.ArmarFiltro();
     this.alertas.showLoading('Buscando transacciones...');

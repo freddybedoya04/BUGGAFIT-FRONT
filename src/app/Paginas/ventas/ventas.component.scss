@@ -70,11 +70,11 @@ h1 {
     top: 40%;
     margin-top: -0.5rem;
   }
-  
+
 :host ::ng-deep .p-calendar,
 :host ::ng-deep .p-dropdown,
 :host ::ng-deep .p-inputtext,
-:host ::ng-deep .p-inputNumber {
+:host ::ng-deep .p-inputnumber{
   height: 2.5rem;
   border-radius: 10px;
   width: 100%;
