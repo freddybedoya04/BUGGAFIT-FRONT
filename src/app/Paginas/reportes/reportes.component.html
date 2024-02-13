@@ -43,7 +43,6 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-
                     <th pSortableColumn="VEN_CODIGO" style="width: 5%">
                         #<p-sortIcon field="VEN_CODIGO"></p-sortIcon>
                     </th>
@@ -93,7 +92,6 @@
                         Acciones
                     </th>
                 </tr>
-
             </ng-template>
             <ng-template pTemplate="body" let-venta>
                 <tr [ngStyle]="{
@@ -115,8 +113,6 @@
                         <p-tag [value]="venta.VEN_ESTADOCREDITO ? 'SI':'NO'"
                         [severity]="getSeverity(venta.VEN_ESTADOCREDITO)"></p-tag>
                     </td>
-                  
-
                     <td>{{ venta.CLI_ID }}</td>
                     <td>{{ venta.CLI_NOMBRE }}</td>
 
@@ -124,7 +120,6 @@
                     <!-- <td>{{ venta.CLI_DIRECCION }}</td> -->
                     <td>{{ venta.CLI_TIPOCLIENTE }}</td>
                     <td>{{ venta.USU_NOMBRE }}</td>
-
                     <td pFrozenColumn alignFrozen="right" [frozen]="true" style="min-width: 250px">
                         <!-- <button [disabled]="venta.VEN_ESTADOVENTA==true" pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success"
                         pTooltip="Confirmar" tooltipPosition="top" placeholder="Top" (click)="ActualizarEstadoVenta(venta)"></button> -->
@@ -138,9 +133,7 @@
                 </tr>
             </ng-template>
         </p-table>
-
-    </p-card>
-        
+    </p-card>      
 </div>
 </div>
 <div *ngIf="mostrarDetalles">

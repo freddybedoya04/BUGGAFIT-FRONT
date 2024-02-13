@@ -110,8 +110,7 @@ export class CreacionProductoComponent implements OnInit {
             PRO_REGALO: this.formularioProducto.get('PRO_REGALO')?.value ,
             PRO_UNIDADREGALO: parseInt( this.formularioProducto.get('PRO_UNIDADREGALO')?.value),
             PRO_UNIDAD_MINIMAREGALO:parseInt( this.formularioProducto.get('PRO_UNIDAD_MINIMAREGALO')?.value),
-          };
-          debugger
+          };    
           if(_producto.PRO_REGALO==true &&(Number.isNaN(_producto.PRO_UNIDADREGALO) || Number.isNaN(_producto.PRO_UNIDAD_MINIMAREGALO))){
             this.alerta.SetToast("Debe llenar todos los campos de informacion de regalo",2)
             this.formularioProducto.get('PRO_UNIDADREGALO')?.setErrors({ 'invalid': true });
@@ -174,7 +173,6 @@ export class CreacionProductoComponent implements OnInit {
               PRO_UNIDADREGALO: parseInt( this.formularioProducto.get('PRO_UNIDADREGALO')?.value),
               PRO_UNIDAD_MINIMAREGALO: parseInt(this.formularioProducto.get('PRO_UNIDAD_MINIMAREGALO')?.value),
             };
-            debugger;
             if(Producto.PRO_REGALO==true &&(Number.isNaN(Producto.PRO_UNIDADREGALO) || Number.isNaN(Producto.PRO_UNIDAD_MINIMAREGALO))){
               this.formularioProducto.get('PRO_UNIDADREGALO')?.setErrors({ 'invalid': true });
               this.formularioProducto.get('PRO_UNIDAD_MINIMAREGALO')?.setErrors({ 'invalid': true });

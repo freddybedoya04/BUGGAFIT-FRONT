@@ -28,8 +28,6 @@ const routes: Routes = [
     {path:'creditos',component:CreditosComponent},
     {path:'cuentas',component:CuentasComponent}
   ]}
-
-
 ];
 
 @NgModule({

@@ -1,5 +1,6 @@
 import { formatNumber } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Iabonos } from 'src/app/Interfaces/iabonos';
@@ -26,8 +27,10 @@ export class AbonosComponent implements OnInit {
   esEditar: boolean = false;
   credito: Icredito;
   userLogged: any;
+  formularioVenta: any;
   constructor(private ventasService: VentasService, private alertasService: AlertasService,
     private config: DynamicDialogConfig, public ref: DynamicDialogRef,
+    private formBuilder: FormBuilder,
     private creditoService: CreditosService) {
     this.rowsPerPage = alertasService.ObtenerNumeroDeLineasTablas();
     this.userLogged = JSON.parse(localStorage.getItem('user') || "");
@@ -77,6 +80,9 @@ export class AbonosComponent implements OnInit {
       TotalAbonado: 0,
       DiferenciaTotal: 0
     }
+    this.formularioVenta = formBuilder.group({
+      VEN_CUENTADESTINO: [null, Validators.required],
+    });
   }
   ngOnInit(): void {
     this.credito = this.config.data.Credito;
@@ -114,6 +120,7 @@ export class AbonosComponent implements OnInit {
   }
   AgregarAbono() {
     if (this.ValidarIngresoAbono()) return;
+    debugger;
     let cuenta = this.listaTipoDeCuenta.find(x => x.value == this.CuentaSeleccionada)?.value;
     this.nuevoAbono.TIC_CODIGO = cuenta;
     this.nuevoAbono.VEN_CODIGO = this.credito.Ventas[0].VEN_CODIGO;

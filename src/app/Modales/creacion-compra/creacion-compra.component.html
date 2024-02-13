@@ -4,77 +4,77 @@
             <form [formGroup]="formularioCompra">
                 <div>
                     <label>Fecha de compra:</label>
-                    <p-calendar formControlName="COM_FechaCompra" [showTime]="true" hourFormat="12" appendTo="body"></p-calendar>
+                    <p-calendar formControlName="COM_FechaCompra" [showTime]="true" hourFormat="12"
+                        appendTo="body"></p-calendar>
                 </div>
                 <div>
                     <label for="COM_PROVEEDOR">Proveedor:</label>
-                    <input type="text" pInputText formControlName="COM_PROVEEDOR" [readonly]="Compra.COM_ESANULADA" matInput autocomplete="off">
-        
+                    <input type="text" pInputText formControlName="COM_PROVEEDOR" [readonly]="Compra.COM_ESANULADA"
+                        matInput autocomplete="off">
+
                 </div>
                 <div>
                     <label for="TIC_CODIGO">Medio de pago:</label>
-                    <p-dropdown  formControlName="TIC_CODIGO" [options]="listaTipoDeCuenta" optionLabel="label"
-                    optionValue="value" placeholder="Seleccione Cuenta" [readonly]="EsEdicion==true" appendTo="body" [filter]="true" filterBy=""></p-dropdown>
+                    <p-dropdown formControlName="TIC_CODIGO" [options]="listaTipoDeCuenta" optionLabel="label"
+                        optionValue="value" placeholder="Seleccione Cuenta" [readonly]="EsEdicion==true" appendTo="body"
+                        [filter]="true" filterBy=""></p-dropdown>
                 </div>
-    
+
             </form>
             <div style="align-items: flex-start;display: flex;gap: 10px;">
-                <p-checkbox id="Bodega" [binary]="true" [(ngModel)]="Bodega" label="En bodega" [readonly]="Compra.COM_ESANULADA==true" ></p-checkbox>
-                <!-- <p-checkbox id="Credito" [binary]="true"[(ngModel)]="Credito" label="Deuda" ></p-checkbox> -->
+                <p-checkbox id="Bodega" [binary]="true" [(ngModel)]="Bodega" label="En bodega"
+                    [readonly]="Compra.COM_ESANULADA==true"></p-checkbox>
+                <p-checkbox id="Credito" [binary]="true" [(ngModel)]="Credito" label="Deuda"></p-checkbox>
             </div>
         </section>
 
     </p-card>
-    
+
     <p-card *ngIf="EsEdicion==false" header="Informacion Productos" [style]="{ width: '100%' }" class="card">
         <section>
             <div>
                 <label>Producto</label>
-                <p-dropdown [options]="productos" [(ngModel)]="productoSeleccionado" (ngModelChange)="CambioProducto()" optionLabel="PRO_NOMBRE" appendTo="body" [filter]="true" filterBy="PRO_NOMBRE" [showClear]="true" placeholder="Seleccione Producto">
+                <p-dropdown [options]="productos" [(ngModel)]="productoSeleccionado" (ngModelChange)="CambioProducto()"
+                    optionLabel="PRO_NOMBRE" appendTo="body" [filter]="true" filterBy="PRO_NOMBRE" [showClear]="true"
+                    placeholder="Seleccione Producto">
                     <ng-template pTemplate="selectedItem">
-                            <div>{{ productoSeleccionado.PRO_NOMBRE }}</div>
+                        <div>{{ productoSeleccionado.PRO_NOMBRE }}</div>
                     </ng-template>
                     <ng-template let-product pTemplate="item">
-                            <div>{{ product.PRO_NOMBRE }}</div>
-    
+                        <div>{{ product.PRO_NOMBRE }}</div>
+
                     </ng-template>
                 </p-dropdown>
             </div>
             <div>
-                <label >Precio Und:</label>
-                <p-inputNumber  [(ngModel)]="ProductoComprado.DEC_PRECIOCOMPRA_PRODUCTO" inputId="minmaxfraction" 
-                (ngModelChange)="CalcularTotalProducto(ProductoComprado)" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5"> </p-inputNumber>
+                <label>Precio Und:</label>
+                <p-inputNumber [(ngModel)]="ProductoComprado.DEC_PRECIOCOMPRA_PRODUCTO" inputId="minmaxfraction"
+                    (ngModelChange)="CalcularTotalProducto(ProductoComprado)" mode="decimal" [minFractionDigits]="2"
+                    [maxFractionDigits]="5"> </p-inputNumber>
             </div>
             <div>
-                <label >Cantidad:</label>
-
-                <p-inputNumber
-                class="Numerico"
-                mode="decimal"
-                locale="en-US"
-                [(ngModel)]="ProductoComprado.DEC_UNIDADES"
-                (ngModelChange)="CalcularTotalProducto(ProductoComprado)"
-              ></p-inputNumber>
-    
+                <label>Cantidad:</label>
+                <p-inputNumber class="Numerico" mode="decimal" locale="en-US"
+                    [(ngModel)]="ProductoComprado.DEC_UNIDADES"
+                    (ngModelChange)="CalcularTotalProducto(ProductoComprado)"></p-inputNumber>
             </div>
             <div>
-                <label >Precio Total:</label>
-
-            
-            <p-inputNumber  [(ngModel)]="ProductoComprado.DEC_PRECIOTOTAL" [readonly]="true" inputId="minmaxfraction" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5"> </p-inputNumber>
-    
+                <label>Precio Total:</label>
+                <p-inputNumber [(ngModel)]="ProductoComprado.DEC_PRECIOTOTAL" [readonly]="true" inputId="minmaxfraction"
+                    mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="5"> </p-inputNumber>
             </div>
             <div class="buttonContainer">
                 <p-button label="Agregar" icon="pi pi-plus" (onClick)="AgregarProducto()"></p-button>
             </div>
-    
         </section>
     </p-card>
 
-    <p-card   header="total: ${{TotalComprado | number}}" [style]="{margin:'20px',padding:'20px'}" styleClass="shadow-5">
+    <p-card header="total: ${{TotalComprado | number}}" [style]="{margin:'20px',padding:'20px'}" styleClass="shadow-5">
         <div>
-            <p-button *ngIf="EsEdicion==false" label="Crear Compra" icon="pi pi-plus" (onClick)="ValidacionCompra()"></p-button>
-            <p-button  *ngIf="EsEdicion==true"label="Actualizar Compra" icon="pi pi-plus" (onClick)="ValidacionCompra()"></p-button>
+            <p-button *ngIf="EsEdicion==false" label="Crear Compra" icon="pi pi-plus"
+                (onClick)="ValidacionCompra()"></p-button>
+            <p-button *ngIf="EsEdicion==true" label="Actualizar Compra" icon="pi pi-plus"
+                (onClick)="ValidacionCompra()"></p-button>
         </div>
         <p-table [value]="ListaProductosComprados" [tableStyle]="{ 'min-width': '25rem' }" styleClass="p-datatable-sm">
             <ng-template pTemplate="header">
@@ -84,7 +84,7 @@
                     <th>Cantidad</th>
                     <th>Precio Und</th>
                     <th>Precio Total</th>
-                    <!-- <th *ngIf="EsEdicion==true">Eliminado</th> -->
+                    <th *ngIf="EsEdicion==true">Eliminado</th>
                     <th *ngIf="EsEdicion==false">Eliminar</th>
                 </tr>
             </ng-template>
@@ -94,12 +94,14 @@
                     <td>{{ product.PRO_NOMBRE }}</td>
                     <td>{{ product.DEC_UNIDADES }}</td>
                     <td>{{ product.DEC_PRECIOCOMPRA_PRODUCTO|number }}</td>
-                    <td>{{ product.DEC_PRECIOTOTAL|number  }}</td>
-                    <!-- <th *ngIf="EsEdicion==true">
-                        <p-tag [value]="product.DEC_ESTADO ? 'NO':'SI'" [severity]="getSeverity(product.DEC_ESTADO)"></p-tag>
-                    </th> -->
+                    <td>{{ product.DEC_PRECIOTOTAL|number }}</td>
+                    <th *ngIf="EsEdicion==true">
+                        <p-tag [value]="product.DEC_ESTADO ? 'NO':'SI'"
+                            [severity]="getSeverity(product.DEC_ESTADO)"></p-tag>
+                    </th>
                     <td *ngIf="EsEdicion==false">
-                        <button pButton pRipple icon="pi pi-trash" pTooltip="Eliminar" tooltipPosition="top"class="p-button-rounded p-button-warning" (click)="EliminarProducto(product)"></button>
+                        <button pButton pRipple icon="pi pi-trash" pTooltip="Eliminar" tooltipPosition="top"
+                            class="p-button-rounded p-button-warning" (click)="EliminarProducto(product)"></button>
                     </td>
                 </tr>
             </ng-template>

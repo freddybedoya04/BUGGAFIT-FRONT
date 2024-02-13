@@ -91,7 +91,6 @@ export class CuentasComponent implements OnInit {
       .ObtenerTraansaccionesPorFecha(this.filtro)
       .subscribe(
         (result) => {
-          debugger;
           this.alertas.hideLoading();
           this.listaTrasacciones = result;
         },

@@ -257,9 +257,6 @@ export class VentasComponent implements OnInit {
         this.alertasService.SetToast("Cliente encontrado.", 1);
       });
   }
-
-
-
   AutocompletarProducto() {
     if (!this.formularioVenta.controls['CLI_TIPOCLIENTE'].value || this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === null) {
       this.alertasService.SetToast("Debe seleccionar un tipo de cliente.", 2);
@@ -400,7 +397,6 @@ export class VentasComponent implements OnInit {
       return;
     this.formularioVenta.controls['PRO_DESCUENTO'].setValue(totalDescuento.toFixed(1));
   }
-
   AgregarProducto(event: any) {
     if (!this.producto || !this.producto.PRO_CODIGO) {
       this.alertasService.SetToast("Seleccione un producto.", 2);
@@ -418,7 +414,6 @@ export class VentasComponent implements OnInit {
       this.alertasService.SetToast("La cantidad debe ser mayor a 0 y el precio debe ser un valor numérico mayor o igual a 0.", 2);
       return;
     }
-
     const codigoProducto = this.producto.PRO_CODIGO;
 
     // Verificar si el producto ya ha sido agregado
@@ -478,7 +473,6 @@ export class VentasComponent implements OnInit {
       COM_CANTIDAD: 0,
       PRO_REGALO: false
     };
-
     this.formularioVenta.controls['PRO_NOMBRE'].setValue('');
     this.formularioVenta.controls['PRO_CANTIDADVENTA'].setValue('');
     this.formularioVenta.controls['PRO_PRECIO'].setValue('');
@@ -493,10 +487,6 @@ export class VentasComponent implements OnInit {
     this.alertasService.SetToast("Producto agregado con éxito.", 1);
     this.CalcularTotalComprado();
   }
-
-
-
-
   eliminarVenta(venta: IDetalleVentas) {
     if (venta.PRO_CODIGO === '9999' || venta.PRO_NOMBRE === 'ENVIO') {
       this.alertasService.SetToast("No puedes eliminar este producto.", 2);
@@ -510,8 +500,6 @@ export class VentasComponent implements OnInit {
     }
     this.CalcularTotalComprado();
   }
-
-
   AgregarTipoDeEnvio(event: any) {
     ;
     const tipoEnvio: ITiposEnvios = this.listadoTiposDeEnvio.filter((tipoEnvio: ITiposEnvios) => {
@@ -533,7 +521,6 @@ export class VentasComponent implements OnInit {
       this.formularioVenta.controls['VEN_TIPOENVIO'].setValue('')
       return;
     }
-
     // variables condicionales 
     const estaFueraDeBuga = (this.formularioVenta.controls['CLI_UBICACION'].value + '').toUpperCase().indexOf('BUGA') < 0;
     const esClienteDetal = this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[1].value // cliente detal 
@@ -711,7 +698,7 @@ export class VentasComponent implements OnInit {
       VEN_OBSERVACIONES: this.formularioVenta.controls['VEN_OBSERVACIONES'].value,
       VEN_ACTUALIZACION: new Date(),
       USU_CEDULA: this.userLogged.USU_CEDULA,
-      VEN_ESTADOVENTA: false,
+      VEN_ESTADOVENTA: esVentaACredito,
       VEN_ESTADO: true,
       TIP_CODIGO: this.formularioVenta.controls['VEN_TIPOENVIO'].value,
       DetalleVentas: this.listaProductos,
@@ -788,7 +775,6 @@ export class VentasComponent implements OnInit {
       this.CrearGatosVenta();
     });
   }
-
   CrearGatosVenta() {
     this.alertasService.showLoading("Creando Gasto")
     this.gastosService.CrearGastoVenta(this.gastoDeEnvio).subscribe((result: any) => {
@@ -827,7 +813,6 @@ export class VentasComponent implements OnInit {
       return anterior + actual.VED_PRECIOVENTA_TOTAL;
     }, 0)
   }
-
   LlenadoProductos() {
     this.invetarioService.BuscarProductos().subscribe(x => {
       this.productos = x;
@@ -838,8 +823,6 @@ export class VentasComponent implements OnInit {
       this.alertasService.SetToast("Debe buscar un producto", 3);
       return;
     }
-
-
     let ref = this.dialogService.open(ValidarUsuarioAdminComponent, {
       header: 'Validar Usuario',
       width: '25%',
@@ -863,10 +846,6 @@ export class VentasComponent implements OnInit {
       }
     });
   }
-
-
-
-
 
   Cotizar() {
     if (this.formularioVenta.controls['VEN_TIPOENVIO'].value == null || this.formularioVenta.controls['VEN_TIPOENVIO'].value == "") {

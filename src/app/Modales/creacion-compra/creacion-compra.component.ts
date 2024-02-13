@@ -209,7 +209,7 @@ export class CreacionCompraComponent implements OnInit {
         COM_FECHAACTUALIZACION: new Date(),
         COM_ENBODEGA: this.Bodega,
         COM_ESTADO: true,
-        COM_CREDITO: false,
+        COM_CREDITO:  this.Credito,
         USU_CEDULA: this.userLogged.USU_CEDULA, 
         DetalleCompras: this.ListaProductosComprados
       }
@@ -234,11 +234,11 @@ export class CreacionCompraComponent implements OnInit {
     this.formularioCompra.controls["COM_PROVEEDOR"].setValue(this.Compra.COM_PROVEEDOR);
     this.formularioCompra.controls["TIC_CODIGO"].setValue(this.Compra.TIC_CODIGO);
     this.Bodega = this.Compra.COM_ENBODEGA;
-    // this.Credito = this.Compra.COM_CREDITO;
-    // this.formularioCompra.patchValue({
-    //   COM_ENBODEGA: this.Compra.COM_ENBODEGA,
-    //   COM_CREDITO: this.Compra.COM_CREDITO,
-    // });
+    this.Credito = this.Compra.COM_CREDITO;
+    this.formularioCompra.patchValue({
+      COM_ENBODEGA: this.Compra.COM_ENBODEGA,
+      COM_CREDITO: this.Compra.COM_CREDITO,
+    });
 
     this.TotalComprado = this.Compra.COM_VALORCOMPRA;
     this.ListaProductosComprados = this.Compra.DetalleCompras!;
@@ -257,7 +257,7 @@ export class CreacionCompraComponent implements OnInit {
         COM_FECHAACTUALIZACION: new Date(),
         COM_ENBODEGA: this.Bodega,
         COM_ESTADO: true,
-        COM_CREDITO: false,
+        COM_CREDITO: this.Credito,
         USU_CEDULA: this.userLogged.USU_CEDULA,
         DetalleCompras: this.ListaProductosComprados
       }

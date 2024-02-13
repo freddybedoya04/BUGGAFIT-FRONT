@@ -26,6 +26,8 @@ export class EstadisticasComponent implements OnInit {
     Gastos: number;
     Compras: number;
     Utilidades: number;
+    Inventario: number;
+    UtilidadesNeta: number;
     Deudas: number;
     Creditos: number;
     UltimasVentas: any[];
@@ -39,6 +41,8 @@ export class EstadisticasComponent implements OnInit {
       Gastos: 0,
       Compras: 0,
       Utilidades: 0,
+      Inventario: 0,
+      UtilidadesNeta: 0,
       Deudas: 0,
       Creditos: 0,
       UltimasVentas: [],
@@ -92,6 +96,8 @@ export class EstadisticasComponent implements OnInit {
       this.Indicadores.Gastos = data.Data.DatosCards.SumaGastos;
       this.Indicadores.Compras = data.Data.DatosCards.SumaCompras;
       this.Indicadores.Utilidades = data.Data.DatosCards.Utilidades;
+      this.Indicadores.Inventario = data.Data.DatosCards.Inventario;
+      this.Indicadores.UtilidadesNeta = data.Data.DatosCards.UtilidadesBrutas;
       this.Indicadores.Deudas = data.Data.DatosCards.SumaDeudas;
       this.Indicadores.Creditos = data.Data.DatosCards.SumaCreditos;
       this.Indicadores.UltimasVentas = data.Data.DatosGraficas.VentasRealizadas;
