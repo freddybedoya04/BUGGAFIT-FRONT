@@ -14,7 +14,7 @@
         <p>
             <label>Cuenta:</label>
             <p-dropdown [options]="listaTipoDeCuenta" [(ngModel)]="CuentaSeleccionada" optionLabel="TIC_NOMBRE"
-                [showClear]="true" placeholder="Seleccione Cuenta" [filter]="true" filterBy="">
+                [showClear]="true" placeholder="Seleccione Cuenta" [filter]="true" filterBy="" >
                 <ng-template pTemplate="selectedItem">
                     <div>{{ CuentaSeleccionada.TIC_NOMBRE }}</div>
                 </ng-template>
@@ -26,12 +26,12 @@
         </p>
         <p>
             <p-button label="Buscar" icon="pi pi-search" [ngStyle]="{ 'margin-top': '20px' }"
-                (onClick)="BuscarTransferencias()"></p-button>
+             (onClick)="BuscarTransferencias()"></p-button>
         </p>
     </div>
-    <div class="TotalCuenta">
-        <ng-container *ngFor="let cuenta of listaTipoDeCuenta">
-          <p-card [ngStyle]="{ 'flex': '1 0 125px' }" *ngIf="!mostrarSoloCuentaSeleccionada || (cuenta === CuentaSeleccionada)">
+    <div class="TotalCuenta" >
+        <ng-container *ngFor="let cuenta of cuentasFiltradas ">
+          <p-card [ngStyle]="{ 'flex': '1 0 125px' }" >
             <div class="TotalCuentaLabel">{{cuenta.TIC_NOMBRE}}</div>
             <div class="TotalCuentaValor" [ngClass]="{ 'texto-verde': (cuenta.TIC_DINEROTOTAL==null?0:cuenta.TIC_DINEROTOTAL) > 0, 
                 'texto-rojo': (cuenta.TIC_DINEROTOTAL==null?0:cuenta.TIC_DINEROTOTAL) < 0 }">${{cuenta.TIC_DINEROTOTAL

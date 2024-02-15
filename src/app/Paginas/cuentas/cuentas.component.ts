@@ -28,6 +28,9 @@ export class CuentasComponent implements OnInit {
   listaTrasacciones: ITransaccion[] = [];
   listaTrasaccionesSeleccionadas: ITransaccion[] = [];
   customColumnHeaders: string[] = [];
+  searchKeywordCuentas: string = '';
+  cuentasFiltradas: ITipocuenta[] = [];
+
   constructor(
     private dialogService: DialogService,
     private alertas: AlertasService,
@@ -64,6 +67,7 @@ export class CuentasComponent implements OnInit {
         this.listaTipoDeCuenta = result.filter(
           (x) => x.TIC_NOMBRE != 'CREDITO'
         );
+        this.cuentasFiltradas = this.listaTipoDeCuenta;
       });
   }
   ConfigurarFechas() {
@@ -71,18 +75,20 @@ export class CuentasComponent implements OnInit {
     this.FechaInicio = new Date(this.FechaFin);
     this.FechaInicio.setDate(this.FechaInicio.getDate() - 30);
   }
+ 
   BuscarTransferencias() {
-    if (
-      this.CuentaSeleccionada == null ||
-      this.CuentaSeleccionada.TIC_CODIGO == -1
-    ) {
+    if (this.CuentaSeleccionada == null || this.CuentaSeleccionada.TIC_CODIGO == -1) {
       this.BuscarTransaccionesPorFechas();
       this.mostrarSoloCuentaSeleccionada = true;
+      // Inicializar cuentasFiltradas con la lista completa
+      this.cuentasFiltradas = this.listaTipoDeCuenta;
     } else {
       this.BuscarTransaccionesPorFechasYCuenta();
+      this.mostrarSoloCuentaSeleccionada = false;
+      this.cuentasFiltradas = this.listaTipoDeCuenta.filter(cuenta => cuenta.TIC_CODIGO === this.CuentaSeleccionada.TIC_CODIGO);
     }
-    this.ObtenerTipoCuentas();
   }
+  
   
   BuscarTransaccionesPorFechas() {
     this.ArmarFiltro();
