@@ -13,6 +13,7 @@ export interface Iproducto {
     PRO_ESTADO: boolean;
     COM_CANTIDAD?:number;
     EstaEnAlerta?: boolean;
+    EstaAgotado?: boolean;
     PRO_REGALO?:boolean;
     PRO_UNIDADREGALO?:number;
     PRO_UNIDAD_MINIMAREGALO?:number;

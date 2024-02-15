@@ -37,7 +37,8 @@
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th pSortableColumn="EstaEnAlerta" style="width:20%">Info <p-sortIcon field="EstaEnAlerta"></p-sortIcon></th>
+          <th pSortableColumn="EstaEnAlerta" style="width:20%">Escaso <p-sortIcon field="EstaEnAlerta"></p-sortIcon></th>
+          <th pSortableColumn="EstaAgotado" style="width:20%">Agotado <p-sortIcon field="EstaAgotado"></p-sortIcon></th>
           <th pSortableColumn="PRO_CODIGO" style="width:20%">Codigo <p-sortIcon field="PRO_CODIGO"></p-sortIcon></th>
           <th pSortableColumn="PRO_NOMBRE" style="width:20%">Nombre <p-sortIcon field="PRO_NOMBRE"></p-sortIcon></th>
           <th pSortableColumn="PRO_UNIDADES_DISPONIBLES" style="width:20%">Unidades Disponibles <p-sortIcon
@@ -55,9 +56,12 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-producto>
-        <tr
-          [style]="producto.EstaEnAlerta ? 'background-color:  rgba(255, 0, 0, 0.26);':'background-color: #fff;'">
+        <tr [ngStyle]="{
+          'background-color': getBackgroundColor(producto),
+          'font-weight': producto.EstaAgotado || producto.EstaEnAlerta ? 'bold' : 'normal'
+      }">
           <td><i *ngIf="producto.EstaEnAlerta" class="pi pi-exclamation-triangle"></i></td>
+          <td><i *ngIf="producto.EstaAgotado" class="pi pi-exclamation-triangle"></i></td>
           <td>{{ producto.PRO_CODIGO }}</td>
           <td>{{ producto.PRO_NOMBRE }}</td>
           <td>{{ producto.PRO_UNIDADES_DISPONIBLES|number}}</td>

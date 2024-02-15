@@ -65,11 +65,11 @@
                 <tr [style]="compra.COM_ESANULADA ? 'background-color:  rgba(255, 0, 0, 0.26);':'background-color: #fff;'">
                     <td>{{ compra.COM_CODIGO }}</td>
                     <td><i *ngIf="compra.COM_ESANULADA" class="pi pi-exclamation-triangle"></i></td>
-                    <td>{{ compra.COM_FECHACOMPRA | date: 'YYYY-MMM-dd' }}</td>
+                    <td>{{ compra.COM_FECHACOMPRA | date: 'dd-MMM-YYYY' }}</td>
                     <td>{{ compra.COM_VALORCOMPRA |number }}</td>
                     <td>{{ compra.COM_PROVEEDOR }}</td>
                     <td>{{ compra.TIC_NOMBRE }}</td>
-                    <!-- <td>{{ compra.COM_FECHAACTUALIZACION | date: 'YYYY-MMM-dd' }}</td> -->
+                    <!-- <td>{{ compra.COM_FECHAACTUALIZACION | date: 'dd-MMM-YYYY' }}</td> -->
                     <td>
                         <p-tag [value]="compra.COM_ENBODEGA ? 'SI':'NO'"
                             [severity]="getSeverity(true,compra.COM_ENBODEGA)"></p-tag>

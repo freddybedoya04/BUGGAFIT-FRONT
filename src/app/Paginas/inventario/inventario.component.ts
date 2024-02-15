@@ -67,7 +67,8 @@ export class InventarioComponent implements OnInit {
         return;
       }
       this.listaProductos = result.map((item: Iproducto) => {
-        item.EstaEnAlerta = item.PRO_UNIDADES_DISPONIBLES < item.PRO_UNIDADES_MINIMAS_ALERTA;
+        item.EstaEnAlerta = item.PRO_UNIDADES_DISPONIBLES <= item.PRO_UNIDADES_MINIMAS_ALERTA && item.PRO_UNIDADES_DISPONIBLES !=0;
+        item.EstaAgotado=item.PRO_UNIDADES_DISPONIBLES<=0;
         return item;
       });
     },err=>{
@@ -119,6 +120,15 @@ export class InventarioComponent implements OnInit {
   rowsPerPage: number = 50;
   CambioDeNumeroDePagina(event: any) {
     this.alertasService.GuardarNumeroDeLineasTabla(event.rows)
+  }
+  getBackgroundColor(producto: Iproducto) {
+    if (producto.EstaAgotado) {
+      return 'rgba(255, 0, 0, 0.26)'; // Rojo
+    } else if (producto.EstaEnAlerta) {
+      return 'rgba(217, 153, 44, 0.26)'; // Amarillo
+    } else {
+      return '#fff'; // Blanco
+    }
   }
 }
 

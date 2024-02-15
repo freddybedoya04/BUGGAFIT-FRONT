@@ -86,7 +86,7 @@
                         [severity]="getSeverity(gasto.GAS_PENDIENTE)"></p-tag>
                     </td>
                     <td>{{ gasto.TIC_NOMBRE }}</td>
-                    <td>{{ gasto.GAS_FECHAGASTO | date:'YYYY-MMM-dd '}}</td>
+                    <td>{{ gasto.GAS_FECHAGASTO | date:'dd-MMM-YYYY '}}</td>
                     <td>{{ gasto.USU_NOMBRE}}</td>
                     <!-- <td>{{ gasto.GAS_OBSERVACIONES}}</td> -->
                     <td class="Acciones"alignFrozen="right" pFrozenColumn [frozen]="true">

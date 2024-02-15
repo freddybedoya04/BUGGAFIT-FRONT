@@ -73,7 +73,7 @@
                     <th style="width: 5%">
                         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
-                    <th pSortableColumn="TRA_TIPOALERTA" style="width:20%">Alerta <p-sortIcon
+                    <th pSortableColumn="TRA_TIPOALERTA" style="width:5%">Alerta <p-sortIcon
                             field="TRA_TIPOALERTA"></p-sortIcon></th>
                     <th pSortableColumn="TRA_CODIGO" style="width:10%">Codigo<p-sortIcon
                             field="TRA_CODIGO"></p-sortIcon></th>
@@ -114,7 +114,7 @@
                     </td>
                     <td>{{transaccion.TIC_NOMBRE}}</td>
                     <td>{{transaccion.TRA_CODIGOENLACE}}</td>
-                    <td>{{transaccion.TRA_FECHACREACION | date : "YYYY-MMM-dd"}}</td>
+                    <td>{{transaccion.TRA_FECHACREACION | date : "dd-MMM-YYYY"}}</td>
                     <td>
                         <p-tag [value]="transaccion.TRA_CONFIRMADA==true ? 'SI':'NO'"
                             [severity]="getSeverity(transaccion.TRA_CONFIRMADA)"></p-tag>

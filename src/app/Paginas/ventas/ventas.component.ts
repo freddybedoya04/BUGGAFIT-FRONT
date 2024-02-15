@@ -110,7 +110,8 @@ export class VentasComponent implements OnInit {
     this.userLogged = JSON.parse(localStorage.getItem('user') || "");
     this.isUserAdmin = (this.userLogged.USU_NOMBREROL.toLowerCase() === 'admin' ||
       this.userLogged.USU_NOMBREROL.toLowerCase() === 'administrador' ||
-      this.userLogged.USU_NOMBREROL.toLowerCase() === 'administrator');
+      this.userLogged.USU_NOMBREROL.toLowerCase() === 'administrator'||
+      this.userLogged.USU_NOMBREROL.toLowerCase() === 'supervisor');
 
     this.formularioVenta = formBuilder.group({
       VEN_FECHAVENTA: [{ value: new Date(), disabled: true }, Validators.required],
@@ -127,7 +128,7 @@ export class VentasComponent implements OnInit {
       PRO_CODIGO: [null],
       PRO_NOMBRE: [{ value: '', disabled: true }],
       VENT_CEDULA: [null],
-      PRO_PRECIO: [{ value: 0, disabled: true }, Validators.min(0)],
+      PRO_PRECIO: [{ value: 0, disabled: !this.isUserAdmin }, Validators.min(0)],
       PRO_CANTIDADVENTA: [null, Validators.min(0)],
       PRO_VALORTOTAL: [{ value: 0, disabled: !this.isUserAdmin }, Validators.min(0)],
       PRO_DESCUENTO: [{ value: 0, disabled: !this.isUserAdmin }, Validators.min(0)],
@@ -284,9 +285,16 @@ export class VentasComponent implements OnInit {
       this.formularioVenta.controls['PRO_DESCUENTO'].disable();
     } else {
       // Deshabilitar los campos si no es regalo
-      this.formularioVenta.controls['PRO_PRECIO'].disable();
-      this.formularioVenta.controls['PRO_VALORTOTAL'].disable();
-      this.formularioVenta.controls['PRO_DESCUENTO'].disable();
+      if(!this.isUserAdmin){
+        this.formularioVenta.controls['PRO_PRECIO'].disable();
+        this.formularioVenta.controls['PRO_VALORTOTAL'].disable();
+        this.formularioVenta.controls['PRO_DESCUENTO'].disable();
+      }else{
+        this.formularioVenta.controls['PRO_PRECIO'].enable();
+        this.formularioVenta.controls['PRO_VALORTOTAL'].enable();
+        this.formularioVenta.controls['PRO_DESCUENTO'].enable();
+      }
+
     }
 
     if (this.formularioVenta.controls['CLI_TIPOCLIENTE'].value === this.listaTipoDeCliente[0].value) {

@@ -24,7 +24,7 @@
         <section>
             <div>
                 <label for="VEN_FECHAVENTA">Fecha abono:</label>
-                <p-calendar [(ngModel)]="nuevoAbono.CAR_FECHACREDITO" appendTo="body"></p-calendar>
+                <p-calendar [(ngModel)]="nuevoAbono.CAR_FECHACREDITO" dateFormat="dd/mm/yy" appendTo="body"></p-calendar>
 
             </div>
             <div>
@@ -71,7 +71,7 @@
                     <tr [style]="abono.CAR_ESANULADA ? 'background-color:  rgba(255, 0, 0, 0.26);':'background-color: #fff;'">
                         <td>{{ abono.CAR_CODIGO}}</td>
                         <td><i *ngIf="abono.CAR_ESANULADA" class="pi pi-exclamation-triangle"></i></td>
-                        <td>{{ abono.CAR_FECHACREDITO | date:'YYYY-MMM-dd' }}</td>
+                        <td>{{ abono.CAR_FECHACREDITO | date:'dd-MMM-YYYY' }}</td>
                         <td>
                             <p-tag [value]="abono.CAR_ESTADOCREDITO==1 ? 'SI':'NO'"
                                 [severity]="getSeverity(abono.CAR_ESTADOCREDITO)"></p-tag>
@@ -103,7 +103,7 @@
                 <ng-template pTemplate="body" let-venta>
                     <tr>
                         <td>{{ venta.VEN_CODIGO}}</td>
-                        <td>{{ venta.VEN_FECHAVENTA | date:'YYYY-MMM-dd' }}</td>
+                        <td>{{ venta.VEN_FECHAVENTA | date:'dd-MMM-YYYY' }}</td>
                         <td>{{ venta.VEN_PRECIOTOTAL | number}}</td>
                     </tr>
                 </ng-template>
