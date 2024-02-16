@@ -557,7 +557,7 @@ export class VentasComponent implements OnInit {
   ValidacionCantidadRegalos(Carrito: IDetalleVentas[], cliente: string): boolean {
     debugger;
     let RegalosDemas = false
-    let Regalos = Carrito.filter(x => x.VED_PRECIOVENTA_UND == 0);
+    let Regalos = Carrito.filter(x => x.VED_PRECIOVENTA_UND == 0 && x.PRO_CODIGO != "9999") ;
     let NoRegalos = Carrito.filter(x => x.VED_PRECIOVENTA_UND != 0 && x.PRO_CODIGO != "9999");
 
     let totalProductosNoRegalos = NoRegalos.reduce((anterior, actual) => {
