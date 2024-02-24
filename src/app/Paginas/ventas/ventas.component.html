@@ -74,7 +74,7 @@
   <h2 *ngIf="AplicaDescuento==true" style="text-align: center;font-weight: bold;color: red;">Atencion: Todos los productos seleccionados tendran un descuento de ${{Descuento |number}}</h2>
   <!-- Card producto -->
   <p-card header="Informacion producto" [style]="{ width: '100%' }" class="card">
-    <form #myForm="ngForm" [formGroup]="formularioVenta" (ngSubmit)="FinalizarFactura(myForm)" (keydown.enter)="$event.preventDefault()">
+    <form #myForm="ngForm" [formGroup]="formularioVenta" (keydown.enter)="$event.preventDefault()">
       <div>
         <label for="PRO_CODIGO">Codigo:</label>
         <!-- <input #codigoProdcutoInput (blur)="AutocompletarProducto($event)" type="text" pInputText
@@ -141,7 +141,7 @@
       <p-button label="Agregar" style="margin-right: 10px" styleClass="p-button-rounded"
         (onClick)="AgregarProducto($event)"></p-button>
       <p-button label="Realizar Factura" styleClass="p-button-rounded p-button-success" style="margin-right: 10px"
-        type="Submit"></p-button>
+        type="button" (onClick)="FinalizarFactura()"></p-button>
       <p-button label="Cambiar Precio" style="margin-right: 10px" styleClass="p-button-rounded p-button-secondary"
         severity="secondary" (onClick)="CambiarPrecioDelProducto($event)"></p-button>
       <p-button label="Cotizar" style="margin-right: 10px" styleClass="p-button-rounded p-button-help"
