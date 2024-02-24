@@ -5,7 +5,7 @@
                 <div>
                     <label>Fecha de compra:</label>
                     <p-calendar formControlName="COM_FechaCompra" [showTime]="true" hourFormat="12"
-                        appendTo="body"></p-calendar>
+                        appendTo="body" dateFormat="dd/mm/yy"></p-calendar>
                 </div>
                 <div>
                     <label for="COM_PROVEEDOR">Proveedor:</label>
@@ -23,9 +23,11 @@
             </form>
             <div style="align-items: flex-start;display: flex;gap: 10px;">
                 <p-checkbox id="Bodega" [binary]="true" [(ngModel)]="Bodega" label="En bodega"
-                    [readonly]="Compra.COM_ESANULADA==true"></p-checkbox>
+                    [readonly]="Compra.COM_ESANULADA==true || Compra.COM_ENBODEGA"></p-checkbox>
                 <p-checkbox id="Credito" [binary]="true" [(ngModel)]="Credito" label="Deuda"></p-checkbox>
+
             </div>
+            <span *ngIf="Compra.COM_ENBODEGA==true" style="font-size: small;"> No se puede cambiar el estado de la bodega porque ya esta en inventario</span>
         </section>
 
     </p-card>

@@ -179,7 +179,15 @@ export class CreacionCompraComponent implements OnInit {
       if (this.EsEdicion == false) {
         this.CrearCompra();
       } else {
-        this.ActualizarCompra();
+        if(this.Compra.COM_ENBODEGA==false && this.Bodega==true){
+          this.alerta.confirmacion("Al actualizar esta compra se agregaran los productos al inventario,Esta seguro de continuar?").then((result) => {
+            if(result)
+              this.ActualizarCompra();
+          })
+        }else{
+          this.ActualizarCompra();
+        }
+
       }
 
     } else {
@@ -199,31 +207,41 @@ export class CreacionCompraComponent implements OnInit {
   CrearCompra() {
     ;
     try {
-      const NuevaCompra: Icompras = {
-        COM_CODIGO: 0,
-        COM_FECHACREACION: new Date(),
-        COM_FECHACOMPRA:  new Date (this.formularioCompra.get('COM_FechaCompra')?.value),
-        COM_VALORCOMPRA: this.TotalComprado,
-        COM_PROVEEDOR: this.formularioCompra.get('COM_PROVEEDOR')?.value??'',
-        TIC_CODIGO: this.formularioCompra.get('TIC_CODIGO')?.value,
-        COM_FECHAACTUALIZACION: new Date(),
-        COM_ENBODEGA: this.Bodega,
-        COM_ESTADO: true,
-        COM_CREDITO:  this.Credito,
-        USU_CEDULA: this.userLogged.USU_CEDULA, 
-        DetalleCompras: this.ListaProductosComprados
+      let texto="";
+      if(this.Bodega==true){
+        texto = "Esta compra ingresara todos los productos al inventario,";
+      }else{
+        texto = "Atención!: Esta compra NO ingresará productos al inventario, "
       }
-      this.alerta.showLoading("Creando nueva compra")
-      this.comprasService.CrearCompra(NuevaCompra).subscribe(result => {
-        this.alerta.hideLoading();
-        this.alerta.SetToast('Compra creada', 1);
-        this.CerradoPantalla();
-      }, err => {
-        this.alerta.hideLoading();
-        this.alerta.SetToast(err, 3)
-        console.log(err)
-      });
+      this.alerta.confirmacion(texto+" Esta seguro de continuar?").then((result) => {
+        if(result){
+          const NuevaCompra: Icompras = {
+            COM_CODIGO: 0,
+            COM_FECHACREACION: new Date(),
+            COM_FECHACOMPRA:  new Date (this.formularioCompra.get('COM_FechaCompra')?.value),
+            COM_VALORCOMPRA: this.TotalComprado,
+            COM_PROVEEDOR: this.formularioCompra.get('COM_PROVEEDOR')?.value??'',
+            TIC_CODIGO: this.formularioCompra.get('TIC_CODIGO')?.value,
+            COM_FECHAACTUALIZACION: new Date(),
+            COM_ENBODEGA: this.Bodega,
+            COM_ESTADO: true,
+            COM_CREDITO:  this.Credito,
+            USU_CEDULA: this.userLogged.USU_CEDULA, 
+            DetalleCompras: this.ListaProductosComprados
+          }
+          this.alerta.showLoading("Creando nueva compra")
+          this.comprasService.CrearCompra(NuevaCompra).subscribe(result => {
+            this.alerta.hideLoading();
+            this.alerta.SetToast('Compra creada', 1);
+            this.CerradoPantalla();
+          }, err => {
+            this.alerta.hideLoading();
+            this.alerta.SetToast(err, 3)
+            console.log(err)
+          });
+        }
 
+      })
     } catch (error) {
       console.error(error)
     }
@@ -245,7 +263,7 @@ export class CreacionCompraComponent implements OnInit {
   }
 
   ActualizarCompra() {
-    ;
+    
     try {
       const NuevaCompra: Icompras = {
         COM_CODIGO: this.Compra.COM_CODIGO,

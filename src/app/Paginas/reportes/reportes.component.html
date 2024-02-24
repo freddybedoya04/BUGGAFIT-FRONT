@@ -5,12 +5,12 @@
         <p>
             <label>Fecha Inicio:</label>
             <p-calendar [(ngModel)]="FechaInicio" name="FechaInicio" [showTime]="true" hourFormat="12"
-                [showIcon]="true"></p-calendar>
+                [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
         </p>
         <p>
             <label>Fecha Fin:</label>
             <p-calendar [(ngModel)]="FechaFin" name="FechaFin" [showTime]="true" hourFormat="12"
-                [showIcon]="true"></p-calendar>
+                [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
         </p>
         <p>
             <p-button label="Buscar" icon="pi pi-search" style="margin-top: 20px;" (onClick)="BuscarVentasPorFechas()"></p-button>
