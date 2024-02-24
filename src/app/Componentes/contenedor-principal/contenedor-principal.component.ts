@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Ipantallapermiso } from 'src/app/Interfaces/ipantallapermiso';
 import { AlertasService } from 'src/app/Servicios/alertas.service';
 import { UsuarioService } from 'src/app/Servicios/usuario.service';
+import{ BreakpointObserver } from '@angular/cdk/layout'
 
 @Component({
   selector: 'app-contenedor-principal',
@@ -12,8 +13,18 @@ export class ContenedorPrincipalComponent implements OnInit {
   userLogged: any;
   pantallas: Ipantallapermiso[] = [];
   constructor(private usuarioService: UsuarioService,
-    private alertasService: AlertasService) {
+    private alertasService: AlertasService,
+    private observer:BreakpointObserver) {
     this.userLogged = JSON.parse(localStorage.getItem('user') || "");
+  }
+  ngAfterViewInit(){
+    this.observer.observe(['(max-width: 1100px)']).subscribe((res)=>{
+      if(res.matches){
+        this.isCollapsed=true;
+      }else{
+        this.isCollapsed=false;
+      }
+    })
   }
   ngOnInit(): void {
 
