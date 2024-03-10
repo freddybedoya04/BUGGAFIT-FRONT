@@ -79,11 +79,11 @@ export class EstadisticasComponent implements OnInit {
     });
   }
   ConfigurarFechas() {
-    ;
+    debugger;
     let Fecha = new Date();
-    this.FechaInicio = new Date(Fecha.getFullYear(), Fecha.getMonth(), 1, 6, 0, 0);
+    this.FechaInicio = new Date(Fecha.getFullYear(), Fecha.getMonth(), Fecha.getDate(), 6, 0, 0);
     const ultimoDiaNoviembre = new Date(Fecha.getFullYear(), Fecha.getMonth(), 0).getDate();
-    this.FechaFin = new Date(Fecha.getFullYear(), Fecha.getMonth(), ultimoDiaNoviembre, 6, 0, 0);
+    this.FechaFin = new Date(Fecha.getFullYear(), Fecha.getMonth(), Fecha.getDate(), 23, 59, 59);
   }
 
   calcularIndicadores() {

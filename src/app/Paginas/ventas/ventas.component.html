@@ -20,7 +20,7 @@
   <p-card header="Cliente" [style]="{ width: '100%' }" class="card">
     <form #myForm="ngForm" [formGroup]="formularioVenta" (ngSubmit)="FinalizarFactura(myForm)">
       <div>
-        <label for="CLI_ID">Cedula:</label>
+        <label for="CLI_ID">Telefono:</label>
         <input (blur)="AutocompletarCedula()" type="text" pInputText formControlName="VENT_CEDULA" />
       </div>
 
@@ -57,7 +57,7 @@
           optionValue="value" placeholder="Seleccione Cuenta" [filter]="true" filterBy=""></p-dropdown>
       </div>
       <div>
-        <label for="CLI_TELEFONO">Telefono:</label>
+        <label for="CLI_TELEFONO">Cedula:</label>
         <input type="text" pInputText formControlName="CLI_TELEFONO"/>
       </div>
       

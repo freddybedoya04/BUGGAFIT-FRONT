@@ -32,4 +32,11 @@ export class MotivosGastosService {
         return result.Data;
       }));
   }
+  ActualizarCuenta(MotivosGastos: IMotivoGasto) {
+    return this.http.put<IApiResponse>(this.url + 'PutMotivoGasto/', MotivosGastos).pipe(
+      map((result: IApiResponse) => {
+        
+        return result;
+      }));
+  }
 }

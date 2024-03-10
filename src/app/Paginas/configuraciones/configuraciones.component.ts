@@ -385,6 +385,22 @@ export class ConfiguracionesComponent implements OnInit {
       this.alertasService.SetToast(err, 3)
     })
   }
+  ActualizarMotivoGastos() { 
+    this.alertasService.showLoading("Actuaizando Motivo.");
+    this.motivoGastoService.ActualizarCuenta(this.MotivoGasto).subscribe(x=> {
+      this.alertasService.hideLoading();
+      this.ActivarFormularioMotivoGasto = false;
+      this.MotivoGasto.MOG_CODIGO=0;
+      this.MotivoGasto.MOG_NOMBRE="";
+      this.CargarMotivosGastos();
+      this.alertasService.SetToast("Se modificó el motivo de gasto correctamente", 1)
+
+    }, err => {
+      this.alertasService.hideLoading();
+      console.log(err);
+      this.alertasService.SetToast(err, 3)
+    })
+  }
   //#endregion
   PonerEnFormulario(envio: ITiposEnvios) {
     this.Envio = {
@@ -411,7 +427,15 @@ export class ConfiguracionesComponent implements OnInit {
     }
     this.InputNombreCuenta?.nativeElement.focus();
   }
-
+  PonerEnFormularioMotovoGasto(motivo: IMotivoGasto) { 
+    this.ActivarFormularioMotivoGasto = true;
+    this.MotivoGasto = {
+      MOG_CODIGO: motivo.MOG_CODIGO,
+      MOG_NOMBRE: motivo.MOG_NOMBRE,
+      MOG_ESTADO: motivo.MOG_ESTADO,
+      MOG_FECHACREACION: new Date(),
+    }
+  }
   getSeverity(estado: boolean) {
     switch (estado) {
       case true:

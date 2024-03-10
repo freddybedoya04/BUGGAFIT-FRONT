@@ -21,7 +21,8 @@ export class CreacionProductoComponent implements OnInit {
   marcaSeleccionada: any;
   esEdicion: boolean = false;
   productoAEditar: Iproducto;
-
+  DesactivarUnidades: boolean = false;
+  userLogged: any;
   constructor(
     private formBuilder: FormBuilder,
     private alerta: AlertasService,
@@ -63,6 +64,7 @@ export class CreacionProductoComponent implements OnInit {
       PRO_UNIDADREGALO:0,
       PRO_UNIDAD_MINIMAREGALO:0
     };
+    this.userLogged = JSON.parse(localStorage.getItem('user') || "");
   }
 
   ngOnInit() {
@@ -267,6 +269,16 @@ export class CreacionProductoComponent implements OnInit {
       this.formularioProducto.get('UNIDADES_MINIMA_ALERTA')?.setValue(this.productoAEditar.PRO_UNIDADES_MINIMAS_ALERTA);
       this.formularioProducto.get('PRO_UNIDADREGALO')?.setValue(this.productoAEditar.PRO_UNIDADREGALO);
       this.formularioProducto.get('PRO_UNIDAD_MINIMAREGALO')?.setValue(this.productoAEditar.PRO_UNIDAD_MINIMAREGALO);
+    }
+    this.ValidarCargo();
+    
+  }
+  ValidarCargo(){
+    debugger;
+    if(this.esEdicion==true && this.userLogged.USU_NOMBREROL.toLowerCase() != 'administrador'){ 
+      this.DesactivarUnidades=true;
+    }else{
+      this.DesactivarUnidades=false;
     }
   }
 }

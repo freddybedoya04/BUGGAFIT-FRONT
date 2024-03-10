@@ -271,7 +271,9 @@
                             <input type="text" pInputText [(ngModel)]="MotivoGasto.MOG_NOMBRE" />
                         </div>
                         <div class="BotonAgregar">
-                            <p-button label="Agregar Motivo" icon="pi pi-plus"
+                            <p-button *ngIf="MotivoGasto.MOG_CODIGO !=0" label="Actualizar Motivo" icon="pi pi-plus"
+                            (onClick)="ActualizarMotivoGastos()"></p-button>
+                            <p-button *ngIf="MotivoGasto.MOG_CODIGO ==0" label="Agregar Motivo" icon="pi pi-plus"
                                 (onClick)="AgregarMotivoGasto()"></p-button>
                             <p-button label="Cancelar" styleClass="p-button-danger"
                                 (onClick)="ActivarFormularioMotivoGasto=false"></p-button>
@@ -304,6 +306,9 @@
                                 <td>{{ motivo.MOG_CODIGO}}</td>
                                 <td>{{ motivo.MOG_NOMBRE}}</td>
                                 <td>
+                                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info"
+                                    pTooltip="Editar valor" tooltipPosition="top"
+                                    (click)="PonerEnFormularioMotovoGasto(motivo)" [disabled]="motivo.MOG_NOMBRE=='ENVIO'"></button>
                                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
                                         pTooltip="Eliminar" tooltipPosition="top"
                                         (click)="EliminarMotivoGasto(motivo)"></button>
