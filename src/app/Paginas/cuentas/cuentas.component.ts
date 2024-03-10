@@ -77,7 +77,10 @@ export class CuentasComponent implements OnInit {
   }
  
   BuscarTransferencias() {
+    this.ConfigurarFechas();
+    this.ObtenerTipoCuentas();
     if (this.CuentaSeleccionada == null || this.CuentaSeleccionada.TIC_CODIGO == -1) {
+
       this.BuscarTransaccionesPorFechas();
       this.mostrarSoloCuentaSeleccionada = true;
       // Inicializar cuentasFiltradas con la lista completa
