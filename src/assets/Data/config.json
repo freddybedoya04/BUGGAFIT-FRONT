@@ -1,4 +1,11 @@
 {
     "Descuento": 5000,
-    "CodigoDescuento":"Cupon"
+    "CodigoDescuento":"Cupon",
+    "AutocompletarCuentaEnvio": true,
+    "AsignacionAutomaticaDeCuentaDeEnvio": {
+        "DOMICILIO EXTRA": "EFECTIVO",
+        "DOMICILIO": "EFECTIVO",
+        "ENVIO EXTRA": "SERVIENTREGA",
+        "NACIONAL": "SERVIENTREGA"
+    }
 }

@@ -55,6 +55,7 @@ export class VentasComponent implements OnInit {
   codigoVentaCreada: number = 0;
   listadoTiposDeEnvio: ITiposEnvios[] = [];
   isUserAdmin: boolean = false;
+  globalConfig: any;
 
   //Listas de los dropdown
   listaTipoDeCliente: SelectItem[] = [
@@ -92,25 +93,19 @@ export class VentasComponent implements OnInit {
     }
   ];
 
-
-
   constructor(
     private formBuilder: FormBuilder,
-    private primengConfig: PrimeNGConfig,
     private invetarioService: InventarioService,
     private clientesService: ClientesService,
     private ventasService: VentasService,
     private alertasService: AlertasService,
     private gastosService: GastosService,
-    private motivoGastosService: MotivosGastosService,
     private tipoEnviosService: TiposEnviosService,
-    private dialogService: DialogService,
-    private usuarioService: UsuarioService
-  ) {
+    private dialogService: DialogService) {
     this.userLogged = JSON.parse(localStorage.getItem('user') || "");
     this.isUserAdmin = (this.userLogged.USU_NOMBREROL.toLowerCase() === 'admin' ||
       this.userLogged.USU_NOMBREROL.toLowerCase() === 'administrador' ||
-      this.userLogged.USU_NOMBREROL.toLowerCase() === 'administrator'||
+      this.userLogged.USU_NOMBREROL.toLowerCase() === 'administrator' ||
       this.userLogged.USU_NOMBREROL.toLowerCase() === 'supervisor');
 
     this.formularioVenta = formBuilder.group({
@@ -164,6 +159,11 @@ export class VentasComponent implements OnInit {
     }
     this.TotalComprado = 0;
     this.AplicaDescuento = false;
+
+    // obtenemos la configuracion de autocompletar la cuenta de envio.
+    this.ventasService.getConfig().subscribe((result: any) => {
+      this.globalConfig = result;
+    });
   }
   ngOnInit(): void {
     this.ObtenerTipoCuentas();
@@ -285,11 +285,11 @@ export class VentasComponent implements OnInit {
       this.formularioVenta.controls['PRO_DESCUENTO'].disable();
     } else {
       // Deshabilitar los campos si no es regalo
-      if(!this.isUserAdmin){
+      if (!this.isUserAdmin) {
         this.formularioVenta.controls['PRO_PRECIO'].disable();
         this.formularioVenta.controls['PRO_VALORTOTAL'].disable();
         this.formularioVenta.controls['PRO_DESCUENTO'].disable();
-      }else{
+      } else {
         this.formularioVenta.controls['PRO_PRECIO'].enable();
         this.formularioVenta.controls['PRO_VALORTOTAL'].enable();
         this.formularioVenta.controls['PRO_DESCUENTO'].enable();
@@ -557,7 +557,7 @@ export class VentasComponent implements OnInit {
   ValidacionCantidadRegalos(Carrito: IDetalleVentas[], cliente: string): boolean {
     debugger;
     let RegalosDemas = false
-    let Regalos = Carrito.filter(x => x.VED_PRECIOVENTA_UND == 0 && x.PRO_CODIGO != "9999") ;
+    let Regalos = Carrito.filter(x => x.VED_PRECIOVENTA_UND == 0 && x.PRO_CODIGO != "9999");
     let NoRegalos = Carrito.filter(x => x.VED_PRECIOVENTA_UND != 0 && x.PRO_CODIGO != "9999");
 
     let totalProductosNoRegalos = NoRegalos.reduce((anterior, actual) => {
@@ -672,20 +672,20 @@ export class VentasComponent implements OnInit {
       this.alertasService.confirmacion("No ha agregado ningun regalo, ¿Esta seguro de continuar?").then(
         (resolve: any) => {
           if (resolve) {
-            this.ConstruirVenta(nombreTipoCuenta,esVentaACredito)
-          }else{
+            this.ConstruirVenta(nombreTipoCuenta, esVentaACredito)
+          } else {
             return
           }
         })
-    }else{
-      this.ConstruirVenta(nombreTipoCuenta,esVentaACredito)
+    } else {
+      this.ConstruirVenta(nombreTipoCuenta, esVentaACredito)
     }
-   
+
     this.formularioVenta.controls['PRO_PRECIO'].disable();
     this.formularioVenta.controls['PRO_VALORTOTAL'].disable();
     this.formularioVenta.controls['PRO_DESCUENTO'].disable();
   }
-  ConstruirVenta(nombreTipoCuenta:any,esVentaACredito:boolean) {
+  ConstruirVenta(nombreTipoCuenta: any, esVentaACredito: boolean) {
     const venta: Iventa = {
       VEN_CODIGO: 0,
       VEN_FECHACREACION: new Date(),
@@ -763,25 +763,54 @@ export class VentasComponent implements OnInit {
       })
   }
   AbrirModalTipoCuentasGastos() {
-    let ref = this.dialogService.open(PagoEnvioComponent, {
-      header: 'Seleccione el tipo de de pago para el gasto de envio',
-      width: '30%',
-      baseZIndex: 100,
-      maximizable: false,
-      dismissableMask: false,
-      closeOnEscape: false,
-      closable: false,
-      contentStyle: { 'background-color': '#eff3f8' },
-      data: { Listado: this.listaTipoDeCuenta.filter(x => x.title == "true"), }
-    })
-    ref.onClose.subscribe((res) => {
-      this.gastoDeEnvio.TIC_CODIGO = res;
-      ;
-      if (this.listaTipoDeCuenta.find(x => x.value == res)?.label?.toUpperCase() == "EFECTIVO") {
+    debugger;
+    let autocompletarCuentaEnvio: boolean = false;
+    let asignacionCuentaseEnvio: any;
+
+    // obtenemos la configuracion de autocompletar la cuenta de envio.
+    autocompletarCuentaEnvio = this.globalConfig.AutocompletarCuentaEnvio ?? false;
+    asignacionCuentaseEnvio = this.globalConfig.AsignacionAutomaticaDeCuentaDeEnvio ?? undefined;
+    if (!asignacionCuentaseEnvio) // en caso que no haya una asignacion de cuenta valida.
+      autocompletarCuentaEnvio = false;
+
+    const _tipoEnvio: string = this.listaTipoDeEnvio.find(x => x.value == this.formularioVenta.controls['VEN_TIPOENVIO'].value)?.label?.toUpperCase() || ""
+    // validamos que haya una realcion dentro de la configuracion
+    if (!_tipoEnvio || _tipoEnvio === "") {
+      autocompletarCuentaEnvio = false;
+    }
+    let _cuenta: any = this.listaTipoDeCuenta.filter(x => x.label == (!asignacionCuentaseEnvio[_tipoEnvio] ? "" : asignacionCuentaseEnvio[_tipoEnvio]));
+    if(!_cuenta || _cuenta.length <= 0){
+      autocompletarCuentaEnvio = false;
+    }
+
+    if (!autocompletarCuentaEnvio) {
+      debugger;
+      let ref = this.dialogService.open(PagoEnvioComponent, {
+        header: 'Seleccione el tipo de de pago para el gasto de envio',
+        width: '30%',
+        baseZIndex: 100,
+        maximizable: false,
+        dismissableMask: false,
+        closeOnEscape: false,
+        closable: false,
+        contentStyle: { 'background-color': '#eff3f8' },
+        data: { Listado: this.listaTipoDeCuenta.filter(x => x.title == "true") }
+      })
+      ref.onClose.subscribe((res) => {
+        this.gastoDeEnvio.TIC_CODIGO = res;
+        if (this.listaTipoDeCuenta.find(x => x.value == res)?.label?.toUpperCase() == "EFECTIVO") {
+          this.gastoDeEnvio.GAS_PENDIENTE = false;
+        }
+        this.CrearGatosVenta();
+      });
+    }
+    else {
+      this.gastoDeEnvio.TIC_CODIGO = _cuenta[0].value;
+      if (this.listaTipoDeCuenta.find(x => x.value == _cuenta[0].value)?.label?.toUpperCase() == "EFECTIVO") {
         this.gastoDeEnvio.GAS_PENDIENTE = false;
       }
       this.CrearGatosVenta();
-    });
+    }
   }
   CrearGatosVenta() {
     this.alertasService.showLoading("Creando Gasto")
