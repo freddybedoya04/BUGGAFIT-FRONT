@@ -57,10 +57,10 @@ export class CuentasComponent implements OnInit {
 
   ngOnInit() {
     this.ConfigurarFechas();
-    this.ObtenerTipoCuentas();
+    this.ObtenerTipoCuentas(false);
     this.BuscarTransferencias();
   }
-  ObtenerTipoCuentas() {
+  ObtenerTipoCuentas(debeFiltrar:boolean) {
     this.tipoCuentaService
       .ObtenerCuentas()
       .subscribe((result: ITipocuenta[]) => {
@@ -68,11 +68,16 @@ export class CuentasComponent implements OnInit {
           (x) => x.TIC_NOMBRE != 'CREDITO'
         );
         this.cuentasFiltradas = this.listaTipoDeCuenta;
+        debugger;
+        if(debeFiltrar){
+          this.cuentasFiltradas= this.cuentasFiltradas.filter(x => x.TIC_CODIGO == this.CuentaSeleccionada.TIC_CODIGO)
+        }
       });
   }
   ConfigurarFechas() {
     this.FechaFin = new Date();
     this.FechaInicio = new Date(this.FechaFin);
+    this.FechaFin.setMinutes(this.FechaFin.getMinutes() + 5); // Adelantar 5 minutos
     this.FechaInicio.setDate(this.FechaInicio.getDate() - 30);
   }
  
@@ -102,6 +107,7 @@ export class CuentasComponent implements OnInit {
         (result) => {
           this.alertas.hideLoading();
           this.listaTrasacciones = result;
+          this.ObtenerTipoCuentas(false);
         },
         (err) => {
           this.alertas.hideLoading();
@@ -152,6 +158,7 @@ export class CuentasComponent implements OnInit {
         (result) => {
           this.alertas.hideLoading();
           this.listaTrasacciones = result;
+          this.ObtenerTipoCuentas(true);
         },
         (err) => {
           this.alertas.hideLoading();

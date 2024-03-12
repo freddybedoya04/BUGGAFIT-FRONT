@@ -612,7 +612,7 @@ export class VentasComponent implements OnInit {
     });
 
     const valorTotalVenta: number = this.listaProductos.reduce((acumulador, actual) => acumulador + actual.VED_PRECIOVENTA_TOTAL, 0) + 0;
-    const esVentaACredito: boolean = (nombreTipoCuenta[0].label && nombreTipoCuenta[0].label.toLowerCase().indexOf('credito') >= 0 ? true : false);
+    const esVentaACredito: boolean = (nombreTipoCuenta[0].label && nombreTipoCuenta[0].label.toLowerCase()=='credito' ? true : false);
     const esVentaAEfectivo: boolean = (nombreTipoCuenta[0].label && nombreTipoCuenta[0].label.toLowerCase().indexOf('efectivo') >= 0 ? true : false);
 
     if (!this.existeCliente) { //validamos que el cliente exista, en caso que no lo creamos 
